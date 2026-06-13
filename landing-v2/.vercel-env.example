@@ -1,0 +1,13 @@
+# AiGenesis V2 — Variables de entorno para Vercel
+# Copiar a: Vercel Project Settings → Environment Variables
+
+# Producción
+NEXT_PUBLIC_SITE_URL=https://aigenesis.io
+
+# Staging (preview)
+# NEXT_PUBLIC_SITE_URL=https://landing-v2-rho-three.vercel.app
+
+# Notas:
+# - NEXT_PUBLIC_* se expone al cliente (metadata, sitemap, canonical).
+# - Tras el primer deploy, verificar OG preview y sitemap.xml en el dominio staging.
+# - No commitear secrets ni API keys en este archivo.

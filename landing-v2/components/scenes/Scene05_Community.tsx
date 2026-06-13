@@ -2,42 +2,47 @@
 
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
+import { SectionHeader } from '@/components/ui/genesis'
 import {
-  SceneWrapper, SectionLabel, GradientButton,
-  StatBlock, FeatureItem, containerV, slideLeft, wordV,
+  SceneWrapper, GradientButton,
+  StatBlock, FeatureItem, containerV, slideLeft,
 } from '@/components/ui/SceneShared'
+import { ROUTES } from '@/lib/routes'
+import CommunitySectionBackdrop from '@/components/community/CommunitySectionBackdrop'
+import CommunityGenesisNetwork from '@/components/community/CommunityGenesisNetwork'
 
 interface Props { isActive?: boolean }
 
 const Scene05_Community = forwardRef<HTMLElement, Props>(
   function Scene05_Community({ isActive = false }, ref) {
     return (
-      <SceneWrapper ref={ref} isActive={isActive} motionKey="scene05">
+      <SceneWrapper
+        ref={ref}
+        isActive={isActive}
+        motionKey="scene05"
+        sectionId="comunidad"
+        particleColumn
+        className="community-section-layout"
+        sectionOverlay={<CommunitySectionBackdrop visible={isActive} />}
+        particleSlot={<CommunityGenesisNetwork isActive={isActive} />}
+      >
 
-        <SectionLabel>Sección 05</SectionLabel>
+        <SectionHeader
+          label="Sección 05"
+          title="Crece con"
+          highlight="quienes crecen."
+        />
 
-        <motion.h2
-          className="text-5xl font-bold leading-tight"
-          style={{ fontFamily: 'var(--font-space-grotesk)', textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}
-        >
-          <motion.span variants={wordV} style={{ display: 'block', color: '#fff' }}>
-            Crece con
-          </motion.span>
-          <motion.span variants={wordV} style={{ display: 'block', color: '#6B7280' }}>
-            quienes crecen.
-          </motion.span>
-        </motion.h2>
-
-        <motion.p variants={slideLeft} className="text-lg leading-relaxed max-w-lg" style={{ color: '#94A3B8' }}>
+        <motion.p variants={slideLeft} className="text-lg leading-relaxed max-w-lg text-genesis-mist">
           Comunidad global G11 con plan de compensación transparente. Red binaria, bonos directos
           y pools globales para los rangos más activos.
         </motion.p>
 
         <motion.div variants={containerV} className="grid grid-cols-2 gap-4 mt-2">
-          <FeatureItem num="/01" text="Bono Directo 8-11%" />
-          <FeatureItem num="/02" text="Red Binaria Matching" />
-          <FeatureItem num="/03" text="Global Pool Top Ranks" />
-          <FeatureItem num="/04" text="Liderazgo Progresivo" />
+          <FeatureItem glass num="/01" text="Bono Directo 8-11%" />
+          <FeatureItem glass num="/02" text="Red Binaria Matching" />
+          <FeatureItem glass num="/03" text="Global Pool Top Ranks" />
+          <FeatureItem glass num="/04" text="Liderazgo Progresivo" />
         </motion.div>
 
         <motion.div variants={slideLeft} className="flex gap-10 mt-2">
@@ -46,7 +51,7 @@ const Scene05_Community = forwardRef<HTMLElement, Props>(
           <StatBlock to={12}   suffix="+"      label="PAÍSES"           isActive={isActive} />
         </motion.div>
 
-        <GradientButton className="mt-2">Únete a la Comunidad →</GradientButton>
+        <GradientButton className="mt-2" href={ROUTES.REGISTER}>Únete a la Comunidad →</GradientButton>
 
       </SceneWrapper>
     )

@@ -1,18 +1,13 @@
 'use client'
 
-import { motion } from 'framer-motion'
-
-const SECTION_LABELS = [
-  'Hero',
-  'Ecosistema',
-  'AIG Token',
-  'GPulse',
-  'Gevy Shop',
-  'Comunidad',
-  'Tech',
-  'Roadmap',
-  'Inicio',
-]
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import {
+  SCROLL_RAIL_NODE,
+  SCROLL_RAIL_PARALLAX_MAX_PX,
+  SCROLL_RAIL_WAVE_MS,
+} from '@/lib/scrollRail/genesisScrollRailLayout'
+import { sectionNavTooltipLabel } from '@/lib/scrollRail/sectionNavLabels'
 
 interface SectionProgressDotsProps {
   total: number
@@ -20,75 +15,240 @@ interface SectionProgressDotsProps {
   onDotClick: (index: number) => void
 }
 
+type NodeState = 'active' | 'nearby' | 'inactive'
+
+function resolveNodeState(index: number, current: number): NodeState {
+  if (index === current) return 'active'
+  if (index === current - 1 || index === current + 1) return 'nearby'
+  return 'inactive'
+}
+
+function baseNodeSizePx(state: NodeState): number {
+  if (state === 'active') return SCROLL_RAIL_NODE.ACTIVE_SIZE_PX
+  if (state === 'nearby') return SCROLL_RAIL_NODE.NEARBY_SIZE_PX
+  return SCROLL_RAIL_NODE.INACTIVE_SIZE_PX
+}
+
 export default function SectionProgressDots({
   total,
   current,
   onDotClick,
 }: SectionProgressDotsProps) {
+  const navRef = useRef<HTMLElement>(null)
+  const nodeRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const [nodeCenters, setNodeCenters] = useState<number[]>([])
+  const [parallax, setParallax] = useState({ x: 0, y: 0 })
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [tooltipShiftY, setTooltipShiftY] = useState(0)
+  const reduceMotion = useReducedMotion()
+
+  const measureCenters = useCallback(() => {
+    const nav = navRef.current
+    if (!nav) return
+    const navTop = nav.getBoundingClientRect().top
+    const centers = Array.from({ length: total }, (_, i) => {
+      const btn = nodeRefs.current[i]
+      if (!btn) return 0
+      const rect = btn.getBoundingClientRect()
+      return rect.top - navTop + rect.height / 2
+    })
+    setNodeCenters(centers)
+  }, [total])
+
+  const clampTooltipPosition = useCallback((index: number) => {
+    const btn = nodeRefs.current[index]
+    if (!btn) return
+    requestAnimationFrame(() => {
+      const tooltip = btn.querySelector('.genesis-scroll-rail__tooltip')
+      if (!tooltip) return
+      const rect = tooltip.getBoundingClientRect()
+      const pad = 10
+      let shift = 0
+      if (rect.top < pad) shift = pad - rect.top
+      else if (rect.bottom > window.innerHeight - pad) {
+        shift = window.innerHeight - pad - rect.bottom
+      }
+      setTooltipShiftY(shift)
+    })
+  }, [])
+
+  useLayoutEffect(() => {
+    measureCenters()
+  }, [measureCenters, current, total])
+
+  useEffect(() => {
+    measureCenters()
+    window.addEventListener('resize', measureCenters)
+    return () => window.removeEventListener('resize', measureCenters)
+  }, [measureCenters])
+
+  useEffect(() => {
+    if (hoveredIndex === null) return
+    clampTooltipPosition(hoveredIndex)
+  }, [hoveredIndex, clampTooltipPosition])
+
+  useEffect(() => {
+    if (reduceMotion) return
+    const max = SCROLL_RAIL_PARALLAX_MAX_PX
+    const onMove = (e: MouseEvent) => {
+      const x = ((e.clientX / window.innerWidth) - 0.5) * max * 2
+      const y = ((e.clientY / window.innerHeight) - 0.5) * max * 2
+      setParallax({
+        x: Math.max(-max, Math.min(max, x)),
+        y: Math.max(-max, Math.min(max, y)),
+      })
+    }
+    window.addEventListener('mousemove', onMove, { passive: true })
+    return () => window.removeEventListener('mousemove', onMove)
+  }, [reduceMotion])
+
+  const waveY = nodeCenters[current] ?? 0
+  const railTop = nodeCenters[0] ?? 10
+  const railBottom =
+    nodeCenters.length > 0 ? nodeCenters[nodeCenters.length - 1] ?? 10 : 10
+
+  const tooltipTransition = {
+    duration: reduceMotion ? 0 : SCROLL_RAIL_NODE.TOOLTIP_DURATION_MS / 1000,
+    ease: [0.22, 1, 0.36, 1] as const,
+  }
+
   return (
     <nav
+      ref={navRef}
       aria-label="Navegación de secciones"
-      style={{
-        position: 'fixed',
-        right: 24,
-        top: '50%',
-        transform: 'translateY(-50%)',
-        zIndex: 50,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 12,
-        pointerEvents: 'auto',
-      }}
+      className="genesis-scroll-rail hidden xl:flex"
+      style={
+        reduceMotion
+          ? undefined
+          : ({
+              '--scroll-rail-parallax-x': `${parallax.x}px`,
+              '--scroll-rail-parallax-y': `${parallax.y}px`,
+            } as React.CSSProperties)
+      }
     >
-      {Array.from({ length: total }).map((_, i) => (
-        <button
-          key={i}
-          onClick={() => onDotClick(i)}
-          aria-label={SECTION_LABELS[i] ?? `Sección ${i + 1}`}
-          title={SECTION_LABELS[i] ?? `Sección ${i + 1}`}
-          style={{
-            padding: 0,
-            border: 'none',
-            background: 'transparent',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 20,
-            height: 20,
-          }}
-        >
-          <motion.span
-            animate={
-              i === current
-                ? { scale: 1, backgroundColor: '#E91E8B', boxShadow: '0 0 8px rgba(233,30,139,0.6)' }
-                : { scale: 0.7, backgroundColor: 'rgba(255,255,255,0.2)', boxShadow: 'none' }
-            }
-            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-            style={{
-              display: 'block',
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-            }}
-          />
-        </button>
-      ))}
-
-      {/* Línea conectora entre dots */}
       <div
+        className="genesis-scroll-rail__energy-rail"
+        aria-hidden="true"
         style={{
-          position: 'absolute',
-          left: '50%',
-          top: 10,
-          bottom: 10,
-          width: 1,
-          background: 'rgba(255,255,255,0.08)',
-          transform: 'translateX(-50%)',
-          zIndex: -1,
+          top: railTop,
+          height: Math.max(0, railBottom - railTop),
         }}
       />
+
+      {nodeCenters.length > 0 && (
+        <motion.div
+          className="genesis-scroll-rail__wave"
+          aria-hidden="true"
+          animate={{
+            top: waveY,
+            opacity: [0.55, 1, 0.65],
+            scale: [0.85, 1.15, 1],
+          }}
+          transition={{
+            top: {
+              duration: reduceMotion ? 0 : SCROLL_RAIL_WAVE_MS / 1000,
+              ease: [0.22, 1, 0.36, 1],
+            },
+            opacity: {
+              duration: reduceMotion ? 0 : SCROLL_RAIL_WAVE_MS / 1000,
+              times: [0, 0.35, 1],
+            },
+            scale: {
+              duration: reduceMotion ? 0 : SCROLL_RAIL_WAVE_MS / 1000,
+              times: [0, 0.4, 1],
+            },
+          }}
+        />
+      )}
+
+      {Array.from({ length: total }).map((_, i) => {
+        const state = resolveNodeState(i, current)
+        const isActive = state === 'active'
+        const isHovered = hoveredIndex === i
+        const baseSize = baseNodeSizePx(state)
+        const lit = isActive || isHovered
+        const scale = isHovered
+          ? SCROLL_RAIL_NODE.HOVER_SCALE
+          : isActive
+            ? SCROLL_RAIL_NODE.ACTIVE_SCALE
+            : 1
+
+        return (
+          <button
+            key={i}
+            ref={(el) => {
+              nodeRefs.current[i] = el
+            }}
+            type="button"
+            onClick={() => onDotClick(i)}
+            onMouseEnter={() => {
+              setTooltipShiftY(0)
+              setHoveredIndex(i)
+            }}
+            onMouseLeave={() => {
+              setHoveredIndex(null)
+              setTooltipShiftY(0)
+            }}
+            onFocus={() => {
+              setTooltipShiftY(0)
+              setHoveredIndex(i)
+            }}
+            onBlur={() => {
+              setHoveredIndex(null)
+              setTooltipShiftY(0)
+            }}
+            aria-label={sectionNavTooltipLabel(i)}
+            aria-current={isActive ? 'true' : undefined}
+            className="genesis-scroll-rail__node-btn"
+          >
+            <AnimatePresence>
+              {isHovered && (
+                <span
+                  className="genesis-scroll-rail__tooltip-anchor"
+                  style={{ marginTop: tooltipShiftY }}
+                >
+                  <motion.span
+                    role="tooltip"
+                    className="genesis-scroll-rail__tooltip"
+                    initial={{ opacity: 0, x: 10, scale: 0.96 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: 8, scale: 0.96 }}
+                    transition={tooltipTransition}
+                  >
+                    {sectionNavTooltipLabel(i)}
+                  </motion.span>
+                </span>
+              )}
+            </AnimatePresence>
+
+            <motion.span
+              className={`genesis-scroll-rail__node genesis-scroll-rail__node--${state}`}
+              animate={{
+                width: baseSize,
+                height: baseSize,
+                scale,
+                backgroundColor: lit
+                  ? SCROLL_RAIL_NODE.ACTIVE_COLOR
+                  : SCROLL_RAIL_NODE.INACTIVE_COLOR,
+                boxShadow: isHovered
+                  ? SCROLL_RAIL_NODE.HOVER_GLOW
+                  : isActive
+                    ? SCROLL_RAIL_NODE.ACTIVE_GLOW
+                    : 'none',
+                opacity: lit
+                  ? 1
+                  : state === 'nearby'
+                    ? SCROLL_RAIL_NODE.NEARBY_OPACITY
+                    : SCROLL_RAIL_NODE.INACTIVE_OPACITY,
+              }}
+              transition={{
+                duration: reduceMotion ? 0 : SCROLL_RAIL_NODE.TOOLTIP_DURATION_MS / 1000,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            />
+          </button>
+        )
+      })}
     </nav>
   )
 }

@@ -3,36 +3,72 @@
 import { useEffect, useRef, forwardRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import gsap from 'gsap'
-
-// ─── Variants ────────────────────────────────────────────────────────────────
+import { Card } from '@/components/ui/genesis'
+import { GenesisHeadline, GradientButton } from '@/components/ui/SceneShared'
+import EcosystemEnergyLinks from '@/components/ecosystem/EcosystemEnergyLinks'
+import { sectionHref, type SectionId } from '@/lib/routes'
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.10, delayChildren: 0.05 } },
-  exit:   { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
+  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+  exit: { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
 }
 
 const slideInLeft = {
-  hidden:  { opacity: 0, x: -50, filter: 'blur(6px)' },
-  visible: { opacity: 1, x: 0,   filter: 'blur(0px)', transition: { duration: 0.75, ease: [0.4, 0, 0.2, 1] } },
-  exit:    { opacity: 0, x: -30, filter: 'blur(4px)', transition: { duration: 0.25, ease: [0.4, 0, 1, 1] } },
+  hidden: { opacity: 0, x: -40, filter: 'blur(6px)' },
+  visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.4, 0, 0.2, 1] } },
+  exit: { opacity: 0, x: -24, transition: { duration: 0.25 } },
 }
 
-const wordReveal = {
-  hidden:  { opacity: 0, y: 30, filter: 'blur(4px)' },
-  visible: { opacity: 1, y: 0,  filter: 'blur(0px)', transition: { duration: 0.65, ease: [0.4, 0, 0.2, 1] } },
-  exit:    { opacity: 0, y: -20, transition: { duration: 0.2 } },
+const slideInRight = {
+  hidden: { opacity: 0, x: 40, filter: 'blur(6px)' },
+  visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.4, 0, 0.2, 1] } },
+  exit: { opacity: 0, x: 24, transition: { duration: 0.25 } },
 }
 
-// ─── Animated Counter (GSAP) ─────────────────────────────────────────────────
+function StackArrow() {
+  return (
+    <div className="flex justify-center py-1 text-genesis-ghost" aria-hidden="true">
+      ↓
+    </div>
+  )
+}
+
+function MapCard({
+  title,
+  sectionId,
+  compact = false,
+  ecoRole = 'module',
+}: {
+  title: string
+  sectionId: SectionId
+  compact?: boolean
+  ecoRole?: 'token' | 'module'
+}) {
+  const roleClass = ecoRole === 'token' ? 'eco-node-token' : 'eco-node-module'
+
+  return (
+    <a href={sectionHref(sectionId)} className={`no-underline block pointer-events-auto ${roleClass}`}>
+      <Card
+        variant="ecosystem"
+        title={title}
+        className={compact ? 'p-genesis-4' : undefined}
+        hover
+      />
+    </a>
+  )
+}
+
 function AnimatedCounter({
   to,
   suffix = '',
   isActive,
+  className = '',
 }: {
   to: number
   suffix?: string
   isActive: boolean
+  className?: string
 }) {
   const ref = useRef<HTMLSpanElement>(null!)
   const hasAnimated = useRef(false)
@@ -41,7 +77,7 @@ function AnimatedCounter({
     if (!isActive || hasAnimated.current) return
     hasAnimated.current = true
     const obj = { val: 0 }
-    gsap.to(obj, {
+    const tween = gsap.to(obj, {
       val: to,
       duration: 1.8,
       delay: 0.5,
@@ -50,20 +86,30 @@ function AnimatedCounter({
         if (ref.current) ref.current.textContent = Math.round(obj.val) + suffix
       },
     })
+    return () => {
+      tween.kill()
+      hasAnimated.current = false
+    }
   }, [isActive, to, suffix])
 
-  // Reset cuando la sección deja de estar activa
   useEffect(() => {
     if (!isActive) {
+      gsap.killTweensOf(ref.current)
       hasAnimated.current = false
       if (ref.current) ref.current.textContent = '0' + suffix
     }
   }, [isActive, suffix])
 
-  return <span ref={ref}>0{suffix}</span>
+  return (
+    <span ref={ref} className={className}>
+      0{suffix}
+    </span>
+  )
 }
 
-// ─── EcosystemSection ────────────────────────────────────────────────────────
+const statGradientClass =
+  'font-display text-2xl font-bold text-gradient-genesis-strong'
+
 interface EcosystemSectionProps {
   isActive?: boolean
 }
@@ -73,16 +119,11 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
     return (
       <section
         ref={ref}
-        className="relative flex h-screen w-full items-center px-12"
-        style={{
-          scrollSnapAlign: 'start',
-          pointerEvents: 'auto',
-          overflow: 'hidden',
-        }}
+        id="ecosistema"
+        className="home-section-fit relative flex h-screen w-full items-center px-6 md:px-12"
+        style={{ scrollSnapAlign: 'start', pointerEvents: 'auto', overflow: 'hidden' }}
       >
-        <div className="flex w-full items-center justify-between gap-8 max-w-7xl mx-auto">
-
-          {/* Columna izquierda — texto */}
+        <div className="scene-content-frame ecosystem-content-frame flex w-full items-center gap-6 max-w-7xl mx-auto px-2 sm:px-0 lg:grid lg:grid-cols-2 lg:gap-6">
           <AnimatePresence mode="wait">
             {isActive && (
               <motion.div
@@ -91,107 +132,92 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="flex flex-col gap-6 max-w-lg"
+                className="scene-content-stack ecosystem-content-stack flex flex-col gap-4 max-w-lg lg:max-w-[27rem] lg:justify-self-end lg:pr-1"
               >
-                {/* Número de sección */}
-                <motion.span
-                  variants={slideInLeft}
-                  className="text-xs tracking-[0.3em] uppercase"
-                  style={{ color: '#E91E8B', fontFamily: 'var(--font-space-grotesk)' }}
-                >
-                  Sección 01
+                <motion.span variants={slideInLeft} className="label-section text-genesis-fuchsia">
+                  Ecosistema
                 </motion.span>
 
-                {/* Título — word reveal */}
-                <motion.h2
-                  className="text-5xl font-bold leading-tight text-white"
-                  style={{
-                    fontFamily: 'var(--font-space-grotesk)',
-                    textShadow: '0 2px 20px rgba(0,0,0,0.8)',
-                  }}
-                >
-                  {['El', 'Ecosistema'].map((word, i) => (
-                    <motion.span
-                      key={i}
-                      variants={wordReveal}
-                      style={{ display: 'inline-block', marginRight: '0.3em' }}
-                    >
-                      {word}
-                    </motion.span>
-                  ))}
-                  <motion.span
-                    variants={wordReveal}
-                    style={{
-                      display: 'inline-block',
-                      background: 'linear-gradient(135deg, #8B5CF6, #E91E8B)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                    }}
-                  >
-                    Genesis
-                  </motion.span>
-                </motion.h2>
+                <GenesisHeadline lead="El stack" highlight="Genesis" />
 
-                {/* Descripción */}
-                <motion.p
-                  variants={slideInLeft}
-                  className="text-lg leading-relaxed"
-                  style={{
-                    color: '#94A3B8',
-                    fontFamily: 'var(--font-inter)',
-                    textShadow: '0 2px 12px rgba(0,0,0,0.6)',
-                  }}
-                >
-                  Un universo de productos interconectados construidos sobre Binance Smart Chain.
-                  Cada componente amplifica al siguiente, creando un ecosistema autosuficiente.
+                <motion.p variants={slideInLeft} className="text-body-lg text-genesis-mist leading-relaxed">
+                  Un universo de productos interconectados sobre Binance Smart Chain.
+                  Cada capítulo amplifica al siguiente en una arquitectura modular e institucional.
                 </motion.p>
 
-                {/* Stats con GSAP counters */}
-                <motion.div variants={slideInLeft} className="flex gap-8 mt-2">
-                  {/* Stats — "Fundado" es estático para no contar 0→2019 */}
+                <motion.div variants={slideInLeft} className="flex gap-8 mt-1">
                   <div className="flex flex-col gap-1">
-                    <span className="text-2xl font-bold" style={{ color: '#8B5CF6', fontFamily: 'var(--font-space-grotesk)' }}>
-                      <AnimatedCounter to={5} suffix="+" isActive={isActive} />
-                    </span>
-                    <span className="text-xs text-gray-500 uppercase tracking-wider">Productos activos</span>
+                    <AnimatedCounter
+                      to={15}
+                      suffix="+"
+                      isActive={isActive}
+                      className={statGradientClass}
+                    />
+                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">Pilares</span>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className="text-2xl font-bold" style={{ color: '#8B5CF6', fontFamily: 'var(--font-space-grotesk)' }}>
-                      2019
-                    </span>
-                    <span className="text-xs text-gray-500 uppercase tracking-wider">Fundado</span>
+                    <span className={statGradientClass}>2019</span>
+                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">Fundado</span>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className="text-2xl font-bold" style={{ color: '#8B5CF6', fontFamily: 'var(--font-space-grotesk)' }}>
-                      <AnimatedCounter to={100} suffix="K+" isActive={isActive} />
-                    </span>
-                    <span className="text-xs text-gray-500 uppercase tracking-wider">Comunidad</span>
+                    <AnimatedCounter
+                      to={100}
+                      suffix="K+"
+                      isActive={isActive}
+                      className={statGradientClass}
+                    />
+                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">Comunidad</span>
                   </div>
                 </motion.div>
 
-                {/* CTA — aparece último */}
-                <motion.button
-                  variants={slideInLeft}
-                  className="mt-2 w-fit rounded-full px-6 py-3 text-sm font-semibold text-white"
-                  style={{
-                    background: 'linear-gradient(135deg, #8B5CF6, #E91E8B)',
-                    fontFamily: 'var(--font-space-grotesk)',
-                    pointerEvents: 'auto',
-                  }}
-                  whileHover={{
-                    boxShadow: '0 0 20px rgba(139,92,246,0.5)',
-                    y: -2,
-                  }}
-                >
+                <GradientButton className="mt-1" href={sectionHref('token')}>
                   Explorar Ecosistema →
-                </motion.button>
+                </GradientButton>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* Columna derecha — espacio para las partículas del canvas */}
-          <div className="hidden md:block flex-1" aria-hidden="true" />
+          <AnimatePresence mode="wait">
+            {isActive && (
+              <motion.div
+                key="ecosystem-map"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="ecosystem-map-column hidden lg:flex flex-col max-w-md w-full pointer-events-auto lg:justify-self-start"
+                aria-label="Mapa del ecosistema"
+              >
+                <div className="ecosystem-map-visual relative">
+                  <EcosystemEnergyLinks isActive={isActive} />
+                  <div className="ecosystem-map-nodes relative z-[1] flex flex-col">
+                <motion.div variants={slideInRight}>
+                  <MapCard title="AiG Token" sectionId="token" ecoRole="token" />
+                </motion.div>
+                <StackArrow />
+                <motion.div variants={slideInRight} className="grid grid-cols-3 gap-2">
+                  <MapCard title="Mining" sectionId="mining" compact />
+                  <MapCard title="Booster" sectionId="booster" compact />
+                  <MapCard title="Staking" sectionId="staking" compact />
+                </motion.div>
+                <StackArrow />
+                <motion.div variants={slideInRight} className="grid grid-cols-2 gap-2">
+                  <MapCard title="G-Pulse" sectionId="gpulse" compact />
+                  <MapCard title="G-Oracle" sectionId="goracle" compact />
+                </motion.div>
+                <StackArrow />
+                <motion.div variants={slideInRight}>
+                  <MapCard title="Marketplace Global" sectionId="marketplace" compact />
+                </motion.div>
+                <StackArrow />
+                <motion.div variants={slideInRight}>
+                  <MapCard title="Comunidad G11" sectionId="comunidad" compact />
+                </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
     )

@@ -1,0 +1,106 @@
+/* Core — Genesis layered assets (GenesisTokenCore) */
+#token .token-value-core {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6.6rem;
+  height: 6.6rem;
+  overflow: visible;
+}
+
+#token .genesis-token-core {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  isolation: isolate;
+}
+
+#token .genesis-token-core__layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+#token .genesis-token-core__layer-frame {
+  position: relative;
+  width: calc(100% * var(--gtc-scale, 1));
+  height: calc(100% * var(--gtc-scale, 1));
+}
+
+#token .genesis-token-core__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+}
+
+#token .genesis-token-core__layer--ambient {
+  inset: -55%;
+  animation: gtc-ambient-breathe 8s ease-in-out infinite;
+}
+
+#token .genesis-token-core__layer--outer-ring {
+  animation: gtc-outer-spin 52s linear infinite;
+}
+
+#token .genesis-token-core__layer--mid-ring {
+  animation: gtc-mid-spin-rev 38s linear infinite;
+}
+
+#token .genesis-token-core__layer--inner-ring {
+  animation: gtc-inner-pulse var(--token-value-pulse-s, 4s) ease-in-out infinite;
+}
+
+#token .genesis-token-core__layer--radial-bars {
+  filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.25));
+}
+
+#token .genesis-token-core__layer--center-c {
+  filter: drop-shadow(0 0 8px rgba(255, 0, 200, 0.35));
+}
+
+#token .genesis-token-core__layer--sparks {
+  animation: gtc-sparks-flicker 3.6s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+
+#token .genesis-token-core__layer--particles {
+  opacity: 0.88;
+  mix-blend-mode: screen;
+}
+
+#token .genesis-token-core--compact .genesis-token-core__layer--ambient {
+  inset: -45%;
+}
+
+@keyframes gtc-outer-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes gtc-mid-spin-rev {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes gtc-inner-pulse {
+  0%, 100% { transform: scale(0.98); opacity: 0.88; }
+  50% { transform: scale(1.03); opacity: 1; }
+}
+
+@keyframes gtc-sparks-flicker {
+  0%, 100% { opacity: 0.72; }
+  40% { opacity: 0.95; }
+  55% { opacity: 0.68; }
+  70% { opacity: 0.92; }
+}
+
+@keyframes gtc-ambient-breathe {
+  0%, 100% { transform: scale(0.96); opacity: 0.72; }
+  50% { transform: scale(1.06); opacity: 0.92; }
+}
+
+#token .token-value-core__halo-deep {

@@ -1,0 +1,81 @@
+'use client'
+
+import {
+  BOOSTER_ACCELERATOR_PULSE_S,
+  BOOSTER_STREAM_COUNT,
+  boosterHelixStreamPath,
+  boosterPulseColumnPath,
+} from '@/lib/booster/quantumAcceleratorLayout'
+
+export default function BoosterAcceleratorStreams() {
+  return (
+    <svg
+      className="booster-accelerator-streams"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="xMidYMid meet"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id="booster-stream-grad" gradientUnits="userSpaceOnUse" x1="50" y1="88" x2="50" y2="10">
+          <stop offset="0%" stopColor="#FF00C8" stopOpacity="0.85" />
+          <stop offset="42%" stopColor="#9D4DFF" stopOpacity="0.72" />
+          <stop offset="100%" stopColor="#00F5FF" stopOpacity="0.62" />
+        </linearGradient>
+        <filter id="booster-stream-glow" x="-60%" y="-20%" width="220%" height="140%">
+          <feGaussianBlur stdDeviation="0.75" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <filter id="booster-stream-glow-soft" x="-80%" y="-30%" width="260%" height="160%">
+          <feGaussianBlur stdDeviation="1.2" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      {Array.from({ length: BOOSTER_STREAM_COUNT }, (_, strand) => {
+        const d = boosterHelixStreamPath(strand)
+        const flowDur = `${3.2 + (strand % 3) * 0.55}s`
+        const trailDur = `${4.8 + (strand % 4) * 0.4}s`
+
+        return (
+          <g key={strand} className="booster-accelerator-stream-group">
+            <path
+              d={d}
+              className="booster-accelerator-stream booster-accelerator-stream--ambient"
+              fill="none"
+              stroke="url(#booster-stream-grad)"
+              filter="url(#booster-stream-glow-soft)"
+            />
+            <path
+              d={d}
+              className="booster-accelerator-stream booster-accelerator-stream--flow"
+              fill="none"
+              stroke="url(#booster-stream-grad)"
+              filter="url(#booster-stream-glow)"
+            />
+            <circle r="0.75" className="booster-accelerator-stream__particle" fill="#FF00C8">
+              <animateMotion dur={flowDur} repeatCount="indefinite" path={d} />
+            </circle>
+            <circle r="0.45" className="booster-accelerator-stream__particle booster-accelerator-stream__particle--trail" fill="#00F5FF">
+              <animateMotion dur={trailDur} repeatCount="indefinite" path={d} begin={`${strand * 0.35}s`} />
+            </circle>
+          </g>
+        )
+      })}
+
+      <path
+        d={boosterPulseColumnPath()}
+        className="booster-accelerator-stream booster-accelerator-stream--pulse"
+        fill="none"
+        stroke="url(#booster-stream-grad)"
+        filter="url(#booster-stream-glow)"
+        style={{ '--booster-pulse-s': `${BOOSTER_ACCELERATOR_PULSE_S}s` } as React.CSSProperties}
+      />
+    </svg>
+  )
+}

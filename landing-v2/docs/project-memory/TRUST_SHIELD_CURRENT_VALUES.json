@@ -1,0 +1,468 @@
+{
+  "exportedAt": "2026-06-10T00:00:00.000Z",
+  "project": "Genesis Landing V2",
+  "module": "Trust Shield",
+  "workspacePath": "landing-v2/",
+  "defaultConfig": {
+    "global": {
+      "enabled": true,
+      "paused": false,
+      "speed": 1,
+      "intensity": 1,
+      "brightness": 1,
+      "pointSize": 1,
+      "opacity": 1
+    },
+    "transform": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "scale": 1,
+      "rotX": 0,
+      "rotY": 0,
+      "rotZ": 0
+    },
+    "layers": {
+      "logoGenesis": {
+        "visible": true,
+        "intensity": 1,
+        "brightness": 1,
+        "saturation": 1,
+        "particleSize": 1,
+        "speed": 1,
+        "opacity": 1,
+        "primaryColor": "#e91e8b",
+        "secondaryColor": "#22d3ee",
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetZ": 0,
+        "scale": 1
+      },
+      "nucleusGenesis": {
+        "visible": true,
+        "intensity": 1,
+        "brightness": 1,
+        "saturation": 1,
+        "particleSize": 1,
+        "speed": 1,
+        "opacity": 1,
+        "primaryColor": "#e91e8b",
+        "secondaryColor": "#fff5f0",
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetZ": 0,
+        "scale": 1
+      },
+      "shieldInner": {
+        "visible": true,
+        "intensity": 1,
+        "brightness": 1,
+        "saturation": 1,
+        "particleSize": 1,
+        "speed": 1,
+        "opacity": 1,
+        "primaryColor": "#3b82f6",
+        "secondaryColor": "#22d3ee",
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetZ": 0,
+        "scale": 1
+      },
+      "shieldMid": {
+        "visible": true,
+        "intensity": 1,
+        "brightness": 1,
+        "saturation": 1,
+        "particleSize": 1,
+        "speed": 1,
+        "opacity": 1,
+        "primaryColor": "#3b82f6",
+        "secondaryColor": "#22d3ee",
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetZ": 0,
+        "scale": 1
+      },
+      "shieldOuter": {
+        "visible": true,
+        "intensity": 1,
+        "brightness": 1,
+        "saturation": 1,
+        "particleSize": 1,
+        "speed": 1,
+        "opacity": 1,
+        "primaryColor": "#2d70e0",
+        "secondaryColor": "#22d3ee",
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetZ": 0,
+        "scale": 1
+      },
+      "logoBridges": {
+        "visible": true,
+        "intensity": 1,
+        "brightness": 1,
+        "saturation": 1,
+        "particleSize": 1,
+        "speed": 1,
+        "opacity": 1,
+        "primaryColor": "#22d3ee",
+        "secondaryColor": "#22d3ee",
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetZ": 0,
+        "scale": 1
+      },
+      "neural": {
+        "visible": true,
+        "intensity": 1,
+        "brightness": 1,
+        "saturation": 1,
+        "particleSize": 1,
+        "speed": 1,
+        "opacity": 1,
+        "primaryColor": "#22d3ee",
+        "secondaryColor": "#22d3ee",
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetZ": 0,
+        "scale": 1
+      },
+      "validation": {
+        "visible": true,
+        "intensity": 1,
+        "brightness": 1,
+        "saturation": 1,
+        "particleSize": 1,
+        "speed": 1,
+        "opacity": 1,
+        "primaryColor": "#f8fbff",
+        "secondaryColor": "#a5f3fc",
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetZ": 0,
+        "scale": 1
+      },
+      "flow": {
+        "visible": true,
+        "intensity": 1,
+        "brightness": 1,
+        "saturation": 1,
+        "particleSize": 1,
+        "speed": 1,
+        "opacity": 1,
+        "primaryColor": "#3b82f6",
+        "secondaryColor": "#22d3ee",
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetZ": 0,
+        "scale": 1
+      },
+      "aura": {
+        "visible": true,
+        "intensity": 1,
+        "brightness": 1,
+        "saturation": 1,
+        "particleSize": 1,
+        "speed": 1,
+        "opacity": 1,
+        "primaryColor": "#1e4a8a",
+        "secondaryColor": "#22d3ee",
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetZ": 0,
+        "scale": 1
+      },
+      "background": {
+        "visible": true,
+        "intensity": 1,
+        "brightness": 1,
+        "saturation": 1,
+        "particleSize": 1,
+        "speed": 1,
+        "opacity": 1,
+        "primaryColor": "#0f172a",
+        "secondaryColor": "#22d3ee",
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetZ": 0,
+        "scale": 1
+      }
+    },
+    "logo": {
+      "density": 1,
+      "brightness": 1,
+      "tornasolSaturation": 1,
+      "magentaIntensity": 1,
+      "cyanIntensity": 1,
+      "blueIntensity": 1,
+      "purpleIntensity": 1,
+      "nucleusEnabled": true,
+      "nucleusSize": 1,
+      "nucleusBrightness": 1,
+      "nucleusPulse": 1
+    },
+    "shield": {
+      "hexThickness": 1,
+      "intensity": 1,
+      "nodeBrightness": 1,
+      "nodeSize": 1,
+      "bridgeStrength": 1,
+      "edgeIntensity": 1,
+      "depthZ": 1,
+      "scale": 1
+    },
+    "neural": {
+      "intensity": 1,
+      "connectionDensity": 1,
+      "connectionBrightness": 1,
+      "pulseSpeed": 1,
+      "hotspotSize": 1,
+      "hotspotIntensity": 1
+    },
+    "validation": {
+      "enabled": true,
+      "color": "#f8fbff",
+      "brightness": 1,
+      "speed": 1,
+      "pulseLength": 1,
+      "pulseFrequency": 1
+    },
+    "flow": {
+      "enabled": true,
+      "color": "#3b82f6",
+      "brightness": 1,
+      "speed": 1,
+      "trailLength": 1,
+      "trailIntensity": 1
+    }
+  },
+  "presets": {
+    "premium": {
+      "global": { "brightness": 1.12, "intensity": 1.08, "pointSize": 1.05 },
+      "logo": { "brightness": 1.15, "tornasolSaturation": 1.2, "nucleusBrightness": 1.2 },
+      "shield": { "intensity": 1.1, "nodeBrightness": 1.15 }
+    },
+    "intense": {
+      "global": { "brightness": 1.28, "intensity": 1.22, "pointSize": 1.12, "opacity": 0.92 },
+      "logo": { "brightness": 1.35, "tornasolSaturation": 1.45, "magentaIntensity": 1.2 },
+      "shield": { "intensity": 1.25, "edgeIntensity": 1.3, "bridgeStrength": 1.2 },
+      "neural": { "intensity": 1.3, "hotspotIntensity": 1.25 },
+      "validation": { "brightness": 1.2 },
+      "flow": { "brightness": 1.25, "trailIntensity": 1.3 }
+    },
+    "soft": {
+      "global": { "brightness": 0.82, "intensity": 0.78, "pointSize": 0.92, "opacity": 0.65 },
+      "logo": { "brightness": 0.88, "tornasolSaturation": 0.85 },
+      "shield": { "intensity": 0.8 },
+      "layers": { "aura": { "opacity": 0.55, "intensity": 0.7 } }
+    },
+    "performance": {
+      "global": { "pointSize": 0.88, "opacity": 0.72 },
+      "neural": { "connectionDensity": 0.75, "hotspotIntensity": 0.8 },
+      "flow": { "trailLength": 0.7, "trailIntensity": 0.75 },
+      "layers": { "aura": { "visible": false }, "background": { "opacity": 0.5 } }
+    },
+    "mobileSafe": {
+      "global": { "brightness": 0.95, "pointSize": 0.9, "opacity": 0.7 },
+      "logo": { "brightness": 1.05 },
+      "shield": { "intensity": 0.9 },
+      "layers": { "background": { "intensity": 0.6 } }
+    },
+    "cinematic": {
+      "global": { "speed": 0.72, "brightness": 1.05, "opacity": 0.85 },
+      "logo": { "nucleusPulse": 0.75, "tornasolSaturation": 1.15 },
+      "neural": { "pulseSpeed": 0.65 },
+      "flow": { "speed": 0.7, "trailLength": 1.35 },
+      "validation": { "pulseFrequency": 0.8 }
+    }
+  },
+  "constants": {
+    "TRUST_SECTION_INDEX": 1,
+    "TRUST_SHIELD_VISUAL_SCALE": 2.2,
+    "TRUST_CORE_RADIUS_MULT": 2.5,
+    "TRUST_DEPTH_Z_SCALE": 1.92,
+    "TRUST_OUTER_RING_MULT": 1.12,
+    "TRUST_META_STRIDE": 6,
+    "TRUST_FORM_DURATION": 0.9,
+    "TRUST_CORE_PULSE_CYCLE": 3.5,
+    "TRUST_VALIDATION_LOOP": 2.4,
+    "TRUST_FLOW_LOOP": 3.6,
+    "TRUST_AURA_BREATH_CYCLE": 4.8,
+    "TRUST_NEURAL_PULSE_CYCLE": 2.2,
+    "STARDUST_DENSITY_RATIO": {
+      "LOGO_BODY": 3,
+      "SHIELD": 1,
+      "BACKGROUND": 0.3
+    },
+    "STARDUST_LOGO_SLICE": {
+      "MASK": 0.88,
+      "HALO": 0.06,
+      "FOG": 0.04,
+      "NUCLEUS_SHARE": 0.022
+    },
+    "STARDUST_ORBIT_CYCLE": 4.8,
+    "STARDUST_SPECTRAL_CYCLE": 6.2,
+    "STARDUST_NUCLEUS_CYCLE": 3.2,
+    "NUCLEUS_NX": -0.17,
+    "NUCLEUS_NY": -0.03,
+    "TRUST_BUDGET_RATIOS": {
+      "LOGO_MAX": 0.65,
+      "NEURAL_MIN": 0.08,
+      "VALIDATION_MIN": 0.05,
+      "FLOW_MIN": 0.06,
+      "BRIDGES_MIN": 0.08,
+      "AURA_MIN": 0.03
+    },
+    "TRUST_LAYER_CONTRAST": {
+      "LOGO": 1.0,
+      "NUCLEUS": 1.2,
+      "SHIELD": 0.8,
+      "NEURAL": 0.75,
+      "VALIDATION": 0.9,
+      "FLOW": 0.85,
+      "AURA": 0.35
+    },
+    "COLOR_AMPLIFICATION": {
+      "LOGO_SATURATION_BOOST": 1.35,
+      "LOGO_LUMINANCE_BOOST": 1.25,
+      "SHIELD_BRIGHTNESS_BOOST": 1.4,
+      "SHIELD_SATURATION_BOOST": 1.2,
+      "NEURAL_INTENSITY_BOOST": 1.45,
+      "AURA_BRIGHTNESS_REDUCE": 0.8
+    },
+    "RGB_NORM": {
+      "GENESIS_PINK_PURE": [0.914, 0.118, 0.545],
+      "NUCLEUS_WARM_WHITE": [1, 0.96, 0.93],
+      "ELECTRIC_BLUE_INTENSE": [0.231, 0.51, 0.965],
+      "GENESIS_CYAN_INTENSE": [0.133, 0.827, 0.933],
+      "QUANTUM_WHITE": [0.98, 0.99, 1]
+    },
+    "GENESIS_LOGO_WORLD_RADIUS": 1.15,
+    "GENESIS_LOGO_MASK_Z": 0.135168,
+    "DEFAULT_POINT_SIZE": 0.028,
+    "TRUST_POINT_SIZE": 0.039,
+    "MORPH_MAX_PARTICLE_COUNT": 1800,
+    "PARTICLE_COUNT_GLOBAL": 600,
+    "HEX_RINGS": {
+      "CORE": { "radius": 0.13, "zBias": 0.042 },
+      "HEX_INNER": { "radius": 0.36, "zBias": 0.032 },
+      "HEX_MID": { "radius": 0.68, "phase": 0.524, "zBias": 0.022 },
+      "HEX_OUTER": { "radius": 1.1872, "zBias": 0.016 }
+    },
+    "PNG_SAMPLER": {
+      "source": "public/brand/logo-genesis-mark.png",
+      "imageSize": { "width": 466, "height": 460 },
+      "poolCount": 60828,
+      "visiblePixels": 60828,
+      "alphaThreshold": 32,
+      "contentWidthPx": 454,
+      "contentHeightPx": 454,
+      "aspectRatio": 1.013043
+    }
+  },
+  "performanceTiers": {
+    "high": {
+      "minWidth": 1024,
+      "particleCount": 1800,
+      "budget": {
+        "logoMask": 791,
+        "logoHalo": 68,
+        "logoFog": 286,
+        "logoNucleus": 25,
+        "coreVolume": 0,
+        "coreRing": 4,
+        "secondary": 6,
+        "volumetric": 38,
+        "hexInner": 27,
+        "hexMid": 26,
+        "hexOuter": 27,
+        "radial": 144,
+        "neural": 144,
+        "validation": 90,
+        "flow": 108,
+        "outerAura": 16,
+        "total": 1800
+      }
+    },
+    "medium": {
+      "minWidth": 768,
+      "particleCount": 1200,
+      "budget": {
+        "logoMask": 518,
+        "logoHalo": 45,
+        "logoFog": 200,
+        "logoNucleus": 17,
+        "coreVolume": 0,
+        "coreRing": 3,
+        "secondary": 4,
+        "volumetric": 25,
+        "hexInner": 18,
+        "hexMid": 17,
+        "hexOuter": 18,
+        "radial": 96,
+        "neural": 96,
+        "validation": 60,
+        "flow": 72,
+        "outerAura": 11,
+        "total": 1200
+      }
+    },
+    "low": {
+      "minWidth": 0,
+      "prefersReducedMotion": true,
+      "particleCount": 600,
+      "budget": {
+        "logoMask": 233,
+        "logoHalo": 22,
+        "logoFog": 127,
+        "logoNucleus": 8,
+        "coreVolume": 0,
+        "coreRing": 1,
+        "secondary": 2,
+        "volumetric": 12,
+        "hexInner": 9,
+        "hexMid": 8,
+        "hexOuter": 10,
+        "radial": 48,
+        "neural": 48,
+        "validation": 30,
+        "flow": 36,
+        "outerAura": 6,
+        "total": 600
+      }
+    }
+  },
+  "sectionParticleConfig": {
+    "trust": {
+      "scale": 1.04,
+      "density": 0.94,
+      "motionIntensity": 0.26,
+      "morphLerp": 0.088,
+      "groupLerp": 0.15,
+      "fadeInLerp": 0.14,
+      "desktopBias": { "x": 0.78, "y": 0.02, "z": -0.12 },
+      "mobileBias": { "x": 0.22, "y": 0.02, "z": -0.08 }
+    }
+  },
+  "storageKeys": {
+    "config": "genesis-particle-control-config",
+    "customPresets": "genesis-particle-control-custom-presets"
+  },
+  "devPanel": {
+    "shortcut": "Ctrl+Shift+G",
+    "productionDisabled": true,
+    "diagnosticGlobal": "window.__GENESIS_PARTICLE_DIAG__()",
+    "knownLimitations": [
+      "particleSize per layer simulates via color boost, not gl_PointSize per-vertex",
+      "transform position uses 0.02 multiplier (subtle effect)"
+    ]
+  },
+  "sourceFiles": {
+    "defaults": "lib/trust/GenesisParticleControlDefaults.ts",
+    "constants": "lib/trust/trustShieldConstants.ts",
+    "colorAmplification": "lib/trust/trustShieldColorAmplification.ts",
+    "budget": "lib/trust/TrustShieldBudgetRecovery.ts",
+    "performance": "lib/trust/trust-performance.ts"
+  }
+}

@@ -1,10 +1,9 @@
 'use client'
 
 import { useRef, useMemo } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
-// ─── Vertex shader ────────────────────────────────────────────────────────────
 const vertexShader = /* glsl */ `
   uniform float uTime;
   varying vec3 vNormal;
@@ -38,7 +37,6 @@ const vertexShader = /* glsl */ `
 
     vPosition = pos;
 
-    // Precalcular fresnel en vertex para pasar al fragment
     vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
     vec3 viewDir = normalize(-mvPos.xyz);
     vFresnel = pow(1.0 - max(dot(n, viewDir), 0.0), 3.0);
@@ -47,11 +45,10 @@ const vertexShader = /* glsl */ `
   }
 `
 
-// ─── Fragment shader ──────────────────────────────────────────────────────────
-// REGLA: R < G cuando B > 0.5. Violeta siempre tiene B dominante.
 const fragmentShader = /* glsl */ `
   uniform float uTime;
   uniform float uOpacity;
+  uniform float uFuchsiaMix;
   varying vec3 vNormal;
   varying vec3 vPosition;
   varying float vFresnel;
@@ -74,27 +71,28 @@ const fragmentShader = /* glsl */ `
   void main() {
     float n = noise(vPosition * 2.2 + uTime * 0.08);
 
-    // ── Violeta profundo: B SIEMPRE el componente más alto ──
-    // #4C1D95 en linear: R=0.055, G=0.012, B=0.310
-    vec3 deep    = vec3(0.055, 0.012, 0.310);
+    // Tokens: ion #3D8BFF, core #6E56CF, fuchsia #E91E8B (linear aprox)
+    vec3 ionDeep  = vec3(0.04, 0.12, 0.38);
+    vec3 ionMid   = vec3(0.12, 0.35, 0.92);
+    vec3 coreMid  = vec3(0.22, 0.14, 0.68);
+    vec3 fuchsia  = vec3(0.78, 0.10, 0.42);
 
-    // #8B5CF6 en linear: R=0.264, G=0.098, B=0.902
-    vec3 mid     = vec3(0.264, 0.098, 0.902);
+    vec3 bodyBase = mix(ionDeep, mix(ionMid, coreMid, 0.45), clamp(n * 0.55 + 0.35, 0.0, 1.0));
+    vec3 body     = mix(bodyBase, fuchsia, uFuchsiaMix * (0.35 + n * 0.25));
 
-    // Mezcla violeta pura — noise solo entre deep y mid, NUNCA hacia rojo
-    vec3 body = mix(deep, mid, clamp(n * 0.6 + 0.4, 0.0, 1.0));
+    vec3 rimIon     = vec3(0.15, 0.45, 1.0) * vFresnel * 0.85;
+    vec3 rimFuchsia = fuchsia * vFresnel * uFuchsiaMix * 0.65;
+    vec3 color      = body + rimIon + rimFuchsia;
 
-    // Rim cyan: #00E5FF — solo en el borde (fresnel alto)
-    vec3 cyan = vec3(0.0, 0.800, 1.0);
-    vec3 rim  = cyan * vFresnel * 1.2;
-
-    // Final: cuerpo violeta + borde cyan
-    vec3 color = body + rim;
-    float alpha = (0.45 + vFresnel * 0.50) * uOpacity;
-
+    float alpha = (0.42 + vFresnel * 0.48) * uOpacity;
     gl_FragColor = vec4(color, alpha);
   }
 `
+
+/** Esfera final CTA — ligeramente más contenida que 1.2 legacy */
+/** CTA orb — ~17% más compacto para fit desktop 100% zoom */
+const ORB_RADIUS = 0.86
+const ORB_GLOW_SCALE = 1.06
 
 interface GenesisOrbProps {
   sectionIndexRef?: React.MutableRefObject<number>
@@ -102,48 +100,57 @@ interface GenesisOrbProps {
 
 export default function GenesisOrb({ sectionIndexRef }: GenesisOrbProps) {
   const meshRef = useRef<THREE.Mesh>(null!)
-  const { pointer } = useThree()
+  const glowRef = useRef<THREE.Mesh>(null!)
 
   const uniforms = useMemo<{
-    uTime:    { value: number }
+    uTime: { value: number }
     uOpacity: { value: number }
+    uFuchsiaMix: { value: number }
   }>(() => ({
-    uTime:    { value: 0 },
-    uOpacity: { value: 1 },
+    uTime: { value: 0 },
+    uOpacity: { value: 0 },
+    uFuchsiaMix: { value: 0.22 },
   }), [])
 
-  useFrame(({ clock }) => {
+  const glowOpacity = useRef(0)
+
+  useFrame(() => {
     if (!meshRef.current) return
-    const t = clock.getElapsedTime()
-    uniforms.uTime.value = t
 
-    const section       = sectionIndexRef?.current ?? 0
-    // Visible en Hero (0) y CTA final (8)
-    const targetOpacity = (section === 0 || section === 8) ? 1 : 0
-    uniforms.uOpacity.value += (targetOpacity - uniforms.uOpacity.value) * 0.05
-    meshRef.current.visible = uniforms.uOpacity.value > 0.01
-
-    const targetY =  pointer.x * 0.26
-    const targetX = -pointer.y * 0.26
-    meshRef.current.rotation.y += (targetY - meshRef.current.rotation.y) * 0.04
-    meshRef.current.rotation.x += (targetX - meshRef.current.rotation.x) * 0.04
-    meshRef.current.rotation.z += 0.0012
-
-    const breathe = 1 + Math.sin(t * 0.4) * 0.03
-    meshRef.current.scale.setScalar(breathe)
+    // Phase 16 — esfera sólida reemplazada por Genesis Final Portal
+    uniforms.uOpacity.value = 0
+    glowOpacity.current = 0
+    meshRef.current.visible = false
+    if (glowRef.current) {
+      glowRef.current.visible = false
+      const mat = glowRef.current.material as THREE.MeshBasicMaterial
+      mat.opacity = 0
+    }
   })
 
   return (
-    <mesh ref={meshRef} position={[0, 0.5, 0]}>
-      <icosahedronGeometry args={[1.2, 6]} />
-      <shaderMaterial
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-        uniforms={uniforms}
-        transparent
-        side={THREE.FrontSide}
-        depthWrite={false}
-      />
-    </mesh>
+    <group position={[0, 0.5, 0]}>
+      <mesh ref={glowRef}>
+        <icosahedronGeometry args={[ORB_RADIUS, 3]} />
+        <meshBasicMaterial
+          color="#E91E8B"
+          transparent
+          opacity={0}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </mesh>
+      <mesh ref={meshRef}>
+        <icosahedronGeometry args={[ORB_RADIUS, 6]} />
+        <shaderMaterial
+          vertexShader={vertexShader}
+          fragmentShader={fragmentShader}
+          uniforms={uniforms}
+          transparent
+          side={THREE.FrontSide}
+          depthWrite={false}
+        />
+      </mesh>
+    </group>
   )
 }

@@ -3,7 +3,7 @@
  * Todas retornan exactamente COUNT * 3 floats (x,y,z por partícula).
  */
 
-export const PARTICLE_COUNT = 600
+export { PARTICLE_COUNT } from './particleConstants'
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -36,7 +36,39 @@ export function genSphere(count: number, radius = 1.5): Float32Array {
   return out
 }
 
-// ─── Section 1 — Ecosistema: 3 anillos concéntricos (átomo) ─────────────────
+// ─── Section 1 — Trust: escudo hexagonal ────────────────────────────────────
+export function genShield(count: number): Float32Array {
+  const out = new Float32Array(count * 3)
+  const r = 1.4
+  const sides = 6
+  const perSide = Math.floor(count * 0.45 / sides)
+  let idx = 0
+
+  for (let s = 0; s < sides && idx < count; s++) {
+    const a0 = (s / sides) * Math.PI * 2 - Math.PI / 2
+    const a1 = ((s + 1) / sides) * Math.PI * 2 - Math.PI / 2
+    for (let p = 0; p < perSide && idx < count; p++) {
+      const t = p / perSide
+      const angle = a0 + (a1 - a0) * t
+      const jitter = (Math.random() - 0.5) * 0.06
+      out[idx * 3] = Math.cos(angle) * (r + jitter)
+      out[idx * 3 + 1] = Math.sin(angle) * (r + jitter)
+      out[idx * 3 + 2] = (Math.random() - 0.5) * 0.12
+      idx++
+    }
+  }
+
+  while (idx < count) {
+    const [x, y, z] = randomInSphere(r * 0.55)
+    out[idx * 3] = x
+    out[idx * 3 + 1] = y
+    out[idx * 3 + 2] = z
+    idx++
+  }
+  return out
+}
+
+// ─── Section 2 — Ecosistema: 3 anillos concéntricos (átomo) ─────────────────
 export function genAtom(count: number): Float32Array {
   const out    = new Float32Array(count * 3)
   const radii  = [0.6, 1.1, 1.7]
@@ -280,7 +312,112 @@ export function genHoneycomb(count: number): Float32Array {
   return out
 }
 
-// ─── Section 7 — Roadmap: línea vertical + clusters en nodos ─────────────────
+// ─── Mining: estratos horizontales (emisión / capas) ─────────────────────────
+export function genMiningStrata(count: number): Float32Array {
+  const out = new Float32Array(count * 3)
+  const layers = 6
+  const perLayer = Math.floor(count / layers)
+  const width = 2.8
+
+  for (let layer = 0; layer < layers; layer++) {
+    const y = (layer / (layers - 1)) * 2.4 - 1.2
+    const base = layer * perLayer
+    const n = layer < layers - 1 ? perLayer : count - base
+    for (let i = 0; i < n; i++) {
+      const t = i / n
+      out[(base + i) * 3] = (t - 0.5) * width + (Math.random() - 0.5) * 0.08
+      out[(base + i) * 3 + 1] = y + (Math.random() - 0.5) * 0.06
+      out[(base + i) * 3 + 2] = (Math.random() - 0.5) * 0.35
+    }
+  }
+  return out
+}
+
+// ─── Booster: bloques ascendentes (progresión / multiplicadores) ─────────────
+export function genBoosterStack(count: number): Float32Array {
+  const out = new Float32Array(count * 3)
+  const tiers = 5
+  const perTier = Math.floor(count / tiers)
+  let idx = 0
+
+  for (let tier = 0; tier < tiers && idx < count; tier++) {
+    const size = 0.5 + tier * 0.35
+    const y = tier * 0.55 - 1.1
+    const n = tier < tiers - 1 ? perTier : count - idx
+    for (let i = 0; i < n && idx < count; i++) {
+      const angle = (i / n) * Math.PI * 2
+      const r = size * (0.85 + Math.random() * 0.15)
+      out[idx * 3] = Math.cos(angle) * r
+      out[idx * 3 + 1] = y + (Math.random() - 0.5) * 0.05
+      out[idx * 3 + 2] = Math.sin(angle) * r
+      idx++
+    }
+  }
+  return out
+}
+
+// ─── Staking: anillos concéntricos estables ──────────────────────────────────
+export function genStakingRings(count: number): Float32Array {
+  const out = new Float32Array(count * 3)
+  const rings = 5
+  const perRing = Math.floor(count / rings)
+
+  for (let ring = 0; ring < rings; ring++) {
+    const radius = 0.5 + ring * 0.28
+    const base = ring * perRing
+    const n = ring < rings - 1 ? perRing : count - base
+    for (let i = 0; i < n; i++) {
+      const angle = (i / n) * Math.PI * 2 + ring * 0.15
+      out[(base + i) * 3] = Math.cos(angle) * radius
+      out[(base + i) * 3 + 1] = (Math.random() - 0.5) * 0.12
+      out[(base + i) * 3 + 2] = Math.sin(angle) * radius
+    }
+  }
+  return out
+}
+
+// ─── G-Oracle: núcleo denso + radios neurales ────────────────────────────────
+export function genOracleCore(count: number): Float32Array {
+  const out = new Float32Array(count * 3)
+  const coreN = Math.floor(count * 0.35)
+  const spokeN = Math.floor(count * 0.45)
+  const haloN = count - coreN - spokeN
+  let idx = 0
+
+  for (let i = 0; i < coreN && idx < count; i++) {
+    const [x, y, z] = randomInSphere(0.55)
+    out[idx * 3] = x
+    out[idx * 3 + 1] = y
+    out[idx * 3 + 2] = z
+    idx++
+  }
+
+  const spokes = 12
+  const perSpoke = Math.floor(spokeN / spokes)
+  for (let s = 0; s < spokes && idx < count; s++) {
+    const angle = (s / spokes) * Math.PI * 2
+    const dx = Math.cos(angle)
+    const dz = Math.sin(angle)
+    for (let p = 0; p < perSpoke && idx < count; p++) {
+      const t = 0.6 + (p / perSpoke) * 1.4
+      out[idx * 3] = dx * t + (Math.random() - 0.5) * 0.04
+      out[idx * 3 + 1] = (Math.random() - 0.5) * 0.08
+      out[idx * 3 + 2] = dz * t + (Math.random() - 0.5) * 0.04
+      idx++
+    }
+  }
+
+  while (idx < count) {
+    const [x, y, z] = randomOnSphere(1.9)
+    out[idx * 3] = x
+    out[idx * 3 + 1] = y
+    out[idx * 3 + 2] = z
+    idx++
+  }
+  return out
+}
+
+// ─── Roadmap: línea vertical + clusters en nodos ──────────────────────────────
 export function genRoadmapLine(count: number): Float32Array {
   const out        = new Float32Array(count * 3)
   const nodes      = 7
@@ -310,18 +447,3 @@ export function genRoadmapLine(count: number): Float32Array {
   return out
 }
 
-// ─── Tabla completa — 9 escenas (0-8) ───────────────────────────────────────
-export function buildAllTargets(): Float32Array[] {
-  const C = PARTICLE_COUNT
-  return [
-    genSphere(C),       // 0 — Hero
-    genAtom(C),         // 1 — Ecosistema
-    genCoin(C),         // 2 — AIG Token
-    genPulseWave(C),    // 3 — GPulse
-    genCube(C),         // 4 — Gevy Shop
-    genNetwork(C),      // 5 — Comunidad
-    genHoneycomb(C),    // 6 — Tech
-    genRoadmapLine(C),  // 7 — Roadmap
-    genSphere(C),       // 8 — CTA final (regresa a esfera)
-  ]
-}

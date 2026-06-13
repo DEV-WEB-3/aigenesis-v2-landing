@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+.next-dev.lock
+out/
+
+# Environment (never commit secrets)
+.env
+.env.*
+!.env.example
+.env.local
+.env.*.local
+
+# Vercel
+.vercel/
+
+# Cursor MCP local secrets (if copied into project)
+.cursor/mcp.env
+.cursor/mcp.local.json
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*

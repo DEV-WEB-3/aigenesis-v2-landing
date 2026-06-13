@@ -2,10 +2,15 @@
 
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
+import OfficialDownloadButton from '@/components/cta/OfficialDownloadButton'
+import RoadmapSectionBackdrop from '@/components/roadmap/RoadmapSectionBackdrop'
+import RoadmapEvolutionPath from '@/components/roadmap/RoadmapEvolutionPath'
+import { SectionHeader } from '@/components/ui/genesis'
 import {
-  SceneWrapper, SectionLabel, GradientText,
-  containerV, slideLeft, wordV,
+  SceneWrapper,
+  slideLeft,
 } from '@/components/ui/SceneShared'
+import { EXTERNAL_LINKS } from '@/lib/routes'
 
 type Status = 'completed' | 'active' | 'upcoming'
 
@@ -16,35 +21,26 @@ interface TimelineItemProps {
 }
 
 function TimelineItem({ year, title, status }: TimelineItemProps) {
-  const dotStyle: React.CSSProperties =
+  const dotClass =
     status === 'completed'
-      ? { width: 12, height: 12, borderRadius: '50%', background: '#8B5CF6', flexShrink: 0 }
+      ? 'bg-genesis-core'
       : status === 'active'
-      ? {
-          width: 12, height: 12, borderRadius: '50%', background: '#E91E8B', flexShrink: 0,
-          boxShadow: '0 0 0 4px rgba(233,30,139,0.2)',
-        }
-      : { width: 12, height: 12, borderRadius: '50%', border: '2px solid #4B5563', flexShrink: 0 }
+      ? 'bg-genesis-fuchsia shadow-[0_0_0_4px_rgba(233,30,139,0.22)] animate-pulse'
+      : 'border-2 border-genesis-ghost bg-transparent'
 
   return (
     <div className="flex items-start gap-4 relative">
-      {/* Dot posicionado sobre la línea */}
       <div
-        style={{
-          ...dotStyle,
-          position: 'absolute',
-          left: -22,
-          top: 4,
-        }}
-        className={status === 'active' ? 'animate-pulse' : ''}
+        className={`absolute left-[-22px] top-1 h-3 w-3 shrink-0 rounded-full ${dotClass}`}
       />
       <div className="flex flex-col gap-0.5">
-        <span className="text-xs uppercase tracking-widest" style={{ color: '#6B7280' }}>
+        <span className="text-xs uppercase tracking-widest text-genesis-ghost">
           {year}
         </span>
         <span
-          className="text-sm font-medium"
-          style={{ color: status === 'upcoming' ? '#4B5563' : '#fff' }}
+          className={`text-sm font-medium ${
+            status === 'upcoming' ? 'text-genesis-ghost' : 'text-genesis-text'
+          }`}
         >
           {title}
         </span>
@@ -58,31 +54,26 @@ interface Props { isActive?: boolean }
 const Scene07_Roadmap = forwardRef<HTMLElement, Props>(
   function Scene07_Roadmap({ isActive = false }, ref) {
     return (
-      <SceneWrapper ref={ref} isActive={isActive} motionKey="scene07">
+      <SceneWrapper
+        ref={ref}
+        isActive={isActive}
+        motionKey="scene07"
+        sectionId="roadmap"
+        particleColumn
+        className="roadmap-section-layout"
+        sectionOverlay={<RoadmapSectionBackdrop visible={isActive} />}
+        particleSlot={<RoadmapEvolutionPath isActive={isActive} />}
+      >
 
-        <SectionLabel>Sección 07</SectionLabel>
+        <SectionHeader
+          label="Sección 07"
+          title="Nuestro"
+          highlight="horizonte."
+        />
 
-        <motion.h2
-          className="text-5xl font-bold leading-tight"
-          style={{ fontFamily: 'var(--font-space-grotesk)', textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}
-        >
-          <motion.span variants={wordV} style={{ display: 'block', color: '#fff' }}>
-            Nuestro
-          </motion.span>
-          <GradientText>horizonte.</GradientText>
-        </motion.h2>
-
-        {/* Timeline */}
         <motion.div
           variants={slideLeft}
-          className="mt-4"
-          style={{
-            borderLeft: '2px solid rgba(139,92,246,0.3)',
-            paddingLeft: 28,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 28,
-          }}
+          className="scene-roadmap-timeline mt-4 border-l-2 border-genesis-core/30 pl-7 flex flex-col gap-7"
         >
           <TimelineItem year="2019"    title="Lanzamiento AiGenesis"       status="completed" />
           <TimelineItem year="2023"    title="G11 Community + NFT"         status="completed" />
@@ -91,6 +82,12 @@ const Scene07_Roadmap = forwardRef<HTMLElement, Props>(
           <TimelineItem year="2026 Q2" title="Gevy Shop Marketplace"       status="active"    />
           <TimelineItem year="2026 Q3" title="AiCard + Exchange"           status="upcoming"  />
           <TimelineItem year="2027"    title="Genesis Metaverse"            status="upcoming"  />
+        </motion.div>
+
+        <motion.div variants={slideLeft} className="mt-4">
+          <OfficialDownloadButton href={EXTERNAL_LINKS.MARKETING_PLAN_ES}>
+            Descargar plan de marketing
+          </OfficialDownloadButton>
         </motion.div>
 
       </SceneWrapper>

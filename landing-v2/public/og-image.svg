@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="42%" r="48%">
+      <stop offset="0%" stop-color="#E91E8B" stop-opacity="0.14"/>
+      <stop offset="55%" stop-color="#6E56CF" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#050510" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#050510"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <image href="/brand/logo-genesis-clean.png" x="310" y="90" width="580" height="383" preserveAspectRatio="xMidYMid meet"/>
+  <text x="600" y="530" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="500" letter-spacing="0.22em" fill="#8B9BB4">INTELLIGENT INFRASTRUCTURE IN MOTION</text>
+</svg>

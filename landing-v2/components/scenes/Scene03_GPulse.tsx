@@ -2,53 +2,59 @@
 
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
+import { SectionHeader } from '@/components/ui/genesis'
 import {
-  SceneWrapper, SectionLabel, GradientText, GradientButton,
-  StatBlock, FeatureItem, containerV, slideLeft, wordV,
+  SceneWrapper, GradientButton,
+  StatBlock, FeatureItem, containerV, slideLeft,
 } from '@/components/ui/SceneShared'
+import { EXTERNAL_LINKS } from '@/lib/routes'
+import GpulseSectionBackdrop from '@/components/gpulse/GpulseSectionBackdrop'
+import GpulseSignalNetwork from '@/components/gpulse/GpulseSignalNetwork'
 
 interface Props { isActive?: boolean }
 
 const Scene03_GPulse = forwardRef<HTMLElement, Props>(
   function Scene03_GPulse({ isActive = false }, ref) {
     return (
-      <SceneWrapper ref={ref} isActive={isActive} motionKey="scene03">
+      <SceneWrapper
+        ref={ref}
+        isActive={isActive}
+        motionKey="scene03-gpulse"
+        sectionId="gpulse"
+        particleColumn
+        className="gpulse-section-layout"
+        sectionOverlay={<GpulseSectionBackdrop visible={isActive} />}
+        particleSlot={<GpulseSignalNetwork isActive={isActive} />}
+      >
 
-        <SectionLabel>Sección 03</SectionLabel>
+        <SectionHeader
+          label="G-Pulse"
+          labelClassName="text-genesis-fuchsia"
+          title="Señales en"
+          highlight="tiempo real."
+        />
 
-        <motion.h2
-          className="text-5xl font-bold leading-tight"
-          style={{ fontFamily: 'var(--font-space-grotesk)', textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}
-        >
-          <motion.span variants={wordV} style={{ display: 'block', color: '#fff' }}>
-            El oráculo
-          </motion.span>
-          <motion.span variants={wordV} style={{ display: 'block', color: '#6B7280' }}>
-            que observa el futuro.
-          </motion.span>
-        </motion.h2>
-
-        <motion.p variants={slideLeft} className="text-lg leading-relaxed max-w-lg" style={{ color: '#94A3B8' }}>
-          GPulse Oracle analiza patrones en tiempo real usando el motor G-BRIDGE. Inteligencia artificial
-          predictiva con señales automatizadas para mercados globales.
+        <motion.p variants={slideLeft} className="text-lg leading-relaxed max-w-lg text-genesis-mist">
+          GPulse entrega análisis operativo y señales automatizadas para mercados globales.
+          Capa de ejecución táctica — complementaria al núcleo de inteligencia G-Oracle.
         </motion.p>
 
-        {/* Features grid 2×2 */}
         <motion.div variants={containerV} className="grid grid-cols-2 gap-4 mt-2">
           <FeatureItem num="/01" text="Análisis Real-Time" />
-          <FeatureItem num="/02" text="Martingala MG6" />
-          <FeatureItem num="/03" text="Señales Automatizadas" />
-          <FeatureItem num="/04" text="Motor G-BRIDGE" />
+          <FeatureItem num="/02" text="Señales Automatizadas" />
+          <FeatureItem num="/03" text="Alertas de Mercado" />
+          <FeatureItem num="/04" text="Integración G-BRIDGE" />
         </motion.div>
 
-        {/* Stats row */}
         <motion.div variants={slideLeft} className="flex gap-10 mt-2">
-          <StatBlock to={847}  suffix=" /día" label="SEÑALES DIARIAS" isActive={isActive} />
-          <StatBlock to={3}    suffix=" activas" label="MESAS"        isActive={isActive} />
-          <StatBlock to={94}   suffix="%"        label="UPTIME"       isActive={isActive} />
+          <StatBlock to={847} suffix=" /día" label="SEÑALES DIARIAS" isActive={isActive} />
+          <StatBlock to={3}   suffix=" activas" label="MESAS" isActive={isActive} />
+          <StatBlock to={94}  suffix="%" label="UPTIME" isActive={isActive} />
         </motion.div>
 
-        <GradientButton className="mt-2">Acceder a GPulse →</GradientButton>
+        <GradientButton className="mt-2" href={EXTERNAL_LINKS.GPULSE_APP}>
+          Acceder a G-Pulse →
+        </GradientButton>
 
       </SceneWrapper>
     )
