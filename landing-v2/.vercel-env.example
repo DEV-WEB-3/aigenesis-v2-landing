@@ -7,6 +7,9 @@ NEXT_PUBLIC_SITE_URL=https://aigenesis.io
 # Staging (preview)
 # NEXT_PUBLIC_SITE_URL=https://landing-v2-rho-three.vercel.app
 
+# Analytics (opcional — GA4; Vercel Analytics no requiere env)
+# NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+
 # Notas:
 # - NEXT_PUBLIC_* se expone al cliente (metadata, sitemap, canonical).
 # - Tras el primer deploy, verificar OG preview y sitemap.xml en el dominio staging.

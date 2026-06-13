@@ -8,6 +8,7 @@ import {
   StatBlock, FeatureItem, containerV, slideLeft,
 } from '@/components/ui/SceneShared'
 import { ROUTES } from '@/lib/routes'
+import { COMMUNITY_STATS } from '@/lib/institutionalMetrics'
 import CommunitySectionBackdrop from '@/components/community/CommunitySectionBackdrop'
 import CommunityGenesisNetwork from '@/components/community/CommunityGenesisNetwork'
 
@@ -46,9 +47,9 @@ const Scene05_Community = forwardRef<HTMLElement, Props>(
         </motion.div>
 
         <motion.div variants={slideLeft} className="flex gap-10 mt-2">
-          <StatBlock to={5000} suffix="+"      label="MIEMBROS ACTIVOS" isActive={isActive} />
-          <StatBlock to={12}   suffix="M USDT" label="DISTRIBUIDOS"     isActive={isActive} />
-          <StatBlock to={12}   suffix="+"      label="PAÍSES"           isActive={isActive} />
+          {COMMUNITY_STATS.map((stat) => (
+            <StatBlock key={stat.label} {...stat} isActive={isActive} />
+          ))}
         </motion.div>
 
         <GradientButton className="mt-2" href={ROUTES.REGISTER}>Únete a la Comunidad →</GradientButton>

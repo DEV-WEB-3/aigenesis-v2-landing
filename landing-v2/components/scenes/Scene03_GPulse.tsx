@@ -8,6 +8,7 @@ import {
   StatBlock, FeatureItem, containerV, slideLeft,
 } from '@/components/ui/SceneShared'
 import { EXTERNAL_LINKS } from '@/lib/routes'
+import { GPULSE_STATS } from '@/lib/institutionalMetrics'
 import GpulseSectionBackdrop from '@/components/gpulse/GpulseSectionBackdrop'
 import GpulseSignalNetwork from '@/components/gpulse/GpulseSignalNetwork'
 
@@ -47,9 +48,9 @@ const Scene03_GPulse = forwardRef<HTMLElement, Props>(
         </motion.div>
 
         <motion.div variants={slideLeft} className="flex gap-10 mt-2">
-          <StatBlock to={847} suffix=" /día" label="SEÑALES DIARIAS" isActive={isActive} />
-          <StatBlock to={3}   suffix=" activas" label="MESAS" isActive={isActive} />
-          <StatBlock to={94}  suffix="%" label="UPTIME" isActive={isActive} />
+          {GPULSE_STATS.map((stat) => (
+            <StatBlock key={stat.label} {...stat} isActive={isActive} />
+          ))}
         </motion.div>
 
         <GradientButton className="mt-2" href={EXTERNAL_LINKS.GPULSE_APP}>

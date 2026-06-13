@@ -7,6 +7,7 @@ import {
   StatBlock, FeatureItem, containerV, slideLeft, wordV,
 } from '@/components/ui/SceneShared'
 import { EXTERNAL_LINKS } from '@/lib/routes'
+import { MARKETPLACE_STATS } from '@/lib/institutionalMetrics'
 import MarketplaceSectionBackdrop from '@/components/marketplace/MarketplaceSectionBackdrop'
 import MarketplaceGlobalCommerce from '@/components/marketplace/MarketplaceGlobalCommerce'
 
@@ -54,9 +55,9 @@ const Scene04_GevyShop = forwardRef<HTMLElement, Props>(
 
         {/* Stats */}
         <motion.div variants={slideLeft} className="flex gap-10 mt-2">
-          <StatBlock to={500} suffix="K+" label="PRODUCTOS"       isActive={isActive} />
-          <StatBlock to={190} suffix="+"  label="PAÍSES"          isActive={isActive} />
-          <StatBlock to={3}   suffix=""   label="MÉTODOS DE PAGO" isActive={isActive} />
+          {MARKETPLACE_STATS.map((stat) => (
+            <StatBlock key={stat.label} {...stat} isActive={isActive} />
+          ))}
         </motion.div>
 
         <GradientButton className="mt-2" href={EXTERNAL_LINKS.MARKETPLACE}>Explorar Marketplace →</GradientButton>

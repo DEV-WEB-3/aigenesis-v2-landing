@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import StaticPageShell from '@/components/layout/StaticPageShell'
-import { SITE_URL } from '@/lib/routes'
+import { PAGES, SITE_URL } from '@/lib/routes'
+import { OFFICIAL_SOCIAL } from '@/lib/official-links'
 
 export const metadata: Metadata = {
   title: 'Legal — AiGenesis',
@@ -20,8 +21,11 @@ export default function LegalPage() {
         <h2 className="font-display text-heading text-genesis-text">Privacidad</h2>
         <p>
           AiGenesis trata los datos personales conforme a las prácticas descritas en esta
-          documentación. Para consultas sobre privacidad, utilice los canales oficiales de
-          contacto. Política de privacidad completa pendiente de revisión legal.
+          documentación. Para consultas sobre privacidad, escríbenos a{' '}
+          <a href={OFFICIAL_SOCIAL.EMAIL} className="text-genesis-ion hover:underline">
+            tokenaig@aigenesis.io
+          </a>
+          . Política de privacidad completa pendiente de revisión legal.
         </p>
       </section>
       <section id="riesgos" className="flex flex-col gap-4">
@@ -39,15 +43,23 @@ export default function LegalPage() {
       <section className="flex flex-col gap-4">
         <h2 className="font-display text-heading text-genesis-text">Contacto</h2>
         <p>
-          Para consultas legales o de cumplimiento, utilice los canales oficiales publicados en{' '}
+          Consultas legales o de cumplimiento:{' '}
+          <a href={OFFICIAL_SOCIAL.EMAIL} className="text-genesis-ion hover:underline">
+            tokenaig@aigenesis.io
+          </a>
+          . Sitio institucional:{' '}
           <a href={SITE_URL} className="text-genesis-ion hover:underline">
             {SITE_URL}
           </a>
-          . URL de contacto dedicada pendiente de confirmación.
+          . Documentación adicional en{' '}
+          <a href={PAGES.WHITEPAPER} className="text-genesis-ion hover:underline">
+            whitepaper
+          </a>
+          .
         </p>
       </section>
       <p className="text-caption text-genesis-ghost uppercase tracking-wider pt-4">
-        Documento temporal — revisión legal pendiente antes de producción.
+        Borrador operativo — revisión legal pendiente antes de producción en dominio principal.
       </p>
     </StaticPageShell>
   )

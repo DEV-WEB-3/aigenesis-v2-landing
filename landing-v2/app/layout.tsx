@@ -3,6 +3,7 @@ import { Space_Grotesk, Inter, IBM_Plex_Mono } from 'next/font/google'
 import { SITE_URL } from '@/lib/routes'
 import SkipLink from '@/components/layout/SkipLink'
 import { WALLET_EXTENSION_GUARD_SCRIPT } from '@/components/layout/WalletExtensionGuard'
+import SiteAnalytics from '@/components/analytics/SiteAnalytics'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -125,6 +126,7 @@ export default function RootLayout({
       <body className="font-body bg-genesis-base text-genesis-text antialiased min-h-screen">
         <SkipLink />
         {children}
+        <SiteAnalytics />
       </body>
     </html>
   )

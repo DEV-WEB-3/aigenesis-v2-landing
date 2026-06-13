@@ -40,3 +40,7 @@ Thumbs.db
 *.log
 npm-debug.log*
 pnpm-debug.log*
+
+# ── Local backups / copies (no versionar) ─────────────────────────────────────
+landing-v2-copia-*/
+landing-v2/_revert/

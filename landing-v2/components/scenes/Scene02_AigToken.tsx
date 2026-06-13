@@ -8,6 +8,7 @@ import {
   StatBlock, containerV, slideLeft,
 } from '@/components/ui/SceneShared'
 import { ROUTES } from '@/lib/routes'
+import { TOKEN_DISPLAY_METRICS } from '@/lib/institutionalMetrics'
 import { useTokenOrbitEditorMode } from '@/lib/token/useTokenOrbitEditorMode'
 import TokenSectionBackdrop from '@/components/token/TokenSectionBackdrop'
 import TokenOrbitalValueNetwork from '@/components/token/TokenOrbitalValueNetwork'
@@ -40,21 +41,16 @@ const Scene02_AigToken = forwardRef<HTMLElement, Props>(
         </motion.p>
 
         <motion.div variants={slideLeft} className="grid grid-cols-2 gap-6 mt-4">
-          {[
-            { to: 0,   suffix: '',    label: 'PRECIO',       static: '$0.0042' },
-            { to: 111, suffix: 'M',   label: 'SUPPLY TOTAL', static: null },
-            { to: 2847, suffix: '+',  label: 'HOLDERS',      static: null },
-            { to: 0,   suffix: '',    label: 'NETWORK',      static: 'BSC' },
-          ].map(({ to, suffix, label, static: staticVal }) => (
-            <div key={label} className="flex flex-col gap-1">
+          {TOKEN_DISPLAY_METRICS.map((metric) => (
+            <div key={metric.label} className="flex flex-col gap-1">
               <span className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
-                {staticVal ? (
-                  staticVal
+                {'static' in metric ? (
+                  metric.static
                 ) : (
-                  <StatBlock to={to} suffix={suffix} label="" isActive={isActive} />
+                  <StatBlock to={metric.to} suffix={metric.suffix} label="" isActive={isActive} />
                 )}
               </span>
-              <span className="text-xs text-gray-500 uppercase tracking-wider">{label}</span>
+              <span className="text-xs text-gray-500 uppercase tracking-wider">{metric.label}</span>
             </div>
           ))}
         </motion.div>

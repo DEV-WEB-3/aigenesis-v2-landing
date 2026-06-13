@@ -8,6 +8,7 @@ import {
   containerV, slideLeft,
 } from '@/components/ui/SceneShared'
 import { ROUTES, EXTERNAL_LINKS } from '@/lib/routes'
+import { TECHNOLOGY_STATS } from '@/lib/institutionalMetrics'
 import TechnologySectionBackdrop from '@/components/technology/TechnologySectionBackdrop'
 import TechnologyGenesisStack from '@/components/technology/TechnologyGenesisStack'
 
@@ -16,11 +17,7 @@ const TECH_STACK = [
   'Node.js', 'React', 'MongoDB', 'Redis', 'G-BRIDGE AI', 'Three.js',
 ]
 
-const STATS = [
-  { value: '99.9%',   label: 'UPTIME' },
-  { value: '< 200ms', label: 'LATENCIA' },
-  { value: '24/7',    label: 'MONITOREO' },
-]
+const STATS = TECHNOLOGY_STATS
 
 interface Props { isActive?: boolean }
 

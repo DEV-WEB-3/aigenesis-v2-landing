@@ -2,17 +2,9 @@
 
 import { motion } from 'framer-motion'
 import { AnimatedCounter } from '@/components/ui/SceneShared'
+import { TRUST_INSTITUTIONAL_METRICS, type InstitutionalMetric } from '@/lib/institutionalMetrics'
 
-type MetricEntry =
-  | { kind: 'counter'; to: number; suffix: string; label: string; decimals?: number }
-  | { kind: 'static'; value: string; label: string }
-
-const METRICS: MetricEntry[] = [
-  { kind: 'counter', to: 100, suffix: 'K+', label: 'Comunidad' },
-  { kind: 'counter', to: 12, suffix: '+', label: 'Países' },
-  { kind: 'static', value: '2019', label: 'Fundado' },
-  { kind: 'counter', to: 99.9, suffix: '%', label: 'Uptime', decimals: 1 },
-]
+const METRICS: InstitutionalMetric[] = [...TRUST_INSTITUTIONAL_METRICS]
 
 interface InstitutionalMetricsProps {
   isActive?: boolean

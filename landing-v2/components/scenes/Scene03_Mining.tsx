@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { SectionHeader, Button } from '@/components/ui/genesis'
 import { SceneWrapper, slideLeft, containerV } from '@/components/ui/SceneShared'
 import { EXTERNAL_LINKS } from '@/lib/routes'
+import { MINING_BADGES } from '@/lib/institutionalMetrics'
 import MiningSectionBackdrop from '@/components/mining/MiningSectionBackdrop'
 import { MiningStoryIcon } from '@/components/mining/MiningStoryIcons'
 import MiningConstellation from '@/components/mining/MiningConstellation'
@@ -41,11 +42,7 @@ const MINING_FLOW = [
   },
 ]
 
-const MINING_KPIS = [
-  { value: '24h', label: 'Ciclo de emisión', mono: true, icon: 'cycle' as const },
-  { value: 'On-chain', label: 'Trazabilidad', mono: false, icon: 'chain' as const },
-  { value: 'BSC', label: 'Red', mono: true, icon: 'network' as const },
-]
+const MINING_KPIS = MINING_BADGES
 
 const Scene03_Mining = forwardRef<HTMLElement, Props>(function Scene03_Mining(
   { isActive = false },

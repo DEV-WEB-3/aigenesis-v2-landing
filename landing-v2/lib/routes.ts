@@ -141,7 +141,7 @@ export const PLACEHOLDERS = {
   legal: {
     value: PAGES.LEGAL,
     status: 'staging_page' as const,
-    note: 'Copy mínimo; legal review pendiente antes de producción',
+    note: 'Contacto oficial tokenaig@aigenesis.io; revisión legal completa pendiente',
   },
   bscscan: {
     value: OFFICIAL_BSCSCAN.TOKEN,
@@ -159,19 +159,13 @@ export const PLACEHOLDERS = {
     note: 'Handles oficiales G11 / AiGenesis',
   },
   metrics: {
-    status: 'hardcoded' as const,
-    note: 'Validar métricas con producto antes de producción',
-    locations: [
-      'Scene02_AigToken.tsx',
-      'Scene03_GPulse.tsx',
-      'Scene04_GevyShop.tsx',
-      'Scene05_Community.tsx',
-      'Scene06_Technology.tsx',
-      'EcosystemSection.tsx',
-    ],
+    status: 'centralized' as const,
+    note: 'Valores en lib/institutionalMetrics.ts — validar con producto antes de producción',
+    registry: 'lib/institutionalMetrics.ts',
+    reviewFlag: 'METRICS_REVIEW_STATUS',
   },
   analytics: {
-    status: 'not_implemented' as const,
-    note: 'Sin GA4 / Plausible / Vercel Analytics configurado',
+    status: 'vercel_analytics' as const,
+    note: 'Vercel Analytics + Speed Insights activos; GA4 opcional vía NEXT_PUBLIC_GA_MEASUREMENT_ID',
   },
 } as const
