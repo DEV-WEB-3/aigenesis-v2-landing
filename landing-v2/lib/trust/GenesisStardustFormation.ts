@@ -23,7 +23,13 @@ export const GENESIS_LOGO_FORM_DURATION = 2.0
 /** Trust bidirectional streams — left magenta · right cyan, meet at G center. */
 export const BIDIRECTIONAL_FORM_DURATION = 1.7
 
-const BIDIRECTIONAL_EXTREME_MULT = 2.85
+const BIDIRECTIONAL_EXTREME_MULT = 3.5
+
+export function bidirectionalExtremeMult(viewportWidth: number): number {
+  if (viewportWidth < 768) return 2.15
+  if (viewportWidth < 1024) return 2.85
+  return BIDIRECTIONAL_EXTREME_MULT
+}
 
 export const FORMATION_SCATTER_RADIUS = {
   desktop: 1.25,
@@ -99,11 +105,9 @@ export function scatterRadiusForViewport(width: number): number {
 }
 
 export function resolveGenesisFormationMode(
-  fromSection: number,
-  directEntry = false
+  _fromSection: number,
+  _directEntry = false
 ): GenesisFormationMode {
-  if (directEntry) return 'bidirectional'
-  if (fromSection <= 0) return 'fromHeroLogoDrop'
   return 'bidirectional'
 }
 
@@ -443,7 +447,7 @@ export function scatterGenesisStardustLogo(
   setHeroDropLogoCenter(null)
 
   if (mode === 'bidirectional') {
-    const extreme = halfW * scatterScale * BIDIRECTIONAL_EXTREME_MULT
+    const extreme = halfW * scatterScale * bidirectionalExtremeMult(viewportWidth)
     for (let i = 0; i < count; i++) {
       const bi = i * 3
       const fx = finalPositions[bi]!

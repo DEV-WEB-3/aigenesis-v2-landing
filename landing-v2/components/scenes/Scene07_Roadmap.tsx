@@ -84,6 +84,10 @@ const Scene07_Roadmap = forwardRef<HTMLElement, Props>(
           <TimelineItem year="2027"    title="Genesis Metaverse"            status="upcoming"  />
         </motion.div>
 
+        <motion.div variants={slideLeft} className="scene-visual-mobile md:hidden" aria-hidden="true">
+          <RoadmapEvolutionPath isActive={isActive} />
+        </motion.div>
+
         <motion.div variants={slideLeft} className="mt-4">
           <OfficialDownloadButton href={EXTERNAL_LINKS.MARKETING_PLAN_ES}>
             Descargar plan de marketing

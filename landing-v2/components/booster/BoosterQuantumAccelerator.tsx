@@ -3,13 +3,15 @@
 import { BOOSTER_ACCELERATOR_PULSE_S } from '@/lib/booster/quantumAcceleratorLayout'
 import BoosterAcceleratorLayers from '@/components/booster/BoosterAcceleratorLayers'
 import BoosterAcceleratorStreams from '@/components/booster/BoosterAcceleratorStreams'
+import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 interface BoosterQuantumAcceleratorProps {
   isActive: boolean
 }
 
 export default function BoosterQuantumAccelerator({ isActive }: BoosterQuantumAcceleratorProps) {
-  if (!isActive) return null
+  const visible = useSectionVisualActive(isActive)
+  if (!visible) return null
 
   return (
     <div

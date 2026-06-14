@@ -3,7 +3,7 @@
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
 import { SectionHeader, Card, GenesisStatBlock, Button } from '@/components/ui/genesis'
-import { SceneWrapper, slideLeft, containerV } from '@/components/ui/SceneShared'
+import { SceneWrapper, slideLeft, slideLeftCrisp, containerV } from '@/components/ui/SceneShared'
 import { EXTERNAL_LINKS } from '@/lib/routes'
 import StakingSectionBackdrop from '@/components/staking/StakingSectionBackdrop'
 import StakingTimeVault from '@/components/staking/StakingTimeVault'
@@ -43,7 +43,7 @@ const Scene05_Staking = forwardRef<HTMLElement, Props>(function Scene05_Staking(
 
       <motion.div variants={containerV} className="staking-cards-grid mt-2">
         {STAKING_PERIODS.map((item) => (
-          <motion.div key={item.title} variants={slideLeft}>
+          <motion.div key={item.title} variants={slideLeftCrisp}>
             <Card variant="trust" title={item.title} description={item.description} hover />
           </motion.div>
         ))}
@@ -53,6 +53,10 @@ const Scene05_Staking = forwardRef<HTMLElement, Props>(function Scene05_Staking(
         <GenesisStatBlock value="6+" label="Periodos" mono />
         <GenesisStatBlock value="On-chain" label="Verificación" mono />
         <GenesisStatBlock value="Deflacionario" label="Token base" />
+      </motion.div>
+
+      <motion.div variants={slideLeft} className="scene-visual-mobile md:hidden" aria-hidden="true">
+        <StakingTimeVault isActive={isActive} />
       </motion.div>
 
       <motion.div variants={slideLeft} className="mt-4">

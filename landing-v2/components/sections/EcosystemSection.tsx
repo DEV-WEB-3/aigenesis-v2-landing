@@ -1,10 +1,12 @@
 'use client'
 
-import { useEffect, useRef, forwardRef } from 'react'
+import { useEffect, useRef, forwardRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import gsap from 'gsap'
 import { Card } from '@/components/ui/genesis'
 import { GenesisHeadline, GradientButton } from '@/components/ui/SceneShared'
+import { useSectionEnterAnimation } from '@/hooks/useSectionEnterAnimation'
+import { SectionVisualProvider } from '@/hooks/useSectionVisualActive'
 import EcosystemEnergyLinks from '@/components/ecosystem/EcosystemEnergyLinks'
 import { sectionHref, type SectionId } from '@/lib/routes'
 
@@ -116,22 +118,38 @@ interface EcosystemSectionProps {
 
 const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
   function EcosystemSection({ isActive = false }, ref) {
+    const {
+      isNaturalScroll,
+      sectionRef,
+      shouldMountContent,
+      shouldAnimate,
+    } = useSectionEnterAnimation(isActive)
+
+    const setSectionRef = useCallback(
+      (node: HTMLElement | null) => {
+        sectionRef.current = node
+        if (typeof ref === 'function') ref(node)
+        else if (ref) ref.current = node
+      },
+      [ref, sectionRef]
+    )
+
     return (
+      <SectionVisualProvider visualActive={shouldAnimate}>
       <section
-        ref={ref}
+        ref={setSectionRef}
         id="ecosistema"
-        className="home-section-fit relative flex h-screen w-full items-center px-6 md:px-12"
-        style={{ scrollSnapAlign: 'start', pointerEvents: 'auto', overflow: 'hidden' }}
+        className="home-section-fit relative flex w-full items-stretch justify-start px-6 md:px-12 lg:items-center lg:h-screen"
+        style={{ pointerEvents: 'auto' }}
       >
-        <div className="scene-content-frame ecosystem-content-frame flex w-full items-center gap-6 max-w-7xl mx-auto px-2 sm:px-0 lg:grid lg:grid-cols-2 lg:gap-6">
-          <AnimatePresence mode="wait">
-            {isActive && (
+        <div className="scene-content-frame ecosystem-content-frame flex w-full flex-col items-center gap-6 max-w-7xl mx-auto px-2 sm:px-0 lg:grid lg:grid-cols-2 lg:items-center lg:gap-6">
+          {isNaturalScroll ? (
+            shouldMountContent ? (
               <motion.div
                 key="ecosystem-content"
                 variants={containerVariants}
                 initial="hidden"
-                animate="visible"
-                exit="exit"
+                animate={shouldAnimate ? 'visible' : 'hidden'}
                 className="scene-content-stack ecosystem-content-stack flex flex-col gap-4 max-w-lg lg:max-w-[27rem] lg:justify-self-end lg:pr-1"
               >
                 <motion.span variants={slideInLeft} className="label-section text-genesis-fuchsia">
@@ -174,18 +192,71 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                   Explorar Ecosistema →
                 </GradientButton>
               </motion.div>
-            )}
-          </AnimatePresence>
+            ) : null
+          ) : (
+            <AnimatePresence mode="wait">
+              {shouldMountContent && (
+                <motion.div
+                  key="ecosystem-content"
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate={shouldAnimate ? 'visible' : 'hidden'}
+                  exit="exit"
+                  className="scene-content-stack ecosystem-content-stack flex flex-col gap-4 max-w-lg lg:max-w-[27rem] lg:justify-self-end lg:pr-1"
+                >
+                <motion.span variants={slideInLeft} className="label-section text-genesis-fuchsia">
+                  Ecosistema
+                </motion.span>
+
+                <GenesisHeadline lead="El stack" highlight="Genesis" />
+
+                <motion.p variants={slideInLeft} className="text-body-lg text-genesis-mist leading-relaxed">
+                  Un universo de productos interconectados sobre Binance Smart Chain.
+                  Cada capítulo amplifica al siguiente en una arquitectura modular e institucional.
+                </motion.p>
+
+                <motion.div variants={slideInLeft} className="flex gap-8 mt-1">
+                  <div className="flex flex-col gap-1">
+                    <AnimatedCounter
+                      to={15}
+                      suffix="+"
+                      isActive={isActive}
+                      className={statGradientClass}
+                    />
+                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">Pilares</span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className={statGradientClass}>2019</span>
+                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">Fundado</span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <AnimatedCounter
+                      to={100}
+                      suffix="K+"
+                      isActive={isActive}
+                      className={statGradientClass}
+                    />
+                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">Comunidad</span>
+                  </div>
+                </motion.div>
+
+                <GradientButton className="mt-1" href={sectionHref('token')}>
+                  Explorar Ecosistema →
+                </GradientButton>
+              </motion.div>
+              )}
+            </AnimatePresence>
+          )}
 
           <AnimatePresence mode="wait">
-            {isActive && (
+            {shouldMountContent && (
               <motion.div
                 key="ecosystem-map"
                 variants={containerVariants}
                 initial="hidden"
-                animate="visible"
+                animate={shouldAnimate ? 'visible' : 'hidden'}
                 exit="exit"
-                className="ecosystem-map-column hidden lg:flex flex-col max-w-md w-full pointer-events-auto lg:justify-self-start"
+                className="ecosystem-map-column flex w-full max-w-md flex-col pointer-events-auto lg:max-w-md lg:justify-self-start"
                 aria-label="Mapa del ecosistema"
               >
                 <div className="ecosystem-map-visual relative">
@@ -220,6 +291,7 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
           </AnimatePresence>
         </div>
       </section>
+      </SectionVisualProvider>
     )
   }
 )

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 /** SVG energy links — mirrors DOM map topology (viewBox 0 0 100 100). */
 const LINKS: { id: string; d: string; primary?: boolean }[] = [
@@ -22,16 +23,17 @@ interface EcosystemEnergyLinksProps {
 
 export default function EcosystemEnergyLinks({ isActive }: EcosystemEnergyLinksProps) {
   const svgRef = useRef<SVGSVGElement>(null)
+  const visible = useSectionVisualActive(isActive)
 
   useEffect(() => {
-    if (!isActive || !svgRef.current) return
+    if (!visible || !svgRef.current) return
     const paths = svgRef.current.querySelectorAll<SVGPathElement>('[data-energy-path]')
     paths.forEach((path, i) => {
       path.style.animationDelay = `${i * 0.22}s`
     })
-  }, [isActive])
+  }, [visible])
 
-  if (!isActive) return null
+  if (!visible) return null
 
   return (
     <svg

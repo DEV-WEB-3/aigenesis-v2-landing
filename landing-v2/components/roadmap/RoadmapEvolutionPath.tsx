@@ -2,13 +2,15 @@
 
 import { ROADMAP_EVOLUTION_FORM_S, ROADMAP_EVOLUTION_PULSE_S } from '@/lib/roadmap/evolutionPathLayout'
 import RoadmapEvolutionMilestones from '@/components/roadmap/RoadmapEvolutionMilestones'
+import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 interface RoadmapEvolutionPathProps {
   isActive: boolean
 }
 
 export default function RoadmapEvolutionPath({ isActive }: RoadmapEvolutionPathProps) {
-  if (!isActive) return null
+  const visible = useSectionVisualActive(isActive)
+  if (!visible) return null
 
   return (
     <div

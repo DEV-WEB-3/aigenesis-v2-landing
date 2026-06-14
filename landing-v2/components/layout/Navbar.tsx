@@ -65,7 +65,7 @@ export default function Navbar() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
-        className="fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-all duration-300"
+        className="genesis-main-nav fixed top-0 left-0 right-0 z-50 px-5 sm:px-6 py-3 sm:py-4 transition-all duration-300"
         style={
           scrolled || menuOpen
             ? {
@@ -87,7 +87,7 @@ export default function Navbar() {
             aria-label="GENESIS — Inicio"
           >
             <GenesisOfficialLogo size="sm" layout="horizontal" tone="color" className="hidden sm:inline-flex" />
-            <GenesisOfficialLogo size="sm" layout="vertical" tone="color" className="inline-flex sm:hidden scale-75" />
+            <GenesisOfficialLogo size="sm" layout="vertical" tone="color" className="inline-flex sm:hidden genesis-nav-logo-mobile" />
           </a>
 
           <ul className="hidden xl:flex items-center gap-3 2xl:gap-4 list-none m-0 p-0 overflow-x-auto max-w-[58vw]">

@@ -7,6 +7,7 @@ import {
   tokenValueMobileIndices,
 } from '@/lib/token/tokenOrbitalValueLayout'
 import { useTokenOrbitEditorMode } from '@/lib/token/useTokenOrbitEditorMode'
+import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 import TokenValueCore from '@/components/token/TokenValueCore'
 import TokenAtomicOrbitals from '@/components/token/TokenAtomicOrbitals'
 
@@ -20,8 +21,9 @@ export default function TokenOrbitalValueNetwork({
   variant = 'full',
 }: TokenOrbitalValueNetworkProps) {
   const editorMode = useTokenOrbitEditorMode()
+  const visible = useSectionVisualActive(isActive)
 
-  if (!isActive) return null
+  if (!visible) return null
 
   const isCompact = variant === 'compact'
   const visibleIndices = isCompact

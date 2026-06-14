@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { SceneProvider, useScene } from '@/context/SceneContext'
 import { useSnapScroll } from '@/hooks/useSnapScroll'
+import { useScrollMode } from '@/hooks/useScrollMode'
 import { SNAP_SCROLL } from '@/lib/scroll/snapScrollConfig'
 import { TOTAL_SECTIONS, resolveNavigationTarget } from '@/lib/routes'
 import Navbar from '@/components/layout/Navbar'
@@ -30,7 +31,8 @@ const WorldCanvas = dynamic(
 
 function PageContent() {
   const { sectionIndexRef, scrollProgressRef, scrollToSectionRef } = useScene()
-  const { sectionIndex, registerSection, scrollToSection } = useSnapScroll(TOTAL_SECTIONS)
+  const scrollMode = useScrollMode()
+  const { sectionIndex, registerSection, scrollToSection } = useSnapScroll(TOTAL_SECTIONS, scrollMode)
   const legalScrollTimeoutRef = useRef<number | null>(null)
 
   useEffect(() => {
@@ -52,7 +54,13 @@ function PageContent() {
           window.clearTimeout(legalScrollTimeoutRef.current)
         }
         const delayMs =
-          behavior === 'auto' ? 100 : SNAP_SCROLL.SCROLL_DURATION_MS + 80
+          scrollMode === 'natural'
+            ? behavior === 'auto'
+              ? 80
+              : 320
+            : behavior === 'auto'
+              ? 100
+              : SNAP_SCROLL.SCROLL_DURATION_MS + 80
         legalScrollTimeoutRef.current = window.setTimeout(() => {
           legalScrollTimeoutRef.current = null
           document.getElementById(target.anchorId!)?.scrollIntoView({ behavior, block: 'center' })
@@ -92,7 +100,7 @@ function PageContent() {
         window.clearTimeout(legalScrollTimeoutRef.current)
       }
     }
-  }, [scrollToSection])
+  }, [scrollToSection, scrollMode])
 
   return (
     <div className="home-snap-root fixed inset-0 h-screen w-screen overflow-hidden">
@@ -117,6 +125,7 @@ function PageContent() {
       <main
         id="main-content"
         className="home-snap-main"
+        data-scroll-mode={scrollMode}
         style={{
           position: 'fixed', inset: 0, zIndex: 2,
         }}

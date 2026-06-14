@@ -36,6 +36,22 @@ export function isDesktopViewport(width: number): boolean {
   return width >= DESKTOP_MIN_WIDTH
 }
 
+/** Mobile — ancla centrada detrás del contenido (columna única) */
+const MOBILE_GROUP: Partial<Record<number, { x: number; y: number; z: number }>> = {
+  1: { x: 0.06, y: 0.02, z: -0.06 },
+  2: { x: 0.04, y: 0.02, z: -0.05 },
+  3: { x: 0.05, y: 0, z: -0.05 },
+  4: { x: 0.04, y: 0.02, z: -0.05 },
+  5: { x: 0.02, y: 0.04, z: -0.05 },
+  6: { x: 0.04, y: 0.03, z: -0.05 },
+  7: { x: 0.04, y: 0.02, z: -0.05 },
+  8: { x: 0.04, y: 0.02, z: -0.05 },
+  9: { x: 0.02, y: 0.03, z: -0.04 },
+  10: { x: 0.02, y: 0.02, z: -0.04 },
+  11: { x: 0.02, y: 0.03, z: -0.04 },
+  12: { x: 0.02, y: 0.02, z: -0.04 },
+}
+
 export function particleGroupTarget(
   sectionIndex: number,
   desktop = false
@@ -43,7 +59,7 @@ export function particleGroupTarget(
   if (sectionIndex === 0) return PARTICLE_GROUP_OFFSET.hero
   if (!desktop) {
     if (sectionIndex === CTA_SECTION_INDEX) return { x: 0, y: 0.05, z: 0 }
-    return PARTICLE_GROUP_OFFSET.section
+    return MOBILE_GROUP[sectionIndex] ?? PARTICLE_GROUP_OFFSET.section
   }
   return DESKTOP_GROUP[sectionIndex] ?? DESKTOP_GROUP_DEFAULT
 }

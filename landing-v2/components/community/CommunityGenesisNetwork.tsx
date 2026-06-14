@@ -6,13 +6,15 @@ import CommunityLinks from '@/components/community/CommunityLinks'
 import CommunityNodes from '@/components/community/CommunityNodes'
 import CommunityPoolPulses from '@/components/community/CommunityPoolPulses'
 import CommunityCore from '@/components/community/CommunityCore'
+import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 interface CommunityGenesisNetworkProps {
   isActive: boolean
 }
 
 export default function CommunityGenesisNetwork({ isActive }: CommunityGenesisNetworkProps) {
-  if (!isActive) return null
+  const visible = useSectionVisualActive(isActive)
+  if (!visible) return null
 
   return (
     <div

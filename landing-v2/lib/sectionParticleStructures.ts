@@ -284,7 +284,9 @@ export function buildStructuredTargets(
     const raw = structure.generator(count)
     const bias = resolvePositionBias(structure.id, desktop)
     let scale = structure.scale
-    if (desktop && structure.sectionIndex > 0 && structure.id !== 'trust') {
+    if (structure.id === 'trust' && !desktop) {
+      scale = 1.08
+    } else if (desktop && structure.sectionIndex > 0 && structure.id !== 'trust') {
       scale = structure.scale + DESKTOP_SCALE_BUMP
     }
     if (structure.id === 'staking' && !desktop) {

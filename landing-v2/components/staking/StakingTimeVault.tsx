@@ -4,13 +4,15 @@ import { STAKING_VAULT_PULSE_S } from '@/lib/staking/timeVaultLayout'
 import StakingVaultCore from '@/components/staking/StakingVaultCore'
 import StakingTimeRings from '@/components/staking/StakingTimeRings'
 import StakingLockStreams from '@/components/staking/StakingLockStreams'
+import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 interface StakingTimeVaultProps {
   isActive: boolean
 }
 
 export default function StakingTimeVault({ isActive }: StakingTimeVaultProps) {
-  if (!isActive) return null
+  const visible = useSectionVisualActive(isActive)
+  if (!visible) return null
 
   return (
     <div

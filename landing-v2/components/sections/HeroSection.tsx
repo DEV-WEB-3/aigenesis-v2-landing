@@ -65,9 +65,8 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
       <section
         ref={setRefs}
         id="hero"
-        className="relative flex h-screen w-full flex-col items-center justify-center px-4 sm:px-6 pt-20 sm:pt-24 text-center"
+        className="relative flex min-h-[100svh] w-full flex-col items-center justify-center px-4 sm:px-6 pt-20 sm:pt-24 text-center lg:h-screen"
         style={{
-          scrollSnapAlign: 'start',
           pointerEvents: 'auto',
           overflow: 'hidden',
         }}

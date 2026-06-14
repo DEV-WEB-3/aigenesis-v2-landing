@@ -1,9 +1,12 @@
 'use client'
 
-import { useRef, useEffect, forwardRef } from 'react'
+import { useRef, useEffect, forwardRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import gsap from 'gsap'
 import { Button } from '@/components/ui/genesis'
+import { useSectionEnterAnimation } from '@/hooks/useSectionEnterAnimation'
+import { SectionVisualProvider } from '@/hooks/useSectionVisualActive'
+import GenesisOrbSignature, { type GenesisOrbPlacement } from '@/components/brand/GenesisOrbSignature'
 
 // ─── Variants compartidos ─────────────────────────────────────────────────────
 export const containerV = {
@@ -15,6 +18,12 @@ export const slideLeft = {
   hidden:  { opacity: 0, x: -50, filter: 'blur(6px)' },
   visible: { opacity: 1, x: 0,   filter: 'blur(0px)', transition: { duration: 0.75, ease: [0.4, 0, 0.2, 1] } },
   exit:    { opacity: 0, x: -30, filter: 'blur(4px)', transition: { duration: 0.25 } },
+}
+/** Text-safe entrance — no filter blur (mobile card readability) */
+export const slideLeftCrisp = {
+  hidden:  { opacity: 0, x: -28 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.65, ease: [0.4, 0, 0.2, 1] } },
+  exit:    { opacity: 0, x: -18, transition: { duration: 0.22 } },
 }
 export const wordV = {
   hidden:  { opacity: 0, y: 28, filter: 'blur(4px)' },
@@ -197,6 +206,8 @@ interface SceneWrapperProps {
   particleSlot?: React.ReactNode
   /** Capas de fondo a nivel sección (detrás del grid) */
   sectionOverlay?: React.ReactNode
+  /** Genesis Orb reutilizado como firma visual de fondo */
+  orbSignature?: GenesisOrbPlacement
 }
 export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { className?: string }>(
   function SceneWrapper(
@@ -209,41 +220,75 @@ export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { classN
       particleColumn = false,
       particleSlot,
       sectionOverlay,
+      orbSignature,
       className = '',
     },
     ref
   ) {
-    return (
-      <section
-        ref={ref}
-        id={sectionId}
-        className={`home-section-fit relative h-screen w-full flex items-center overflow-hidden ${className}`}
-        style={{ scrollSnapAlign: 'start', pointerEvents: 'auto' }}
+    const {
+      isNaturalScroll,
+      sectionRef,
+      shouldMountContent,
+      shouldAnimate,
+    } = useSectionEnterAnimation(isActive)
+
+    const setSectionRef = useCallback(
+      (node: HTMLElement | null) => {
+        sectionRef.current = node
+        if (typeof ref === 'function') ref(node)
+        else if (ref) ref.current = node
+      },
+      [ref, sectionRef]
+    )
+
+    const contentStack = (
+      <motion.div
+        key={motionKey}
+        variants={containerV}
+        initial="hidden"
+        animate={shouldAnimate ? 'visible' : 'hidden'}
+        exit={isNaturalScroll ? undefined : 'exit'}
+        className={`scene-content-stack flex flex-col gap-4 lg:max-w-[27rem] lg:justify-self-end lg:pr-1${wideStack ? ' scene-content-stack--wide' : ''}`}
       >
-        {sectionOverlay}
-        <div className="scene-content-frame w-full max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-center">
-          <AnimatePresence mode="wait">
-            {isActive && (
-              <motion.div
-                key={motionKey}
-                variants={containerV}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className={`scene-content-stack flex flex-col gap-4 lg:max-w-[27rem] lg:justify-self-end lg:pr-1${wideStack ? ' scene-content-stack--wide' : ''}`}
-              >
-                {children}
-              </motion.div>
+        {children}
+      </motion.div>
+    )
+
+    return (
+      <SectionVisualProvider visualActive={shouldAnimate}>
+        <section
+          ref={setSectionRef}
+          id={sectionId}
+          className={`home-section-fit relative w-full flex items-center overflow-visible lg:overflow-hidden lg:h-screen ${className}`}
+          style={{ pointerEvents: 'auto' }}
+        >
+          {sectionOverlay}
+          {orbSignature ? (
+            <GenesisOrbSignature placement={orbSignature} isActive={isActive} />
+          ) : null}
+          <div className="scene-content-frame w-full max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-center">
+            {isNaturalScroll ? (
+              shouldMountContent ? contentStack : null
+            ) : (
+              <AnimatePresence mode="wait">
+                {shouldMountContent ? contentStack : null}
+              </AnimatePresence>
             )}
-          </AnimatePresence>
-          <div
-            className={`scene-particle-gutter ${particleColumn ? 'scene-particle-gutter--featured hidden md:block' : 'hidden lg:block'}`}
-            aria-hidden="true"
-          >
-            {particleSlot}
+            <div
+              className={`scene-particle-gutter ${
+                particleColumn
+                  ? sectionId === 'trust'
+                    ? 'scene-particle-gutter--featured scene-particle-gutter--trust-mobile md:block'
+                    : 'scene-particle-gutter--featured hidden md:block'
+                  : 'hidden lg:block'
+              }`}
+              aria-hidden="true"
+            >
+              {particleSlot}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </SectionVisualProvider>
     )
   }
 )

@@ -52,6 +52,10 @@ const Scene05_Community = forwardRef<HTMLElement, Props>(
           ))}
         </motion.div>
 
+        <motion.div variants={slideLeft} className="scene-visual-mobile md:hidden" aria-hidden="true">
+          <CommunityGenesisNetwork isActive={isActive} />
+        </motion.div>
+
         <GradientButton className="mt-2" href={ROUTES.REGISTER}>Únete a la Comunidad →</GradientButton>
 
       </SceneWrapper>

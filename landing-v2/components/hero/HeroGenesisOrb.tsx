@@ -2,13 +2,22 @@
 
 import { useCallback, useEffect, useRef } from 'react'
 import { GenesisOfficialLogo } from '@/components/brand'
+import type { LogoSize } from '@/components/brand/types'
 import { HERO_RGB } from '@/lib/hero-palette'
 import { BURST_PARTICLE_COUNTS, ORB_RING_PARTICLE_COUNTS, type HeroPerfTier } from '@/lib/hero-performance'
 import { cn } from '@/lib/utils'
 
+export type GenesisOrbVariant = 'hero' | 'signature'
+
 interface HeroGenesisOrbProps {
   tier?: HeroPerfTier
   className?: string
+  variant?: GenesisOrbVariant
+  /** Hero defaults to true; signature defaults to false unless set */
+  showLogo?: boolean
+  logoSize?: LogoSize
+  /** Pause canvas animation when section is off-screen */
+  paused?: boolean
 }
 
 interface BurstParticle {
@@ -66,6 +75,10 @@ function createRingParticles(tier: HeroPerfTier, radius: number): RingParticle[]
 export default function HeroGenesisOrb({
   tier = 'high',
   className,
+  variant = 'hero',
+  showLogo,
+  logoSize = 'xl',
+  paused = false,
 }: HeroGenesisOrbProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const burstRef = useRef<BurstParticle[]>([])
@@ -74,6 +87,13 @@ export default function HeroGenesisOrb({
   const timeRef = useRef(0)
   const radiusRef = useRef(180)
   const logicalSizeRef = useRef(480)
+  const pausedRef = useRef(paused)
+
+  useEffect(() => {
+    pausedRef.current = paused
+  }, [paused])
+
+  const renderLogo = showLogo ?? variant === 'hero'
 
   const drawOrb = useCallback((ctx: CanvasRenderingContext2D, size: number, t: number) => {
     const cx = size / 2
@@ -179,11 +199,13 @@ export default function HeroGenesisOrb({
 
     let last = performance.now()
     const loop = (now: number) => {
-      const dt = now - last
+      if (!pausedRef.current) {
+        const dt = now - last
+        timeRef.current += tier === 'low' ? dt * 0.4 : dt
+        const ctx = canvas.getContext('2d')
+        if (ctx) drawOrb(ctx, logicalSizeRef.current, timeRef.current)
+      }
       last = now
-      timeRef.current += tier === 'low' ? dt * 0.4 : dt
-      const ctx = canvas.getContext('2d')
-      if (ctx) drawOrb(ctx, logicalSizeRef.current, timeRef.current)
       rafRef.current = requestAnimationFrame(loop)
     }
     rafRef.current = requestAnimationFrame(loop)
@@ -195,15 +217,23 @@ export default function HeroGenesisOrb({
   }, [drawOrb, tier])
 
   return (
-    <div className={cn('hero-nucleus', className)}>
+    <div className={cn('hero-nucleus', variant === 'signature' && 'hero-nucleus--signature', className)}>
       <canvas ref={canvasRef} className="hero-burst-canvas" aria-hidden="true" />
       <div className="hero-energy-aura" aria-hidden="true" />
       <div className="hero-energy-ring" aria-hidden="true" />
       <div className="hero-energy-ring hero-energy-ring--ion" aria-hidden="true" />
 
-      <h1 className="hero-official-logo hero-logo-breathe">
-        <GenesisOfficialLogo size="xl" markScale={1} layout="vertical" tone="color" imageClassName="hero-logo-fill" />
-      </h1>
+      {renderLogo ? (
+        variant === 'hero' ? (
+          <h1 className="hero-official-logo hero-logo-breathe">
+            <GenesisOfficialLogo size={logoSize} markScale={1} layout="vertical" tone="color" imageClassName="hero-logo-fill" />
+          </h1>
+        ) : (
+          <div className="hero-official-logo hero-official-logo--signature hero-logo-breathe" aria-hidden="true">
+            <GenesisOfficialLogo size={logoSize} markScale={1} layout="vertical" tone="color" imageClassName="hero-logo-fill" />
+          </div>
+        )
+      ) : null}
     </div>
   )
 }

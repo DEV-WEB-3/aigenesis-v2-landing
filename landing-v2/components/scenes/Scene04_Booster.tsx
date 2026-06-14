@@ -54,10 +54,14 @@ const Scene04_Booster = forwardRef<HTMLElement, Props>(function Scene04_Booster(
         ))}
       </motion.div>
 
-      <motion.div variants={slideLeft} className="flex flex-wrap gap-8 mt-4">
+        <motion.div variants={slideLeft} className="flex flex-wrap gap-8 mt-4">
         <GenesisStatBlock value="3" label="Capas activas" mono />
         <GenesisStatBlock value="Progresivo" label="Modelo" />
         <GenesisStatBlock value="Protocolo" label="Gobernanza" />
+      </motion.div>
+
+      <motion.div variants={slideLeft} className="scene-visual-mobile md:hidden" aria-hidden="true">
+        <BoosterQuantumAccelerator isActive={isActive} />
       </motion.div>
 
       <motion.div variants={slideLeft} className="mt-4">

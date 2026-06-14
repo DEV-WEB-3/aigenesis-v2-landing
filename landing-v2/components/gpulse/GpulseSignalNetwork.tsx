@@ -6,13 +6,15 @@ import GpulseSignalRings from '@/components/gpulse/GpulseSignalRings'
 import GpulseRadarSweep from '@/components/gpulse/GpulseRadarSweep'
 import GpulseSignalStreams from '@/components/gpulse/GpulseSignalStreams'
 import GpulseSignalNodes from '@/components/gpulse/GpulseSignalNodes'
+import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 interface GpulseSignalNetworkProps {
   isActive: boolean
 }
 
 export default function GpulseSignalNetwork({ isActive }: GpulseSignalNetworkProps) {
-  if (!isActive) return null
+  const visible = useSectionVisualActive(isActive)
+  if (!visible) return null
 
   return (
     <div

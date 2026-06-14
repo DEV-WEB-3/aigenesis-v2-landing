@@ -60,6 +60,10 @@ const Scene04_GevyShop = forwardRef<HTMLElement, Props>(
           ))}
         </motion.div>
 
+        <motion.div variants={slideLeft} className="scene-visual-mobile md:hidden" aria-hidden="true">
+          <MarketplaceGlobalCommerce isActive={isActive} />
+        </motion.div>
+
         <GradientButton className="mt-2" href={EXTERNAL_LINKS.MARKETPLACE}>Explorar Marketplace →</GradientButton>
 
       </SceneWrapper>

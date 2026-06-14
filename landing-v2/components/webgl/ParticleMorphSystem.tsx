@@ -651,6 +651,19 @@ export default function ParticleMorphSystem({
               return [p[0], p[1], p[2]] as [number, number, number]
             }
           )
+          if (trustFormationModeRef.current === 'bidirectional') {
+            const scatter = trustScatterRef.current
+            for (let i = 0; i < trustLimit; i++) {
+              const bi = i * 3
+              morph[bi] = scatter[bi]!
+              morph[bi + 1] = scatter[bi + 1]!
+              morph[bi + 2] = scatter[bi + 2]!
+              pos[bi] = scatter[bi]!
+              pos[bi + 1] = scatter[bi + 1]!
+              pos[bi + 2] = scatter[bi + 2]!
+            }
+            geometry.attributes.position.needsUpdate = true
+          }
           if (trustFormationModeRef.current === 'fromHeroLogoDrop') {
             for (let i = 0; i < trustLimit; i++) {
               const mi = i * TRUST_META_STRIDE

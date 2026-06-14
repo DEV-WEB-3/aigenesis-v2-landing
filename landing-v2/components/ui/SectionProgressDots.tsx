@@ -113,10 +113,13 @@ export default function SectionProgressDots({
   }
 
   return (
-    <nav
-      ref={navRef}
-      aria-label="Navegación de secciones"
-      className="genesis-scroll-rail hidden xl:flex"
+    <>
+      <MobileScrollProgress total={total} current={current} onDotClick={onDotClick} />
+
+      <nav
+        ref={navRef}
+        aria-label="Navegación de secciones"
+        className="genesis-scroll-rail hidden xl:flex"
       style={
         reduceMotion
           ? undefined
@@ -249,6 +252,62 @@ export default function SectionProgressDots({
           </button>
         )
       })}
+    </nav>
+    </>
+  )
+}
+
+function MobileScrollProgress({
+  total,
+  current,
+  onDotClick,
+}: SectionProgressDotsProps) {
+  const progress = ((current + 1) / total) * 100
+
+  return (
+    <nav
+      aria-label="Progreso de secciones"
+      className="genesis-mobile-scroll-progress fixed bottom-[max(0.85rem,env(safe-area-inset-bottom))] left-1/2 z-40 flex -translate-x-1/2 items-center gap-2.5 rounded-full border border-white/10 bg-[rgba(5,7,13,0.88)] px-3 py-2 shadow-[0_8px_28px_rgba(0,0,0,0.45)] backdrop-blur-md xl:hidden"
+    >
+      <span className="sr-only">
+        Sección {current + 1} de {total}
+      </span>
+      <button
+        type="button"
+        aria-label="Sección anterior"
+        disabled={current <= 0}
+        onClick={() => onDotClick(Math.max(0, current - 1))}
+        className="flex h-6 w-6 items-center justify-center rounded-full text-xs text-genesis-mist transition-colors hover:text-genesis-text disabled:opacity-30"
+      >
+        ↑
+      </button>
+      <div
+        className="h-1 w-[4.5rem] overflow-hidden rounded-full bg-white/10"
+        aria-hidden="true"
+      >
+        <div
+          className="h-full rounded-full transition-all duration-300 ease-out"
+          style={{
+            width: `${progress}%`,
+            background: 'linear-gradient(90deg, #ff00c8 0%, #00f5ff 100%)',
+          }}
+        />
+      </div>
+      <span
+        className="min-w-[2.4rem] text-center font-mono text-[10px] tracking-wider text-genesis-ghost"
+        aria-hidden="true"
+      >
+        {String(current + 1).padStart(2, '0')}/{String(total).padStart(2, '0')}
+      </span>
+      <button
+        type="button"
+        aria-label="Sección siguiente"
+        disabled={current >= total - 1}
+        onClick={() => onDotClick(Math.min(total - 1, current + 1))}
+        className="flex h-6 w-6 items-center justify-center rounded-full text-xs text-genesis-mist transition-colors hover:text-genesis-text disabled:opacity-30"
+      >
+        ↓
+      </button>
     </nav>
   )
 }

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { heroDebug } from '@/lib/hero-debug'
 import { resolveNavigationTarget } from '@/lib/routes'
 import { easeInOutCubic, SNAP_SCROLL } from '@/lib/scroll/snapScrollConfig'
+import { isSnapScrollMode, type ScrollMode } from '@/lib/scroll/scrollMode'
 
 function readInitialSectionIndex(): number {
   if (typeof window === 'undefined') return 0
@@ -61,10 +62,14 @@ function smoothScrollToSection(
   }
 }
 
+function scrollSectionIntoView(el: HTMLElement, behavior: ScrollBehavior = 'smooth') {
+  el.scrollIntoView({ behavior, block: 'start' })
+}
+
 /**
- * Snap scroll — wheel threshold, smooth glide, sectionIndex synced on transition end.
+ * Snap scroll — wheel threshold on desktop; proximity/natural on smaller viewports.
  */
-export function useSnapScroll(totalSections: number) {
+export function useSnapScroll(totalSections: number, scrollMode: ScrollMode) {
   const [sectionIndex, setSectionIndex] = useState(0)
   const sectionIndexRef = useRef(0)
   const scrollProgressRef = useRef(0)
@@ -80,6 +85,7 @@ export function useSnapScroll(totalSections: number) {
   const wheelAccumRef = useRef(0)
   const wheelAccumTimerRef = useRef<number | null>(null)
   const cancelScrollRef = useRef<(() => void) | void>(undefined)
+  const snapWheelEnabled = isSnapScrollMode(scrollMode)
 
   const registerSection = useCallback(
     (index: number) =>
@@ -109,6 +115,12 @@ export function useSnapScroll(totalSections: number) {
       const root = document.querySelector('main') as HTMLElement | null
       const el = sectionEls.current[clamped]
       if (!root || !el) return
+
+      if (!snapWheelEnabled) {
+        scrollSectionIntoView(el, reason === 'initial-hash' ? 'auto' : 'smooth')
+        applySectionIndex(clamped, { reason })
+        return
+      }
 
       cancelScrollRef.current?.()
       scrollAnimatingRef.current = true
@@ -143,7 +155,7 @@ export function useSnapScroll(totalSections: number) {
         reason,
       })
     },
-    [applySectionIndex, totalSections]
+    [applySectionIndex, snapWheelEnabled, totalSections]
   )
 
   const scrollToSection = useCallback(
@@ -175,6 +187,8 @@ export function useSnapScroll(totalSections: number) {
   }, [applySectionIndex, scrollToSection])
 
   useEffect(() => {
+    if (!snapWheelEnabled) return
+
     const root = document.querySelector('main') as HTMLElement | null
     if (!root) return
 
@@ -232,16 +246,21 @@ export function useSnapScroll(totalSections: number) {
       root.removeEventListener('wheel', onWheel)
       resetWheelAccum()
     }
-  }, [animateToSection, totalSections])
+  }, [animateToSection, snapWheelEnabled, totalSections])
 
   useEffect(() => {
     const root = document.querySelector('main') as HTMLElement | null
 
+    const heroLeaveRatio = snapWheelEnabled ? 0.56 : 0.35
+    const heroReturnRatio = snapWheelEnabled ? 0.44 : 0.28
+    const switchRatio = snapWheelEnabled ? 0.48 : 0.32
+    const heroMinForLeave = snapWheelEnabled ? 0.18 : 0.08
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (
-          scrollAnimatingRef.current ||
-          Date.now() < wheelLockedUntilRef.current
+          snapWheelEnabled &&
+          (scrollAnimatingRef.current || Date.now() < wheelLockedUntilRef.current)
         ) {
           return
         }
@@ -274,6 +293,7 @@ export function useSnapScroll(totalSections: number) {
             bestIdx,
             bestRatio: Number(bestRatio.toFixed(3)),
             heroRatio: Number(heroRatio.toFixed(3)),
+            scrollMode,
             map: Object.fromEntries(
               Array.from(map.entries()).map(([k, v]) => [k, Number(v.toFixed(3))])
             ),
@@ -281,18 +301,18 @@ export function useSnapScroll(totalSections: number) {
         }
 
         if (current === 0) {
-          if (bestIdx !== 0 && bestRatio >= 0.56 && heroRatio < 0.18) {
+          if (bestIdx !== 0 && bestRatio >= heroLeaveRatio && heroRatio < heroMinForLeave) {
             applySectionIndex(bestIdx, { reason: 'leave-hero', bestRatio, heroRatio })
           }
           return
         }
 
-        if (heroRatio >= 0.44 && heroRatio >= bestRatio - 0.06) {
+        if (heroRatio >= heroReturnRatio && heroRatio >= bestRatio - 0.06) {
           applySectionIndex(0, { reason: 'return-hero', bestRatio, heroRatio })
           return
         }
 
-        if (bestRatio >= 0.48 && bestIdx !== current) {
+        if (bestRatio >= switchRatio && bestIdx !== current) {
           applySectionIndex(bestIdx, { reason: 'switch', bestRatio, heroRatio })
         }
       },
@@ -306,7 +326,7 @@ export function useSnapScroll(totalSections: number) {
       if (el) observer.observe(el)
     })
     return () => observer.disconnect()
-  }, [applySectionIndex])
+  }, [applySectionIndex, scrollMode, snapWheelEnabled])
 
   return { sectionIndex, sectionIndexRef, scrollProgressRef, registerSection, scrollToSection }
 }

@@ -9,6 +9,7 @@ import {
 import MiningConstellationCore from '@/components/mining/MiningConstellationCore'
 import MiningConstellationNode from '@/components/mining/MiningConstellationNode'
 import MiningConstellationStreams from '@/components/mining/MiningConstellationStreams'
+import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 interface MiningConstellationProps {
   isActive: boolean
@@ -16,7 +17,8 @@ interface MiningConstellationProps {
 }
 
 export default function MiningConstellation({ isActive, variant = 'full' }: MiningConstellationProps) {
-  if (!isActive) return null
+  const visible = useSectionVisualActive(isActive)
+  if (!visible) return null
 
   const isCompact = variant === 'compact'
   const visibleIndices = isCompact

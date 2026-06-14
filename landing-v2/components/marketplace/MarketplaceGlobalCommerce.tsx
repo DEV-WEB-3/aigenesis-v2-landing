@@ -7,13 +7,15 @@ import MarketplaceGlobalHubs from '@/components/marketplace/MarketplaceGlobalHub
 import MarketplaceTradeRoutes from '@/components/marketplace/MarketplaceTradeRoutes'
 import MarketplacePaymentCores from '@/components/marketplace/MarketplacePaymentCores'
 import MarketplaceCoreActivity from '@/components/marketplace/MarketplaceCoreActivity'
+import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 interface MarketplaceGlobalCommerceProps {
   isActive: boolean
 }
 
 export default function MarketplaceGlobalCommerce({ isActive }: MarketplaceGlobalCommerceProps) {
-  if (!isActive) return null
+  const visible = useSectionVisualActive(isActive)
+  if (!visible) return null
 
   return (
     <div
