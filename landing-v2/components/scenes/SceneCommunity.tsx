@@ -29,7 +29,7 @@ const SceneCommunity = forwardRef<HTMLElement, Props>(
       >
 
         <SectionHeader
-          label="Sección 05"
+          label="Comunidad"
           title="Crece con"
           highlight="quienes crecen."
         />

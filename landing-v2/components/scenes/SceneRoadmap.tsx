@@ -66,7 +66,7 @@ const SceneRoadmap = forwardRef<HTMLElement, Props>(
       >
 
         <SectionHeader
-          label="Sección 07"
+          label="Roadmap"
           title="Nuestro"
           highlight="horizonte."
         />

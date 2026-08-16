@@ -36,7 +36,7 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
       >
 
         <SectionHeader
-          label="Sección 06"
+          label="Tecnología"
           title="Ingeniería de"
           highlight="vanguardia."
         />

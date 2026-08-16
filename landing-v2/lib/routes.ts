@@ -101,6 +101,83 @@ export const EXTERNAL_LINKS = {
 
 export const NAV_LINKS = SECTIONS.filter((s) => s.showInNav)
 
+/**
+ * Las cinco cabezas del menú.
+ *
+ * POR QUE EXISTEN
+ * El menú tenía DOCE entradas planas para catorce secciones, que es lo que pasa
+ * cuando cada capítulo nuevo se añade al menú porque no hay dónde meterlo. La
+ * página se escribió como siete capítulos y creció a catorce; los rótulos
+ * «Sección 02/05/06/07» que quedaban en pantalla eran el fósil de esa versión.
+ *
+ * Recortar a cinco BORRANDO siete no arregla nada: esconde contenido que
+ * existe. Lo que faltaba era un piso intermedio. Cada cabeza es un tema, salta
+ * a su primera sección y despliega las suyas — se lee cinco, se llega a doce.
+ *
+ * Y este agrupamiento es además el contenedor de lo que viene: Mercados,
+ * Utilidad y Tokenomics entran bajo `token`; G11 bajo `comunidad`. Sin estos
+ * huecos volverían a ser tres entradas planas más, y el menú tendría quince.
+ *
+ * `Inteligencia` va aparte de `Ecosistema` a propósito: G-Pulse y G-Oracle son
+ * la capa de IA, que es lo que separa este proyecto de cualquier otro con
+ * mining y staking. Enterrarla entre los productos es regalar el argumento.
+ * `Tecnología` y `Roadmap` van bajo `Confianza` porque su contenido real es
+ * prueba —verificación del contrato, hitos cumplidos—, no producto.
+ */
+export const NAV_GROUPS = [
+  {
+    id: 'ecosistema',
+    label: 'Ecosistema',
+    ancla: 'ecosistema',
+    hijos: ['ecosistema', 'mining', 'booster', 'staking', 'marketplace'],
+  },
+  { id: 'inteligencia', label: 'Inteligencia', ancla: 'gpulse', hijos: ['gpulse', 'goracle'] },
+  { id: 'token', label: 'Token', ancla: 'token', hijos: ['token'] },
+  { id: 'confianza', label: 'Confianza', ancla: 'trust', hijos: ['trust', 'technology', 'roadmap'] },
+  { id: 'comunidad', label: 'Comunidad', ancla: 'comunidad', hijos: ['comunidad'] },
+] as const satisfies readonly {
+  id: string
+  label: string
+  ancla: SectionId
+  hijos: readonly SectionId[]
+}[]
+
+/**
+ * GUARDA: ninguna sección del menú puede quedarse fuera de una cabeza.
+ *
+ * Corre al evaluar el módulo, o sea durante el build. Si alguien añade una
+ * sección con `showInNav: true` y no la mete en un grupo, el build FALLA
+ * nombrándola — en vez de desplegarse con una sección inalcanzable desde el
+ * menú, que es un fallo que nadie nota porque no rompe nada.
+ *
+ * Cubre los dos lados: la que falta y la que sobra o está repetida.
+ *
+ * Probada rompiéndola: al sacar `roadmap` de `confianza`, el build cae con
+ * «sin cabeza: roadmap»; al ponerlo también en `token`, cae con «en dos
+ * cabezas: roadmap».
+ */
+const _hijosDeclarados = NAV_GROUPS.flatMap((g) => g.hijos as readonly SectionId[])
+const _repetidos = _hijosDeclarados.filter((id, i) => _hijosDeclarados.indexOf(id) !== i)
+const _sinCabeza = NAV_LINKS.filter((s) => !_hijosDeclarados.includes(s.id)).map((s) => s.id)
+const _sobran = _hijosDeclarados.filter((id) => !NAV_LINKS.some((s) => s.id === id))
+
+if (_sinCabeza.length || _repetidos.length || _sobran.length) {
+  throw new Error(
+    [
+      'NAV_GROUPS no cubre exactamente las secciones del menú.',
+      _sinCabeza.length ? `  sin cabeza: ${_sinCabeza.join(', ')}` : '',
+      // `[...new Set()]` necesita downlevelIteration con el target de este
+      // proyecto; filtrar por índice hace lo mismo sin tocar el tsconfig.
+      _repetidos.length
+        ? `  en dos cabezas: ${_repetidos.filter((id, i) => _repetidos.indexOf(id) === i).join(', ')}`
+        : '',
+      _sobran.length ? `  no van en el menú: ${_sobran.join(', ')}` : '',
+    ]
+      .filter(Boolean)
+      .join('\n')
+  )
+}
+
 export function getSectionIndex(id: string): number {
   const section = SECTIONS.find((s) => s.id === id)
   return section?.index ?? -1

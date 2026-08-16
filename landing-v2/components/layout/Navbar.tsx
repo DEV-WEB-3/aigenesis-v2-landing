@@ -5,13 +5,26 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/genesis'
 import { GenesisOfficialLogo } from '@/components/brand'
 import { useScene } from '@/context/SceneContext'
-import { NAV_LINKS, ROUTES, sectionHref, resolveNavigationTarget, type SectionId } from '@/lib/routes'
+import {
+  NAV_GROUPS,
+  SECTIONS,
+  ROUTES,
+  sectionHref,
+  resolveNavigationTarget,
+  type SectionId,
+} from '@/lib/routes'
 
 const DRAWER_ID = 'mobile-nav-drawer'
+
+/** Rótulo de una sección, para pintar los hijos de cada cabeza. */
+function rotulo(id: SectionId): string {
+  return SECTIONS.find((s) => s.id === id)?.navLabel ?? id
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [grupoAbierto, setGrupoAbierto] = useState<string | null>(null)
   const { scrollToSectionRef } = useScene()
   const menuButtonRef = useRef<HTMLButtonElement>(null)
 
@@ -48,11 +61,38 @@ export default function Navbar() {
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [closeMenu])
 
+  /*
+   * Escape cierra tambien el desplegable, no solo el cajon movil. El manejador
+   * de abajo solo escucha con `menuOpen`, asi que un desplegable abierto con
+   * teclado no tenia forma de cerrarse sin mover el foco.
+   */
+  useEffect(() => {
+    if (!grupoAbierto) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      /*
+       * Devolver el foco a la cabeza NO es un detalle: el submenú también se
+       * revela con `:focus-within`, asi que apagar el estado con el foco dentro
+       * lo dejaria visible igual y Escape pareceria no hacer nada. Sacando el
+       * foco, la regla deja de aplicar y se cierra de verdad.
+       */
+      const dentro = (document.activeElement as HTMLElement | null)?.closest('.nav-desplegable')
+      if (dentro) {
+        const cabeza = dentro.parentElement?.querySelector(':scope > a')
+        ;(cabeza as HTMLElement | null)?.focus()
+      }
+      setGrupoAbierto(null)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [grupoAbierto])
+
   const navigateToSection = useCallback((id: SectionId) => {
     const target = resolveNavigationTarget(id)
     if (!target) return
     scrollToSectionRef.current?.(target.sectionIndex)
     window.history.replaceState(null, '', sectionHref(id))
+    setGrupoAbierto(null)
     closeMenu()
   }, [scrollToSectionRef, closeMenu])
 
@@ -101,16 +141,63 @@ export default function Navbar() {
             <GenesisOfficialLogo size="sm" markScale={1 / 3} layout="vertical" tone="color" className="inline-flex sm:hidden genesis-nav-logo-mobile" />
           </a>
 
-          <ul className="hidden xl:flex items-center gap-3 2xl:gap-4 list-none m-0 p-0 overflow-x-auto max-w-[58vw]">
-            {NAV_LINKS.map((link) => (
-              <li key={link.id}>
+          {/*
+            Cinco cabezas en vez de doce entradas planas. Cada una salta a su
+            primera sección y despliega las suyas: se lee cinco, se llega a doce.
+
+            El submenú NO se desmonta ni se oculta con `display:none` — se
+            atenúa y se hace `invisible`, y se revela también con
+            `focus-within`. Si se quitara del árbol, quien navega con teclado no
+            podría tabular hasta él: sería un menú que sólo existe para el ratón.
+
+            La cabeza es un enlace y no un botón porque su acción principal es
+            navegar; el desplegable es un complemento, no su función.
+          */}
+          <ul className="hidden xl:flex items-center gap-1 list-none m-0 p-0">
+            {NAV_GROUPS.map((grupo) => (
+              <li
+                key={grupo.id}
+                className="relative group"
+                onMouseEnter={() => setGrupoAbierto(grupo.id)}
+                onMouseLeave={() => setGrupoAbierto(null)}
+                onFocus={() => setGrupoAbierto(grupo.id)}
+                onBlur={(e) => {
+                  if (!e.currentTarget.contains(e.relatedTarget as Node)) setGrupoAbierto(null)
+                }}
+              >
+                {/*
+                  Relleno propio en la cabeza, no sólo `gap` en la lista: cinco
+                  rótulos de una palabra pegados se leen como una frase. Con
+                  `gap-1` y sin relleno salía «Token Confianza» corrido.
+                */}
                 <a
-                  href={sectionHref(link.id)}
-                  className={navLinkClass}
-                  onClick={(e) => { e.preventDefault(); navigateToSection(link.id) }}
+                  href={sectionHref(grupo.ancla)}
+                  className={`${navLinkClass} inline-flex items-center px-3 py-2 rounded-full hover:bg-white/5`}
+                  onClick={(e) => { e.preventDefault(); navigateToSection(grupo.ancla) }}
                 >
-                  {link.navLabel}
+                  {grupo.label}
+                  {grupo.hijos.length > 1 ? (
+                    <span className="nav-cabeza-marca" aria-hidden="true" />
+                  ) : null}
                 </a>
+
+                {grupo.hijos.length > 1 ? (
+                  <ul
+                    className={`nav-desplegable ${grupoAbierto === grupo.id ? 'nav-desplegable--abierto' : ''}`}
+                  >
+                    {grupo.hijos.map((hijo) => (
+                      <li key={hijo}>
+                        <a
+                          href={sectionHref(hijo)}
+                          className="nav-desplegable__enlace focus-ring-genesis"
+                          onClick={(e) => { e.preventDefault(); navigateToSection(hijo) }}
+                        >
+                          {rotulo(hijo)}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </li>
             ))}
           </ul>
@@ -200,15 +287,33 @@ export default function Navbar() {
                       Inicio
                     </a>
                   </li>
-                  {NAV_LINKS.map((link) => (
-                    <li key={link.id}>
-                      <a
-                        href={sectionHref(link.id)}
-                        className="block py-3 text-base font-display text-genesis-mist hover:text-genesis-text no-underline border-b border-hairline focus-ring-genesis rounded-sm"
-                        onClick={(e) => { e.preventDefault(); navigateToSection(link.id) }}
-                      >
-                        {link.navLabel}
-                      </a>
+                  {/*
+                    Mismos cinco grupos que en escritorio. Aqui no hay
+                    desplegable: los doce enlaces caben, y agruparlos ya resuelve
+                    lo que habia que resolver —que se pudieran leer de un
+                    vistazo—. Un acordeon anadiria un clic para llegar a donde ya
+                    se llega.
+
+                    La cabeza es un `h2` de verdad, no un `div` con estilo: el
+                    cajon es un dialogo con su propia estructura, y asi un lector
+                    de pantalla puede saltar de grupo en grupo.
+                  */}
+                  {NAV_GROUPS.map((grupo) => (
+                    <li key={grupo.id} className="mt-4 first:mt-0">
+                      <h2 className="nav-cajon-cabeza">{grupo.label}</h2>
+                      <ul className="list-none m-0 p-0">
+                        {grupo.hijos.map((hijo) => (
+                          <li key={hijo}>
+                            <a
+                              href={sectionHref(hijo)}
+                              className="block py-2.5 pl-3 text-base font-display text-genesis-mist hover:text-genesis-text no-underline border-b border-hairline focus-ring-genesis rounded-sm"
+                              onClick={(e) => { e.preventDefault(); navigateToSection(hijo) }}
+                            >
+                              {rotulo(hijo)}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
                     </li>
                   ))}
                   <li>

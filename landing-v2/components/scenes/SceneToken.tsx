@@ -31,7 +31,7 @@ const SceneToken = forwardRef<HTMLElement, Props>(
         particleSlot={<TokenOrbitalValueNetwork isActive={isActive} variant="full" />}
       >
         <SectionHeader
-          label="Sección 02"
+          label="Token"
           title="Artificial Intelligence"
           highlight="Genesis Token."
         />

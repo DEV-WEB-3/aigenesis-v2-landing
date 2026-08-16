@@ -770,6 +770,108 @@ body {
    * sobre el mismo elemento, el relleno `both` de la entrada ganaria al :hover
    * —una animacion pisa a una declaracion normal— y el boton se quedaria quieto.
    */
+  /* ── Menú de cinco cabezas ─────────────────────────────────────────── */
+
+  /* Marca de que la cabeza despliega. Sólo aparece si tiene más de un hijo. */
+  .nav-cabeza-marca {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 0.4em;
+    vertical-align: middle;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 3.5px solid currentColor;
+    opacity: 0.5;
+    transition: opacity 0.2s var(--ease-in-out, ease), transform 0.2s var(--ease-in-out, ease);
+  }
+
+  .group:hover .nav-cabeza-marca,
+  .group:focus-within .nav-cabeza-marca {
+    opacity: 1;
+    transform: translateY(1px);
+  }
+
+  /*
+   * El desplegable NO se quita del árbol ni se pone en `display: none`: se
+   * atenúa y se vuelve `invisible`. Si se ocultara del todo, quien navega con
+   * teclado no podría tabular hasta él y sería un menú sólo para el ratón.
+   *
+   * QUIEN LO ABRE ES EL ESTADO DE REACT, Y SÓLO EL ESTADO.
+   * La primera versión añadía además una regla `.group:focus-within`, y las dos
+   * se peleaban: como el foco en la propia CABEZA ya cuenta como `focus-within`,
+   * Escape apagaba el estado y el submenú seguía visible — Escape parecía no
+   * hacer nada. El `onFocus` de la cabeza abre igual (el foco burbujea), así
+   * que la regla CSS sobraba y sólo tapaba al estado.
+   */
+  .nav-desplegable {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -4px);
+    margin: 0;
+    padding: 0.4rem;
+    list-style: none;
+    min-width: 12rem;
+    background: rgba(9, 13, 26, 0.97);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--genesis-line);
+    border-radius: 12px;
+    /* Sobre el vacío no se proyecta una sombra negra: el halo es de marca. */
+    box-shadow: 0 0 28px rgba(110, 86, 207, 0.14);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.18s var(--ease-in-out, ease),
+      transform 0.18s var(--ease-in-out, ease),
+      visibility 0.18s;
+    z-index: 60;
+  }
+
+  .nav-desplegable--abierto {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, 4px);
+  }
+
+  .nav-desplegable__enlace {
+    display: block;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 0.82rem;
+    color: var(--genesis-mist);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .nav-desplegable__enlace:hover {
+    color: var(--g-ink);
+    background: rgba(157, 77, 255, 0.1);
+  }
+
+  /* Cabeza de grupo dentro del cajón móvil */
+  .nav-cajon-cabeza {
+    margin: 0 0 0.15rem;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--g-violet-hi);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-desplegable,
+    .nav-cabeza-marca {
+      transition: none;
+    }
+  }
+
   .hero-cta {
     margin-top: 0.15rem;
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
