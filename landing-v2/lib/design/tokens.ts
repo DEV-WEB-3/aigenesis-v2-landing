@@ -172,10 +172,28 @@ export const RADIUS = { sm: 8, md: 12, lg: 18, xl: 26, pill: 999 } as const
  * Presupuesto de cristal por pantalla.
  *
  * `backdrop-filter` obliga a recomponer todo lo que hay detrás en cada pintado.
- * No es una preferencia estética: es coste de pintado medible. Pocas
- * superficies, grandes; el resto opaco.
+ * No es una preferencia estética: es coste de pintado medible.
+ *
+ * MEDIDO en la sección Trust a 1440×900:
+ *
+ *   en reposo ............. 5 superficies · 23% de la pantalla   (dentro)
+ *   durante la transición . 12 superficies · 41% de la pantalla  (el doble)
+ *
+ * El pico NO está en reposo: está en el cambio de sección, cuando el contenido
+ * saliente y el entrante coexisten unos fotogramas. O sea que el coste máximo
+ * de cristal cae exactamente cuando la GPU ya está ocupada animando la
+ * transición y el morfeo de partículas.
+ *
+ * Por eso el presupuesto se mide EN TRANSICIÓN, no con la página quieta. Medir
+ * en reposo da 5 de 6 y parece que sobra margen; es una lectura falsa.
  */
-export const GLASS = { blur: { soft: 12, base: 18, heavy: 32 }, budgetPerScreen: 6 } as const
+export const GLASS = {
+  blur: { soft: 12, base: 18, heavy: 32 },
+  /** Superficies simultáneas permitidas, medidas en el peor momento. */
+  budgetPerScreen: 6,
+  /** Cómo medirlo: durante el cambio de sección, no con la página quieta. */
+  measureDuring: 'transition',
+} as const
 
 /* ─────────────────  mapa de migración  ────────────────────── */
 
