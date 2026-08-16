@@ -14,8 +14,8 @@ import CommunityGenesisNetwork from '@/components/community/CommunityGenesisNetw
 
 interface Props { isActive?: boolean }
 
-const Scene05_Community = forwardRef<HTMLElement, Props>(
-  function Scene05_Community({ isActive = false }, ref) {
+const SceneCommunity = forwardRef<HTMLElement, Props>(
+  function SceneCommunity({ isActive = false }, ref) {
     return (
       <SceneWrapper
         ref={ref}
@@ -63,4 +63,4 @@ const Scene05_Community = forwardRef<HTMLElement, Props>(
   }
 )
 
-export default Scene05_Community
+export default SceneCommunity

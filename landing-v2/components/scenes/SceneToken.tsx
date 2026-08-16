@@ -15,8 +15,8 @@ import TokenOrbitalValueNetwork from '@/components/token/TokenOrbitalValueNetwor
 
 interface Props { isActive?: boolean }
 
-const Scene02_AigToken = forwardRef<HTMLElement, Props>(
-  function Scene02_AigToken({ isActive = false }, ref) {
+const SceneToken = forwardRef<HTMLElement, Props>(
+  function SceneToken({ isActive = false }, ref) {
     const editorMode = useTokenOrbitEditorMode()
 
     return (
@@ -65,4 +65,4 @@ const Scene02_AigToken = forwardRef<HTMLElement, Props>(
   }
 )
 
-export default Scene02_AigToken
+export default SceneToken

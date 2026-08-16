@@ -51,8 +51,8 @@ function TimelineItem({ year, title, status }: TimelineItemProps) {
 
 interface Props { isActive?: boolean }
 
-const Scene07_Roadmap = forwardRef<HTMLElement, Props>(
-  function Scene07_Roadmap({ isActive = false }, ref) {
+const SceneRoadmap = forwardRef<HTMLElement, Props>(
+  function SceneRoadmap({ isActive = false }, ref) {
     return (
       <SceneWrapper
         ref={ref}
@@ -99,4 +99,4 @@ const Scene07_Roadmap = forwardRef<HTMLElement, Props>(
   }
 )
 
-export default Scene07_Roadmap
+export default SceneRoadmap

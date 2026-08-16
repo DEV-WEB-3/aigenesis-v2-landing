@@ -13,8 +13,8 @@ import MarketplaceGlobalCommerce from '@/components/marketplace/MarketplaceGloba
 
 interface Props { isActive?: boolean }
 
-const Scene04_GevyShop = forwardRef<HTMLElement, Props>(
-  function Scene04_GevyShop({ isActive = false }, ref) {
+const SceneMarketplace = forwardRef<HTMLElement, Props>(
+  function SceneMarketplace({ isActive = false }, ref) {
     return (
       <SceneWrapper
         ref={ref}
@@ -71,4 +71,4 @@ const Scene04_GevyShop = forwardRef<HTMLElement, Props>(
   }
 )
 
-export default Scene04_GevyShop
+export default SceneMarketplace

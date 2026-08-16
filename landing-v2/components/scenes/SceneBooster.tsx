@@ -18,7 +18,7 @@ const BOOSTER_LAYERS = [
   { label: 'Capa III', title: 'Progresión', description: 'Avance por niveles con transparencia en condiciones y umbrales.' },
 ]
 
-const Scene04_Booster = forwardRef<HTMLElement, Props>(function Scene04_Booster(
+const SceneBooster = forwardRef<HTMLElement, Props>(function SceneBooster(
   { isActive = false },
   ref
 ) {
@@ -73,4 +73,4 @@ const Scene04_Booster = forwardRef<HTMLElement, Props>(function Scene04_Booster(
   )
 })
 
-export default Scene04_Booster
+export default SceneBooster

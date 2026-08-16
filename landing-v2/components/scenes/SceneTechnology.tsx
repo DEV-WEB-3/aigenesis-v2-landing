@@ -21,8 +21,8 @@ const STATS = TECHNOLOGY_STATS
 
 interface Props { isActive?: boolean }
 
-const Scene06_Technology = forwardRef<HTMLElement, Props>(
-  function Scene06_Technology({ isActive = false }, ref) {
+const SceneTechnology = forwardRef<HTMLElement, Props>(
+  function SceneTechnology({ isActive = false }, ref) {
     return (
       <SceneWrapper
         ref={ref}
@@ -88,4 +88,4 @@ const Scene06_Technology = forwardRef<HTMLElement, Props>(
   }
 )
 
-export default Scene06_Technology
+export default SceneTechnology

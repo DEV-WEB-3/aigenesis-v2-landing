@@ -27,7 +27,7 @@ const ORACLE_PILLARS = [
   },
 ]
 
-const Scene08_GOracle = forwardRef<HTMLElement, Props>(function Scene08_GOracle(
+const SceneGOracle = forwardRef<HTMLElement, Props>(function SceneGOracle(
   { isActive = false },
   ref
 ) {
@@ -74,4 +74,4 @@ const Scene08_GOracle = forwardRef<HTMLElement, Props>(function Scene08_GOracle(
   )
 })
 
-export default Scene08_GOracle
+export default SceneGOracle

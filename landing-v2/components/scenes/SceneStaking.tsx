@@ -18,7 +18,7 @@ const STAKING_PERIODS = [
   { title: 'Participación sostenida', description: 'Incentivos alineados con permanencia — sin garantías de rendimiento financiero.' },
 ]
 
-const Scene05_Staking = forwardRef<HTMLElement, Props>(function Scene05_Staking(
+const SceneStaking = forwardRef<HTMLElement, Props>(function SceneStaking(
   { isActive = false },
   ref
 ) {
@@ -68,4 +68,4 @@ const Scene05_Staking = forwardRef<HTMLElement, Props>(function Scene05_Staking(
   )
 })
 
-export default Scene05_Staking
+export default SceneStaking

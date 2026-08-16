@@ -14,8 +14,8 @@ import GpulseSignalNetwork from '@/components/gpulse/GpulseSignalNetwork'
 
 interface Props { isActive?: boolean }
 
-const Scene03_GPulse = forwardRef<HTMLElement, Props>(
-  function Scene03_GPulse({ isActive = false }, ref) {
+const SceneGPulse = forwardRef<HTMLElement, Props>(
+  function SceneGPulse({ isActive = false }, ref) {
     return (
       <SceneWrapper
         ref={ref}
@@ -62,4 +62,4 @@ const Scene03_GPulse = forwardRef<HTMLElement, Props>(
   }
 )
 
-export default Scene03_GPulse
+export default SceneGPulse

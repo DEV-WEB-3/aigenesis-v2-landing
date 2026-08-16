@@ -15,7 +15,7 @@ interface Props {
   isActive?: boolean
 }
 
-const Scene08_CTA = forwardRef<HTMLElement, Props>(function Scene08_CTA(
+const SceneCTA = forwardRef<HTMLElement, Props>(function SceneCTA(
   { isActive = false },
   ref
 ) {
@@ -91,4 +91,4 @@ const Scene08_CTA = forwardRef<HTMLElement, Props>(function Scene08_CTA(
   )
 })
 
-export default Scene08_CTA
+export default SceneCTA

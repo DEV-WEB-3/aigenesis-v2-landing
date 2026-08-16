@@ -44,7 +44,7 @@ const MINING_FLOW = [
 
 const MINING_KPIS = MINING_BADGES
 
-const Scene03_Mining = forwardRef<HTMLElement, Props>(function Scene03_Mining(
+const SceneMining = forwardRef<HTMLElement, Props>(function SceneMining(
   { isActive = false },
   ref
 ) {
@@ -116,4 +116,4 @@ const Scene03_Mining = forwardRef<HTMLElement, Props>(function Scene03_Mining(
   )
 })
 
-export default Scene03_Mining
+export default SceneMining

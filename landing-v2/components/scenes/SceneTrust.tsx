@@ -39,7 +39,7 @@ const TRUST_ITEMS = [
   },
 ]
 
-const Scene01_Trust = forwardRef<HTMLElement, Props>(function Scene01_Trust(
+const SceneTrust = forwardRef<HTMLElement, Props>(function SceneTrust(
   { isActive = false },
   ref
 ) {
@@ -96,4 +96,4 @@ const Scene01_Trust = forwardRef<HTMLElement, Props>(function Scene01_Trust(
   )
 })
 
-export default Scene01_Trust
+export default SceneTrust

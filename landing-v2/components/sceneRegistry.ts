@@ -11,28 +11,29 @@
  * añade una sección a `routes.ts` y no se registra su escena, TypeScript lo
  * dice. El orden ya no vive aquí — vive en `routes.ts`, y sólo allí.
  *
- * Nota sobre los nombres `SceneNN_`: la numeración de los archivos dejó de
- * corresponder a su posición hace tiempo (hay dos Scene03, dos Scene04, dos
- * Scene05 y dos Scene08). Se respetan tal cual para no mezclar el renombrado
- * con este cambio; la tabla de abajo es ahora la referencia fiable.
+ * Los archivos de escena se llamaban `SceneNN_Algo`, con un número que dejó de
+ * corresponder a su posición hacía tiempo: había dos `Scene03`, dos `Scene04`,
+ * dos `Scene05` y dos `Scene08`. Un número en el nombre es una copia del orden,
+ * y el orden ya vive en `routes.ts` — así que la copia sólo podía envejecer mal.
+ * Ahora cada escena se llama por lo que ES, no por dónde estaba.
  */
 import type { ForwardRefExoticComponent, RefAttributes } from 'react'
 import type { SectionId } from '@/lib/routes'
 
 import HeroSection from '@/components/sections/HeroSection'
 import EcosystemSection from '@/components/sections/EcosystemSection'
-import Scene01_Trust from '@/components/scenes/Scene01_Trust'
-import Scene02_AigToken from '@/components/scenes/Scene02_AigToken'
-import Scene03_Mining from '@/components/scenes/Scene03_Mining'
-import Scene04_Booster from '@/components/scenes/Scene04_Booster'
-import Scene05_Staking from '@/components/scenes/Scene05_Staking'
-import Scene03_GPulse from '@/components/scenes/Scene03_GPulse'
-import Scene08_GOracle from '@/components/scenes/Scene08_GOracle'
-import Scene04_GevyShop from '@/components/scenes/Scene04_GevyShop'
-import Scene05_Community from '@/components/scenes/Scene05_Community'
-import Scene06_Technology from '@/components/scenes/Scene06_Technology'
-import Scene07_Roadmap from '@/components/scenes/Scene07_Roadmap'
-import Scene08_CTA from '@/components/scenes/Scene08_CTA'
+import SceneTrust from '@/components/scenes/SceneTrust'
+import SceneToken from '@/components/scenes/SceneToken'
+import SceneMining from '@/components/scenes/SceneMining'
+import SceneBooster from '@/components/scenes/SceneBooster'
+import SceneStaking from '@/components/scenes/SceneStaking'
+import SceneGPulse from '@/components/scenes/SceneGPulse'
+import SceneGOracle from '@/components/scenes/SceneGOracle'
+import SceneMarketplace from '@/components/scenes/SceneMarketplace'
+import SceneCommunity from '@/components/scenes/SceneCommunity'
+import SceneTechnology from '@/components/scenes/SceneTechnology'
+import SceneRoadmap from '@/components/scenes/SceneRoadmap'
+import SceneCTA from '@/components/scenes/SceneCTA'
 
 export type SectionSceneProps = { isActive?: boolean }
 
@@ -43,17 +44,17 @@ export type SectionScene = ForwardRefExoticComponent<
 /** Registro completo. `Record` obliga a cubrir TODAS las secciones. */
 export const SCENE_BY_SECTION: Record<SectionId, SectionScene> = {
   hero: HeroSection,
-  trust: Scene01_Trust,
+  trust: SceneTrust,
   ecosistema: EcosystemSection,
-  token: Scene02_AigToken,
-  mining: Scene03_Mining,
-  booster: Scene04_Booster,
-  staking: Scene05_Staking,
-  gpulse: Scene03_GPulse,
-  goracle: Scene08_GOracle,
-  marketplace: Scene04_GevyShop,
-  comunidad: Scene05_Community,
-  technology: Scene06_Technology,
-  roadmap: Scene07_Roadmap,
-  cta: Scene08_CTA,
+  token: SceneToken,
+  mining: SceneMining,
+  booster: SceneBooster,
+  staking: SceneStaking,
+  gpulse: SceneGPulse,
+  goracle: SceneGOracle,
+  marketplace: SceneMarketplace,
+  comunidad: SceneCommunity,
+  technology: SceneTechnology,
+  roadmap: SceneRoadmap,
+  cta: SceneCTA,
 }
