@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
+import { isMobileWidth } from '@/lib/viewport'
 
 function isPureColorDebug(): boolean {
   if (typeof window === 'undefined') return false
@@ -20,7 +21,9 @@ export default function PostEffects({ heroActive = false }: PostEffectsProps) {
   const [mobile, setMobile] = useState(false)
 
   useEffect(() => {
-    const sync = () => setMobile(window.innerWidth < 768)
+    // Aquí el listener SÍ sirve: los parámetros del bloom son reactivos, a
+    // diferencia de los atributos del contexto WebGL en WorldCanvasInner.
+    const sync = () => setMobile(isMobileWidth(window.innerWidth))
     sync()
     window.addEventListener('resize', sync)
     return () => window.removeEventListener('resize', sync)

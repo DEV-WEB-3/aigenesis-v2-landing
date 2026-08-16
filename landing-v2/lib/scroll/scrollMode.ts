@@ -1,16 +1,18 @@
 /** Responsive scroll UX — desktop snap, tablet proximity, mobile natural */
 
+import { VIEWPORT } from '@/lib/viewport'
+
 export type ScrollMode = 'snap' | 'proximity' | 'natural'
 
-export const SCROLL_BREAKPOINTS = {
-  MOBILE_MAX: 767,
-  TABLET_MAX: 1023,
-  DESKTOP_MIN: 1024,
-} as const
+/**
+ * Alias histórico. Los umbrales viven ahora en `lib/viewport.ts`, que es la
+ * definición única; esto se mantiene para no romper los imports existentes.
+ */
+export const SCROLL_BREAKPOINTS = VIEWPORT
 
 export function resolveScrollMode(width: number): ScrollMode {
-  if (width >= SCROLL_BREAKPOINTS.DESKTOP_MIN) return 'snap'
-  if (width > SCROLL_BREAKPOINTS.MOBILE_MAX) return 'proximity'
+  if (width >= VIEWPORT.DESKTOP_MIN) return 'snap'
+  if (width > VIEWPORT.MOBILE_MAX) return 'proximity'
   return 'natural'
 }
 

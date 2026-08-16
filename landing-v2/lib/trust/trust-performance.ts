@@ -2,6 +2,8 @@
  * Trust / Stardust Logo — adaptive particle tiers (Phase 6.0).
  * Desktop 2500 · Tablet 1500 · Mobile 900 — 95% PNG mask budget.
  */
+import { deviceClassForWidth } from '@/lib/viewport'
+
 export type TrustPerfTier = 'high' | 'medium' | 'low'
 
 export const TRUST_PARTICLE_COUNTS: Record<TrustPerfTier, number> = {
@@ -17,9 +19,14 @@ export function detectTrustPerfTier(width: number): TrustPerfTier {
   if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     return 'low'
   }
-  if (width >= 1024) return 'high'
-  if (width >= 768) return 'medium'
-  return 'low'
+  switch (deviceClassForWidth(width)) {
+    case 'desktop':
+      return 'high'
+    case 'tablet':
+      return 'medium'
+    default:
+      return 'low'
+  }
 }
 
 export function trustParticleCountForTier(tier: TrustPerfTier): number {

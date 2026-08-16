@@ -20,6 +20,7 @@ import GenesisParticleControlPanel from '@/components/dev/GenesisParticleControl
 import { useScene } from '@/context/SceneContext'
 import { useIsMounted } from '@/hooks/useIsMounted'
 import { heroDebug } from '@/lib/hero-debug'
+import { isMobileWidth } from '@/lib/viewport'
 
 interface WorldCanvasInnerProps {
   heroActive?: boolean
@@ -56,14 +57,29 @@ export default function WorldCanvasInner({
   const prevHeroActive = useRef(heroActive)
   const mounted = useIsMounted()
   const showDevPanel = mounted && process.env.NODE_ENV !== 'production'
-  const [mobileGl, setMobileGl] = useState(false)
-
-  useEffect(() => {
-    const sync = () => setMobileGl(window.innerWidth < 768)
-    sync()
-    window.addEventListener('resize', sync)
-    return () => window.removeEventListener('resize', sync)
-  }, [])
+  /**
+   * Perfil GL del dispositivo — se decide UNA vez, antes de crear el renderer.
+   *
+   * `antialias` y `powerPreference` son atributos del contexto WebGL: se fijan al
+   * crearlo y no se pueden cambiar después. R3F lo dice en su propio código
+   * ("Set up renderer (one time only!)"): sólo construye el renderer si aún no
+   * existe, así que cambiar la prop `gl` más tarde no tiene ningún efecto.
+   *
+   * Antes esto arrancaba en `false` y se corregía en un `useEffect`, que corre
+   * DESPUÉS del primer render. Para entonces el renderer ya estaba creado con
+   * antialias activado y `high-performance` — justo lo contrario de lo que se
+   * buscaba, y precisamente en los móviles donde más importa.
+   *
+   * Este componente sólo se carga con `dynamic(..., { ssr: false })`, así que
+   * `window` existe ya en el primer render: leerlo aquí es seguro y no hay
+   * desajuste de hidratación posible.
+   *
+   * Sin listener de `resize` a propósito: no serviría de nada (el contexto ya
+   * está creado) y provocaría re-renders del árbol del canvas para nada.
+   */
+  const [mobileGl] = useState(
+    () => typeof window !== 'undefined' && isMobileWidth(window.innerWidth)
+  )
 
   useEffect(() => {
     if (prevHeroActive.current !== heroActive) {

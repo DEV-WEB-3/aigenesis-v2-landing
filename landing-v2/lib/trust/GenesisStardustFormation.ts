@@ -2,6 +2,7 @@
  * Phase 5.9–5.11 — Genesis stardust logo formation on Trust section enter.
  * Hero cinematic drop · bidirectional left/right convergence.
  */
+import { deviceClassForWidth } from '@/lib/viewport'
 import { getGenesisLogoMaskBounds } from './GenesisLogoMaskSampler'
 import {
   NEON_BLUE,
@@ -25,10 +26,14 @@ export const BIDIRECTIONAL_FORM_DURATION = 1.7
 
 const BIDIRECTIONAL_EXTREME_MULT = 3.5
 
+const BIDIRECTIONAL_EXTREME_BY_DEVICE = {
+  mobile: 2.15,
+  tablet: 2.85,
+  desktop: BIDIRECTIONAL_EXTREME_MULT,
+} as const
+
 export function bidirectionalExtremeMult(viewportWidth: number): number {
-  if (viewportWidth < 768) return 2.15
-  if (viewportWidth < 1024) return 2.85
-  return BIDIRECTIONAL_EXTREME_MULT
+  return BIDIRECTIONAL_EXTREME_BY_DEVICE[deviceClassForWidth(viewportWidth)]
 }
 
 export const FORMATION_SCATTER_RADIUS = {
@@ -99,9 +104,7 @@ export function setHeroDropGroupOffset(offset: [number, number, number]) {
 }
 
 export function scatterRadiusForViewport(width: number): number {
-  if (width >= 1024) return FORMATION_SCATTER_RADIUS.desktop
-  if (width >= 768) return FORMATION_SCATTER_RADIUS.tablet
-  return FORMATION_SCATTER_RADIUS.mobile
+  return FORMATION_SCATTER_RADIUS[deviceClassForWidth(width)]
 }
 
 export function resolveGenesisFormationMode(

@@ -1,4 +1,9 @@
+import { isMobileWidth } from '@/lib/viewport'
+
 export type HeroPerfTier = 'high' | 'medium' | 'low'
+
+/** Móvil pequeño — umbral exclusivo del hero. */
+const HERO_SMALL_PHONE_MAX_WIDTH = 480
 
 export const HERO_LOGO_FOCUS = { x: 0.5, y: 0.44 } as const
 export const HERO_ORB_FOCUS = HERO_LOGO_FOCUS
@@ -46,8 +51,11 @@ export function detectHeroPerfTier(): HeroPerfTier {
   const cores = navigator.hardwareConcurrency ?? 4
   const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 4
 
-  if (w < 480 || cores <= 2) return 'low'
-  if (w < 768 || cores <= 4 || memory <= 4) return 'medium'
+  // 480 es propio del hero (móvil pequeño), no un umbral compartido: aquí el
+  // ancho se cruza con núcleos y memoria, que es una decisión distinta a la de
+  // clasificar el dispositivo por tamaño.
+  if (w < HERO_SMALL_PHONE_MAX_WIDTH || cores <= 2) return 'low'
+  if (isMobileWidth(w) || cores <= 4 || memory <= 4) return 'medium'
   return 'high'
 }
 
