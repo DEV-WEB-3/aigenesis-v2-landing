@@ -226,9 +226,32 @@ export function useSnapScroll(
     const root = document.querySelector('main') as HTMLElement | null
     if (!root) return
 
+    /*
+     * Geometría de las secciones, CACHEADA.
+     *
+     * `offsetTop` y `offsetHeight` fuerzan un layout síncrono si los estilos
+     * están invalidados — y con React repintando el árbol cada fotograma, lo
+     * están casi siempre. Leerlos en cada evento de scroll (14 secciones × 2
+     * propiedades) provoca layout thrashing: una traza con la CPU frenada 6×
+     * lo delató como el mayor coste de reflow de la página.
+     *
+     * Pero esta geometría sólo cambia cuando cambia el layout, no cuando se
+     * hace scroll. Se mide una vez, se reutiliza, y se invalida al redimensionar.
+     */
+    let geometry: Array<{ top: number; height: number }> = []
+
+    const measure = () => {
+      geometry = sectionEls.current.map((el) => ({
+        top: el?.offsetTop ?? 0,
+        height: el?.offsetHeight ?? root.clientHeight,
+      }))
+    }
+
     const read = () => {
       progressRafRef.current = 0
-      const els = sectionEls.current
+      if (geometry.length === 0) measure()
+
+      // Única lectura de layout por fotograma.
       const y = root.scrollTop
 
       /*
@@ -244,19 +267,15 @@ export function useSnapScroll(
        * usuario y queda acotado a 0..1 por construcción.
        */
       let idx = 0
-      for (let i = 0; i < els.length; i++) {
-        const candidate = els[i]
-        if (!candidate) continue
-        if (candidate.offsetTop <= y + 1) idx = i
+      for (let i = 0; i < geometry.length; i++) {
+        if (geometry[i].top <= y + 1) idx = i
         else break
       }
 
-      const el = els[idx]
-      if (!el) return
-      const height = el.offsetHeight || root.clientHeight
-      if (height <= 0) return
+      const slot = geometry[idx]
+      if (!slot || slot.height <= 0) return
 
-      scrollProgressRef.current = Math.max(0, Math.min(1, (y - el.offsetTop) / height))
+      scrollProgressRef.current = Math.max(0, Math.min(1, (y - slot.top) / slot.height))
 
       if (process.env.NODE_ENV !== 'production') {
         // Sonda de desarrollo: permite comprobar desde la consola que el
@@ -272,13 +291,39 @@ export function useSnapScroll(
       }
     }
 
+    /** Al cambiar el layout la caché deja de valer: se vuelve a medir. */
+    const onResize = () => {
+      measure()
+      onScroll()
+    }
+
+    measure()
     read()
     root.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll, { passive: true })
+    window.addEventListener('resize', onResize, { passive: true })
+
+    /*
+     * Las secciones se registran por ref DESPUÉS del primer render, y sus altos
+     * dependen de fuentes e imágenes que aún pueden estar cargando. Un
+     * ResizeObserver recoge esos cambios sin sondear.
+     *
+     * Se observa el contenedor Y cada sección: el contenedor sólo avisa de
+     * cambios en su propia caja, no de que una sección de dentro haya crecido —
+     * que es justo lo que desplaza los `offsetTop` de todas las siguientes.
+     *
+     * No hay riesgo de bucle: `measure()` sólo lee, nunca escribe estilos.
+     */
+    const ro =
+      typeof ResizeObserver !== 'undefined' ? new ResizeObserver(onResize) : null
+    if (ro) {
+      ro.observe(root)
+      for (const el of sectionEls.current) if (el) ro.observe(el)
+    }
 
     return () => {
       root.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
+      window.removeEventListener('resize', onResize)
+      ro?.disconnect()
       if (progressRafRef.current) cancelAnimationFrame(progressRafRef.current)
       progressRafRef.current = 0
     }
