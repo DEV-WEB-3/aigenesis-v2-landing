@@ -2,13 +2,53 @@ import type { Metadata } from 'next'
 import StaticPageShell from '@/components/layout/StaticPageShell'
 import { Button } from '@/components/ui/genesis'
 import { ROUTES } from '@/lib/routes'
-import { PRESENTACIONES_G11, GUIAS_G11, CANALES_G11, MB_PESADO } from '@/lib/g11'
+import {
+  PRESENTACIONES_G11,
+  PRESENTACIONES_G11_V1,
+  GUIAS_G11,
+  CANALES_G11,
+  MB_PESADO,
+  type PresentacionG11,
+} from '@/lib/g11'
 
 export const metadata: Metadata = {
   title: 'Comunidad G11 — AiGenesis',
   description:
     'Material oficial de la Comunidad G11: guías de registro y minería, presentaciones corporativas en ocho idiomas y canales oficiales.',
   alternates: { canonical: '/g11' },
+}
+
+/**
+ * Ficha de descarga de una presentación.
+ *
+ * `dir="rtl"` en árabe y urdu: no es un adorno. Escritos de derecha a izquierda,
+ * sin esto el nombre del idioma queda alineado al lado contrario del que lee
+ * quien lo busca — y esa persona es exactamente el público de esta ficha.
+ */
+function FichaPresentacion({ p, antigua = false }: { p: PresentacionG11; antigua?: boolean }) {
+  const pesado = p.mb >= MB_PESADO
+  return (
+    <li>
+      <a
+        href={p.archivo}
+        target="_blank"
+        rel="noopener noreferrer"
+        {...(p.rtl ? { dir: 'rtl' as const } : {})}
+        className={`surface-card card-genesis-hover focus-ring-genesis rounded-2xl px-genesis-4 py-genesis-4 flex flex-col gap-1 no-underline h-full ${
+          antigua ? 'opacity-75' : ''
+        }`}
+      >
+        <span className="font-display text-body-lg text-genesis-text">{p.nativo}</span>
+        <span
+          className={`text-caption uppercase tracking-wider ${
+            pesado ? 'text-state-warning' : 'text-genesis-ghost'
+          }`}
+        >
+          PDF · {p.mb} MB
+        </span>
+      </a>
+    </li>
+  )
 }
 
 export default function G11Page() {
@@ -86,31 +126,35 @@ export default function G11Page() {
           Presentaciones oficiales
         </h2>
         <p className="text-body text-genesis-ghost mb-4">
-          La presentación corporativa, en ocho idiomas. El peso va indicado: una de ellas es muy
-          grande y conviene saberlo antes de descargarla con datos.
+          Versión 5.0, en ocho idiomas. Cada ficha indica su peso: son unos 2,5 MB, pensadas para
+          descargar y enseñar desde el móvil.
         </p>
 
         <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none m-0 p-0">
           {PRESENTACIONES_G11.map((p) => (
-            <li key={p.idioma}>
-              <a
-                href={p.archivo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="surface-card card-genesis-hover focus-ring-genesis rounded-2xl px-genesis-4 py-genesis-4 flex flex-col gap-1 no-underline h-full"
-              >
-                <span className="font-display text-body-lg text-genesis-text">{p.nativo}</span>
-                <span
-                  className={`text-caption uppercase tracking-wider ${
-                    p.mb >= MB_PESADO ? 'text-state-warning' : 'text-genesis-ghost'
-                  }`}
-                >
-                  PDF · {p.mb} MB
-                </span>
-              </a>
-            </li>
+            <FichaPresentacion key={p.archivo} p={p} />
           ))}
         </ul>
+
+        {/*
+          Bloque aparte, no una fila más de la rejilla de arriba.
+          La v5.0 no tiene alemán, serbio ni urdu; la v1 sí. Borrarlos habría
+          dejado a tres comunidades sin material, y mezclarlos con los de arriba
+          sería hacer pasar el v1 por v5. Se conservan, separados y etiquetados.
+        */}
+        <div className="pt-6">
+          <h3 className="text-caption text-genesis-ghost uppercase tracking-wider mb-1">
+            Sólo en versión anterior (v1)
+          </h3>
+          <p className="text-body text-genesis-ghost mb-3">
+            Estos idiomas todavía no tienen la 5.0. Son archivos antiguos y más pesados.
+          </p>
+          <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none m-0 p-0">
+            {PRESENTACIONES_G11_V1.map((p) => (
+              <FichaPresentacion key={p.archivo} p={p} antigua />
+            ))}
+          </ul>
+        </div>
       </section>
 
       {/* ── Canales ───────────────────────────────────────────────────── */}

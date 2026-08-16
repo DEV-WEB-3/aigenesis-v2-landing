@@ -10,38 +10,60 @@
  * sección más del recorrido.
  */
 
-/** URL base de las descargas oficiales del sitio legacy. */
+import { PRESS_V5 } from './official-links'
+
+/** URL base de las descargas del sitio legacy — sólo para la tanda antigua. */
 const DESCARGAS = 'https://aigenesis.io/downloads'
 
 export interface PresentacionG11 {
-  idioma: string
-  /** Etiqueta corta para la ficha; el idioma en su propia lengua. */
+  /** El idioma en su propia lengua: es como lo busca quien lo necesita. */
   nativo: string
   archivo: string
-  /** Peso real, medido. Se muestra: uno de estos archivos pesa 227 MB. */
   mb: number
+  rtl?: boolean
 }
 
 /**
- * ATENCIÓN AL NOMBRE DE ARCHIVO: cinco de los ocho llevan `É` acentuada.
+ * PRESENTACIÓN OFICIAL — v5.0, ocho idiomas.
  *
- * Va porcentualmente codificada (`G%C3%89NESIS`) como en el portal original.
- * Sin codificar devuelven 404 —comprobado— y confiar en que cada navegador
- * codifique bien un carácter no ASCII en una ruta es apostar: los que lo
- * hacen en Latin-1 en vez de UTF-8 no encuentran el archivo.
+ * Sale de `PRESS_V5`, que es la misma fuente que usa el «plan de marketing» de
+ * la escena Roadmap. Un solo juego de archivos, una sola lista.
  *
- * Los pesos están medidos uno a uno, no estimados.
+ * Sustituye a la tanda v1 que tenía el portal. La mejora no es sólo que esté al
+ * día: la v1 pesaba entre 5 y 9 MB por idioma —y 227 MB el serbio—, y ésta va a
+ * 2,4-2,5 MB. Para alguien que la descarga con datos en el móvil para enseñarla,
+ * eso es la diferencia entre poder y no poder.
  */
 export const PRESENTACIONES_G11: readonly PresentacionG11[] = [
-  { idioma: 'Español', nativo: 'Español', archivo: `${DESCARGAS}/G%C3%89NESIS_CORPORATE_PRESENTATION_V-ES.pdf`, mb: 9.3 },
-  { idioma: 'Inglés', nativo: 'English', archivo: `${DESCARGAS}/GENESIS_CORPORATE_PRESENTATION_V-ENG.pdf`, mb: 8.8 },
-  { idioma: 'Portugués', nativo: 'Português (BR)', archivo: `${DESCARGAS}/G%C3%89NESIS_CORPORATE_PRESENTATION_V-BR.pdf`, mb: 9.2 },
-  { idioma: 'Francés', nativo: 'Français', archivo: `${DESCARGAS}/G%C3%89NESIS_CORPORATE_PRESENTATION_V-FR.pdf`, mb: 9.2 },
-  { idioma: 'Alemán', nativo: 'Deutsch', archivo: `${DESCARGAS}/G%C3%89NESIS_CORPORATE_PRESENTATION_V-DEU.pdf`, mb: 9.2 },
-  { idioma: 'Ruso', nativo: 'Русский', archivo: `${DESCARGAS}/G%C3%89NESIS_CORPORATE_PRESENTATION_V-RU.pdf`, mb: 9.2 },
-  { idioma: 'Serbio', nativo: 'Српски', archivo: `${DESCARGAS}/GENESIS_CORPORATE_PRESENTATION_V-SRB.pdf`, mb: 227.3 },
-  { idioma: 'Urdu', nativo: 'اردو', archivo: `${DESCARGAS}/GENESIS_CORPORATE_PRESENTATION_V-urdu.pdf`, mb: 5.2 },
-] as const
+  PRESS_V5.es, PRESS_V5.en, PRESS_V5.pt, PRESS_V5.fr,
+  PRESS_V5.ru, PRESS_V5.sv, PRESS_V5.hr, PRESS_V5.ar,
+]
+
+/**
+ * Los tres idiomas que la v5.0 NO tiene todavía.
+ *
+ * La tanda v1 cubría alemán, serbio y urdu; la v5.0 no —comprobado probando
+ * varias formas del nombre en el servidor, las tres dan 404— y en cambio gana
+ * sueco, croata y árabe.
+ *
+ * Reemplazar sin más habría dejado a tres comunidades sin ningún material. Así
+ * que se conservan, en su propio bloque y marcados como versión anterior. Un
+ * material viejo en tu idioma sirve más que uno nuevo que no entiendes, pero
+ * mezclarlos en la misma rejilla sería hacer pasar el v1 por v5.
+ *
+ * ATENCIÓN AL NOMBRE DE ARCHIVO: `É` acentuada en el alemán. Va porcentualmente
+ * codificada (`G%C3%89NESIS`) como en el portal original: sin codificar devuelve
+ * 404, y confiar en que cada navegador codifique un carácter no ASCII de la ruta
+ * como UTF-8 es apostar.
+ *
+ * EL SERBIO PESA 227 MB. Es un archivo de la v1 y sigue siendo un obstáculo:
+ * hasta que exista su v5.0 se queda, avisado en ámbar.
+ */
+export const PRESENTACIONES_G11_V1: readonly PresentacionG11[] = [
+  { nativo: 'Deutsch', archivo: `${DESCARGAS}/G%C3%89NESIS_CORPORATE_PRESENTATION_V-DEU.pdf`, mb: 9.2 },
+  { nativo: 'Српски', archivo: `${DESCARGAS}/GENESIS_CORPORATE_PRESENTATION_V-SRB.pdf`, mb: 227.3 },
+  { nativo: 'اردو', archivo: `${DESCARGAS}/GENESIS_CORPORATE_PRESENTATION_V-urdu.pdf`, mb: 5.2, rtl: true },
+]
 
 /** Por encima de esto se avisa antes de que alguien lo pulse en el móvil. */
 export const MB_PESADO = 50
