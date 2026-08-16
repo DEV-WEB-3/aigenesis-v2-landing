@@ -3052,8 +3052,32 @@ body {
 }
 
 @media (min-width: 1024px) {
+  /*
+   * EL MAPA OCUPA SU COLUMNA, NO LA DESBORDA.
+   *
+   * Aquí había `scale(1.35)`. Un escalado no reserva espacio: la caja de
+   * maquetación seguía midiendo 386 px mientras el mapa se dibujaba a 522, así
+   * que los 136 px de diferencia invadían la columna de texto de al lado.
+   *
+   * Medido, el solape horizontal con el párrafo era de 98 px. Es lo que hacía
+   * que el texto pareciera pasar por debajo de la tarjeta «AiG Token».
+   *
+   * Quitar el escalado lo baja a 20 px —un 80% menos—, y esos 20 restantes son
+   * el `translateX` de la columna, que se neutraliza abajo.
+   *
+   * Si el mapa debe verse más grande, la vía es darle más columna, no escalarlo:
+   * agrandar sin reservar espacio es exactamente cómo se produce un solape.
+   */
   .ecosystem-map-visual {
-    transform: scale(1.35);
+    transform: none;
+  }
+
+  /*
+   * El desplazamiento lateral empujaba la columna hacia el texto. Con el mapa ya
+   * ajustado a su caja no hace falta, y sumaba al solape.
+   */
+  .ecosystem-map-column {
+    transform: none;
   }
 }
 
