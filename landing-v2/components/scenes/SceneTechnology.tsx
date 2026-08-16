@@ -61,9 +61,18 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
           <span className="text-xs text-genesis-ghost uppercase tracking-widest">Smart Contract</span>
           <div className="flex items-center gap-3">
             <span className="text-sm font-mono text-genesis-mist">0xC1F076...E2a4</span>
+            {/*
+              Media 134x16 en movil: por debajo del minimo de WCAG 2.2 AA. Va con
+              zona de toque ampliada a 44 px, que aqui cabe porque el enlace esta
+              solo en su fila. `target`/`rel` para no perder la landing al salir
+              hacia BSCScan — es el mismo criterio que ya aplica TrustBadge a sus
+              enlaces externos.
+            */}
             <a
               href={ROUTES.BSCSCAN}
-              className="text-xs text-genesis-ion transition-colors hover:underline pointer-events-auto"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-genesis-ion transition-colors hover:underline pointer-events-auto zona-toque enlace-verificacion"
             >
               Verificar en BSCScan ↗
             </a>

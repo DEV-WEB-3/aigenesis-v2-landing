@@ -21,6 +21,7 @@
  *  4. Texto invisible: color transparente sin fondo que lo pinte
  *  5. Presencia de color dentro del presupuesto de marca
  *  6. Formas SVG caidas al `fill` negro por defecto
+ *  7. Objetivos tactiles por debajo de 24x24 (WCAG 2.2 AA), solo en movil
  *
  * QUE NO COMPRUEBA, Y POR QUE
  * ---------------------------
@@ -113,6 +114,34 @@ async function verificarGenesis() {
       detalle: (el.className || el.tagName).toString().slice(0, 40),
       texto: (el.textContent || '').trim().slice(0, 24),
     });
+  }
+
+  // ── 7. objetivos tactiles por debajo de WCAG 2.2 AA (24x24) ───────────
+  //
+  // Medido a 390 px: los once enlaces del pie iban a 16-17 px de alto y el de X
+  // media NUEVE de ancho. La zona se amplia con un ::after, asi que hay que
+  // medir el PSEUDOELEMENTO, no la caja del enlace.
+  //
+  // OJO con el fallo que tuvo la primera version de esta comprobacion: si el
+  // ::after no existe devolvia null y el enlace quedaba FUERA del conteo, con lo
+  // que daba verde justo en el caso que debia cazar. Sin ::after, la zona de
+  // toque es la caja del propio elemento — ese es el respaldo correcto.
+  if (window.innerWidth <= 480) {
+    for (const el of Array.from(document.querySelectorAll('a, button'))) {
+      const b = el.getBoundingClientRect();
+      if (b.width === 0 || (el.textContent || '').trim().length === 0) continue;
+      if (getComputedStyle(el).pointerEvents === 'none') continue;
+      const a = getComputedStyle(el, '::after');
+      let w = b.width, h = b.height;
+      if (a.content !== 'none' && a.position === 'absolute') {
+        w = Math.max(parseFloat(a.width) || 0, parseFloat(a.minWidth) || 0);
+        h = parseFloat(a.height) || 0;
+      }
+      if (w < 24 || h < 24) {
+        fallos.push({ tipo: 'tactil-bajo-minimo', texto: (el.textContent || '').trim().slice(0, 20),
+                      zona: Math.round(w) + 'x' + Math.round(h) });
+      }
+    }
   }
 
   const main = document.querySelector('.home-snap-main');

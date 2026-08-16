@@ -1273,6 +1273,69 @@ body {
   border-radius: 2px;
 }
 
+/*
+ * Zona de toque de los enlaces del pie.
+ *
+ * Medido a 390 px: los sociales son de 16 px de alto y los del nav de 17, y el
+ * de X mide NUEVE pixeles de ancho. El minimo de WCAG 2.2 AA (2.5.8) son 24x24,
+ * asi que los once enlaces del pie estaban por debajo — en un sitio cuyo
+ * trafico es mayoritariamente movil.
+ *
+ * La zona se agranda con un pseudoelemento y no con padding: el padding
+ * cambiaria la maquetacion del flex, y esto no es un cambio de diseno.
+ *
+ * Los numeros salen de los huecos reales, no de un redondeo: hueco horizontal
+ * entre vecinos 13-18 px y separacion entre filas 25-27 px. Con +10 px de ancho
+ * (5 por lado) y 24 px de alto (4 por lado sobre un enlace de 16) queda margen
+ * en los dos ejes y NINGUNA zona de toque invade la del vecino. `min-width` es
+ * lo que salva a X, que con +10 se quedaria en 21.
+ *
+ * Los 44x44 de AAA no caben sin separar mas los enlaces, y eso ya seria una
+ * decision de diseno.
+ */
+.zona-toque {
+  position: relative;
+}
+
+.zona-toque::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + var(--toque-ancho-extra, 10px));
+  min-width: var(--toque-ancho-min, 24px);
+  height: var(--toque-alto, 24px);
+}
+
+.institutional-footer__social-link,
+.institutional-footer__link {
+  position: relative;
+}
+
+.institutional-footer__social-link::after,
+.institutional-footer__link::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + 10px);
+  min-width: 24px;
+  height: 24px;
+}
+
+/*
+ * El enlace de verificacion en cadena esta solo en su fila, asi que aqui SI
+ * caben los 44 px de AAA sin invadir a nadie. Es ademas el unico enlace de la
+ * pagina que permite comprobar el contrato: si hay uno que tiene que ser facil
+ * de pulsar, es este.
+ */
+.enlace-verificacion {
+  --toque-alto: 44px;
+  --toque-ancho-extra: 16px;
+}
+
 .institutional-footer__copyright {
   margin: 0;
   font-size: 0.68rem;
@@ -9372,9 +9435,24 @@ body {
       0 8px 28px rgba(0, 0, 0, 0.42);
   }
 
+  /*
+   * El navegador de progreso es `position: fixed` y ocupa los ultimos 56 px de
+   * la ventana (42 de alto + 13,6 de separacion). La seccion final es la unica
+   * cuyo contenido llega tan abajo —terminaba en 814 de 844— asi que la ultima
+   * linea del descargo legal quedaba DEBAJO del navegador. Se leia "garantia de
+   * rendimiento financiero" cortado por la pastilla.
+   *
+   * No se puede resolver solo con relleno: la seccion mide 848 px con
+   * `overflow: hidden`, asi que empujar hacia arriba recortaria por abajo. La
+   * holgura sale de apretar el propio pie —relleno y huecos, que en movil van
+   * generosos— y el resultado se verifica midiendo, no calculando.
+   */
   #cta .institutional-footer__inner {
     position: relative;
     z-index: 2;
+    gap: 0.6rem;
+    padding-top: 0.85rem;
+    padding-bottom: 0.5rem;
   }
 
   #cta .institutional-footer__link,
