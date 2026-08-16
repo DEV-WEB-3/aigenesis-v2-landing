@@ -1331,6 +1331,28 @@ body {
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
+
+  /*
+   * MODO FLOW — el que usa escritorio ahora.
+   *
+   * `proximity` en vez de `mandatory` es la diferencia entera: el navegador
+   * acomoda el scroll al llegar cerca de una sección, pero DEJA DESCANSAR en
+   * cualquier punto intermedio. Con `mandatory` no existe el punto intermedio,
+   * y sin punto intermedio no hay progreso continuo que alimente la animación.
+   *
+   * `scroll-snap-stop: normal` en vez de `always`: con `always` no se puede
+   * saltar una sección de un gesto, lo que en catorce capítulos se hace largo.
+   */
+  .home-snap-main[data-scroll-mode='flow'] {
+    scroll-snap-type: y proximity;
+  }
+
+  .home-snap-main[data-scroll-mode='flow'] .home-section-fit,
+  .home-snap-main[data-scroll-mode='flow'] #hero,
+  .home-snap-main[data-scroll-mode='flow'] .cta-final-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
 }
 
 .home-snap-main.home-snap-main--animating {

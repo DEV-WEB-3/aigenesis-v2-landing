@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useEffect, forwardRef, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { Button } from '@/components/ui/genesis'
 import { useSectionEnterAnimation } from '@/hooks/useSectionEnterAnimation'
@@ -247,8 +247,9 @@ export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { classN
         key={motionKey}
         variants={containerV}
         initial="hidden"
+        // Sin `exit`: el contenido ya no se desmonta en ningún modo, así que no
+        // hay salida que animar.
         animate={shouldAnimate ? 'visible' : 'hidden'}
-        exit={isNaturalScroll ? undefined : 'exit'}
         className={`scene-content-stack flex flex-col gap-4 lg:max-w-[27rem] lg:justify-self-end lg:pr-1${wideStack ? ' scene-content-stack--wide' : ''}`}
       >
         {/*
@@ -273,13 +274,19 @@ export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { classN
             <GenesisOrbSignature placement={orbSignature} isActive={isActive} />
           ) : null}
           <div className="scene-content-frame w-full max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-center">
-            {isNaturalScroll ? (
-              shouldMountContent ? contentStack : null
-            ) : (
-              <AnimatePresence mode="wait">
-                {shouldMountContent ? contentStack : null}
-              </AnimatePresence>
-            )}
+            {/*
+              Antes había aquí dos ramas: en scroll natural el contenido se
+              montaba y se quedaba; en el resto iba envuelto en
+              `AnimatePresence mode="wait"`, que lo desmontaba al dejar de ser la
+              sección activa. Esa rama es la que dejaba 1 de 14 secciones en el
+              DOM en escritorio.
+
+              Ahora el contenido persiste en todos los modos, así que
+              `AnimatePresence` no tenía nada que hacer: no queda nada que salga.
+              Una rama que no puede ejecutarse es peor que ninguna, porque invita
+              a razonar sobre un comportamiento que ya no existe.
+            */}
+            {shouldMountContent ? contentStack : null}
             <div
               className={`scene-particle-gutter ${
                 particleColumn
