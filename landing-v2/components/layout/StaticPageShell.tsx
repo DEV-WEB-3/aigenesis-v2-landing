@@ -38,7 +38,7 @@ export default function StaticPageShell({ title, children }: StaticPageShellProp
           </Link>
           <Link
             href={PAGES.HOME}
-            className="text-sm text-genesis-mist hover:text-genesis-ion no-underline transition-colors focus-ring-genesis"
+            className="text-sm text-genesis-mist zona-toque hover:text-genesis-ion no-underline transition-colors focus-ring-genesis"
           >
             Volver al inicio
           </Link>
@@ -57,13 +57,13 @@ export default function StaticPageShell({ title, children }: StaticPageShellProp
 
       <footer className="static-page-footer px-6 py-8 mt-12">
         <div className="mx-auto max-w-3xl flex flex-wrap gap-4 text-sm text-genesis-ghost">
-          <Link href={PAGES.LEGAL} className="hover:text-genesis-ion no-underline transition-colors focus-ring-genesis">
+          <Link href={PAGES.LEGAL} className="zona-toque hover:text-genesis-ion no-underline transition-colors focus-ring-genesis">
             Legal
           </Link>
-          <Link href={PAGES.WHITEPAPER} className="hover:text-genesis-ion no-underline transition-colors focus-ring-genesis">
+          <Link href={PAGES.WHITEPAPER} className="zona-toque hover:text-genesis-ion no-underline transition-colors focus-ring-genesis">
             Whitepaper
           </Link>
-          <Link href={PAGES.HOME} className="hover:text-genesis-ion no-underline transition-colors focus-ring-genesis">
+          <Link href={PAGES.HOME} className="zona-toque hover:text-genesis-ion no-underline transition-colors focus-ring-genesis">
             Inicio
           </Link>
         </div>

@@ -137,7 +137,11 @@ async function verificarGenesis() {
         w = Math.max(parseFloat(a.width) || 0, parseFloat(a.minWidth) || 0);
         h = parseFloat(a.height) || 0;
       }
-      if (w < 24 || h < 24) {
+      // Se compara REDONDEADO. Un pseudoelemento de 24px puede resolver a
+      // 23.9931 cuando el `devicePixelRatio` no es entero, y con `< 24` a secas
+      // eso sale como fallo. Una guarda que grita por un subpíxel acaba
+      // ignorándose, que es la forma de morir de todas las guardas.
+      if (Math.round(w) < 24 || Math.round(h) < 24) {
         fallos.push({ tipo: 'tactil-bajo-minimo', texto: (el.textContent || '').trim().slice(0, 20),
                       zona: Math.round(w) + 'x' + Math.round(h) });
       }

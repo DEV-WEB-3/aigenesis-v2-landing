@@ -19,6 +19,8 @@ export const PAGES = {
   HOME: '/',
   LEGAL: '/legal',
   WHITEPAPER: '/whitepaper',
+  /** Portal de habilitación de la Comunidad G11 — ver `lib/g11.ts`. */
+  G11: '/g11',
 } as const
 
 /**
@@ -124,7 +126,24 @@ export const NAV_LINKS = SECTIONS.filter((s) => s.showInNav)
  * `Tecnología` y `Roadmap` van bajo `Confianza` porque su contenido real es
  * prueba —verificación del contrato, hitos cumplidos—, no producto.
  */
-export const NAV_GROUPS = [
+export interface GrupoNav {
+  id: string
+  label: string
+  /** Sección a la que salta la cabeza al pulsarla. */
+  ancla: SectionId
+  /** Secciones del recorrido que cuelgan de esta cabeza. */
+  hijos: readonly SectionId[]
+  /** Páginas propias (rutas reales), si las hay. */
+  rutas?: readonly { href: string; label: string }[]
+}
+
+/*
+ * El tipo va ANOTADO y no sólo con `satisfies`. Con `as const satisfies`, los
+ * grupos que no declaran `rutas` no tienen esa propiedad en su tipo, y leer
+ * `grupo.rutas` sobre la unión no compila. Anotando, todos comparten la forma
+ * y el campo opcional se puede consultar sin cirugía en cada uso.
+ */
+export const NAV_GROUPS: readonly GrupoNav[] = [
   {
     id: 'ecosistema',
     label: 'Ecosistema',
@@ -134,13 +153,21 @@ export const NAV_GROUPS = [
   { id: 'inteligencia', label: 'Inteligencia', ancla: 'gpulse', hijos: ['gpulse', 'goracle'] },
   { id: 'token', label: 'Token', ancla: 'token', hijos: ['token'] },
   { id: 'confianza', label: 'Confianza', ancla: 'trust', hijos: ['trust', 'technology', 'roadmap'] },
-  { id: 'comunidad', label: 'Comunidad', ancla: 'comunidad', hijos: ['comunidad'] },
-] as const satisfies readonly {
-  id: string
-  label: string
-  ancla: SectionId
-  hijos: readonly SectionId[]
-}[]
+  {
+    id: 'comunidad',
+    label: 'Comunidad',
+    ancla: 'comunidad',
+    hijos: ['comunidad'],
+    /*
+     * `rutas` son páginas propias, no anclas del recorrido. Van en un campo
+     * aparte a propósito: la guarda de abajo comprueba que `hijos` cubra
+     * exactamente las SECCIONES, y meter aquí una ruta la haría fallar por una
+     * razón falsa. Separarlos deja la guarda intacta y hace explícito que son
+     * dos cosas distintas — una salta dentro de la página, la otra navega.
+     */
+    rutas: [{ href: PAGES.G11, label: 'Comunidad G11' }],
+  },
+]
 
 /**
  * GUARDA: ninguna sección del menú puede quedarse fuera de una cabeza.

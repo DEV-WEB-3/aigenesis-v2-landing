@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
+import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/genesis'
 import { GenesisOfficialLogo } from '@/components/brand'
@@ -12,6 +13,7 @@ import {
   sectionHref,
   resolveNavigationTarget,
   type SectionId,
+  type GrupoNav,
 } from '@/lib/routes'
 
 const DRAWER_ID = 'mobile-nav-drawer'
@@ -19,6 +21,18 @@ const DRAWER_ID = 'mobile-nav-drawer'
 /** Rótulo de una sección, para pintar los hijos de cada cabeza. */
 function rotulo(id: SectionId): string {
   return SECTIONS.find((s) => s.id === id)?.navLabel ?? id
+}
+
+/**
+ * Una cabeza despliega si tiene MÁS DE UN destino, contando secciones y
+ * páginas propias.
+ *
+ * Antes se miraba sólo `hijos.length > 1`, y por eso «Comunidad» —una sección
+ * más la página de G11— se quedaba sin desplegable y sin marca: el enlace a G11
+ * existía en los datos y no había forma de llegar a él desde el menú.
+ */
+function despliega(grupo: GrupoNav): boolean {
+  return grupo.hijos.length + (grupo.rutas?.length ?? 0) > 1
 }
 
 export default function Navbar() {
@@ -176,12 +190,12 @@ export default function Navbar() {
                   onClick={(e) => { e.preventDefault(); navigateToSection(grupo.ancla) }}
                 >
                   {grupo.label}
-                  {grupo.hijos.length > 1 ? (
+                  {despliega(grupo) ? (
                     <span className="nav-cabeza-marca" aria-hidden="true" />
                   ) : null}
                 </a>
 
-                {grupo.hijos.length > 1 ? (
+                {despliega(grupo) ? (
                   <ul
                     className={`nav-desplegable ${grupoAbierto === grupo.id ? 'nav-desplegable--abierto' : ''}`}
                   >
@@ -194,6 +208,18 @@ export default function Navbar() {
                         >
                           {rotulo(hijo)}
                         </a>
+                      </li>
+                    ))}
+                    {/* Páginas propias: navegan de verdad, sin `preventDefault`. */}
+                    {(grupo.rutas ?? []).map((r) => (
+                      <li key={r.href}>
+                        <Link
+                          href={r.href}
+                          className="nav-desplegable__enlace focus-ring-genesis"
+                          onClick={() => setGrupoAbierto(null)}
+                        >
+                          {r.label}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -311,6 +337,22 @@ export default function Navbar() {
                             >
                               {rotulo(hijo)}
                             </a>
+                          </li>
+                        ))}
+                        {/*
+                          Las páginas propias también aquí. Sin esto, G11 se
+                          podía alcanzar en escritorio y NO en el teléfono, que
+                          es justo donde está el distribuidor que la necesita.
+                        */}
+                        {(grupo.rutas ?? []).map((r) => (
+                          <li key={r.href}>
+                            <Link
+                              href={r.href}
+                              className="block py-2.5 pl-3 text-base font-display text-genesis-mist hover:text-genesis-text no-underline border-b border-hairline focus-ring-genesis rounded-sm"
+                              onClick={closeMenu}
+                            >
+                              {r.label}
+                            </Link>
                           </li>
                         ))}
                       </ul>
