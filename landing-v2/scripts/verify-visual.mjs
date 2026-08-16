@@ -20,6 +20,7 @@
  *  3. Variables de diseño que resuelven a vacío
  *  4. Texto invisible: color transparente sin fondo que lo pinte
  *  5. Presencia de color dentro del presupuesto de marca
+ *  6. Formas SVG caidas al `fill` negro por defecto
  *
  * QUE NO COMPRUEBA, Y POR QUE
  * ---------------------------
@@ -70,12 +71,42 @@ async function verificarGenesis() {
   }
 
   // ── 4. texto invisible: transparente y sin fondo que lo pinte ──────────
+  //
+  // El degradado puede vivir en un ANCESTRO. Con \`background-clip: text\` el
+  // fondo del ancestro pinta el texto de toda su descendencia, asi que un hijo
+  // transparente y sin fondo propio se ve perfectamente. Mirar solo el elemento
+  // marcaba los tres contadores de Trust —que se leen sin problema— como texto
+  // invisible. Hay que subir por el arbol.
+  const loPintaUnAncestro = (el) => {
+    for (let n = el; n; n = n.parentElement) {
+      const s = getComputedStyle(n);
+      const clip = s.webkitBackgroundClip || s.backgroundClip;
+      if (clip === 'text' && s.backgroundImage !== 'none') return true;
+    }
+    return false;
+  };
   const invisibles = Array.from(document.querySelectorAll('*')).filter(el => {
     const s = getComputedStyle(el);
     if (s.color !== 'rgba(0, 0, 0, 0)' && s.webkitTextFillColor !== 'rgba(0, 0, 0, 0)') return false;
     if (s.backgroundImage !== 'none') return false;
+    if (loPintaUnAncestro(el)) return false;
     return (el.textContent || '').trim().length > 0 && el.getBoundingClientRect().width > 0;
   });
+
+  // ── 6. formas SVG que caen al relleno negro por defecto ────────────────
+  //
+  // El \`fill\` inicial de SVG es negro y se hereda. Una forma a la que se le
+  // olvide el relleno no desaparece: se pinta como una mancha opaca sobre el
+  // fondo oscuro, sin romper el build ni la consola. Asi estuvieron dos elipses
+  // —los halos de Marketplace y Comunidad— desde que se escribieron.
+  for (const n of Array.from(document.querySelectorAll('svg *'))) {
+    if (!['path','circle','ellipse','rect','polygon','polyline'].includes(n.tagName)) continue;
+    const s = getComputedStyle(n);
+    const b = n.getBoundingClientRect();
+    if (s.fill === 'rgb(0, 0, 0)' && s.fillOpacity !== '0' && s.opacity !== '0' && b.width > 6 && b.height > 6) {
+      fallos.push({ tipo: 'svg-relleno-negro', detalle: n.tagName + '.' + String(n.className.baseVal || '').slice(0, 30) });
+    }
+  }
   for (const el of invisibles.slice(0, 8)) {
     fallos.push({
       tipo: 'texto-invisible',

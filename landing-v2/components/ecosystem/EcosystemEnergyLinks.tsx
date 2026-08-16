@@ -59,6 +59,23 @@ export default function EcosystemEnergyLinks({ isActive }: EcosystemEnergyLinksP
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
+
+        {/*
+          Los dos halos de llegada. Iban sin relleno y sin regla CSS, asi que
+          heredaban el `fill` por defecto de SVG —NEGRO— y se pintaban como dos
+          ovalos opacos sobre el vacio. El degradado va aqui, y el `fill` va como
+          atributo en la elipse: asi no depende de que exista una hoja de estilo.
+        */}
+        <radialGradient id="eco-halo-violeta">
+          <stop offset="0%" stopColor={EMISSION.violetHi} stopOpacity="0.20" />
+          <stop offset="55%" stopColor={EMISSION.violet} stopOpacity="0.08" />
+          <stop offset="100%" stopColor={EMISSION.violet} stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="eco-halo-cian">
+          <stop offset="0%" stopColor={EMISSION.cyan} stopOpacity="0.18" />
+          <stop offset="55%" stopColor={EMISSION.cyan} stopOpacity="0.07" />
+          <stop offset="100%" stopColor={EMISSION.cyan} stopOpacity="0" />
+        </radialGradient>
       </defs>
 
       {/* Token core pulse ring */}
@@ -91,11 +108,11 @@ export default function EcosystemEnergyLinks({ isActive }: EcosystemEnergyLinksP
         </g>
       ))}
 
-      {/* Marketplace halo */}
-      <ellipse cx="50" cy="66" rx="14" ry="5" className="eco-marketplace-halo" />
+      {/* Halo donde convergen GPulse y G-Oracle sobre Marketplace */}
+      <ellipse cx="50" cy="66" rx="14" ry="5" className="eco-marketplace-halo" fill="url(#eco-halo-violeta)" />
 
-      {/* Comunidad reception */}
-      <ellipse cx="50" cy="88" rx="16" ry="5.5" className="eco-comunidad-reception" />
+      {/* Halo de llegada de la ultima linea, en Comunidad */}
+      <ellipse cx="50" cy="88" rx="16" ry="5.5" className="eco-comunidad-reception" fill="url(#eco-halo-cian)" />
     </svg>
   )
 }

@@ -84,8 +84,8 @@
   /* UI */
   --genesis-line: rgba(255, 255, 255, 0.08);
   --genesis-line-strong: rgba(255, 255, 255, 0.14);
-  --ui-hover-glow: rgba(233, 30, 139, 0.25);
-  --ui-signature-glow: rgba(233, 30, 139, 0.25);
+  --ui-hover-glow: rgba(255, 0, 200, 0.25);
+  --ui-signature-glow: rgba(255, 0, 200, 0.25);
   --ui-focus-ring: rgba(61, 139, 255, 0.5);
 
   /* Section lighting — unified band (reference: #token) */
@@ -95,7 +95,7 @@
   --section-vignette-mid: rgba(4, 6, 14, 0.35);
   --section-vignette-edge: rgba(2, 3, 8, 0.55);
   --section-atmosphere-opacity: 0.55;
-  --ui-focus-ring-signature: rgba(233, 30, 139, 0.48);
+  --ui-focus-ring-signature: rgba(255, 0, 200, 0.48);
   --ui-ion-glow: rgba(61, 139, 255, 0.2);
 
   /* Gradiente oficial Genesis: fuchsia → core → ion → cyan */
@@ -214,9 +214,8 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.25),
-      0 0 20px rgba(191, 0, 255, 0.08),
-      0 0 30px rgba(0, 225, 255, 0.05);
+      0 0 20px rgba(157, 77, 255, 0.08),
+      0 0 30px rgba(0, 245, 255, 0.05);
   }
 
   .surface-card::before {
@@ -277,7 +276,7 @@ body {
 
   .glow-signature {
     box-shadow:
-      0 0 24px rgba(233, 30, 139, 0.25),
+      0 0 24px rgba(255, 0, 200, 0.25),
       0 0 32px rgba(61, 139, 255, 0.2);
   }
 
@@ -291,10 +290,9 @@ body {
   .card-genesis-hover:hover,
   .card-genesis-hover:focus-visible {
     transform: translateY(-2px);
-    border-color: rgba(0, 225, 255, 0.25);
+    border-color: rgba(0, 245, 255, 0.25);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.25),
-      0 0 30px rgba(0, 225, 255, 0.12);
+      0 0 30px rgba(0, 245, 255, 0.12);
   }
 
   /* Info chips — Marketplace / Comunidad (mismo cristal, sin cambiar layout) */
@@ -307,9 +305,8 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.25),
-      0 0 20px rgba(191, 0, 255, 0.08),
-      0 0 30px rgba(0, 225, 255, 0.05);
+      0 0 20px rgba(157, 77, 255, 0.08),
+      0 0 30px rgba(0, 245, 255, 0.05);
     transition:
       transform var(--duration-base) var(--ease-out-expo),
       border-color var(--duration-base) var(--ease-in-out),
@@ -334,10 +331,9 @@ body {
 
   .glass-info-item:hover {
     transform: translateY(-2px);
-    border-color: rgba(0, 225, 255, 0.25);
+    border-color: rgba(0, 245, 255, 0.25);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.25),
-      0 0 30px rgba(0, 225, 255, 0.12);
+      0 0 30px rgba(0, 245, 255, 0.12);
   }
 
   /* Páginas estáticas — Legal / Whitepaper */
@@ -354,7 +350,7 @@ body {
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 70% 50% at 15% 20%, rgba(233, 30, 139, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 50% at 15% 20%, rgba(255, 0, 200, 0.08) 0%, transparent 60%),
       radial-gradient(ellipse 60% 45% at 85% 75%, rgba(61, 139, 255, 0.07) 0%, transparent 55%),
       radial-gradient(ellipse 50% 40% at 50% 50%, rgba(110, 86, 207, 0.04) 0%, transparent 50%);
   }
@@ -525,7 +521,7 @@ body {
     border-radius: 50%;
     background: radial-gradient(
       ellipse at center,
-      rgba(233, 30, 139, 0.14) 0%,
+      rgba(255, 0, 200, 0.14) 0%,
       rgba(110, 86, 207, 0.06) 38%,
       rgba(61, 139, 255, 0.1) 58%,
       transparent 74%
@@ -552,7 +548,7 @@ body {
     border-radius: 50%;
     background: radial-gradient(
       ellipse at center,
-      rgba(233, 30, 139, 0.16) 0%,
+      rgba(255, 0, 200, 0.16) 0%,
       rgba(110, 86, 207, 0.05) 42%,
       rgba(61, 139, 255, 0.12) 62%,
       transparent 78%
@@ -567,9 +563,9 @@ body {
     position: absolute;
     inset: 4%;
     border-radius: 50%;
-    border: 1px solid rgba(233, 30, 139, 0.28);
+    border: 1px solid rgba(255, 0, 200, 0.28);
     box-shadow:
-      0 0 40px rgba(233, 30, 139, 0.22),
+      0 0 40px rgba(255, 0, 200, 0.22),
       0 0 72px rgba(61, 139, 255, 0.14);
     animation: hero-energy-ring-spin 36s linear infinite;
     z-index: 1;
@@ -598,8 +594,8 @@ body {
     filter:
       drop-shadow(0 10px 36px rgba(0, 0, 0, 0.92))
       drop-shadow(0 6px 20px rgba(2, 4, 10, 0.88))
-      drop-shadow(0 0 22px rgba(233, 30, 139, 0.42))
-      drop-shadow(0 0 52px rgba(233, 30, 139, 0.22))
+      drop-shadow(0 0 22px rgba(255, 0, 200, 0.42))
+      drop-shadow(0 0 52px rgba(255, 0, 200, 0.22))
       drop-shadow(0 0 34px rgba(61, 139, 255, 0.14))
       brightness(1.08)
       contrast(1.18)
@@ -695,12 +691,12 @@ body {
 
   .hero-cta.cta-signature {
     background: var(--gradient-genesis-button);
-    border: 1px solid rgba(233, 30, 139, 0.35);
+    border: 1px solid rgba(255, 0, 200, 0.35);
     box-shadow:
       inset 0 1px 1px rgba(255, 255, 255, 0.1),
       inset 0 -4px 14px rgba(2, 4, 10, 0.5),
       0 4px 22px rgba(0, 0, 0, 0.55),
-      0 0 24px rgba(233, 30, 139, 0.25),
+      0 0 24px rgba(255, 0, 200, 0.25),
       0 0 32px rgba(61, 139, 255, 0.2);
   }
 
@@ -709,7 +705,7 @@ body {
       inset 0 1px 1px rgba(255, 255, 255, 0.14),
       inset 0 -4px 14px rgba(2, 4, 10, 0.45),
       0 6px 28px rgba(0, 0, 0, 0.62),
-      0 0 28px rgba(233, 30, 139, 0.32),
+      0 0 28px rgba(255, 0, 200, 0.32),
       0 0 40px rgba(61, 139, 255, 0.22);
   }
 
@@ -729,7 +725,7 @@ body {
     height: 4px;
     border-radius: 50%;
     background: var(--g-magenta);
-    box-shadow: 0 0 6px rgba(233, 30, 139, 0.4);
+    box-shadow: 0 0 6px rgba(255, 0, 200, 0.4);
   }
 
   @keyframes hero-energy-aura-pulse {
@@ -792,7 +788,7 @@ body {
     opacity: 0.72;
     filter:
       drop-shadow(0 8px 28px rgba(0, 0, 0, 0.82))
-      drop-shadow(0 0 18px rgba(233, 30, 139, 0.28))
+      drop-shadow(0 0 18px rgba(255, 0, 200, 0.28))
       drop-shadow(0 0 28px rgba(61, 139, 255, 0.12))
       brightness(1.04)
       contrast(1.1)
@@ -901,10 +897,10 @@ body {
     font-weight: 600;
     color: #ffffff;
     background: var(--gradient-genesis-button);
-    border: 1px solid rgba(233, 30, 139, 0.3);
+    border: 1px solid rgba(255, 0, 200, 0.3);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      0 0 24px rgba(233, 30, 139, 0.25),
+      0 0 24px rgba(255, 0, 200, 0.25),
       0 0 32px rgba(61, 139, 255, 0.2);
     transition: transform var(--duration-fast) var(--ease-out-expo),
       box-shadow var(--duration-base) var(--ease-in-out);
@@ -914,7 +910,7 @@ body {
     transform: translateY(-1px);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      0 0 28px rgba(233, 30, 139, 0.32),
+      0 0 28px rgba(255, 0, 200, 0.32),
       0 0 40px rgba(61, 139, 255, 0.22);
   }
 
@@ -927,7 +923,7 @@ body {
     font-weight: 600;
     color: var(--genesis-text);
     background: rgba(2, 4, 10, 0.5);
-    border: 1px solid rgba(233, 30, 139, 0.22);
+    border: 1px solid rgba(255, 0, 200, 0.22);
     box-shadow: inset 0 0 0 1px rgba(61, 139, 255, 0.08);
     transition:
       transform var(--duration-fast) var(--ease-out-expo),
@@ -941,7 +937,7 @@ body {
     background: rgba(2, 4, 10, 0.72);
     border-color: rgba(61, 139, 255, 0.35);
     box-shadow:
-      0 0 20px rgba(233, 30, 139, 0.15),
+      0 0 20px rgba(255, 0, 200, 0.15),
       0 0 28px rgba(61, 139, 255, 0.12);
   }
 
@@ -955,10 +951,10 @@ body {
     font-weight: 600;
     color: #ffffff;
     background: var(--gradient-genesis-button);
-    border: 1px solid rgba(233, 30, 139, 0.35);
+    border: 1px solid rgba(255, 0, 200, 0.35);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      0 0 24px rgba(233, 30, 139, 0.25),
+      0 0 24px rgba(255, 0, 200, 0.25),
       0 0 32px rgba(61, 139, 255, 0.2);
     transition: transform var(--duration-fast) var(--ease-out-expo),
       box-shadow var(--duration-base) var(--ease-in-out);
@@ -968,7 +964,7 @@ body {
     transform: translateY(-1px);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.14),
-      0 0 28px rgba(233, 30, 139, 0.32),
+      0 0 28px rgba(255, 0, 200, 0.32),
       0 0 40px rgba(61, 139, 255, 0.22);
   }
 
@@ -1182,7 +1178,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 1rem;
   background:
-    linear-gradient(135deg, rgba(233, 30, 139, 0.06) 0%, rgba(110, 86, 207, 0.04) 42%, rgba(61, 139, 255, 0.06) 100%),
+    linear-gradient(135deg, rgba(255, 0, 200, 0.06) 0%, rgba(110, 86, 207, 0.04) 42%, rgba(61, 139, 255, 0.06) 100%),
     rgba(5, 7, 13, 0.88);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
@@ -3101,6 +3097,19 @@ body {
   z-index: 0;
   pointer-events: none;
   overflow: visible;
+
+  /*
+   * El `fill` por defecto de SVG es NEGRO, y se hereda. Una forma a la que se le
+   * olvide el relleno no se queda invisible: se pinta como una mancha opaca
+   * sobre el fondo oscuro. Aqui paso dos elipses —los halos de Marketplace y
+   * Comunidad— que llevaban clase pero ninguna regla, y llevaban asi desde que
+   * se escribieron.
+   *
+   * Con `fill: none` heredado, el olvido falla hacia lo invisible en vez de
+   * hacia lo negro. Las formas que si declaran su relleno no se ven afectadas:
+   * un atributo de presentacion en el propio elemento gana a un valor heredado.
+   */
+  fill: none;
 }
 
 .eco-energy-link {
@@ -3116,25 +3125,25 @@ body {
 
 .eco-energy-particle {
   opacity: 0.85;
-  filter: drop-shadow(0 0 2px rgba(34, 211, 238, 0.8));
+  filter: drop-shadow(0 0 2px rgba(0, 245, 255, 0.8));
 }
 
 .eco-energy-particle--trail {
   opacity: 0.55;
-  filter: drop-shadow(0 0 2px rgba(233, 30, 139, 0.7));
+  filter: drop-shadow(0 0 2px rgba(255, 0, 200, 0.7));
 }
 
 .eco-token-pulse-ring {
   fill: none;
-  stroke: rgba(233, 30, 139, 0.55);
+  stroke: rgba(255, 0, 200, 0.55);
   stroke-width: 0.6;
   transform-origin: 50px 10px;
   animation: eco-token-pulse 3.5s ease-out infinite;
 }
 
 .eco-token-core-glow {
-  fill: rgba(233, 30, 139, 0.35);
-  filter: drop-shadow(0 0 4px rgba(233, 30, 139, 0.6));
+  fill: rgba(255, 0, 200, 0.35);
+  filter: drop-shadow(0 0 4px rgba(255, 0, 200, 0.6));
 }
 
 .eco-node-module {
@@ -3151,8 +3160,8 @@ body {
 
 .eco-node-token .surface-card {
   box-shadow:
-    0 0 0 1px rgba(233, 30, 139, 0.25),
-    0 0 24px rgba(233, 30, 139, 0.18);
+    0 0 0 1px rgba(255, 0, 200, 0.25),
+    0 0 24px rgba(255, 0, 200, 0.18);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -9356,7 +9365,7 @@ body {
 
   #cta .institutional-footer {
     background:
-      linear-gradient(135deg, rgba(233, 30, 139, 0.04) 0%, rgba(110, 86, 207, 0.03) 42%, rgba(61, 139, 255, 0.04) 100%),
+      linear-gradient(135deg, rgba(255, 0, 200, 0.04) 0%, rgba(110, 86, 207, 0.03) 42%, rgba(61, 139, 255, 0.04) 100%),
       rgba(5, 7, 13, 0.94);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.06),
