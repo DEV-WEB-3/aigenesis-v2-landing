@@ -101,6 +101,19 @@ const CABECERAS = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  images: {
+    /*
+     * Por defecto Next solo negocia WebP. Anadir AVIF delante hace que los
+     * navegadores que lo soportan reciban el formato mas pequeno, y los que no
+     * caigan a WebP y despues a PNG por la cabecera `Accept` — no hay que
+     * mantener variantes a mano ni se rompe nada en navegadores viejos.
+     *
+     * El coste esta en la PRIMERA peticion de cada tamano: codificar AVIF es
+     * bastante mas lento que WebP. A partir de ahi la imagen queda en la cache
+     * del optimizador, asi que lo paga un visitante y lo aprovechan todos.
+     */
+    formats: ['image/avif', 'image/webp'],
+  },
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei', '@react-three/postprocessing'],
   async headers() {
     return [{ source: '/:path*', headers: CABECERAS }]

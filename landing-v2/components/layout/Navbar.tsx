@@ -87,7 +87,18 @@ export default function Navbar() {
             aria-label="GENESIS — Inicio"
           >
             <GenesisOfficialLogo size="sm" layout="horizontal" tone="color" className="hidden sm:inline-flex" />
-            <GenesisOfficialLogo size="sm" layout="vertical" tone="color" className="inline-flex sm:hidden genesis-nav-logo-mobile" />
+            {/*
+              `markScale` a un tercio porque este logo se PINTA a 36 px:
+              `.genesis-nav-logo-mobile` lo baja a 2.25rem. Declaraba los 108 de
+              `sm`, asi que a dpr 3 el navegador se llevaba la variante de 256 —
+              15 KB para un icono de 36. Con el ancho real, Next genera el
+              srcset desde sus tamanos pequenos y pide ~96.
+
+              Lo intente antes con `sizes="36px"` y salio PEOR: cuando hay
+              `sizes`, Next construye el srcset solo con `deviceSizes`, cuyo
+              minimo es 640, y acabo pidiendo 750. La medida lo canto.
+            */}
+            <GenesisOfficialLogo size="sm" markScale={1 / 3} layout="vertical" tone="color" className="inline-flex sm:hidden genesis-nav-logo-mobile" />
           </a>
 
           <ul className="hidden xl:flex items-center gap-3 2xl:gap-4 list-none m-0 p-0 overflow-x-auto max-w-[58vw]">

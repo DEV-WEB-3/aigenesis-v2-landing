@@ -35,11 +35,33 @@ export default function GenesisOrbSignature({
   const tierLockedRef = useRef(false)
   const { showLogo, logoSize } = PLACEMENT_LOGO[placement]
 
+  /*
+   * EL LOGO ESPERA A QUE SU SECCION SE HAYA VISITADO.
+   *
+   * El orbe se renderizaba siempre y solo se pausaba, asi que su logo se
+   * descargaba en la carga inicial aunque estuviera catorce secciones mas
+   * abajo. `loading="lazy"` no lo frenaba: al cargar, las secciones aun no han
+   * montado su contenido y quedan apiladas, asi que la de CTA arrancaba a
+   * 2148 px y su imagen a 1739 px de la ventana — dentro del umbral de Chrome
+   * en conexion lenta. Medido en movil: 46 KB del orbe de CTA a los 806 ms.
+   *
+   * Adelantarlo no aporta NADA: la imagen es una firma de marca decorativa
+   * (`aria-hidden`) detras del contenido, invisible hasta que llegas ahi.
+   *
+   * El pestillo es de ida: una vez visto, no se vuelve a desmontar, para que
+   * volver a pasar por la seccion no lo haga aparecer otra vez.
+   */
+  const [yaVisto, setYaVisto] = useState(false)
+
   useEffect(() => {
     if (tierLockedRef.current) return
     tierLockedRef.current = true
     setTier(detectHeroPerfTier())
   }, [])
+
+  useEffect(() => {
+    if (isActive) setYaVisto(true)
+  }, [isActive])
 
   return (
     <div
@@ -49,7 +71,7 @@ export default function GenesisOrbSignature({
       <HeroGenesisOrb
         tier={tier}
         variant="signature"
-        showLogo={showLogo}
+        showLogo={showLogo && yaVisto}
         logoSize={logoSize}
         paused={!isActive}
       />
