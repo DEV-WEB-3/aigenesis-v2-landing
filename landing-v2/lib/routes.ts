@@ -234,7 +234,7 @@ export const PLACEHOLDERS = {
   whitepaper: {
     value: OFFICIAL_DOWNLOADS.WHITEPAPER_PDF,
     status: 'live' as const,
-    note: 'PDF oficial aigtoken.io',
+    note: 'PDF servido desde /docs — ya no depende de aigtoken.io',
   },
   legal: {
     value: PAGES.LEGAL,

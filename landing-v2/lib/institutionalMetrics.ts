@@ -2,7 +2,19 @@
  * Fuente única de métricas mostradas en la landing.
  * Validar con producto / datos on-chain antes de producción en aigenesis.io.
  */
-export const METRICS_REVIEW_STATUS = 'pending_product_validation' as const
+/**
+ * Estado de revisión de las métricas.
+ *
+ * Estuvo en `pending_product_validation` desde el principio, y estaba bien
+ * puesto: al revisarlas una era FALSA —un precio de $0.0042 para un token con
+ * market cap $0.00 en cadena— y otra se quedaba corta cinco veces.
+ *
+ * Pasa a `validated_2026_08_16`. Las del token están comprobadas en cadena; las
+ * de Trust y Marketplace, confirmadas por el owner como valores de alcance.
+ * La fecha va en el nombre a propósito: una validación sin fecha no caduca, y
+ * estas cifras sí.
+ */
+export const METRICS_REVIEW_STATUS = 'validated_2026_08_16' as const
 
 export type CounterMetric = {
   kind: 'counter'
@@ -23,20 +35,29 @@ export type InstitutionalMetric = CounterMetric | StaticMetric
 /**
  * Trust — InstitutionalMetrics.tsx
  *
- * ⚠ SIN VERIFICAR, Y CON UNA CONTRADICCIÓN INTERNA.
+ * LA CONTRADICCIÓN ERA DE ETIQUETA, NO DE DATO. Resuelto el 16-ago-2026.
  *
- * Esta sección dice «12+ Países» y la de Marketplace dice «190+ PAÍSES», en la
- * misma página y sobre el mismo concepto. Una de las dos está mal y no se puede
- * decidir cuál desde este repositorio: el listado real de países lo fija el
- * backend del marketplace según el flete disponible.
+ * Esta sección decía «12+ Países» y la de Marketplace «190+ PAÍSES»: misma
+ * palabra, misma página, y un factor de dieciséis entre las dos. Parecía que una
+ * estaba mal.
  *
- * Se deja como está a propósito. Cambiar una cifra de alcance comercial sin
- * poder medirla sería sustituir un número equivocado por otro. Queda anotado
- * aquí y reportado; lo mismo vale para «100K+ Comunidad» y «99.9% Uptime», que
- * tampoco tienen fuente en el repo.
+ * No lo estaban. Miden cosas distintas: aquí, los países donde el proyecto tiene
+ * PRESENCIA; allí, hasta dónde ALCANZA el catálogo de CJ. Confirmado por el
+ * owner: son valores de alcance y están creciendo hacia ellos.
  *
- * Referencia de lo que SÍ está medido: las métricas del token de más abajo,
- * comprobadas en cadena el 16-ago-2026.
+ * Así que el arreglo no toca ningún número — toca la palabra. Dos métricas que
+ * miden cosas distintas no pueden llamarse igual, y menos si una es de envío y
+ * la otra de comunidad: el visitante las resta y decide que alguien miente.
+ *
+ * El calificador va en la de MARKETPLACE («Países de alcance»), que es la que
+ * hace la afirmación grande. Ésta se queda en «Países» a secas por una razón
+ * medida: «Países con presencia» envolvía a dos líneas en su celda —91 px— y
+ * descuadraba la fila frente a las otras tres, que van a una. Un rótulo que
+ * rompe la maquetación para explicar algo que ya explica el otro no compensa.
+ *
+ * «Comunidad» y «Uptime» quedan confirmados por el owner. La diferencia con las
+ * métricas del token es que aquéllas se pueden comprobar en cadena y éstas se
+ * sostienen en el dato interno: si cambian, hay que venir a este archivo.
  */
 export const TRUST_INSTITUTIONAL_METRICS: readonly InstitutionalMetric[] = [
   { kind: 'counter', to: 100, suffix: 'K+', label: 'Comunidad' },
@@ -106,9 +127,17 @@ export const GPULSE_STATS = [
 ] as const
 
 /** Marketplace — SceneMarketplace */
+/**
+ * Marketplace — SceneMarketplace
+ *
+ * `PAÍSES DE ALCANCE` y no `PAÍSES`: son hasta dónde llega el catálogo de CJ,
+ * no la lista habilitada hoy. La palabra importa en una tienda — un cliente que
+ * lee «190 países» y no puede pedir en el suyo no piensa que está creciendo,
+ * piensa que le mintieron. Ver la nota de Trust: allí «Países» son otra cosa.
+ */
 export const MARKETPLACE_STATS = [
   { to: 500, suffix: 'K+', label: 'PRODUCTOS' },
-  { to: 190, suffix: '+', label: 'PAÍSES' },
+  { to: 190, suffix: '+', label: 'PAÍSES DE ALCANCE' },
   { to: 3, suffix: '', label: 'MÉTODOS DE PAGO' },
 ] as const
 
