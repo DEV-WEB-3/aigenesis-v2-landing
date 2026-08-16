@@ -4,55 +4,23 @@ import { Suspense, useEffect, useRef, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import ParticleMorphSystem from './ParticleMorphSystem'
 import PostEffects from './PostEffects'
-import GenesisBackgroundAura from '@/components/trust/GenesisBackgroundAura'
-import GenesisTokenCoreAura from '@/components/token/GenesisTokenCoreAura'
-import GenesisMiningCoreAura from '@/components/mining/GenesisMiningCoreAura'
-import GenesisBoosterAura from '@/components/booster/GenesisBoosterAura'
-import GenesisStakingAura from '@/components/staking/GenesisStakingAura'
-import GenesisGpulseAura from '@/components/gpulse/GenesisGpulseAura'
-import GenesisGoracleAura from '@/components/goracle/GenesisGoracleAura'
-import GenesisMarketplaceAura from '@/components/marketplace/GenesisMarketplaceAura'
-import GenesisCommunityAura from '@/components/community/GenesisCommunityAura'
-import GenesisTechnologyAura from '@/components/technology/GenesisTechnologyAura'
-import GenesisRoadmapAura from '@/components/roadmap/GenesisRoadmapAura'
-import GenesisPortalAura from '@/components/portal/GenesisPortalAura'
 import GenesisParticleControlPanel from '@/components/dev/GenesisParticleControlPanel'
+import { AURA_ENTRIES } from './sectionAuras'
 import { useScene } from '@/context/SceneContext'
 import { useIsMounted } from '@/hooks/useIsMounted'
 import { heroDebug } from '@/lib/hero-debug'
+import { getSectionId } from '@/lib/routes'
 import { isMobileWidth } from '@/lib/viewport'
 
 interface WorldCanvasInnerProps {
-  heroActive?: boolean
-  trustActive?: boolean
-  tokenActive?: boolean
-  miningActive?: boolean
-  boosterActive?: boolean
-  stakingActive?: boolean
-  gpulseActive?: boolean
-  goracleActive?: boolean
-  marketplaceActive?: boolean
-  communityActive?: boolean
-  technologyActive?: boolean
-  roadmapActive?: boolean
-  ctaActive?: boolean
+  /** Índice de la sección activa. Única entrada: lo demás se deriva de aquí. */
+  sectionIndex: number
 }
 
-export default function WorldCanvasInner({
-  heroActive = false,
-  trustActive = false,
-  tokenActive = false,
-  miningActive = false,
-  boosterActive = false,
-  stakingActive = false,
-  gpulseActive = false,
-  goracleActive = false,
-  marketplaceActive = false,
-  communityActive = false,
-  technologyActive = false,
-  roadmapActive = false,
-  ctaActive = false,
-}: WorldCanvasInnerProps) {
+export default function WorldCanvasInner({ sectionIndex }: WorldCanvasInnerProps) {
+  const activeSection = getSectionId(sectionIndex)
+  const heroActive = activeSection === 'hero'
+
   const { sectionIndexRef, scrollProgressRef } = useScene()
   const prevHeroActive = useRef(heroActive)
   const mounted = useIsMounted()
@@ -107,18 +75,9 @@ export default function WorldCanvasInner({
         transition: heroActive ? 'none' : 'opacity 0.5s ease',
       }}
     >
-      <GenesisBackgroundAura visible={trustActive && !heroActive} />
-      <GenesisTokenCoreAura visible={tokenActive && !heroActive} />
-      <GenesisMiningCoreAura visible={miningActive && !heroActive} />
-      <GenesisBoosterAura visible={boosterActive && !heroActive} />
-      <GenesisStakingAura visible={stakingActive && !heroActive} />
-      <GenesisGpulseAura visible={gpulseActive && !heroActive} />
-      <GenesisGoracleAura visible={goracleActive && !heroActive} />
-      <GenesisMarketplaceAura visible={marketplaceActive && !heroActive} />
-      <GenesisCommunityAura visible={communityActive && !heroActive} />
-      <GenesisTechnologyAura visible={technologyActive && !heroActive} />
-      <GenesisRoadmapAura visible={roadmapActive && !heroActive} />
-      <GenesisPortalAura visible={ctaActive && !heroActive} />
+      {AURA_ENTRIES.map(([id, Aura]) => (
+        <Aura key={id} visible={activeSection === id} />
+      ))}
       <Canvas
         frameloop={heroActive ? 'never' : 'always'}
         camera={{ position: [0, 0, 5], fov: 75 }}

@@ -36,25 +36,46 @@ export const ROUTES = {
   BSCSCAN: OFFICIAL_BSCSCAN.TOKEN,
 } as const
 
-/** Secciones snap-scroll — orden narrativo (14 capítulos) */
-export const SECTIONS = [
-  { id: 'hero',        label: 'Hero',        navLabel: 'Inicio',      index: 0,  showInNav: false },
-  { id: 'trust',       label: 'Trust',       navLabel: 'Confianza',   index: 1,  showInNav: true },
-  { id: 'ecosistema',  label: 'Ecosistema',  navLabel: 'Ecosistema',  index: 2,  showInNav: true },
-  { id: 'token',       label: 'Token',       navLabel: 'Token',       index: 3,  showInNav: true },
-  { id: 'mining',      label: 'Mining',      navLabel: 'Mining',      index: 4,  showInNav: true },
-  { id: 'booster',     label: 'Booster',     navLabel: 'Booster',     index: 5,  showInNav: true },
-  { id: 'staking',     label: 'Staking',     navLabel: 'Staking',     index: 6,  showInNav: true },
-  { id: 'gpulse',      label: 'G-Pulse',     navLabel: 'G-Pulse',     index: 7,  showInNav: true },
-  { id: 'goracle',     label: 'G-Oracle',    navLabel: 'G-Oracle',    index: 8,  showInNav: true },
-  { id: 'marketplace', label: 'Marketplace', navLabel: 'Marketplace', index: 9,  showInNav: true },
-  { id: 'comunidad',   label: 'Comunidad',   navLabel: 'Comunidad',   index: 10, showInNav: true },
-  { id: 'technology',  label: 'Tech',        navLabel: 'Tecnología',  index: 11, showInNav: true },
-  { id: 'roadmap',     label: 'Roadmap',     navLabel: 'Roadmap',     index: 12, showInNav: true },
-  { id: 'cta',         label: 'CTA',         navLabel: 'Únete',       index: 13, showInNav: false },
+/**
+ * Secciones snap-scroll — orden narrativo (14 capítulos).
+ *
+ * El ORDEN de este array es la única definición del orden de la página. El
+ * índice no se escribe: se deriva de la posición (ver `SECTIONS` abajo). Antes
+ * venía anotado a mano junto a cada entrada, que es una segunda copia del mismo
+ * dato — reordenar el array sin tocar los números dejaba todo desalineado en
+ * silencio.
+ */
+const SECTION_DEFS = [
+  { id: 'hero',        label: 'Hero',        navLabel: 'Inicio',      showInNav: false },
+  { id: 'trust',       label: 'Trust',       navLabel: 'Confianza',   showInNav: true },
+  { id: 'ecosistema',  label: 'Ecosistema',  navLabel: 'Ecosistema',  showInNav: true },
+  { id: 'token',       label: 'Token',       navLabel: 'Token',       showInNav: true },
+  { id: 'mining',      label: 'Mining',      navLabel: 'Mining',      showInNav: true },
+  { id: 'booster',     label: 'Booster',     navLabel: 'Booster',     showInNav: true },
+  { id: 'staking',     label: 'Staking',     navLabel: 'Staking',     showInNav: true },
+  { id: 'gpulse',      label: 'G-Pulse',     navLabel: 'G-Pulse',     showInNav: true },
+  { id: 'goracle',     label: 'G-Oracle',    navLabel: 'G-Oracle',    showInNav: true },
+  { id: 'marketplace', label: 'Marketplace', navLabel: 'Marketplace', showInNav: true },
+  { id: 'comunidad',   label: 'Comunidad',   navLabel: 'Comunidad',   showInNav: true },
+  { id: 'technology',  label: 'Tech',        navLabel: 'Tecnología',  showInNav: true },
+  { id: 'roadmap',     label: 'Roadmap',     navLabel: 'Roadmap',     showInNav: true },
+  { id: 'cta',         label: 'CTA',         navLabel: 'Únete',       showInNav: false },
 ] as const
 
-export type SectionId = (typeof SECTIONS)[number]['id']
+export type SectionId = (typeof SECTION_DEFS)[number]['id']
+
+export type Section = {
+  id: SectionId
+  label: string
+  navLabel: string
+  showInNav: boolean
+  index: number
+}
+
+export const SECTIONS: readonly Section[] = SECTION_DEFS.map((s, index) => ({
+  ...s,
+  index,
+}))
 
 export const TOTAL_SECTIONS = SECTIONS.length
 
