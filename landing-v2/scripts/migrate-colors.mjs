@@ -89,7 +89,7 @@ function archivos(dir, acc = []) {
   return acc
 }
 
-const stats = { archivos: 0, css: 0, jsx: 0, cadena: 0, dentro: 0, saltados: 0 }
+const stats = { archivos: 0, css: 0, jsx: 0, cadena: 0, dentro: 0, definiciones: 0, saltados: 0 }
 const tocados = []
 
 for (const p of archivos(RAIZ)) {
@@ -108,12 +108,37 @@ for (const p of archivos(RAIZ)) {
   }
 
   if (esCss) {
-    txt = txt.replace(/#[0-9A-Fa-f]{6}\b/g, (m) => {
-      const d = token(m)
-      if (!d) { stats.saltados++; return m }
-      stats.css++
-      return `var(--${d.css})`
+    /*
+     * NO TOCAR LA LINEA QUE DEFINE UN TOKEN.
+     *
+     * La primera version de este script si lo hacia, y el resultado fue
+     * `--g-magenta: var(--g-magenta)` — una variable que se referencia a si
+     * misma. CSS la considera invalida en silencio: no falla el build, no sale
+     * en consola, simplemente resuelve a nada. Se llevo por delante los catorce
+     * tokens y con ellos todo el texto en degradado, que quedo transparente
+     * sobre fondo transparente.
+     *
+     * El codemod se habia comido su propia fuente. Se excluyo `tokens.ts` por
+     * ser la fuente en TypeScript, pero el bloque `:root` es exactamente lo
+     * mismo en CSS y no estaba excluido.
+     */
+    txt = txt.replace(/^(\s*--[a-z0-9-]+\s*:\s*)(#[0-9A-Fa-f]{3,8})(\s*;)/gm, (m) => {
+      stats.definiciones++
+      return m
     })
+    const esDefinicion = (linea) => /^\s*--[a-z0-9-]+\s*:/.test(linea)
+    txt = txt
+      .split('\n')
+      .map((linea) => {
+        if (esDefinicion(linea)) return linea
+        return linea.replace(/#[0-9A-Fa-f]{6}\b/g, (m) => {
+          const d = token(m)
+          if (!d) { stats.saltados++; return m }
+          stats.css++
+          return `var(--${d.css})`
+        })
+      })
+      .join('\n')
   } else {
     /*
      * El hex vive en TRES contextos y cada uno necesita otra sintaxis. Tratarlos

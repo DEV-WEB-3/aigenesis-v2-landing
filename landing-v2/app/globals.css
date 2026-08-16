@@ -30,24 +30,24 @@
    */
 
   /* El vacío — neutros con sesgo azul, no grises puros */
-  --g-void: var(--g-void);
-  --g-base: var(--g-base);
-  --g-surface: var(--g-surface);
+  --g-void: #02040a;
+  --g-base: #080a14;
+  --g-surface: #0f111c;
   --g-raised: #161a2b;
 
   /* Tinta */
-  --g-ink: var(--g-ink);
-  --g-ink-muted: var(--g-ink-muted);
-  --g-ink-faint: var(--g-ink-faint);
+  --g-ink: #f8fafc;
+  --g-ink-muted: #aab4c8;
+  --g-ink-faint: #5c6b82;
 
   /* Emisión — las estrellas dentro del vacío */
-  --g-blue: var(--g-blue);
-  --g-blue-hi: var(--g-blue-hi);
-  --g-violet: var(--g-violet);
-  --g-violet-hi: var(--g-violet-hi);
-  --g-magenta: var(--g-magenta);
-  --g-magenta-hi: var(--g-magenta-hi);
-  --g-cyan: var(--g-cyan);
+  --g-blue: #2962ff;
+  --g-blue-hi: #3d8bff;
+  --g-violet: #6e56cf;
+  --g-violet-hi: #9d4dff;
+  --g-magenta: #ff00c8;
+  --g-magenta-hi: #ff4ddb;
+  --g-cyan: #00f5ff;
 
   /*
    * Desenfoque de cristal. Habia CUATRO radios sueltos por el CSS (8, 10, 12 y
@@ -59,9 +59,9 @@
   --g-blur-base: 18px;
 
   /* Estado — deliberadamente FUERA del espacio de marca */
-  --g-success: var(--g-success);
-  --g-warning: var(--g-warning);
-  --g-error: var(--g-error);
+  --g-success: #2fd07f;
+  --g-warning: #e6b450;
+  --g-error: #e85d5d;
   --g-info: var(--g-blue-hi);
 
   /*

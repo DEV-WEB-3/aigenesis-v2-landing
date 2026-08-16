@@ -27,6 +27,29 @@ const variantClasses: Record<CardVariant, string> = {
   community: 'surface-card rounded-2xl',
 }
 
+/**
+ * EL TAMAÑO DEL TÍTULO SIGUE AL PAPEL DE LA TARJETA, no es uno para todas.
+ *
+ * Todas usaban `text-heading` (32px). Funciona para una tarjeta de producto, que
+ * encabeza un bloque con descripción y datos. No funciona para un nodo del mapa
+ * de ecosistema, que es un ROTULO NAVEGABLE de una palabra: «Mining», «Booster».
+ *
+ * Medido: esos rótulos a 32px dejaban la caja con un 44% de aire, y competían en
+ * peso visual con el titular real de la sección — ocho titulares donde debía
+ * haber un titular y ocho enlaces.
+ *
+ * El aire no era culpa de la caja. Era culpa de meter texto de titular en algo
+ * que no es un titular.
+ */
+const variantTitleClass: Record<CardVariant, string> = {
+  product: 'text-heading',
+  trust: 'text-heading',
+  community: 'text-heading',
+  marketplace: 'text-heading',
+  /** Nodo de navegación: se lee, se pulsa, no encabeza nada. */
+  ecosystem: 'text-body-lg font-semibold',
+}
+
 export function Card({
   variant = 'product',
   label,
@@ -67,7 +90,9 @@ export function Card({
       >
         {label ? <span className="label-section">{label}</span> : null}
         {title ? (
-          <Heading className="font-display text-heading text-genesis-text">{title}</Heading>
+          <Heading className={cn('font-display text-genesis-text', variantTitleClass[variant])}>
+            {title}
+          </Heading>
         ) : null}
         {description ? (
           <p className="text-body-lg text-genesis-mist max-w-prose">{description}</p>
