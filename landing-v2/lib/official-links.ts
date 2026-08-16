@@ -19,8 +19,20 @@ export const OFFICIAL_BSCSCAN = {
 } as const
 
 export const OFFICIAL_DOWNLOADS = {
-  WHITEPAPER_PDF:
-    'https://aigtoken.io/wp-content/uploads/2024/02/AiGenesis_Token_OFFICIAL_WHITE_PAPER_V1.1.pdf',
+  /**
+   * SERVIDO DESDE AQUÍ, no desde aigtoken.io.
+   *
+   * El PDF vivía en `aigtoken.io/wp-content/...`, y ese dominio está previsto
+   * para retirarse. Enlazarlo desde aquí significaba que apagar aigtoken.io
+   * mataba en silencio el whitepaper de `/whitepaper` y el botón de
+   * documentación de la sección Tecnología — una dependencia que no se ve
+   * hasta que rompe.
+   *
+   * Copia byte a byte del original (1.535.729 bytes, 8 páginas, v1.1 de
+   * febrero de 2024). Que la versión sea de 2024 es un hecho a resolver aparte:
+   * la hoja de ruta de la landing llega a 2026 Q3.
+   */
+  WHITEPAPER_PDF: '/docs/aigenesis-whitepaper-v1.1.pdf',
   MARKETING_PLAN_ES:
     'https://aigenesis.io/wp-content/uploads/2026/06/AiGenesis_press_v5.0_ES-es.pdf',
   MARKETING_PLAN_EN:

@@ -36,11 +36,25 @@ const CSP_INFORME = [
   "connect-src 'self' https://www.google-analytics.com https://vitals.vercel-insights.com",
   "worker-src 'self' blob:",
   "media-src 'self'",
-  "object-src 'none'",
+  /*
+   * `object-src` pasa de 'none' a 'self' porque `/whitepaper` incrusta el PDF
+   * —ya alojado aquí— con un `<object>`. Con 'none' el visor quedaba en blanco.
+   *
+   * Hoy la política va en modo INFORME, así que no rompía nada: habría roto el
+   * día que se pase a bloqueante, y en el navegador de un visitante. 'self'
+   * sigue impidiendo objetos de terceros, que es lo que la regla protege.
+   */
+  "object-src 'self'",
   "base-uri 'self'",
   "form-action 'self'",
-  // equivalente moderno de X-Frame-Options, y el que de verdad respetan
-  "frame-ancestors 'none'",
+  /*
+   * Equivalente moderno de X-Frame-Options, y el que de verdad respetan.
+   * 'self' y no 'none', por el mismo motivo: el visor del whitepaper enmarca
+   * un PDF del propio origen. Con 'none' el informe ya avisaba
+   * («Framing violates ... frame-ancestors 'none'») y habría roto el visor el
+   * día que la política pase a bloqueante.
+   */
+  "frame-ancestors 'self'",
   'upgrade-insecure-requests',
 ].join('; ')
 
@@ -54,7 +68,23 @@ const CABECERAS = [
      * y no aquélla.
      */
     key: 'X-Frame-Options',
-    value: 'DENY',
+    /*
+     * SAMEORIGIN y no DENY.
+     *
+     * Lo que hay que impedir es que un sitio AJENO enmarque esta página para
+     * presentarla como suya o capturar credenciales. DENY impide además que la
+     * página se enmarque a SÍ MISMA, y eso rompía el visor del whitepaper: un
+     * `<object type="application/pdf">` crea un contexto de navegación
+     * anidado, así que Chrome lo trataba como enmarcado y servía el respaldo.
+     *
+     * Costó verlo porque el navegador SÍ sabe pintar PDF —`pdfViewerEnabled`
+     * daba `true`— y el archivo respondía 200: todo apuntaba a que funcionaba.
+     * Lo delató la consola.
+     *
+     * SAMEORIGIN mantiene intacta la defensa real: de fuera, sigue sin poder
+     * enmarcarse.
+     */
+    value: 'SAMEORIGIN',
   },
   {
     /*
