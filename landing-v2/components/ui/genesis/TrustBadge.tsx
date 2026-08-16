@@ -68,8 +68,14 @@ export function TrustBadge({
         </span>
       </div>
       <Heading className="font-display text-heading text-genesis-text">{title}</Heading>
+      {/*
+        Era `text-sm` (14px) mientras `Card` usa `text-body-lg` (17px) para lo
+        mismo: la descripción de una tarjeta. Dos tamaños para un mismo papel
+        dentro de la misma sección — medido en Trust, que muestra ambos tipos de
+        tarjeta uno al lado del otro.
+      */}
       {description ? (
-        <p className="text-sm text-genesis-mist leading-relaxed">{description}</p>
+        <p className="text-body-lg text-genesis-mist leading-relaxed">{description}</p>
       ) : null}
     </HeadingLevel>
   )

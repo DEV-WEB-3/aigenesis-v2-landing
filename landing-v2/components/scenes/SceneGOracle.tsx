@@ -54,7 +54,13 @@ const SceneGOracle = forwardRef<HTMLElement, Props>(function SceneGOracle(
       <motion.div variants={containerV} className="grid grid-cols-1 sm:grid-cols-3 gap-genesis-3 mt-2">
         {ORACLE_PILLARS.map((pillar) => (
           <motion.div key={pillar.title} variants={slideLeft}>
-            <Card variant="ecosystem" title={pillar.title} description={pillar.description} hover />
+            {/*
+              Era `variant="ecosystem"`, que es la de los NODOS DEL MAPA: rótulos
+              de una palabra, radio 20 y título pequeño. Estas llevan título y
+              descripción, así que son tarjetas de contenido. De ahí venía el
+              radio 20 que desalineaba esta sección frente a las otras cuatro.
+            */}
+            <Card variant="product" title={pillar.title} description={pillar.description} hover />
           </motion.div>
         ))}
       </motion.div>

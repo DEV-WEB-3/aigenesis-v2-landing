@@ -21,6 +21,22 @@
  *  4. Texto invisible: color transparente sin fondo que lo pinte
  *  5. Presencia de color dentro del presupuesto de marca
  *
+ * QUE NO COMPRUEBA, Y POR QUE
+ * ---------------------------
+ * Nada de `scrollHeight > clientHeight` para detectar «contenido que no cabe».
+ * Se intentó y dio TRES falsos positivos seguidos, todos por la misma causa: un
+ * `transform` extiende el area de scroll sin ser un problema de maquetacion.
+ *
+ *   - el mapa de ecosistema, con `scale(1.35)`
+ *   - los titulares, con el `translateY(28px)` de su animacion de entrada
+ *   - las tarjetas, cuyo padding se contaba como aire desperdiciado
+ *
+ * En los tres casos la caja encajaba perfectamente con su contenido. Una
+ * comprobacion que grita cuando no pasa nada acaba ignorandose, y entonces no
+ * sirve para cuando si pasa. Si hay que medir solapamiento, se mide comparando
+ * los rectangulos de DOS elementos hermanos — eso si es real y fue lo que
+ * encontro el solape de 98px en ecosistema.
+ *
  * COMO SE USA
  * Se pega el contenido de `CHEQUEO` en la consola del navegador sobre el build
  * de producción, o se ejecuta por CDP. Devuelve un objeto con los fallos; array

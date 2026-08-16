@@ -1417,13 +1417,21 @@ body {
   .home-section-fit .scene-headline,
   .home-section-fit .scene-content-stack > h2.text-5xl {
     font-size: 2.35rem;
-    line-height: 1.06;
+    /* 1.06 cortaba los descendentes: la «g» de «Ingeniería» y «vanguardia»
+       se salía de su caja de línea. 1.12 sigue siendo apretado para un
+       titular y ya las contiene. Los CONTADORES se dejan en 1.1 a propósito:
+       las cifras no tienen descendentes. */
+    line-height: 1.12;
   }
 
   .home-section-fit .scene-section-header .text-display,
   .home-section-fit .scene-content-stack .text-display {
     font-size: 2.35rem;
-    line-height: 1.06;
+    /* 1.06 cortaba los descendentes: la «g» de «Ingeniería» y «vanguardia»
+       se salía de su caja de línea. 1.12 sigue siendo apretado para un
+       titular y ya las contiene. Los CONTADORES se dejan en 1.1 a propósito:
+       las cifras no tienen descendentes. */
+    line-height: 1.12;
   }
 
   .home-section-fit .text-body-lg,
@@ -1502,7 +1510,11 @@ body {
 
   .home-section-fit .cta-final-headline {
     font-size: clamp(1.9rem, 3.8vw, 2.65rem);
-    line-height: 1.06;
+    /* 1.06 cortaba los descendentes: la «g» de «Ingeniería» y «vanguardia»
+       se salía de su caja de línea. 1.12 sigue siendo apretado para un
+       titular y ya las contiene. Los CONTADORES se dejan en 1.1 a propósito:
+       las cifras no tienen descendentes. */
+    line-height: 1.12;
   }
 
   .home-section-fit .cta-brand-signature {
