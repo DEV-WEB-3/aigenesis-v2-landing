@@ -61,8 +61,37 @@ function MundoVisual({ sectionIndex }: { sectionIndex: number }) {
    */
   const [hayWebGL, setHayWebGL] = useState<boolean | null>(null)
 
+  /*
+   * SE ESPERA A QUE EL HILO PRINCIPAL ESTE OCIOSO.
+   *
+   * Montar aqui dispara la importacion dinamica del canvas, que arrastra 578 KB
+   * de Three.js. Medido sobre el build de produccion a 390 px con 4x de freno de
+   * CPU y Slow 4G:
+   *
+   *   primer pintado con contenido  1268 ms
+   *   LCP (el parrafo del hero)     3504 ms
+   *
+   * La animacion de entrada del hero esta pensada para revelar ese parrafo unas
+   * 0,82 s despues de la hidratacion —a los ~1970 ms— asi que sobraba 1,5 s. Ese
+   * sobrante es Three.js analizandose y compitiendo por el hilo justo mientras
+   * la animacion deberia estar corriendo.
+   *
+   * `requestIdleCallback` cede el turno al pintado del hero sin retrasar nada
+   * mas: el `timeout` garantiza que el mundo entra igual aunque el navegador
+   * nunca declare un hueco ocioso, y el respaldo estatico —que ya es lo que se
+   * pintaba en este intervalo— cubre la espera.
+   *
+   * NO cambia lo que se ve: cambia CUANDO empieza a competir.
+   */
   useEffect(() => {
-    setHayWebGL(soportaWebGL())
+    const arranca = () => setHayWebGL(soportaWebGL())
+    if (typeof window.requestIdleCallback === 'function') {
+      const id = window.requestIdleCallback(arranca, { timeout: 2500 })
+      return () => window.cancelIdleCallback(id)
+    }
+    // Safari no lo trae: un turno suelto basta para no pelear con el pintado
+    const id = window.setTimeout(arranca, 200)
+    return () => window.clearTimeout(id)
   }, [])
 
   if (hayWebGL !== true) return <StaticWorldFallback />
