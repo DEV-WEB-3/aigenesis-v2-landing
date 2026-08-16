@@ -60,18 +60,23 @@ export type TokenDisplayMetric =
  *
  * QUÉ SE CORRIGIÓ Y POR QUÉ
  *
- * 1. `PRECIO: $0.0042` — RETIRADO. BSCScan da «Onchain Market Cap: $0.00» y sin
- *    precio; la API de Dexscreener devuelve `pairs: null` para el contrato. El
- *    instrumento se validó contra CAKE, que sí devuelve 30 pares, así que el
- *    vacío es un resultado y no un fallo de la sonda.
+ * 1. `PRECIO: $0.0042` — el número era falso y la etiqueta también.
  *
- *    Lo grave no es sólo que el precio no tenga mercado detrás: es que ESTA
- *    MISMA SECCIÓN lleva un botón «Ver en BSCScan», o sea que se desmiente sola
- *    en un clic. Un precio es un DATO, no una señal de presentación, y por eso
- *    no se deja puesto a la espera.
+ *    BSCScan da «Onchain Market Cap: $0.00» y sin precio; la API de Dexscreener
+ *    devuelve `pairs: null` para el contrato. El instrumento se validó contra
+ *    CAKE, que sí devuelve 30 pares, así que el vacío es un resultado y no un
+ *    fallo de la sonda. Y lo peor: ESTA MISMA SECCIÓN lleva un botón «Ver en
+ *    BSCScan», o sea que se desmentía sola en un clic.
  *
- *    Para revertirlo basta con volver a añadir la línea; pero antes debería
- *    haber un mercado que lo sostenga.
+ *    El valor correcto lo confirmó el owner: **1 AIG = 23,50 USD**, que es la
+ *    referencia de uso interno entre miembros y mineros para intercambiar
+ *    productos y servicios. NO es una cotización: no hay pool público de
+ *    liquidez.
+ *
+ *    Por eso la etiqueta es «VALOR INTERNO» y no «PRECIO», y por eso la escena
+ *    lleva una línea que lo dice con todas las letras. Un número de 23,50 sin
+ *    ese contexto, junto a un botón que verifica mercado, se lee como una
+ *    cotización — y esa lectura sería falsa aunque el número sea correcto.
  *
  * 2. `HOLDERS: 2847+` — eran 15.174. Se quedaba corto CINCO VECES en el mejor
  *    número que tiene el proyecto. Se deja en «15.000+» y no en la cifra exacta
@@ -80,17 +85,17 @@ export type TokenDisplayMetric =
  *
  * 3. `SUPPLY 111M` y `NETWORK BSC` — correctos, verificados sin cambios.
  *
- * El cuarto hueco lo ocupa ahora que el contrato está verificado en BSCScan,
- * que es un hecho que se comprueba con el botón que ya está debajo.
+ * Que el contrato está verificado no ocupa un hueco propio: lo comprueba el
+ * botón «Ver en BSCScan» que ya está justo debajo.
  */
 export const TOKEN_DISPLAY_METRICS: readonly TokenDisplayMetric[] = [
+  { key: 'internal', label: 'VALOR INTERNO', static: '$23.50' },
   // `15` + `K+`, y no `15000`, porque el contador imprime con `toFixed()` y no
   // pone separador de millares: saldría «15000+». Poner un `toLocaleString`
   // general no vale — convertiría el «2019» de Trust en «2.019».
   { key: 'holders', label: 'HOLDERS', to: 15, suffix: 'K+' },
   { key: 'supply', label: 'SUPPLY TOTAL', to: 111, suffix: 'M' },
   { key: 'network', label: 'RED', static: 'BSC' },
-  { key: 'contract', label: 'CONTRATO', static: 'Verificado' },
 ] as const
 
 /** G-Pulse — SceneGPulse */

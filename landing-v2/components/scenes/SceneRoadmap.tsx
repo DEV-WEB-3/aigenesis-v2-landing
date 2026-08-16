@@ -75,6 +75,20 @@ const SceneRoadmap = forwardRef<HTMLElement, Props>(
           variants={slideLeft}
           className="scene-roadmap-timeline mt-4 border-l-2 border-genesis-core/30 pl-7 flex flex-col gap-7"
         >
+          {/*
+            ESTA ES LA HOJA DE RUTA OFICIAL. Decidido el 16-ago-2026.
+
+            Habia DOS publicas y no decian lo mismo: estos seis hitos de negocio,
+            y veintiuna fases tecnicas con porcentaje de avance en aigtoken.io.
+            Dos planes distintos sobre el mismo proyecto, a la vez, es lo que un
+            visitante lee como descoordinacion.
+
+            Manda esta: sus hitos corresponden al trabajo real y reciente. Las 21
+            fases colgaban de un whitepaper de febrero de 2024 y dejan de ser
+            publicas cuando aigtoken.io redirija.
+
+            Si alguien vuelve a «reconciliarlas», que sea a sabiendas.
+          */}
           <TimelineItem year="2019"    title="Lanzamiento AiGenesis"       status="completed" />
           <TimelineItem year="2023"    title="G11 Community + NFT"         status="completed" />
           <TimelineItem year="2025"    title="Oracle V1 + GPulse"          status="completed" />

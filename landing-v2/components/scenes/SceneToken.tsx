@@ -55,6 +55,30 @@ const SceneToken = forwardRef<HTMLElement, Props>(
           ))}
         </motion.div>
 
+        {/*
+          Esta línea no es letra pequeña: es lo que hace que el 23,50 signifique
+          lo que significa.
+
+          Un número en dólares dentro de una ficha de token, y justo encima de un
+          botón «Ver en BSCScan», se lee como COTIZACIÓN. Y esa lectura sería
+          falsa aunque el número sea correcto: en cadena el market cap es $0.00
+          porque no hay pool público de liquidez. El valor es real, pero es de
+          uso interno entre miembros y mineros.
+
+          Decirlo abierto además no resta: es exactamente la etapa que describe
+          el proyecto —una economía de intercambio antes del mercado abierto—, y
+          el visitante que lo compruebe en BSCScan encuentra coherencia en vez de
+          una contradicción.
+        */}
+        <motion.p
+          variants={slideLeft}
+          className="text-caption text-genesis-ghost leading-relaxed max-w-lg"
+        >
+          El valor interno es la referencia de intercambio entre miembros y mineros para
+          productos y servicios. No es una cotización de mercado: AIG todavía no tiene un
+          pool público de liquidez.
+        </motion.p>
+
         <motion.div variants={slideLeft} className="token-orbital-value-network-mobile md:hidden" aria-hidden="true">
           <TokenOrbitalValueNetwork isActive={isActive} variant="compact" />
         </motion.div>
