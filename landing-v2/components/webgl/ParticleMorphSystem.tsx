@@ -260,29 +260,41 @@ const DEFAULT_LERP_SPEED = 0.032
  * como un salto entre dos estados. Con el progreso ya cableado, la forma empieza
  * a inclinarse hacia la de la sección siguiente conforme se avanza.
  *
- * LA VENTANA ESTÁ ATADA A CUÁNDO CAMBIA EL ÍNDICE, y eso hay que medirlo, no
- * suponerlo. El índice lo decide un IntersectionObserver por umbrales de ratio;
- * medido en el navegador, cambia alrededor de p≈0.8, no a mitad de sección. De
- * ahí salen los tres números:
+ * LA VENTANA ESTÁ ATADA A CUÁNDO CAMBIA EL ÍNDICE, y eso hay que medirlo cada
+ * vez que cambia el modelo de scroll. No es un número estético.
  *
- *  - START 0.30 — antes de eso la forma actual se ve limpia. La anticipación es
- *    un remate, no un borrón permanente.
- *  - END 0.70 — el máximo se alcanza justo ANTES de que el índice cambie, que es
- *    cuando la anticipación tiene sentido.
- *  - CUTOFF 0.75 — pasado el cambio, el objetivo YA es la sección nueva; seguir
- *    anticipando apuntaría dos secciones por delante. Aquí se apaga.
+ * El índice lo decide un IntersectionObserver por umbral de ratio, y ese umbral
+ * DEPENDE DEL MODO: 0.48 con snap, 0.32 con flow. Medido en el navegador:
+ *
+ *   con snap ... el índice cambiaba en p ≈ 0.80
+ *   con flow ... cambia en p ≈ 0.50
+ *
+ * Los valores anteriores (START 0.30 / END 0.70 / CUTOFF 0.75) estaban ajustados
+ * al primer caso. Al pasar a flow quedaron mal colocados y se volvieron dañinos:
+ * medido, a p=0.58 la mezcla valía 0.48 con la sección siguiente YA activa, así
+ * que anticipaba dos secciones por delante — exactamente el fallo que el corte
+ * existía para evitar.
+ *
+ * Ahora toda la ventana cabe ANTES del cambio de índice:
+ *
+ *  - START 0.08 — arranca pronto porque sólo hay hasta 0.50 de recorrido útil.
+ *  - END 0.44 — el máximo se alcanza justo antes del cambio.
+ *  - CUTOFF 0.50 — en cuanto el índice cambia, el objetivo YA es la sección
+ *    nueva y anticipar más apuntaría dos por delante. Aquí se apaga.
+ *  - MAX 0.8 — subido desde 0.6. Con el snap obligatorio el progreso intermedio
+ *    apenas existía y un valor alto no llegaba a verse; con flow el recorrido es
+ *    continuo y la anticipación tiene sitio para leerse.
  *
  * El corte no produce un salto visible porque lo que cambia es el OBJETIVO, no
  * la posición: las partículas se mueven un 3.2% por fotograma hacia él, así que
  * un cambio instantáneo de objetivo se absorbe en la interpolación de siempre.
  *
- * Con progreso por debajo de START el resultado es idéntico al anterior a este
- * cambio — por eso esto no puede romper ninguna escena ya ajustada.
+ * SI SE CAMBIA EL MODO DE SCROLL, HAY QUE VOLVER A MEDIR ESTOS CUATRO NÚMEROS.
  */
-const SCROLL_BLEND_START = 0.3
-const SCROLL_BLEND_END = 0.7
-const SCROLL_BLEND_CUTOFF = 0.75
-const SCROLL_BLEND_MAX = 0.6
+const SCROLL_BLEND_START = 0.08
+const SCROLL_BLEND_END = 0.44
+const SCROLL_BLEND_CUTOFF = 0.5
+const SCROLL_BLEND_MAX = 0.8
 
 function scrollBlendAmount(progress: number): number {
   if (!Number.isFinite(progress)) return 0
