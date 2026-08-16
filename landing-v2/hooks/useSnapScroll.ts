@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, type MutableRefObject } from 'react'
 import { heroDebug } from '@/lib/hero-debug'
 import { resolveNavigationTarget } from '@/lib/routes'
 import { easeInOutCubic, SNAP_SCROLL } from '@/lib/scroll/snapScrollConfig'
@@ -67,12 +67,32 @@ function scrollSectionIntoView(el: HTMLElement, behavior: ScrollBehavior = 'smoo
 }
 
 /**
+ * Refs que el hook escribe. Si se le pasan desde fuera (el SceneContext), escribe
+ * directamente en ellas en vez de mantener copias propias.
+ *
+ * Antes había TRES `scrollProgressRef` distintos —uno en el contexto, otro aquí y
+ * otro en `useSectionScroll`— y el único que llegaba al sistema de partículas
+ * jamás recibía otra cosa que 0.
+ */
+export type SnapScrollTargets = {
+  sectionIndexRef?: MutableRefObject<number>
+  scrollProgressRef?: MutableRefObject<number>
+}
+
+/**
  * Snap scroll — wheel threshold on desktop; proximity/natural on smaller viewports.
  */
-export function useSnapScroll(totalSections: number, scrollMode: ScrollMode) {
+export function useSnapScroll(
+  totalSections: number,
+  scrollMode: ScrollMode,
+  targets?: SnapScrollTargets
+) {
   const [sectionIndex, setSectionIndex] = useState(0)
-  const sectionIndexRef = useRef(0)
-  const scrollProgressRef = useRef(0)
+  const ownSectionIndexRef = useRef(0)
+  const ownScrollProgressRef = useRef(0)
+  const sectionIndexRef = targets?.sectionIndexRef ?? ownSectionIndexRef
+  const scrollProgressRef = targets?.scrollProgressRef ?? ownScrollProgressRef
+  const progressRafRef = useRef(0)
   const ratioMapRef = useRef<Map<number, number>>(new Map())
   const lastRatioLogRef = useRef(0)
   const sectionEls = useRef<(HTMLElement | null)[]>(
@@ -185,6 +205,84 @@ export function useSnapScroll(totalSections: number, scrollMode: ScrollMode) {
       requestAnimationFrame(() => scrollToSection(fromHash))
     }
   }, [applySectionIndex, scrollToSection])
+
+  /**
+   * Progreso REAL dentro de la sección actual.
+   *
+   * 0 = el borde superior de la sección está alineado con el viewport.
+   * 1 = ya se ha recorrido su alto entero (o sea, la siguiente está entrando).
+   * Negativo = se está volviendo hacia la sección anterior.
+   *
+   * Se escribe en un ref, nunca en estado: esto cambia en cada fotograma y
+   * pasarlo por React re-renderizaría el árbol entero del canvas 60 veces por
+   * segundo. El consumidor (el sistema de partículas) lee el ref dentro de su
+   * propio `useFrame`.
+   *
+   * La lectura va coalescida en un `requestAnimationFrame`: el evento `scroll`
+   * se dispara muchas veces por fotograma y `offsetTop`/`scrollTop` fuerzan
+   * layout, así que sin esto se recalcularía varias veces para pintar una.
+   */
+  useEffect(() => {
+    const root = document.querySelector('main') as HTMLElement | null
+    if (!root) return
+
+    const read = () => {
+      progressRafRef.current = 0
+      const els = sectionEls.current
+      const y = root.scrollTop
+
+      /*
+       * La sección se deduce de la GEOMETRÍA, no de `sectionIndexRef`.
+       *
+       * El índice lo decide un IntersectionObserver por umbrales de ratio, así
+       * que durante una transición puede ir por delante o por detrás de dónde
+       * está realmente el scroll. Midiendo contra el índice salían valores como
+       * -1 (posición de una sección medida contra el origen de la siguiente):
+       * aritméticamente correctos y semánticamente basura.
+       *
+       * Derivándolo de la posición, el valor siempre describe dónde está el
+       * usuario y queda acotado a 0..1 por construcción.
+       */
+      let idx = 0
+      for (let i = 0; i < els.length; i++) {
+        const candidate = els[i]
+        if (!candidate) continue
+        if (candidate.offsetTop <= y + 1) idx = i
+        else break
+      }
+
+      const el = els[idx]
+      if (!el) return
+      const height = el.offsetHeight || root.clientHeight
+      if (height <= 0) return
+
+      scrollProgressRef.current = Math.max(0, Math.min(1, (y - el.offsetTop) / height))
+
+      if (process.env.NODE_ENV !== 'production') {
+        // Sonda de desarrollo: permite comprobar desde la consola que el
+        // progreso es real y no el 0 permanente que era antes.
+        ;(window as Window & { __GENESIS_SCROLL_PROGRESS__?: number })
+          .__GENESIS_SCROLL_PROGRESS__ = scrollProgressRef.current
+      }
+    }
+
+    const onScroll = () => {
+      if (!progressRafRef.current) {
+        progressRafRef.current = requestAnimationFrame(read)
+      }
+    }
+
+    read()
+    root.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+
+    return () => {
+      root.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (progressRafRef.current) cancelAnimationFrame(progressRafRef.current)
+      progressRafRef.current = 0
+    }
+  }, [scrollProgressRef, sectionIndexRef])
 
   useEffect(() => {
     if (!snapWheelEnabled) return

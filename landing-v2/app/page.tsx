@@ -24,13 +24,17 @@ const WorldCanvas = dynamic(
 function PageContent() {
   const { sectionIndexRef, scrollProgressRef, scrollToSectionRef } = useScene()
   const scrollMode = useScrollMode()
-  const { sectionIndex, registerSection, scrollToSection } = useSnapScroll(TOTAL_SECTIONS, scrollMode)
+  /**
+   * El hook escribe DIRECTAMENTE en los refs del contexto. Antes mantenía copias
+   * propias y aquí se sincronizaban a mano poniendo el progreso a 0 en cada
+   * cambio de sección — que era la única escritura que recibía en toda la app.
+   */
+  const { sectionIndex, registerSection, scrollToSection } = useSnapScroll(
+    TOTAL_SECTIONS,
+    scrollMode,
+    { sectionIndexRef, scrollProgressRef }
+  )
   const legalScrollTimeoutRef = useRef<number | null>(null)
-
-  useEffect(() => {
-    sectionIndexRef.current = sectionIndex
-    scrollProgressRef.current = 0
-  }, [sectionIndex, sectionIndexRef, scrollProgressRef])
 
   useEffect(() => {
     scrollToSectionRef.current = scrollToSection

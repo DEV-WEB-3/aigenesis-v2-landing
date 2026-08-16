@@ -251,6 +251,49 @@ interface ParticleMorphSystemProps {
 }
 
 const DEFAULT_LERP_SPEED = 0.032
+
+/**
+ * Anticipación de la forma siguiente según el scroll.
+ *
+ * Hasta ahora las partículas sólo interpolaban hacia la forma de la sección
+ * activa a ritmo fijo: el scroll no participaba, así que cada cambio se leía
+ * como un salto entre dos estados. Con el progreso ya cableado, la forma empieza
+ * a inclinarse hacia la de la sección siguiente conforme se avanza.
+ *
+ * LA VENTANA ESTÁ ATADA A CUÁNDO CAMBIA EL ÍNDICE, y eso hay que medirlo, no
+ * suponerlo. El índice lo decide un IntersectionObserver por umbrales de ratio;
+ * medido en el navegador, cambia alrededor de p≈0.8, no a mitad de sección. De
+ * ahí salen los tres números:
+ *
+ *  - START 0.30 — antes de eso la forma actual se ve limpia. La anticipación es
+ *    un remate, no un borrón permanente.
+ *  - END 0.70 — el máximo se alcanza justo ANTES de que el índice cambie, que es
+ *    cuando la anticipación tiene sentido.
+ *  - CUTOFF 0.75 — pasado el cambio, el objetivo YA es la sección nueva; seguir
+ *    anticipando apuntaría dos secciones por delante. Aquí se apaga.
+ *
+ * El corte no produce un salto visible porque lo que cambia es el OBJETIVO, no
+ * la posición: las partículas se mueven un 3.2% por fotograma hacia él, así que
+ * un cambio instantáneo de objetivo se absorbe en la interpolación de siempre.
+ *
+ * Con progreso por debajo de START el resultado es idéntico al anterior a este
+ * cambio — por eso esto no puede romper ninguna escena ya ajustada.
+ */
+const SCROLL_BLEND_START = 0.3
+const SCROLL_BLEND_END = 0.7
+const SCROLL_BLEND_CUTOFF = 0.75
+const SCROLL_BLEND_MAX = 0.6
+
+function scrollBlendAmount(progress: number): number {
+  if (!Number.isFinite(progress)) return 0
+  if (progress <= SCROLL_BLEND_START || progress > SCROLL_BLEND_CUTOFF) return 0
+  const t = Math.min(
+    1,
+    (progress - SCROLL_BLEND_START) / (SCROLL_BLEND_END - SCROLL_BLEND_START)
+  )
+  // smoothstep: entra y sale sin esquinas
+  return t * t * (3 - 2 * t) * SCROLL_BLEND_MAX
+}
 const DEFAULT_FADE_LERP = 0.06
 const TARGET_OPACITY = 0.78
 const ORGANIC_STRENGTH = 0.014
@@ -414,6 +457,7 @@ function makeCircleTexture(): THREE.CanvasTexture {
 
 export default function ParticleMorphSystem({
   sectionIndexRef,
+  scrollProgressRef,
   heroActive = false,
 }: ParticleMorphSystemProps) {
   const groupRef = useRef<THREE.Group>(null!)
@@ -904,9 +948,23 @@ export default function ParticleMorphSystem({
       particleLimit,
     })
 
+    // Anticipación de la forma siguiente en función del scroll. `blend` es 0
+    // mientras no se haya avanzado lo suficiente dentro de la sección, y ahí
+    // este bloque se comporta exactamente igual que antes de existir.
+    const blend = scrollBlendAmount(scrollProgressRef.current)
+    const nextTarget =
+      blend > 0 ? allTargets[Math.min(sectionIdx + 1, allTargets.length - 1)] : null
+
+    if (process.env.NODE_ENV !== 'production') {
+      ;(window as Window & { __GENESIS_MORPH_BLEND__?: number }).__GENESIS_MORPH_BLEND__ = blend
+    }
+
     for (let i = 0; i < particleLimit * 3; i++) {
       if (!isTrustSection) {
-        morph[i] += (target[i] - morph[i]) * morphLerp
+        const aim = nextTarget
+          ? target[i] + (nextTarget[i] - target[i]) * blend
+          : target[i]
+        morph[i] += (aim - morph[i]) * morphLerp
         col[i] += (colorTarget[i] - col[i]) * COLOR_LERP_SPEED
       }
     }
