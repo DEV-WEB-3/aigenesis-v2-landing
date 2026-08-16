@@ -20,7 +20,24 @@ export type StaticMetric = {
 
 export type InstitutionalMetric = CounterMetric | StaticMetric
 
-/** Trust — InstitutionalMetrics.tsx */
+/**
+ * Trust — InstitutionalMetrics.tsx
+ *
+ * ⚠ SIN VERIFICAR, Y CON UNA CONTRADICCIÓN INTERNA.
+ *
+ * Esta sección dice «12+ Países» y la de Marketplace dice «190+ PAÍSES», en la
+ * misma página y sobre el mismo concepto. Una de las dos está mal y no se puede
+ * decidir cuál desde este repositorio: el listado real de países lo fija el
+ * backend del marketplace según el flete disponible.
+ *
+ * Se deja como está a propósito. Cambiar una cifra de alcance comercial sin
+ * poder medirla sería sustituir un número equivocado por otro. Queda anotado
+ * aquí y reportado; lo mismo vale para «100K+ Comunidad» y «99.9% Uptime», que
+ * tampoco tienen fuente en el repo.
+ *
+ * Referencia de lo que SÍ está medido: las métricas del token de más abajo,
+ * comprobadas en cadena el 16-ago-2026.
+ */
 export const TRUST_INSTITUTIONAL_METRICS: readonly InstitutionalMetric[] = [
   { kind: 'counter', to: 100, suffix: 'K+', label: 'Comunidad' },
   { kind: 'counter', to: 12, suffix: '+', label: 'Países' },
@@ -33,11 +50,47 @@ export type TokenDisplayMetric =
   | { key: string; label: string; static: string }
   | { key: string; label: string; to: number; suffix: string }
 
+/**
+ * Métricas del token — TODAS comprobables en cadena.
+ *
+ * MEDIDO EL 16-AGO-2026 en bscscan.com/token/0xC1F0768587Dc889e494C171B155C60B4e9a13F08
+ * y contrastado con la API de Dexscreener. Estos números están A FUEGO: si el
+ * contrato se mueve, hay que volver a medirlos aquí. La fecha está escrita a
+ * propósito para que se vea cuándo caducan.
+ *
+ * QUÉ SE CORRIGIÓ Y POR QUÉ
+ *
+ * 1. `PRECIO: $0.0042` — RETIRADO. BSCScan da «Onchain Market Cap: $0.00» y sin
+ *    precio; la API de Dexscreener devuelve `pairs: null` para el contrato. El
+ *    instrumento se validó contra CAKE, que sí devuelve 30 pares, así que el
+ *    vacío es un resultado y no un fallo de la sonda.
+ *
+ *    Lo grave no es sólo que el precio no tenga mercado detrás: es que ESTA
+ *    MISMA SECCIÓN lleva un botón «Ver en BSCScan», o sea que se desmiente sola
+ *    en un clic. Un precio es un DATO, no una señal de presentación, y por eso
+ *    no se deja puesto a la espera.
+ *
+ *    Para revertirlo basta con volver a añadir la línea; pero antes debería
+ *    haber un mercado que lo sostenga.
+ *
+ * 2. `HOLDERS: 2847+` — eran 15.174. Se quedaba corto CINCO VECES en el mejor
+ *    número que tiene el proyecto. Se deja en «15.000+» y no en la cifra exacta
+ *    porque los holders sólo crecen: así el número envejece hacia la verdad en
+ *    vez de contra ella.
+ *
+ * 3. `SUPPLY 111M` y `NETWORK BSC` — correctos, verificados sin cambios.
+ *
+ * El cuarto hueco lo ocupa ahora que el contrato está verificado en BSCScan,
+ * que es un hecho que se comprueba con el botón que ya está debajo.
+ */
 export const TOKEN_DISPLAY_METRICS: readonly TokenDisplayMetric[] = [
-  { key: 'price', label: 'PRECIO', static: '$0.0042' },
+  // `15` + `K+`, y no `15000`, porque el contador imprime con `toFixed()` y no
+  // pone separador de millares: saldría «15000+». Poner un `toLocaleString`
+  // general no vale — convertiría el «2019» de Trust en «2.019».
+  { key: 'holders', label: 'HOLDERS', to: 15, suffix: 'K+' },
   { key: 'supply', label: 'SUPPLY TOTAL', to: 111, suffix: 'M' },
-  { key: 'holders', label: 'HOLDERS', to: 2847, suffix: '+' },
-  { key: 'network', label: 'NETWORK', static: 'BSC' },
+  { key: 'network', label: 'RED', static: 'BSC' },
+  { key: 'contract', label: 'CONTRATO', static: 'Verificado' },
 ] as const
 
 /** G-Pulse — SceneGPulse */
