@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { GenesisHeadline, slideLeft } from '@/components/ui/SceneShared'
+import { Heading } from './Heading'
 
 export type HighlightTone = 'strong' | 'brand' | 'signature' | 'intelligence'
 
@@ -55,12 +56,11 @@ export function SectionHeader({
       {highlight ? (
         <GenesisHeadline lead={String(title)} highlight={highlight} />
       ) : (
-        <motion.h2
-          variants={slideLeft}
-          className="font-display text-display text-genesis-text leading-tight"
-        >
-          {title}
-        </motion.h2>
+        <motion.div variants={slideLeft}>
+          <Heading className="font-display text-display text-genesis-text leading-tight">
+            {title}
+          </Heading>
+        </motion.div>
       )}
       {description ? (
         <motion.p variants={slideLeft} className="text-body-lg text-genesis-mist leading-relaxed">

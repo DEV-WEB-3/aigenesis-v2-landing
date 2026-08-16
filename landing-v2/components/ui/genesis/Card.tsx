@@ -1,6 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
+import { Heading, HeadingLevel } from './Heading'
 
 export type CardVariant = 'product' | 'ecosystem' | 'marketplace' | 'trust' | 'community'
 
@@ -35,23 +36,30 @@ export function Card({
   className,
   hover = true,
 }: CardProps) {
+  /*
+   * Una tarjeta es una unidad subordinada a su sección: si la sección es h2, sus
+   * tarjetas son h3. `HeadingLevel` baja ese escalón para todo lo de dentro, así
+   * que el nivel sale del ANIDAMIENTO y no de un número escrito a mano.
+   */
   return (
-    <article
-      className={cn(
-        'flex flex-col gap-genesis-4 p-genesis-6 text-genesis-text',
-        variantClasses[variant],
-        hover && 'card-genesis-hover',
-        className
-      )}
-    >
-      {label ? <span className="label-section">{label}</span> : null}
-      {title ? (
-        <h3 className="font-display text-heading text-genesis-text">{title}</h3>
-      ) : null}
-      {description ? (
-        <p className="text-body-lg text-genesis-mist max-w-prose">{description}</p>
-      ) : null}
-      {children}
-    </article>
+    <HeadingLevel>
+      <article
+        className={cn(
+          'flex flex-col gap-genesis-4 p-genesis-6 text-genesis-text',
+          variantClasses[variant],
+          hover && 'card-genesis-hover',
+          className
+        )}
+      >
+        {label ? <span className="label-section">{label}</span> : null}
+        {title ? (
+          <Heading className="font-display text-heading text-genesis-text">{title}</Heading>
+        ) : null}
+        {description ? (
+          <p className="text-body-lg text-genesis-mist max-w-prose">{description}</p>
+        ) : null}
+        {children}
+      </article>
+    </HeadingLevel>
   )
 }

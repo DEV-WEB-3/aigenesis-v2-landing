@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/genesis'
 import { useSectionEnterAnimation } from '@/hooks/useSectionEnterAnimation'
 import { SectionVisualProvider } from '@/hooks/useSectionVisualActive'
 import GenesisOrbSignature, { type GenesisOrbPlacement } from '@/components/brand/GenesisOrbSignature'
+import { HeadingLevel } from '@/components/ui/genesis/Heading'
 
 // ─── Variants compartidos ─────────────────────────────────────────────────────
 export const containerV = {
@@ -250,7 +251,12 @@ export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { classN
         exit={isNaturalScroll ? undefined : 'exit'}
         className={`scene-content-stack flex flex-col gap-4 lg:max-w-[27rem] lg:justify-self-end lg:pr-1${wideStack ? ' scene-content-stack--wide' : ''}`}
       >
-        {children}
+        {/*
+          Una sección está un escalón por debajo del título de la página, así que
+          su cabecera es h2 y las tarjetas de dentro, h3. El nivel no se escribe
+          en ningún sitio: sale de este anidamiento.
+        */}
+        <HeadingLevel>{children}</HeadingLevel>
       </motion.div>
     )
 

@@ -1,5 +1,7 @@
 'use client'
 
+import { Heading, HeadingLevel } from './Heading'
+
 export type TrustStatus = 'verified' | 'live' | 'audited' | 'pending'
 
 export interface TrustBadgeProps {
@@ -50,7 +52,12 @@ export function TrustBadge({
   const config = statusConfig[status]
 
   const inner = (
-    <>
+    /*
+     * Era <h4> mientras Card era <h3>, y las dos son tarjetas hermanas bajo la
+     * misma sección: de ahí el salto H2 → H4 que marcaba la auditoría. Ahora las
+     * dos bajan el mismo escalón porque ocupan el mismo sitio en el árbol.
+     */
+    <HeadingLevel>
       <div className="flex items-center gap-2">
         <span
           className={cn('inline-block h-2 w-2 rounded-full shrink-0', config.dotClass)}
@@ -60,11 +67,11 @@ export function TrustBadge({
           {config.label}
         </span>
       </div>
-      <h4 className="font-display text-heading text-genesis-text">{title}</h4>
+      <Heading className="font-display text-heading text-genesis-text">{title}</Heading>
       {description ? (
         <p className="text-sm text-genesis-mist leading-relaxed">{description}</p>
       ) : null}
-    </>
+    </HeadingLevel>
   )
 
   const baseClass = cn(
