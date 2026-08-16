@@ -225,9 +225,23 @@ export default function HeroGenesisOrb({
 
       {renderLogo ? (
         variant === 'hero' ? (
-          <h1 className="hero-official-logo hero-logo-breathe">
+          /*
+           * Esto era el <h1> de la pagina, y el <h1> era SOLO el logotipo. Un
+           * buscador y un lector de pantalla recibian "GENESIS" como unico
+           * titular: la marca, no lo que hace. La propuesta de valor vivia en un
+           * <p> por debajo.
+           *
+           * El <h1> pasa a ser esa propuesta (ver HeroSection). Aqui queda un
+           * <div>: el logotipo NO pierde su nombre accesible, porque
+           * `GenesisOfficialLogo` ya envuelve la imagen en un
+           * `role="img" aria-label="GENESIS"` propio. Y la marca sigue en el
+           * <title>, en el nav y en el JSON-LD.
+           *
+           * No cambia un pixel: mismas clases, mismo sitio.
+           */
+          <div className="hero-official-logo hero-logo-breathe">
             <GenesisOfficialLogo size={logoSize} markScale={1} layout="vertical" tone="color" imageClassName="hero-logo-fill" />
-          </h1>
+          </div>
         ) : (
           <div className="hero-official-logo hero-official-logo--signature hero-logo-breathe" aria-hidden="true">
             <GenesisOfficialLogo size={logoSize} markScale={1} layout="vertical" tone="color" imageClassName="hero-logo-fill" />

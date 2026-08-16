@@ -775,12 +775,25 @@ body {
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
+  /*
+   * Las dos acciones del hero. En movil envuelven a dos lineas por si solas,
+   * que es lo que se quiere: la primaria arriba y entera, nunca partida.
+   */
+  .hero-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.6rem, 2vw, 0.9rem);
+  }
+
   .hero-scroll-dot {
     animation: hero-scroll-dot-loop 1.6s ease-in-out infinite;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-cta.cta-signature:hover {
+    .hero-cta.cta-signature:hover,
+    .hero-cta.cta-secondary:hover {
       transform: none;
     }
 
@@ -800,16 +813,23 @@ body {
       0 0 32px rgba(61, 139, 255, 0.2);
   }
 
+  /*
+   * Los -2px del `whileHover` que tenia framer-motion. Van EN SELECTOR
+   * COMPUESTO y no en `.hero-cta:hover` porque `.cta-base:hover`,
+   * `.cta-signature:hover` y `.cta-secondary:hover` ya declaran
+   * `translateY(-1px)`, van despues en el archivo y tienen la misma
+   * especificidad: ganaban ellas, y el boton se quedaba en -1. Antes no pasaba
+   * porque framer-motion escribia estilo EN LINEA, que gana a cualquier hoja.
+   * Medido con el raton encima: -1 antes de esto, -2 despues.
+   *
+   * La secundaria del hero entra en la misma regla para que las dos se levanten
+   * igual: dos botones juntos que reaccionan distinto se notan.
+   */
+  .hero-cta.cta-secondary:hover {
+    transform: translateY(-2px);
+  }
+
   .hero-cta.cta-signature:hover {
-    /*
-     * Los -2px del `whileHover` que tenia framer-motion. Van EN ESTE selector
-     * compuesto y no en `.hero-cta:hover` porque `.cta-base:hover` y
-     * `.cta-signature:hover` ya declaran `translateY(-1px)`, van despues en el
-     * archivo y tienen la misma especificidad: ganaban ellas, y el boton se
-     * quedaba en -1. Antes no pasaba porque framer-motion escribia estilo EN
-     * LINEA, que gana a cualquier hoja. Medido con el raton encima: -1 antes de
-     * esto, -2 despues.
-     */
     transform: translateY(-2px);
     box-shadow:
       inset 0 1px 1px rgba(255, 255, 255, 0.14),

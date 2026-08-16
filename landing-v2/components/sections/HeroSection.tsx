@@ -6,7 +6,7 @@ import HeroGenesisOrb from '@/components/hero/HeroGenesisOrb'
 import HeroLivingField from '@/components/hero/HeroLivingField'
 import HeroPremiumTagline from '@/components/hero/HeroPremiumTagline'
 import { detectHeroPerfTier, type HeroPerfTier } from '@/lib/hero-performance'
-import { sectionHref } from '@/lib/routes'
+import { ROUTES, sectionHref } from '@/lib/routes'
 
 /**
  * Retardo de entrada, para la animacion CSS de `.hero-entra`.
@@ -102,21 +102,47 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
           <HeroPremiumTagline delay={0.12} />
 
           <div className="hero-ui-stack hero-entra" style={entra(0.14)}>
-            <p className="hero-subtitle font-body">
+            {/*
+              Era un <p>, y el <h1> de la pagina era el logotipo. Ahora el <h1>
+              es esto: lo que hace el producto, no como se llama. Mismas clases,
+              asi que se ve exactamente igual —Tailwind neutraliza el tamano y el
+              peso propios de h1— y sigue habiendo un solo h1 en la pagina.
+            */}
+            <h1 className="hero-subtitle font-body">
               Donde la Inteligencia Artificial y el Blockchain crean{' '}
               <span className="text-white font-medium">un universo en expansión</span>
-            </p>
+            </h1>
 
             {/*
-              El envoltorio lleva la entrada y el ancla el :hover, porque las dos
-              escriben `transform`. `.hero-ui-stack` es una columna con
+              El envoltorio lleva la entrada y las anclas el :hover, porque las
+              dos escriben `transform`. `.hero-ui-stack` es una columna con
               `align-items: center`, asi que el envoltorio se ajusta al contenido
               y queda centrado igual: no cambia la maquetacion.
+
+              LA ACCION PRIMARIA AHORA LLEVA AL PRODUCTO.
+              El unico boton del hero era "Explora el Universo", que hace scroll
+              a la seccion de confianza. Es decir: el sitio pedia la accion mas
+              importante SOLO desde el nav, y el hero —lo primero que se ve—
+              devolvia al visitante a la misma pagina.
+
+              `ROUTES.REGISTER` y el rotulo "Crear cuenta" no son invencion mia:
+              los usa ya el cajon movil del nav. El `target` externo lo resuelve
+              el mismo criterio que aplica `Button` a cualquier enlace de fuera.
+
+              Explorar no se pierde: baja a secundaria, que es su sitio.
             */}
-            <div className="hero-entra" style={entra(0.28)}>
+            <div className="hero-entra hero-cta-row" style={entra(0.28)}>
+              <a
+                href={ROUTES.REGISTER}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-signature focus-ring-signature hero-cta inline-flex min-h-11 items-center justify-center rounded-full px-7 sm:px-8 py-3.5 text-sm sm:text-base font-semibold text-white no-underline font-display pointer-events-auto"
+              >
+                Crear cuenta
+              </a>
               <a
                 href={sectionHref('trust')}
-                className="cta-signature focus-ring-signature hero-cta inline-flex min-h-11 items-center justify-center rounded-full px-7 sm:px-8 py-3.5 text-sm sm:text-base font-semibold text-white no-underline font-display pointer-events-auto"
+                className="cta-secondary focus-ring-genesis hero-cta inline-flex min-h-11 items-center justify-center rounded-full px-7 sm:px-8 py-3.5 text-sm sm:text-base font-semibold no-underline font-display pointer-events-auto"
               >
                 Explora el Universo
               </a>
@@ -124,8 +150,27 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
           </div>
         </div>
 
+        {/*
+          `pointer-events-none` y `z-[1]`, los dos por lo mismo.
+
+          El indicador va `absolute bottom-8` y el contenido del hero, centrado,
+          llega casi hasta abajo: a 1000 px de alto se solapaban 16 y a 900 son
+          66. Como iba a `z-[2]` —igual que la pila de contenido— y aparece
+          despues en el DOM, se pintaba ENCIMA de los botones. Y con
+          `pointer-events` activos, robaba el clic: en el punto (789, 840),
+          dentro del CTA, quien lo recibia era `DIV.hero-scroll-mouse`.
+
+          Es un adorno `aria-hidden` sin ninguna interaccion propia, asi que ni
+          debe recibir clics ni taparle nada a una accion. No es un fallo que
+          trajera la segunda accion: el boton unico, centrado y de 213 px,
+          cubria exactamente la misma franja.
+
+          Queda pendiente de decision de diseno lo otro: en ventanas de 900 px
+          el contenido del hero ocupa hasta 892, asi que el indicador no CABE.
+          O se recorta el hero o el indicador sobra ahi; eso ya no es un arreglo.
+        */}
         <div
-          className="hero-entra-fundido absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-2"
+          className="hero-entra-fundido pointer-events-none absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 z-[1] flex flex-col items-center gap-2"
           style={entra(1.2, { duracion: 0.8 })}
         >
           <div className="hero-scroll-mouse" aria-hidden="true">
