@@ -1434,8 +1434,6 @@ body {
 
   .home-section-fit .scene-content-stack article.surface-card,
   .home-section-fit .scene-content-stack .surface-card {
-    padding: 1.35rem;
-    gap: 0.875rem;
   }
 
   .home-section-fit .scene-content-stack article h3,
@@ -1544,7 +1542,6 @@ body {
   }
 
   .home-section-fit .ecosystem-map-column .surface-card {
-    padding: 0.85rem 1rem;
   }
 }
 
@@ -1570,8 +1567,6 @@ body {
 
   .home-section-fit .scene-content-stack article.surface-card,
   .home-section-fit .scene-content-stack .surface-card {
-    padding: 1.1rem;
-    gap: 0.65rem;
   }
 
   .home-section-fit .scene-content-stack article h3 {
@@ -1721,7 +1716,6 @@ body {
   }
 
   #trust .scene-content-stack .surface-card {
-    padding: 0.6rem 0.7rem !important;
   }
 
   #trust .scene-content-stack .surface-card h3,

@@ -9,6 +9,7 @@ import { useSectionEnterAnimation } from '@/hooks/useSectionEnterAnimation'
 import { SectionVisualProvider } from '@/hooks/useSectionVisualActive'
 import EcosystemEnergyLinks from '@/components/ecosystem/EcosystemEnergyLinks'
 import { sectionHref, type SectionId } from '@/lib/routes'
+import { HeadingLevel } from '@/components/ui/genesis/Heading'
 
 const containerVariants = {
   hidden: {},
@@ -142,6 +143,14 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
         className="home-section-fit relative flex w-full items-stretch justify-start px-6 md:px-12 lg:items-center lg:h-screen"
         style={{ pointerEvents: 'auto' }}
       >
+        {/*
+          Esta sección no pasa por `SceneWrapper`, así que no heredaba el nivel
+          de encabezado que las demás reciben de él: sus tarjetas salían como h2
+          en vez de h3, medido en el DOM. El nivel se establece aquí igual que
+          allí, para que la jerarquía no dependa de qué envoltorio usó cada
+          sección.
+        */}
+        <HeadingLevel>
         <div className="scene-content-frame ecosystem-content-frame flex w-full flex-col items-center gap-6 max-w-7xl mx-auto px-2 sm:px-0 lg:grid lg:grid-cols-2 lg:items-center lg:gap-6">
           {isNaturalScroll ? (
             shouldMountContent ? (
@@ -290,6 +299,7 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
             )}
           </AnimatePresence>
         </div>
+        </HeadingLevel>
       </section>
       </SectionVisualProvider>
     )
