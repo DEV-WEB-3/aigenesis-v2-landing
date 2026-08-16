@@ -17,6 +17,11 @@
     {
       "files": ["lib/design/tokens.ts", "scripts/**"],
       "rules": { "no-restricted-syntax": "off" }
+    },
+    {
+      "_razon": "global-error.tsx SUSTITUYE al layout raiz, asi que se muestra justo cuando la hoja de estilos puede no haber cargado. Usar var(--g-*) ahi arriesga texto sin formato sobre blanco, que es peor que no tener pantalla de error. Es la UNICA excepcion legitima a la regla y por eso esta acotada a un archivo.",
+      "files": ["app/global-error.tsx"],
+      "rules": { "no-restricted-syntax": "off" }
     }
   ]
 }

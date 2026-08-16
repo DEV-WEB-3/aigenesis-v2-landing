@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { SceneProvider, useScene } from '@/context/SceneContext'
 import { useSnapScroll } from '@/hooks/useSnapScroll'
@@ -10,6 +10,8 @@ import { SECTIONS, TOTAL_SECTIONS, resolveNavigationTarget } from '@/lib/routes'
 import { SCENE_BY_SECTION } from '@/components/sceneRegistry'
 import Navbar from '@/components/layout/Navbar'
 import SectionProgressDots from '@/components/ui/SectionProgressDots'
+import { WebGLBoundary, soportaWebGL } from '@/components/webgl/WebGLBoundary'
+import StaticWorldFallback from '@/components/webgl/StaticWorldFallback'
 
 /**
  * El canvas se carga sólo en cliente. Antes esto pasaba por un
@@ -20,6 +22,57 @@ const WorldCanvas = dynamic(
   () => import('@/components/webgl/WorldCanvasInner'),
   { ssr: false, loading: () => null }
 )
+
+/**
+ * El canvas, con red debajo.
+ *
+ * DOS DEFENSAS, porque hay dos formas distintas de fallar:
+ *
+ *  1. El dispositivo no puede crear un contexto WebGL. Se pregunta ANTES de
+ *     montar nada, así no se paga el coste de intentarlo ni se ensucia la
+ *     consola.
+ *  2. El contexto se crea pero algo revienta después —un shader que el driver
+ *     rechaza, memoria agotada, el contexto perdido—. Eso sólo lo caza una
+ *     barrera de error.
+ *
+ * Comprobar sólo lo primero deja fuera todo el segundo grupo, que es el que da
+ * los fallos raros de los que nadie informa.
+ *
+ * El respaldo NO va dentro de la barrera: si el propio respaldo fallara, la
+ * barrera no tendría a qué caer.
+ */
+function MundoVisual({ sectionIndex }: { sectionIndex: number }) {
+  /*
+   * LA DECISION SE TOMA DESPUES DE MONTAR, no durante el render.
+   *
+   * La primera version usaba `useState(soportaWebGL)`, que parece razonable y
+   * rompe la hidratacion: el servidor no tiene `window`, asi que devuelve
+   * `false` y renderiza el respaldo; el cliente devuelve `true` en su PRIMER
+   * render y pinta el canvas. Dos arboles distintos, y React descarta el HTML
+   * del servidor entero (errores #418 y #423 en produccion).
+   *
+   * Es el mismo fallo que ya arreglamos en `useScrollMode`, cometido otra vez a
+   * las pocas horas. Se ve razonable justo porque parece defensivo.
+   *
+   * `null` = todavia no se sabe. Se pinta el respaldo, que es lo que emite el
+   * servidor: primer render identico en ambos lados. En cuanto el efecto
+   * resuelve, se cambia al canvas — y eso ya es una actualizacion de estado
+   * normal, que React si aplica.
+   */
+  const [hayWebGL, setHayWebGL] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    setHayWebGL(soportaWebGL())
+  }, [])
+
+  if (hayWebGL !== true) return <StaticWorldFallback />
+
+  return (
+    <WebGLBoundary fallback={<StaticWorldFallback />}>
+      <WorldCanvas sectionIndex={sectionIndex} />
+    </WebGLBoundary>
+  )
+}
 
 function PageContent() {
   const { sectionIndexRef, scrollProgressRef, scrollToSectionRef } = useScene()
@@ -100,7 +153,7 @@ function PageContent() {
 
   return (
     <div className="home-snap-root fixed inset-0 h-screen w-screen overflow-hidden">
-      <WorldCanvas sectionIndex={sectionIndex} />
+      <MundoVisual sectionIndex={sectionIndex} />
       <Navbar />
       <SectionProgressDots total={TOTAL_SECTIONS} current={sectionIndex} onDotClick={scrollToSection} />
 
