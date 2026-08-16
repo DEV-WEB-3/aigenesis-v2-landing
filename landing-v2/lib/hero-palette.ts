@@ -1,13 +1,14 @@
+import { EMISSION, VOID } from '@/lib/design/tokens'
 import { GENESIS_RGB, genesisColorAtX, type GenesisColorKey } from '@/lib/genesis-brand'
 
 /** Paleta Hero — alineada al logo Genesis oficial */
-export const HERO_VOID = '#02040A'
-export const HERO_VOID_MID = '#030711'
-export const HERO_VOID_EDGE = '#05070D'
-export const HERO_CENTER = '#02040A'
+export const HERO_VOID = VOID.black
+export const HERO_VOID_MID = VOID.black
+export const HERO_VOID_EDGE = VOID.black
+export const HERO_CENTER = VOID.black
 export const HERO_SHADOW = 'rgba(2, 4, 10, 0.88)'
 export const HERO_SHADOW_SOFT = 'rgba(3, 7, 17, 0.55)'
-export const HERO_NEON = '#E91E8B'
+export const HERO_NEON = EMISSION.magenta
 export const HERO_NEON_GLOW = 'rgba(233, 30, 139, 0.55)'
 
 /** RGB canvas Hero — mismos tokens que genesis-brand */

@@ -1,3 +1,4 @@
+import { VOID } from '@/lib/design/tokens'
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, Inter, IBM_Plex_Mono } from 'next/font/google'
 import { SITE_URL } from '@/lib/routes'
@@ -117,7 +118,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#050510',
+  themeColor: VOID.black,
 }
 
 export default function RootLayout({

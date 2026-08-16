@@ -1,3 +1,4 @@
+import { EMISSION, STATE } from '@/lib/design/tokens'
 /**
  * Phase 7.5 — Mining Constellation V2 layout (viewBox 0–100).
  */
@@ -28,14 +29,14 @@ export const MINING_CONSTELLATION_CENTER = { x: 50, y: 50 } as const
 export const MINING_CONSTELLATION_RING_R = 38
 
 export const MINING_CONSTELLATION_NODES: readonly MiningConstellationNodeDef[] = [
-  { id: 'media', color: '#FF2EDB', glow: 'rgba(255, 46, 219, 0.5)', pulseOffset: 0.22 },
-  { id: 'entrepreneurs', color: '#9D4DFF', glow: 'rgba(157, 77, 255, 0.5)', mobilePrimary: true, pulseOffset: 0.24 },
-  { id: 'investors', color: '#2962FF', glow: 'rgba(41, 98, 255, 0.48)', mobilePrimary: true, pulseOffset: 0.26 },
-  { id: 'education', color: '#00F5FF', glow: 'rgba(0, 245, 255, 0.45)', mobilePrimary: true, pulseOffset: 0.28 },
-  { id: 'government', color: '#5CE1A0', glow: 'rgba(92, 225, 160, 0.4)', pulseOffset: 0.3 },
-  { id: 'mentors', color: '#FFB347', glow: 'rgba(255, 179, 71, 0.4)', pulseOffset: 0.32 },
-  { id: 'tech', color: '#7B9CFF', glow: 'rgba(123, 156, 255, 0.45)', pulseOffset: 0.34 },
-  { id: 'culture', color: '#E8C547', glow: 'rgba(232, 197, 71, 0.4)', mobilePrimary: true, pulseOffset: 0.36 },
+  { id: 'media', color: EMISSION.magentaHi, glow: 'rgba(255, 46, 219, 0.5)', pulseOffset: 0.22 },
+  { id: 'entrepreneurs', color: EMISSION.violetHi, glow: 'rgba(157, 77, 255, 0.5)', mobilePrimary: true, pulseOffset: 0.24 },
+  { id: 'investors', color: EMISSION.blue, glow: 'rgba(41, 98, 255, 0.48)', mobilePrimary: true, pulseOffset: 0.26 },
+  { id: 'education', color: EMISSION.cyan, glow: 'rgba(0, 245, 255, 0.45)', mobilePrimary: true, pulseOffset: 0.28 },
+  { id: 'government', color: STATE.success, glow: 'rgba(92, 225, 160, 0.4)', pulseOffset: 0.3 },
+  { id: 'mentors', color: STATE.warning, glow: 'rgba(255, 179, 71, 0.4)', pulseOffset: 0.32 },
+  { id: 'tech', color: EMISSION.blueHi, glow: 'rgba(123, 156, 255, 0.45)', pulseOffset: 0.34 },
+  { id: 'culture', color: STATE.warning, glow: 'rgba(232, 197, 71, 0.4)', mobilePrimary: true, pulseOffset: 0.36 },
 ] as const
 
 export function constellationNodeAngleDeg(index: number, total = 8): number {

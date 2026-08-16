@@ -1,3 +1,4 @@
+import { EMISSION } from '@/lib/design/tokens'
 /**
  * Phase 8.0 — Booster Quantum Accelerator layout (viewBox 0–100).
  */
@@ -22,7 +23,7 @@ export const BOOSTER_TIERS: readonly BoosterTierDef[] = [
   {
     id: 'activation',
     y: 78,
-    color: '#FF00C8',
+    color: EMISSION.magenta,
     glow: 'rgba(255, 0, 200, 0.52)',
     pulseOffset: 0.08,
     ringR: 13.5,
@@ -31,7 +32,7 @@ export const BOOSTER_TIERS: readonly BoosterTierDef[] = [
   {
     id: 'multiplier',
     y: 48,
-    color: '#9D4DFF',
+    color: EMISSION.violetHi,
     glow: 'rgba(157, 77, 255, 0.5)',
     pulseOffset: 0.32,
     ringR: 15,
@@ -40,7 +41,7 @@ export const BOOSTER_TIERS: readonly BoosterTierDef[] = [
   {
     id: 'progression',
     y: 18,
-    color: '#00F5FF',
+    color: EMISSION.cyan,
     glow: 'rgba(0, 245, 255, 0.48)',
     pulseOffset: 0.58,
     ringR: 17,

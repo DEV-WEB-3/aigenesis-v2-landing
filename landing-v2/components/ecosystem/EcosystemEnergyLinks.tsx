@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import { useEffect, useRef } from 'react'
 import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
@@ -45,10 +47,10 @@ export default function EcosystemEnergyLinks({ isActive }: EcosystemEnergyLinksP
     >
       <defs>
         <linearGradient id="eco-link-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#E91E8B" stopOpacity="0.85" />
-          <stop offset="35%" stopColor="#6E56CF" stopOpacity="0.75" />
-          <stop offset="65%" stopColor="#3D8BFF" stopOpacity="0.7" />
-          <stop offset="100%" stopColor="#22D3EE" stopOpacity="0.65" />
+          <stop offset="0%" stopColor={EMISSION.magenta} stopOpacity="0.85" />
+          <stop offset="35%" stopColor={EMISSION.violet} stopOpacity="0.75" />
+          <stop offset="65%" stopColor={EMISSION.blueHi} stopOpacity="0.7" />
+          <stop offset="100%" stopColor={EMISSION.cyan} stopOpacity="0.65" />
         </linearGradient>
         <filter id="eco-link-glow" x="-40%" y="-40%" width="180%" height="180%">
           <feGaussianBlur stdDeviation="0.9" result="blur" />
@@ -73,11 +75,11 @@ export default function EcosystemEnergyLinks({ isActive }: EcosystemEnergyLinksP
             stroke="url(#eco-link-grad)"
             filter="url(#eco-link-glow)"
           />
-          <circle r="1.1" className="eco-energy-particle" fill="#22D3EE">
+          <circle r="1.1" className="eco-energy-particle" fill={EMISSION.cyan}>
             <animateMotion dur={`${3.2 + (id.length % 3) * 0.4}s`} repeatCount="indefinite" path={d} />
           </circle>
           {primary ? (
-            <circle r="0.75" className="eco-energy-particle eco-energy-particle--trail" fill="#E91E8B">
+            <circle r="0.75" className="eco-energy-particle eco-energy-particle--trail" fill={EMISSION.magenta}>
               <animateMotion
                 dur={`${3.8 + (id.length % 4) * 0.35}s`}
                 repeatCount="indefinite"

@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import { COMMUNITY_LINKS, COMMUNITY_PULSE_S, communityLinkPath } from '@/lib/community/communityNetworkLayout'
 
 export default function CommunityLinks() {
@@ -13,8 +15,8 @@ export default function CommunityLinks() {
     >
       <defs>
         <linearGradient id="community-link-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100">
-          <stop offset="0%" stopColor="#9D4DFF" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#9D4DFF" stopOpacity="0.28" />
+          <stop offset="0%" stopColor={EMISSION.violetHi} stopOpacity="0.55" />
+          <stop offset="100%" stopColor={EMISSION.violetHi} stopOpacity="0.28" />
         </linearGradient>
       </defs>
 

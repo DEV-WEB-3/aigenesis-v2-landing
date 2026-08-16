@@ -1,3 +1,4 @@
+import { EMISSION } from '@/lib/design/tokens'
 /**
  * Phase 10.0 — G-Pulse Live Signal Network layout (viewBox 0–100).
  */
@@ -19,9 +20,9 @@ export interface GpulseRingDef {
 }
 
 export const GPULSE_SIGNAL_RINGS: readonly GpulseRingDef[] = [
-  { id: 'capture', r: 11, ry: 4.2, color: '#00F5FF', glow: 'rgba(0, 245, 255, 0.45)', pulseOffset: 0.08 },
-  { id: 'analysis', r: 16, ry: 5.8, color: '#9D4DFF', glow: 'rgba(157, 77, 255, 0.48)', pulseOffset: 0.22 },
-  { id: 'signal', r: 22, ry: 7.2, color: '#FF00C8', glow: 'rgba(255, 0, 200, 0.42)', pulseOffset: 0.38 },
+  { id: 'capture', r: 11, ry: 4.2, color: EMISSION.cyan, glow: 'rgba(0, 245, 255, 0.45)', pulseOffset: 0.08 },
+  { id: 'analysis', r: 16, ry: 5.8, color: EMISSION.violetHi, glow: 'rgba(157, 77, 255, 0.48)', pulseOffset: 0.22 },
+  { id: 'signal', r: 22, ry: 7.2, color: EMISSION.magenta, glow: 'rgba(255, 0, 200, 0.42)', pulseOffset: 0.38 },
 ] as const
 
 export function gpulseNodeAngleDeg(index: number, total = GPULSE_NODE_COUNT): number {

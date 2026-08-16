@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import ParticleMorphSystem from './ParticleMorphSystem'
@@ -85,9 +87,9 @@ export default function WorldCanvasInner({ sectionIndex }: WorldCanvasInnerProps
         style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', display: 'block' }}
       >
         <ambientLight intensity={0.3} />
-        <pointLight position={[5, 5, 5]} intensity={0.72} color="#6E56CF" />
-        <pointLight position={[-5, -3, -2]} intensity={0.28} color="#E91E8B" />
-        <pointLight position={[0, 2, 4]} intensity={0.35} color="#22D3EE" />
+        <pointLight position={[5, 5, 5]} intensity={0.72} color={EMISSION.violet} />
+        <pointLight position={[-5, -3, -2]} intensity={0.28} color={EMISSION.magenta} />
+        <pointLight position={[0, 2, 4]} intensity={0.35} color={EMISSION.cyan} />
 
         <Suspense fallback={null}>
           <ParticleMorphSystem

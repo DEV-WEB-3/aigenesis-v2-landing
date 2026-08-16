@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import {
   BOOSTER_ACCELERATOR_PULSE_S,
   BOOSTER_STREAM_COUNT,
@@ -17,9 +19,9 @@ export default function BoosterAcceleratorStreams() {
     >
       <defs>
         <linearGradient id="booster-stream-grad" gradientUnits="userSpaceOnUse" x1="50" y1="88" x2="50" y2="10">
-          <stop offset="0%" stopColor="#FF00C8" stopOpacity="0.85" />
-          <stop offset="42%" stopColor="#9D4DFF" stopOpacity="0.72" />
-          <stop offset="100%" stopColor="#00F5FF" stopOpacity="0.62" />
+          <stop offset="0%" stopColor={EMISSION.magenta} stopOpacity="0.85" />
+          <stop offset="42%" stopColor={EMISSION.violetHi} stopOpacity="0.72" />
+          <stop offset="100%" stopColor={EMISSION.cyan} stopOpacity="0.62" />
         </linearGradient>
         <filter id="booster-stream-glow" x="-60%" y="-20%" width="220%" height="140%">
           <feGaussianBlur stdDeviation="0.75" result="blur" />
@@ -58,10 +60,10 @@ export default function BoosterAcceleratorStreams() {
               stroke="url(#booster-stream-grad)"
               filter="url(#booster-stream-glow)"
             />
-            <circle r="0.75" className="booster-accelerator-stream__particle" fill="#FF00C8">
+            <circle r="0.75" className="booster-accelerator-stream__particle" fill={EMISSION.magenta}>
               <animateMotion dur={flowDur} repeatCount="indefinite" path={d} />
             </circle>
-            <circle r="0.45" className="booster-accelerator-stream__particle booster-accelerator-stream__particle--trail" fill="#00F5FF">
+            <circle r="0.45" className="booster-accelerator-stream__particle booster-accelerator-stream__particle--trail" fill={EMISSION.cyan}>
               <animateMotion dur={trailDur} repeatCount="indefinite" path={d} begin={`${strand * 0.35}s`} />
             </circle>
           </g>

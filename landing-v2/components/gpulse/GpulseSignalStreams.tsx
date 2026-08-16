@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import {
   GPULSE_NODE_COUNT,
   gpulseOutflowPath,
@@ -20,13 +22,13 @@ export default function GpulseSignalStreams() {
     >
       <defs>
         <linearGradient id="gpulse-stream-in-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100">
-          <stop offset="0%" stopColor="#00F5FF" stopOpacity="0.65" />
-          <stop offset="55%" stopColor="#9D4DFF" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#FF00C8" stopOpacity="0.35" />
+          <stop offset="0%" stopColor={EMISSION.cyan} stopOpacity="0.65" />
+          <stop offset="55%" stopColor={EMISSION.violetHi} stopOpacity="0.55" />
+          <stop offset="100%" stopColor={EMISSION.magenta} stopOpacity="0.35" />
         </linearGradient>
         <linearGradient id="gpulse-stream-out-grad" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="100" y2="0">
-          <stop offset="0%" stopColor="#9D4DFF" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#FF00C8" stopOpacity="0.45" />
+          <stop offset="0%" stopColor={EMISSION.violetHi} stopOpacity="0.55" />
+          <stop offset="100%" stopColor={EMISSION.magenta} stopOpacity="0.45" />
         </linearGradient>
         <filter id="gpulse-stream-glow" x="-30%" y="-30%" width="160%" height="160%">
           <feGaussianBlur stdDeviation="0.6" result="blur" />
@@ -50,7 +52,7 @@ export default function GpulseSignalStreams() {
               stroke="url(#gpulse-stream-in-grad)"
               opacity="0.28"
             />
-            <circle r="0.55" className="gpulse-signal-stream__particle gpulse-signal-stream__particle--in" fill="#00F5FF">
+            <circle r="0.55" className="gpulse-signal-stream__particle gpulse-signal-stream__particle--in" fill={EMISSION.cyan}>
               <animateMotion dur={dur} repeatCount="indefinite" path={d} begin={begin} />
             </circle>
           </g>
@@ -69,7 +71,7 @@ export default function GpulseSignalStreams() {
               stroke="url(#gpulse-stream-out-grad)"
               opacity="0.22"
             />
-            <circle r="0.42" className="gpulse-signal-stream__particle gpulse-signal-stream__particle--out" fill="#FF00C8">
+            <circle r="0.42" className="gpulse-signal-stream__particle gpulse-signal-stream__particle--out" fill={EMISSION.magenta}>
               <animateMotion dur={dur} repeatCount="indefinite" path={d} begin={`${i * 0.55 + 1.2}s`} />
             </circle>
           </g>
@@ -81,7 +83,7 @@ export default function GpulseSignalStreams() {
         cy={GPULSE_SIGNAL_CENTER.y}
         r="1.1"
         className="gpulse-signal-stream__core-anchor"
-        fill="#FF00C8"
+        fill={EMISSION.magenta}
         style={{ '--gpulse-pulse-s': `${GPULSE_SIGNAL_PULSE_S}s` } as React.CSSProperties}
       />
     </svg>

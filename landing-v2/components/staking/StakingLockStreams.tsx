@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import {
   stakingLockStreamPath,
   stakingOutflowPath,
@@ -21,9 +23,9 @@ export default function StakingLockStreams() {
     >
       <defs>
         <linearGradient id="staking-stream-grad" gradientUnits="userSpaceOnUse" x1="50" y1="8" x2="50" y2="92">
-          <stop offset="0%" stopColor="#00F5FF" stopOpacity="0.55" />
-          <stop offset="45%" stopColor="#2962FF" stopOpacity="0.65" />
-          <stop offset="100%" stopColor="#9D4DFF" stopOpacity="0.45" />
+          <stop offset="0%" stopColor={EMISSION.cyan} stopOpacity="0.55" />
+          <stop offset="45%" stopColor={EMISSION.blue} stopOpacity="0.65" />
+          <stop offset="100%" stopColor={EMISSION.violetHi} stopOpacity="0.45" />
         </linearGradient>
         <filter id="staking-stream-glow" x="-40%" y="-20%" width="180%" height="140%">
           <feGaussianBlur stdDeviation="0.7" result="blur" />
@@ -49,7 +51,7 @@ export default function StakingLockStreams() {
         return (
           <g key={`in-${i}`}>
             <path d={d} className="staking-lock-stream staking-lock-stream--in" fill="none" stroke="url(#staking-stream-grad)" />
-            <circle r="0.65" className="staking-lock-stream__particle" fill="#00F5FF">
+            <circle r="0.65" className="staking-lock-stream__particle" fill={EMISSION.cyan}>
               <animateMotion dur={dur} repeatCount="indefinite" path={d} />
             </circle>
           </g>
@@ -62,7 +64,7 @@ export default function StakingLockStreams() {
         return (
           <g key={`out-${i}`}>
             <path d={d} className="staking-lock-stream staking-lock-stream--out" fill="none" stroke="url(#staking-stream-grad)" />
-            <circle r="0.45" className="staking-lock-stream__particle staking-lock-stream__particle--out" fill="#2962FF">
+            <circle r="0.45" className="staking-lock-stream__particle staking-lock-stream__particle--out" fill={EMISSION.blue}>
               <animateMotion dur={dur} repeatCount="indefinite" path={d} begin={`${i * 0.4}s`} />
             </circle>
           </g>
@@ -74,7 +76,7 @@ export default function StakingLockStreams() {
         cy={STAKING_VAULT_CENTER.y}
         r="1.2"
         className="staking-lock-stream__core-anchor"
-        fill="#FF00C8"
+        fill={EMISSION.magenta}
       />
     </svg>
   )

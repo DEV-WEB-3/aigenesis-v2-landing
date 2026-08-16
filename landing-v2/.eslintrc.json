@@ -1,0 +1,22 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "Literal[value=/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/]",
+        "message": "Color a fuego. Usa un token de @/lib/design/tokens (EMISSION, VOID, INK, STATE). Antes de esta regla habia 50 colores distintos en 372 apariciones y tres sistemas de color compitiendo; la regla existe para que eso no pueda volver."
+      },
+      {
+        "selector": "TemplateElement[value.raw=/#(?:[0-9a-fA-F]{6})/]",
+        "message": "Color a fuego dentro de una plantilla. Interpola el token: ${EMISSION.magenta}."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["lib/design/tokens.ts", "scripts/**"],
+      "rules": { "no-restricted-syntax": "off" }
+    }
+  ]
+}

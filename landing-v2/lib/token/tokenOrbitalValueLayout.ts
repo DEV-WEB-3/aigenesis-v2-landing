@@ -1,3 +1,4 @@
+import { EMISSION } from '@/lib/design/tokens'
 /**
  * Phase 23.0 — Free-form orbit paths (control points) centered on Genesis nucleus.
  */
@@ -23,7 +24,20 @@ export type TokenValueNodeId =
   | 'liquidity'
   | 'expansion'
 
-export type AtomicEnergyColor = '#FF00C8' | '#00F5FF' | '#9D4DFF'
+/**
+ * Los colores permitidos para la energía atómica, DERIVADOS del token.
+ *
+ * Antes era una unión de literales escritos a mano
+ * (`'#FF00C8' | '#00F5FF' | '#9D4DFF'`), que es una cuarta copia de la paleta:
+ * si el token cambiaba, este tipo seguía exigiendo el valor viejo y el
+ * compilador rechazaba el color correcto.
+ *
+ * Con `typeof` el tipo sigue al token solo, porque `EMISSION` es `as const`.
+ */
+export type AtomicEnergyColor =
+  | typeof EMISSION.magenta
+  | typeof EMISSION.cyan
+  | typeof EMISSION.violetHi
 export type AtomicOrbitTier = 'main' | 'secondary'
 
 export interface OrbitControlPoint {
@@ -59,9 +73,9 @@ export interface OrbitEditorOrbitState {
 export const TOKEN_VALUE_CENTER = { x: 50, y: 50 } as const
 
 export const ATOMIC_ENERGY_COLORS: readonly AtomicEnergyColor[] = [
-  '#FF00C8',
-  '#00F5FF',
-  '#9D4DFF',
+  EMISSION.magenta,
+  EMISSION.cyan,
+  EMISSION.violetHi,
 ] as const
 
 const ORBIT_RX = 44
@@ -80,14 +94,14 @@ export const TOKEN_ATOMIC_ORBIT_POINTS: OrbitControlPoint[][] = TOKEN_ATOMIC_ORB
 )
 
 export const TOKEN_VALUE_NODES: readonly TokenValueNodeDef[] = [
-  { id: 'ai', color: '#00F5FF', size: 1, pulseOffset: 0.2, orbitIndex: 0, phase: 0.08, mobilePrimary: true },
-  { id: 'expansion', color: '#2962FF', size: 0.92, pulseOffset: 0.48, orbitIndex: 0, phase: 0.58, mobilePrimary: true },
-  { id: 'wallet', color: '#00F5FF', size: 0.94, pulseOffset: 0.24, orbitIndex: 1, phase: 0.12, mobilePrimary: true },
-  { id: 'marketplace', color: '#FF4DDB', size: 0.9, pulseOffset: 0.28, orbitIndex: 1, phase: 0.62, mobilePrimary: true },
-  { id: 'holders', color: '#9D4DFF', size: 0.92, pulseOffset: 0.32, orbitIndex: 2, phase: 0.18 },
-  { id: 'rewards', color: '#FF00C8', size: 0.88, pulseOffset: 0.36, orbitIndex: 2, phase: 0.72 },
-  { id: 'education', color: '#00F5FF', size: 0.86, pulseOffset: 0.4, orbitIndex: 3, phase: 0.22 },
-  { id: 'liquidity', color: '#FF4DDB', size: 0.9, pulseOffset: 0.44, orbitIndex: 4, phase: 0.68 },
+  { id: 'ai', color: EMISSION.cyan, size: 1, pulseOffset: 0.2, orbitIndex: 0, phase: 0.08, mobilePrimary: true },
+  { id: 'expansion', color: EMISSION.blue, size: 0.92, pulseOffset: 0.48, orbitIndex: 0, phase: 0.58, mobilePrimary: true },
+  { id: 'wallet', color: EMISSION.cyan, size: 0.94, pulseOffset: 0.24, orbitIndex: 1, phase: 0.12, mobilePrimary: true },
+  { id: 'marketplace', color: EMISSION.magentaHi, size: 0.9, pulseOffset: 0.28, orbitIndex: 1, phase: 0.62, mobilePrimary: true },
+  { id: 'holders', color: EMISSION.violetHi, size: 0.92, pulseOffset: 0.32, orbitIndex: 2, phase: 0.18 },
+  { id: 'rewards', color: EMISSION.magenta, size: 0.88, pulseOffset: 0.36, orbitIndex: 2, phase: 0.72 },
+  { id: 'education', color: EMISSION.cyan, size: 0.86, pulseOffset: 0.4, orbitIndex: 3, phase: 0.22 },
+  { id: 'liquidity', color: EMISSION.magentaHi, size: 0.9, pulseOffset: 0.44, orbitIndex: 4, phase: 0.68 },
 ] as const
 
 export function roundOrbitCoord(n: number): number {

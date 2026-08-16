@@ -1,12 +1,14 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import { motion } from 'framer-motion'
 
 const TAGLINE_ITEMS = [
-  { label: 'AI', dot: '#E91E8B' },
-  { label: 'Blockchain', dot: '#6E56CF' },
-  { label: 'Marketplace', dot: '#3D8BFF' },
-  { label: 'Intelligence Network', dot: '#22D3EE' },
+  { label: 'AI', dot: EMISSION.magenta },
+  { label: 'Blockchain', dot: EMISSION.violet },
+  { label: 'Marketplace', dot: EMISSION.blueHi },
+  { label: 'Intelligence Network', dot: EMISSION.cyan },
 ] as const
 
 interface HeroPremiumTaglineProps {

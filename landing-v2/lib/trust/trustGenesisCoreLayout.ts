@@ -1,10 +1,11 @@
+import { EMISSION } from '@/lib/design/tokens'
 /** Phase 17.0 — Trust Genesis Core timing + DOM layout. */
 
 export const TRUST_CORE_PULSE_S = 4
 export const TRUST_GENESIS_WAVE_S = 6
 export const TRUST_FLOW_ORBIT_S = 28
 
-export const TRUST_CORE_COLOR = '#FF00C8'
+export const TRUST_CORE_COLOR = EMISSION.magenta
 
 export const TRUST_CORE_SPHERE = {
   SIZE_PERCENT: 72,

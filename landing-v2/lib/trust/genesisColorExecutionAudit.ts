@@ -258,7 +258,7 @@ function buildDiagnosis(report: GenesisColorAuditReport): string[] {
   if (devOverwrite.length > 0) {
     const ex = devOverwrite[0]!
     lines.push(
-      `SOBRESCRITURA DEV: GenesisParticleControlApply.ts lerpColor() mezcla 35% hacia primaryColor/secondaryColor del panel (default #22d3ee pastel) DESPUÉS de computeStardustLogoLiveColor().`
+      `SOBRESCRITURA DEV: GenesisParticleControlApply.ts lerpColor() mezcla 35% hacia primaryColor/secondaryColor del panel (por defecto EMISSION.cyan) DESPUÉS de computeStardustLogoLiveColor().`
     )
     lines.push(
       `Ejemplo ${ex.bucket}: pipeline ${ex.afterPipeline.rgb255} → final buffer ${ex.finalBuffer.rgb255}`

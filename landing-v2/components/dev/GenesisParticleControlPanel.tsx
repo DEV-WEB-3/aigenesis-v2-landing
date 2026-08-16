@@ -1,5 +1,7 @@
 'use client'
 
+import { INK } from '@/lib/design/tokens'
+
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type {
   FlowDevControls,
@@ -279,7 +281,7 @@ export default function GenesisParticleControlPanel() {
             0 0 0 1px rgba(233, 30, 139, 0.12),
             0 16px 48px rgba(0, 0, 0, 0.55),
             inset 0 1px 0 rgba(255, 255, 255, 0.06);
-          color: #e2e8f0;
+          color: var(--g-ink-muted);
           font: 11px/1.35 var(--font-inter, system-ui, sans-serif);
           overflow: hidden;
         }
@@ -296,7 +298,7 @@ export default function GenesisParticleControlPanel() {
           font-weight: 600;
           font-size: 12px;
           letter-spacing: 0.04em;
-          background: linear-gradient(90deg, #22d3ee, #e91e8b);
+          background: linear-gradient(90deg, var(--g-cyan), var(--g-magenta));
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
@@ -308,7 +310,7 @@ export default function GenesisParticleControlPanel() {
         .gpc-header-actions button {
           border: none;
           background: rgba(255, 255, 255, 0.08);
-          color: #cbd5e1;
+          color: var(--g-ink-muted);
           border-radius: 6px;
           padding: 2px 8px;
           cursor: pointer;
@@ -324,14 +326,14 @@ export default function GenesisParticleControlPanel() {
         .gpc-tabs button {
           border: 1px solid transparent;
           background: rgba(255, 255, 255, 0.04);
-          color: #94a3b8;
+          color: var(--g-ink-muted);
           border-radius: 6px;
           padding: 4px 8px;
           cursor: pointer;
           font-size: 10px;
         }
         .gpc-tabs button.active {
-          color: #22d3ee;
+          color: var(--g-cyan);
           border-color: rgba(34, 211, 238, 0.35);
           background: rgba(34, 211, 238, 0.1);
         }
@@ -351,18 +353,18 @@ export default function GenesisParticleControlPanel() {
           grid-template-columns: 1fr auto;
         }
         .gpc-label {
-          color: #94a3b8;
+          color: var(--g-ink-muted);
           font-size: 10px;
         }
         .gpc-val {
           text-align: right;
           font-family: var(--font-mono, monospace);
           font-size: 10px;
-          color: #22d3ee;
+          color: var(--g-cyan);
         }
         .gpc-row input[type='range'] {
           width: 100%;
-          accent-color: #e91e8b;
+          accent-color: var(--g-magenta);
         }
         .gpc-row input[type='color'] {
           width: 100%;
@@ -381,7 +383,7 @@ export default function GenesisParticleControlPanel() {
         .gpc-preset-grid button {
           border: 1px solid rgba(34, 211, 238, 0.25);
           background: rgba(34, 211, 238, 0.08);
-          color: #e2e8f0;
+          color: var(--g-ink-muted);
           border-radius: 6px;
           padding: 5px 10px;
           cursor: pointer;
@@ -401,7 +403,7 @@ export default function GenesisParticleControlPanel() {
         .gpc-layer summary {
           cursor: pointer;
           font-weight: 500;
-          color: #cbd5e1;
+          color: var(--g-ink-muted);
           margin-bottom: 6px;
         }
         .gpc-preset-grid {
@@ -416,7 +418,7 @@ export default function GenesisParticleControlPanel() {
           border-radius: 8px;
           border: 1px solid rgba(255, 255, 255, 0.1);
           background: rgba(0, 0, 0, 0.35);
-          color: #e2e8f0;
+          color: var(--g-ink-muted);
           font: 10px/1.4 monospace;
           padding: 8px;
           resize: vertical;
@@ -601,7 +603,7 @@ export default function GenesisParticleControlPanel() {
                         borderRadius: 6,
                         border: '1px solid rgba(255,255,255,0.1)',
                         background: 'rgba(0,0,0,0.3)',
-                        color: '#e2e8f0',
+                        color: INK.muted,
                       }}
                     />
                   </label>

@@ -1,3 +1,4 @@
+import { EMISSION } from '@/lib/design/tokens'
 /**
  * Phase 9.0 — Genesis Time Vault layout (viewBox 0–100).
  */
@@ -7,9 +8,9 @@ export const STAKING_VAULT_FORM_S = 1.4
 export const STAKING_VAULT_CENTER = { x: 50, y: 52 } as const
 
 export const STAKING_TIME_RINGS = [
-  { id: 'period-6', y: 68, rx: 18, ry: 6.8, color: '#9D4DFF', pulseOffset: 0.12, label: '6+' },
-  { id: 'permanence', y: 50, rx: 21, ry: 7.6, color: '#9D4DFF', pulseOffset: 0.28, label: 'On-chain' },
-  { id: 'stability', y: 32, rx: 24, ry: 8.4, color: '#9D4DFF', pulseOffset: 0.44, label: 'Deflacionario' },
+  { id: 'period-6', y: 68, rx: 18, ry: 6.8, color: EMISSION.violetHi, pulseOffset: 0.12, label: '6+' },
+  { id: 'permanence', y: 50, rx: 21, ry: 7.6, color: EMISSION.violetHi, pulseOffset: 0.28, label: 'On-chain' },
+  { id: 'stability', y: 32, rx: 24, ry: 8.4, color: EMISSION.violetHi, pulseOffset: 0.44, label: 'Deflacionario' },
 ] as const
 
 export function stakingLockStreamPath(index: number, total = 5): string {

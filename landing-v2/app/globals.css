@@ -16,43 +16,61 @@
  */
 
 :root {
-  /* Genesis — superficies y texto */
-  --genesis-void: #02040a;
-  --genesis-base: #080a14;
-  --genesis-surface: #0f111c;
-  --genesis-text: #f8fafc;
-  --genesis-ion: #3d8bff;
-  --genesis-cyan: #22d3ee;
-  --genesis-pulse: #5b6cff;
-  --genesis-core: #6e56cf;
-  --genesis-mist: #aab4c8;
-  --genesis-ghost: #5c6b82;
-  --genesis-fuchsia: #e91e8b;
-  --genesis-fuchsia-soft: #ff4fb8;
-  --genesis-fuchsia-deep: #c4187a;
-  --genesis-fuchsia-rgb: 233, 30, 139;
-  --genesis-core-rgb: 110, 86, 207;
-  --genesis-ion-rgb: 61, 139, 255;
-  --genesis-cyan-rgb: 34, 211, 238;
+  /*
+   * FUNDACIÓN — espejo de lib/design/tokens.ts.
+   *
+   * Antes había aquí 23 variables de las que CASI NINGUNA se usaba:
+   * --genesis-core, --genesis-ion, --genesis-pulse, --genesis-violet,
+   * --genesis-turquoise y todas las *-rgb tenían CERO referencias, mientras sus
+   * hex aparecían a fuego 372 veces por el proyecto. El sistema estaba
+   * declarado y sistemáticamente esquivado.
+   *
+   * Los valores no se han elegido: se han medido. Cada uno es el que YA se
+   * renderiza y cae dentro de la banda de tono del logo oficial.
+   */
 
-  /* Estados */
-  --state-success: #2fd07f;
-  --state-warning: #e6b450;
-  --state-error: #e85d5d;
-  --state-info: #00d1ff;
+  /* El vacío — neutros con sesgo azul, no grises puros */
+  --g-void: var(--g-void);
+  --g-base: var(--g-base);
+  --g-surface: var(--g-surface);
+  --g-raised: #161a2b;
 
-  /* WebGL (referencia visual — no usado en CSS runtime aún) */
-  --webgl-particle-core: #22d3ee;
-  --webgl-particle-edge: #6e56cf;
-  --webgl-orb-inner: #1a2744;
-  --webgl-orb-glow: #e91e8b;
-  --webgl-energy-line: rgba(233, 30, 139, 0.35);
+  /* Tinta */
+  --g-ink: var(--g-ink);
+  --g-ink-muted: var(--g-ink-muted);
+  --g-ink-faint: var(--g-ink-faint);
 
-  /* Legacy — compatibilidad migración (alias → usar --genesis-fuchsia) */
-  --genesis-violet: #6e56cf;
-  --genesis-turquoise: #00bcd4;
-  --genesis-legacy-magenta: var(--genesis-fuchsia);
-  --genesis-legacy-cyan: #00e5ff;
+  /* Emisión — las estrellas dentro del vacío */
+  --g-blue: var(--g-blue);
+  --g-blue-hi: var(--g-blue-hi);
+  --g-violet: var(--g-violet);
+  --g-violet-hi: var(--g-violet-hi);
+  --g-magenta: var(--g-magenta);
+  --g-magenta-hi: var(--g-magenta-hi);
+  --g-cyan: var(--g-cyan);
+
+  /* Estado — deliberadamente FUERA del espacio de marca */
+  --g-success: var(--g-success);
+  --g-warning: var(--g-warning);
+  --g-error: var(--g-error);
+  --g-info: var(--g-blue-hi);
+
+  /*
+   * Alias de compatibilidad. Existen sólo para que el barrido pueda avanzar por
+   * capas sin romper nada a medio camino. Se retiran cuando no queden usos.
+   */
+  --genesis-void: var(--g-void);
+  --genesis-base: var(--g-base);
+  --genesis-surface: var(--g-surface);
+  --genesis-text: var(--g-ink);
+  --genesis-mist: var(--g-ink-muted);
+  --genesis-ghost: var(--g-ink-faint);
+  --genesis-fuchsia: var(--g-magenta);
+  --genesis-cyan: var(--g-cyan);
+  --state-success: var(--g-success);
+  --state-warning: var(--g-warning);
+  --state-error: var(--g-error);
+  --state-info: var(--g-info);
 
   /* UI */
   --genesis-line: rgba(255, 255, 255, 0.08);
@@ -74,22 +92,22 @@
   /* Gradiente oficial Genesis: fuchsia → core → ion → cyan */
   --gradient-genesis-strong: linear-gradient(
     90deg,
-    #e91e8b 0%,
-    #6e56cf 35%,
-    #3d8bff 70%,
-    #22d3ee 100%
+    var(--g-magenta) 0%,
+    var(--g-violet) 35%,
+    var(--g-blue-hi) 70%,
+    var(--g-cyan) 100%
   );
   --gradient-genesis-button: linear-gradient(
     90deg,
-    #e91e8b 0%,
-    #6e56cf 35%,
-    #3d8bff 70%,
-    #22d3ee 100%
+    var(--g-magenta) 0%,
+    var(--g-violet) 35%,
+    var(--g-blue-hi) 70%,
+    var(--g-cyan) 100%
   );
   --gradient-brand: var(--gradient-genesis-button);
   --gradient-intelligence: var(--gradient-genesis-strong);
   --gradient-genesis-signature: var(--gradient-genesis-button);
-  --gradient-fuchsia-core: linear-gradient(90deg, #e91e8b 0%, #6e56cf 100%);
+  --gradient-fuchsia-core: linear-gradient(90deg, var(--g-magenta) 0%, var(--g-violet) 100%);
 
   /* Motion */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -151,14 +169,14 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #00e5ff, #7c3aed);
+  background: linear-gradient(135deg, var(--g-cyan), var(--g-violet));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .btn-genesis {
-  background: linear-gradient(135deg, #00e5ff, #7c3aed);
+  background: linear-gradient(135deg, var(--g-cyan), var(--g-violet));
   transition: box-shadow var(--duration-base) var(--ease-in-out),
     transform var(--duration-fast) var(--ease-in-out);
 }
@@ -358,7 +376,7 @@ body {
     overflow: hidden;
     pointer-events: none;
     z-index: 0;
-    background: #02040a;
+    background: var(--g-void);
   }
 
   .hero-ocean-canvas {
@@ -418,7 +436,7 @@ body {
     font-size: 0.6rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #aab4c8;
+    color: var(--g-ink-muted);
     opacity: 0.92;
     text-shadow: 0 1px 12px rgba(0, 0, 0, 0.75);
   }
@@ -601,7 +619,7 @@ body {
     font-weight: 500;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: #8b97ad;
+    color: var(--g-ink-muted);
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
   }
 
@@ -638,7 +656,7 @@ body {
     max-width: 34rem;
     font-size: clamp(0.875rem, 2.1vw, 1.05rem);
     line-height: 1.55;
-    color: #aab4c8;
+    color: var(--g-ink-muted);
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.92), 0 0 40px rgba(5, 7, 13, 0.6);
     margin: 0;
     padding: 0 0.5rem;
@@ -701,7 +719,7 @@ body {
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #e91e8b;
+    background: var(--g-magenta);
     box-shadow: 0 0 6px rgba(233, 30, 139, 0.4);
   }
 
@@ -1124,7 +1142,7 @@ body {
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #8b97ad;
+  color: var(--g-ink-muted);
 }
 
 .cta-brand-signature__segment {
@@ -1962,7 +1980,7 @@ body {
   width: 2.15rem;
   height: 2.15rem;
   border-radius: 0.6rem;
-  color: #ff2edb;
+  color: var(--g-magenta-hi);
   background: linear-gradient(
     135deg,
     rgba(255, 0, 200, 0.14) 0%,
@@ -1973,11 +1991,11 @@ body {
 }
 
 #mining .mining-flow-card__icon[data-kind='participation'] {
-  color: #9d4dff;
+  color: var(--g-violet-hi);
 }
 
 #mining .mining-flow-card__icon[data-kind='distribution'] {
-  color: #00f5ff;
+  color: var(--g-cyan);
 }
 
 #mining .mining-flow-card__step {
@@ -2395,7 +2413,7 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  color: #ff00c8;
+  color: var(--g-magenta);
   background: linear-gradient(
     145deg,
     rgba(255, 0, 200, 0.24) 0%,
@@ -3558,7 +3576,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #ff4ddb;
+  color: var(--g-magenta-hi);
 }
 
 #token .token-orbit-editor-hud__hint {
@@ -3610,7 +3628,7 @@ body {
 
 #token .token-orbit-editor-hud__angle {
   font-variant-numeric: tabular-nums;
-  color: #00f5ff;
+  color: var(--g-cyan);
 }
 
 #token .token-orbit-editor-hud__actions {
@@ -3677,7 +3695,7 @@ body {
 
 #token .token-orbit-editor-hud__field input[type='range'] {
   width: 100%;
-  accent-color: #ff00c8;
+  accent-color: var(--g-magenta);
 }
 
 #token .token-orbit-editor-hud__field input[type='number'] {
@@ -3686,7 +3704,7 @@ body {
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(0, 0, 0, 0.35);
-  color: #00f5ff;
+  color: var(--g-cyan);
   font-size: 0.68rem;
 }
 
@@ -3708,7 +3726,7 @@ body {
 #token .token-orbit-editor-hud__subhead {
   margin: 0 0 0.35rem;
   font-size: 0.68rem;
-  color: #00f5ff;
+  color: var(--g-cyan);
   font-weight: 600;
 }
 
@@ -5116,7 +5134,7 @@ body {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: #00F5FF;
+  background: var(--g-cyan);
   box-shadow: 0 0 4px rgba(0, 245, 255, 0.5);
   transform: rotate(var(--orbit-angle)) translateX(3.75rem);
   animation: staking-orbit-drift 18s linear infinite;
@@ -5131,7 +5149,7 @@ body {
   justify-content: center;
   border-radius: 50%;
   background: rgba(6, 8, 20, 0.55);
-  border: 1px solid color-mix(in srgb, #FF00C8 35%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-magenta) 35%, transparent);
   box-shadow:
     0 0 24px rgba(255, 0, 200, 0.22),
     inset 0 0 18px rgba(157, 77, 255, 0.12);
@@ -5147,7 +5165,7 @@ body {
 
 #staking .staking-vault-core__lock-glyph {
   position: relative;
-  color: #FF00C8;
+  color: var(--g-magenta);
   opacity: 0.85;
   filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.45));
 }
@@ -5555,7 +5573,7 @@ body {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: #9D4DFF;
+  background: var(--g-violet-hi);
   box-shadow: 0 0 5px rgba(157, 77, 255, 0.55);
   transform: rotate(var(--orbit-angle)) translateX(3.1rem);
   animation: gpulse-orbit-drift 14s linear infinite;
@@ -5570,7 +5588,7 @@ body {
   justify-content: center;
   border-radius: 50%;
   background: rgba(6, 8, 20, 0.58);
-  border: 1px solid color-mix(in srgb, #FF00C8 38%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-magenta) 38%, transparent);
   box-shadow:
     0 0 28px rgba(255, 0, 200, 0.24),
     inset 0 0 16px rgba(157, 77, 255, 0.14);
@@ -5595,7 +5613,7 @@ body {
 
 #gpulse .gpulse-signal-core__glyph {
   position: relative;
-  color: #FF00C8;
+  color: var(--g-magenta);
   opacity: 0.88;
   filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.5));
 }
@@ -6067,18 +6085,18 @@ body {
 #goracle .goracle-ecosystem-satellite__icon {
   position: relative;
   z-index: 1;
-  color: #00F5FF;
+  color: var(--g-cyan);
   filter: drop-shadow(0 0 4px rgba(0, 245, 255, 0.45));
 }
 
 #goracle .goracle-ecosystem-satellite[data-satellite='staking'] .goracle-ecosystem-satellite__icon,
 #goracle .goracle-ecosystem-satellite[data-satellite='booster'] .goracle-ecosystem-satellite__icon {
-  color: #9D4DFF;
+  color: var(--g-violet-hi);
   filter: drop-shadow(0 0 4px rgba(157, 77, 255, 0.45));
 }
 
 #goracle .goracle-ecosystem-satellite[data-satellite='gpulse'] .goracle-ecosystem-satellite__icon {
-  color: #FF00C8;
+  color: var(--g-magenta);
   filter: drop-shadow(0 0 4px rgba(255, 0, 200, 0.45));
 }
 
@@ -6132,7 +6150,7 @@ body {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: #9D4DFF;
+  background: var(--g-violet-hi);
   box-shadow: 0 0 5px rgba(157, 77, 255, 0.55);
   transform: rotate(var(--orbit-angle)) translateX(3.4rem);
   animation: goracle-orbit-drift 20s linear infinite;
@@ -6147,7 +6165,7 @@ body {
   justify-content: center;
   border-radius: 50%;
   background: rgba(6, 8, 20, 0.6);
-  border: 1px solid color-mix(in srgb, #FF00C8 40%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-magenta) 40%, transparent);
   box-shadow:
     0 0 32px rgba(255, 0, 200, 0.26),
     inset 0 0 20px rgba(157, 77, 255, 0.14);
@@ -6176,7 +6194,7 @@ body {
 
 #goracle .goracle-neural-core__glyph {
   position: relative;
-  color: #FF00C8;
+  color: var(--g-magenta);
   opacity: 0.9;
   filter: drop-shadow(0 0 7px rgba(255, 0, 200, 0.55));
 }
@@ -6586,34 +6604,34 @@ body {
   justify-content: center;
   border-radius: 50%;
   background: rgba(6, 8, 20, 0.62);
-  border: 1px solid color-mix(in srgb, #9D4DFF 32%, transparent);
-  color: #00F5FF;
+  border: 1px solid color-mix(in srgb, var(--g-violet-hi) 32%, transparent);
+  color: var(--g-cyan);
   box-shadow: 0 0 10px rgba(157, 77, 255, 0.22);
   animation: marketplace-hub-marker-pulse var(--commerce-pulse-s, 3.6s) ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='catalog'] {
-  color: #00F5FF;
+  color: var(--g-cyan);
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='reach'] {
-  color: #9D4DFF;
+  color: var(--g-violet-hi);
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='fulfillment'] {
-  color: #FF00C8;
+  color: var(--g-magenta);
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='payments'] {
-  color: #FF00C8;
+  color: var(--g-magenta);
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='tracking'] {
-  color: #3D8BFF;
+  color: var(--g-blue-hi);
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='logistics'] {
-  color: #00F5FF;
+  color: var(--g-cyan);
 }
 
 #marketplace .marketplace-core-activity__stream {
@@ -6706,21 +6724,21 @@ body {
 #marketplace .marketplace-payment-core__icon {
   position: relative;
   z-index: 1;
-  color: #00F5FF;
+  color: var(--g-cyan);
   filter: drop-shadow(0 0 3px rgba(0, 245, 255, 0.45));
 }
 
 #marketplace .marketplace-payment-core[data-payment='aig'] .marketplace-payment-core__icon {
-  color: #FF00C8;
+  color: var(--g-magenta);
   filter: drop-shadow(0 0 3px rgba(255, 0, 200, 0.45));
 }
 
 #marketplace .marketplace-payment-core[data-payment='usdt'] .marketplace-payment-core__icon {
-  color: #00F5FF;
+  color: var(--g-cyan);
 }
 
 #marketplace .marketplace-payment-core[data-payment='fiat'] .marketplace-payment-core__icon {
-  color: #3D8BFF;
+  color: var(--g-blue-hi);
   filter: drop-shadow(0 0 3px rgba(61, 139, 255, 0.45));
 }
 
@@ -6805,7 +6823,7 @@ body {
   justify-content: center;
   border-radius: 50%;
   background: rgba(6, 8, 20, 0.58);
-  border: 1px solid color-mix(in srgb, #FF00C8 38%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-magenta) 38%, transparent);
   box-shadow:
     0 0 26px rgba(255, 0, 200, 0.24),
     inset 0 0 16px rgba(157, 77, 255, 0.12);
@@ -6830,7 +6848,7 @@ body {
 
 #marketplace .marketplace-commerce-core__glyph {
   position: relative;
-  color: #FF00C8;
+  color: var(--g-magenta);
   opacity: 0.88;
   filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.5));
 }
@@ -7237,7 +7255,7 @@ body {
   justify-content: center;
   border-radius: 50%;
   background: rgba(6, 8, 20, 0.58);
-  border: 1px solid color-mix(in srgb, #FF00C8 42%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-magenta) 42%, transparent);
   box-shadow:
     0 0 28px rgba(255, 0, 200, 0.28),
     inset 0 0 18px rgba(157, 77, 255, 0.12);
@@ -7266,7 +7284,7 @@ body {
 
 #comunidad .community-core__glyph {
   position: relative;
-  color: #FF00C8;
+  color: var(--g-magenta);
   opacity: 0.9;
   filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.55));
 }
@@ -7986,7 +8004,7 @@ body {
   height: 2px;
   margin: -1px 0 0 -1px;
   border-radius: 50%;
-  background: radial-gradient(circle, #fff 0%, #00f5ff 35%, transparent 100%);
+  background: radial-gradient(circle, #fff 0%, var(--g-cyan) 35%, transparent 100%);
   opacity: 0;
   animation: genesis-portal-stardust-in var(--portal-absorb-s, 6s) linear infinite;
   animation-delay: var(--stardust-delay, 0s);
@@ -8378,7 +8396,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #ff4ddb;
+  color: var(--g-magenta-hi);
 }
 
 #trust .trust-logo-editor-hud__hint {
@@ -8408,7 +8426,7 @@ body {
 
 #trust .trust-logo-editor-hud__field input[type='range'] {
   width: 100%;
-  accent-color: #ff00c8;
+  accent-color: var(--g-magenta);
 }
 
 #trust .trust-logo-editor-hud__field input[type='number'] {
@@ -8417,7 +8435,7 @@ body {
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(0, 0, 0, 0.35);
-  color: #00f5ff;
+  color: var(--g-cyan);
   font-size: 0.68rem;
 }
 

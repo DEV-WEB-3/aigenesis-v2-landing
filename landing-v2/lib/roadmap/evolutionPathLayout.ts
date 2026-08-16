@@ -1,3 +1,4 @@
+import { EMISSION } from '@/lib/design/tokens'
 /**
  * Phase 15.0 — Genesis Evolution Path (viewBox 0–100).
  * Ascending curve · 2019 → 2027 · not a vertical timeline.
@@ -60,9 +61,9 @@ export function evolutionCurvePath(): string {
 }
 
 export function evolutionPathColor(t: number): string {
-  if (t < 0.35) return '#9D4DFF'
-  if (t < 0.72) return '#FF00C8'
-  return '#00F5FF'
+  if (t < 0.35) return EMISSION.violetHi
+  if (t < 0.72) return EMISSION.magenta
+  return EMISSION.cyan
 }
 
 export function milestoneColor(index: number): string {

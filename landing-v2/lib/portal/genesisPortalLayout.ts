@@ -1,8 +1,9 @@
+import { EMISSION } from '@/lib/design/tokens'
 /** Phase 16.0 — Genesis Final Portal layout (viewBox 0–100). */
 
-export const PORTAL_CORE_COLOR = '#FF00C8'
-export const PORTAL_CYAN = '#00F5FF'
-export const PORTAL_PURPLE = '#9B4DFF'
+export const PORTAL_CORE_COLOR = EMISSION.magenta
+export const PORTAL_CYAN = EMISSION.cyan
+export const PORTAL_PURPLE = EMISSION.violetHi
 
 export const PORTAL_CORE_PULSE_S = 4
 export const PORTAL_ABSORB_S = 6

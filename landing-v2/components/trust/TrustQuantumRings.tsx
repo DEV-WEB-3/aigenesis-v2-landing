@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import { TRUST_QUANTUM_RING } from '@/lib/trust/trustGenesisCoreLayout'
 
 export default function TrustQuantumRings() {
@@ -15,9 +17,9 @@ export default function TrustQuantumRings() {
     >
       <defs>
         <linearGradient id="trust-ring-grad" gradientUnits="userSpaceOnUse" x1="0" y1="50" x2="100" y2="50">
-          <stop offset="0%" stopColor="#00F5FF" stopOpacity="0.35" />
-          <stop offset="50%" stopColor="#9B4DFF" stopOpacity="0.28" />
-          <stop offset="100%" stopColor="#FF00C8" stopOpacity="0.32" />
+          <stop offset="0%" stopColor={EMISSION.cyan} stopOpacity="0.35" />
+          <stop offset="50%" stopColor={EMISSION.violetHi} stopOpacity="0.28" />
+          <stop offset="100%" stopColor={EMISSION.magenta} stopOpacity="0.32" />
         </linearGradient>
       </defs>
 

@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import { COMMUNITY_POOL_PULSES, COMMUNITY_PULSE_S, poolPulsePath } from '@/lib/community/communityNetworkLayout'
 
 export default function CommunityPoolPulses() {
@@ -13,9 +15,9 @@ export default function CommunityPoolPulses() {
     >
       <defs>
         <linearGradient id="community-pool-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100">
-          <stop offset="0%" stopColor="#00F5FF" stopOpacity="0.7" />
-          <stop offset="55%" stopColor="#9D4DFF" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="#FF00C8" stopOpacity="0.45" />
+          <stop offset="0%" stopColor={EMISSION.cyan} stopOpacity="0.7" />
+          <stop offset="55%" stopColor={EMISSION.violetHi} stopOpacity="0.5" />
+          <stop offset="100%" stopColor={EMISSION.magenta} stopOpacity="0.45" />
         </linearGradient>
       </defs>
 
@@ -30,7 +32,7 @@ export default function CommunityPoolPulses() {
               stroke="url(#community-pool-grad)"
               opacity="0.18"
             />
-            <circle r="0.44" className="community-pool-pulse__particle" fill="#00F5FF">
+            <circle r="0.44" className="community-pool-pulse__particle" fill={EMISSION.cyan}>
               <animateMotion
                 dur={`${pulse.duration}s`}
                 repeatCount="indefinite"
@@ -38,7 +40,7 @@ export default function CommunityPoolPulses() {
                 begin={`${pulse.delay}s`}
               />
             </circle>
-            <circle r="0.34" className="community-pool-pulse__particle community-pool-pulse__particle--b" fill="#FF00C8" opacity="0.8">
+            <circle r="0.34" className="community-pool-pulse__particle community-pool-pulse__particle--b" fill={EMISSION.magenta} opacity="0.8">
               <animateMotion
                 dur={`${pulse.duration}s`}
                 repeatCount="indefinite"

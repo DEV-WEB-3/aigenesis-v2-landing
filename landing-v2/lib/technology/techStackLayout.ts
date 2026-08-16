@@ -1,3 +1,4 @@
+import { EMISSION } from '@/lib/design/tokens'
 /**
  * Phase 14.0 — Genesis Technology Stack (viewBox 0–100).
  * Backend → Infraestructura → IA → Blockchain → Aplicaciones
@@ -34,11 +35,11 @@ export interface TechStackFlowDef {
 
 /** Top → bottom as specified: Backend down to Aplicaciones */
 export const TECH_STACK_LAYERS: readonly TechStackLayerDef[] = [
-  { id: 'backend', label: 'Backend', index: 0, y: 15, width: 52, color: '#9D4DFF', pulseOffset: 0 },
-  { id: 'infraestructura', label: 'Infraestructura', index: 1, y: 30, width: 58, color: '#3D8BFF', pulseOffset: 0.12 },
-  { id: 'ia', label: 'IA', index: 2, y: 45, width: 54, color: '#FF00C8', pulseOffset: 0.24 },
-  { id: 'blockchain', label: 'Blockchain', index: 3, y: 60, width: 56, color: '#9D4DFF', pulseOffset: 0.36 },
-  { id: 'aplicaciones', label: 'Aplicaciones', index: 4, y: 75, width: 62, color: '#00F5FF', pulseOffset: 0.48 },
+  { id: 'backend', label: 'Backend', index: 0, y: 15, width: 52, color: EMISSION.violetHi, pulseOffset: 0 },
+  { id: 'infraestructura', label: 'Infraestructura', index: 1, y: 30, width: 58, color: EMISSION.blueHi, pulseOffset: 0.12 },
+  { id: 'ia', label: 'IA', index: 2, y: 45, width: 54, color: EMISSION.magenta, pulseOffset: 0.24 },
+  { id: 'blockchain', label: 'Blockchain', index: 3, y: 60, width: 56, color: EMISSION.violetHi, pulseOffset: 0.36 },
+  { id: 'aplicaciones', label: 'Aplicaciones', index: 4, y: 75, width: 62, color: EMISSION.cyan, pulseOffset: 0.48 },
 ] as const
 
 export function techLayerPosition(index: number): { x: number; y: number; w: number } {

@@ -1,20 +1,21 @@
+import { EMISSION, INK, VOID } from '@/lib/design/tokens'
 /**
  * Paleta oficial GENESIS — fuente única para toda la web.
  * Fucsia = energía · Azul = tecnología · Violeta = ecosistema · Void = premium dark
  */
 export const GENESIS_COLORS = {
-  void: '#05070D',
-  base: '#080A14',
-  surface: '#0F111C',
-  text: '#F8FAFC',
-  mist: '#AAB4C8',
-  ghost: '#5C6B82',
-  fuchsia: '#E91E8B',
-  fuchsiaSoft: '#FF4FB8',
-  core: '#6E56CF',
-  ion: '#3D8BFF',
-  cyan: '#22D3EE',
-  pulse: '#5B6CFF',
+  void: VOID.black,
+  base: VOID.base,
+  surface: VOID.surface,
+  text: INK.base,
+  mist: INK.muted,
+  ghost: INK.faint,
+  fuchsia: EMISSION.magenta,
+  fuchsiaSoft: EMISSION.magentaHi,
+  core: EMISSION.violet,
+  ion: EMISSION.blueHi,
+  cyan: EMISSION.cyan,
+  pulse: EMISSION.blue,
 } as const
 
 /** RGB 0–255 — canvas, CSS vars */

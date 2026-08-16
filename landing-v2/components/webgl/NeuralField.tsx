@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -93,7 +95,7 @@ export default function NeuralField() {
       {/* Puntos circulares suaves */}
       <points ref={pointsRef} geometry={pointsGeo}>
         <pointsMaterial
-          color="#00E5FF"
+          color={EMISSION.cyan}
           size={0.025}          // tamaño uniforme
           sizeAttenuation
           transparent
@@ -107,7 +109,7 @@ export default function NeuralField() {
       {/* Líneas etéreas — casi invisibles, atmosféricas */}
       <lineSegments ref={linesRef} geometry={linesGeo}>
         <lineBasicMaterial
-          color="#00E5FF"
+          color={EMISSION.cyan}
           transparent
           opacity={0.06}
           depthWrite={false}

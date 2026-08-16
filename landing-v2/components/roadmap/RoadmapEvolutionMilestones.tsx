@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import {
   ROADMAP_EVOLUTION_MILESTONES,
   ROADMAP_EVOLUTION_PULSE_S,
@@ -21,9 +23,9 @@ export default function RoadmapEvolutionMilestones() {
     >
       <defs>
         <linearGradient id="roadmap-curve-grad" gradientUnits="userSpaceOnUse" x1="14" y1="76" x2="86" y2="12">
-          <stop offset="0%" stopColor="#9D4DFF" stopOpacity="0.65" />
-          <stop offset="45%" stopColor="#FF00C8" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#00F5FF" stopOpacity="0.7" />
+          <stop offset="0%" stopColor={EMISSION.violetHi} stopOpacity="0.65" />
+          <stop offset="45%" stopColor={EMISSION.magenta} stopOpacity="0.55" />
+          <stop offset="100%" stopColor={EMISSION.cyan} stopOpacity="0.7" />
         </linearGradient>
         <filter id="roadmap-node-glow" x="-120%" y="-120%" width="340%" height="340%">
           <feGaussianBlur stdDeviation="0.8" result="blur" />
@@ -40,7 +42,7 @@ export default function RoadmapEvolutionMilestones() {
 
       <path d={d} className="roadmap-evolution-curve" fill="none" stroke="url(#roadmap-curve-grad)" strokeWidth="0.35" />
 
-      <circle r="0.55" className="roadmap-evolution-pulse" fill="#00F5FF">
+      <circle r="0.55" className="roadmap-evolution-pulse" fill={EMISSION.cyan}>
         <animateMotion dur={`${ROADMAP_EVOLUTION_PULSE_S}s`} repeatCount="indefinite" path={d} />
       </circle>
 

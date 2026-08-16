@@ -1,3 +1,4 @@
+import { EMISSION, INK, STATE, VOID } from './lib/design/tokens'
 import type { Config } from 'tailwindcss'
 
 /**
@@ -15,37 +16,37 @@ const config: Config = {
     extend: {
       colors: {
         genesis: {
-          void: '#02040A',
-          base: '#080A14',
-          surface: '#0F111C',
-          text: '#F8FAFC',
-          ion: '#3D8BFF',
-          cyan: '#22D3EE',
-          pulse: '#5B6CFF',
-          core: '#6E56CF',
-          mist: '#AAB4C8',
-          ghost: '#5C6B82',
-          fuchsia: '#E91E8B',
-          fuchsiaSoft: '#FF4FB8',
-          fuchsiaDeep: '#C4187A',
-          violet: '#6E56CF',
-          turquoise: '#22D3EE',
+          void: VOID.black,
+          base: VOID.base,
+          surface: VOID.surface,
+          text: INK.base,
+          ion: EMISSION.blueHi,
+          cyan: EMISSION.cyan,
+          pulse: EMISSION.blue,
+          core: EMISSION.violet,
+          mist: INK.muted,
+          ghost: INK.faint,
+          fuchsia: EMISSION.magenta,
+          fuchsiaSoft: EMISSION.magentaHi,
+          fuchsiaDeep: EMISSION.magenta,
+          violet: EMISSION.violet,
+          turquoise: EMISSION.cyan,
           legacy: {
-            magenta: '#E91E8B',
-            cyan: '#22D3EE',
+            magenta: EMISSION.magenta,
+            cyan: EMISSION.cyan,
           },
         },
         state: {
-          success: '#2FD07F',
-          warning: '#E6B450',
-          error: '#E85D5D',
-          info: '#3D8BFF',
+          success: STATE.success,
+          warning: STATE.warning,
+          error: STATE.error,
+          info: EMISSION.blueHi,
         },
         webgl: {
-          particleCore: '#22D3EE',
-          particleEdge: '#6E56CF',
-          orbInner: '#1A2744',
-          orbGlow: '#E91E8B',
+          particleCore: EMISSION.cyan,
+          particleEdge: EMISSION.violet,
+          orbInner: VOID.raised,
+          orbGlow: EMISSION.magenta,
           energyLine: 'rgba(233, 30, 139, 0.35)',
         },
       },
@@ -104,17 +105,17 @@ const config: Config = {
       },
       backgroundImage: {
         'gradient-brand':
-          'linear-gradient(90deg, #E91E8B 0%, #6E56CF 45%, #3D8BFF 100%)',
+          `linear-gradient(90deg, ${EMISSION.magenta} 0%, ${EMISSION.violet} 45%, ${EMISSION.blueHi} 100%)`,
         'gradient-intelligence':
-          'linear-gradient(90deg, #E91E8B 0%, #6E56CF 35%, #3D8BFF 70%, #22D3EE 100%)',
+          `linear-gradient(90deg, ${EMISSION.magenta} 0%, ${EMISSION.violet} 35%, ${EMISSION.blueHi} 70%, ${EMISSION.cyan} 100%)`,
         'gradient-genesis-signature':
-          'linear-gradient(90deg, #E91E8B 0%, #6E56CF 45%, #3D8BFF 100%)',
+          `linear-gradient(90deg, ${EMISSION.magenta} 0%, ${EMISSION.violet} 45%, ${EMISSION.blueHi} 100%)`,
         'gradient-genesis-strong':
-          'linear-gradient(90deg, #E91E8B 0%, #6E56CF 35%, #3D8BFF 70%, #22D3EE 100%)',
+          `linear-gradient(90deg, ${EMISSION.magenta} 0%, ${EMISSION.violet} 35%, ${EMISSION.blueHi} 70%, ${EMISSION.cyan} 100%)`,
         'gradient-fuchsia-core':
-          'linear-gradient(90deg, #E91E8B 0%, #6E56CF 100%)',
+          `linear-gradient(90deg, ${EMISSION.magenta} 0%, ${EMISSION.violet} 100%)`,
         'gradient-legacy':
-          'linear-gradient(90deg, #3D8BFF 0%, #6E56CF 100%)',
+          `linear-gradient(90deg, ${EMISSION.blueHi} 0%, ${EMISSION.violet} 100%)`,
       },
       boxShadow: {
         'glow-brand': '0 0 24px rgba(233, 30, 139, 0.25), 0 0 32px rgba(61, 139, 255, 0.2)',

@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import { COMMERCE_GLOBE_CENTER, COMMERCE_PULSE_S } from '@/lib/marketplace/globalCommerceLayout'
 
 const ACTIVITY_BANDS = [
@@ -50,7 +52,7 @@ export default function MarketplaceCommerceCore() {
                   key={pi}
                   r="0.42"
                   className="marketplace-commerce-core__activity-particle"
-                  fill={pi % 3 === 0 ? '#00F5FF' : pi % 3 === 1 ? '#9D4DFF' : '#FF00C8'}
+                  fill={pi % 3 === 0 ? EMISSION.cyan : pi % 3 === 1 ? EMISSION.violetHi : EMISSION.magenta}
                 >
                   <animateMotion
                     dur={`${band.dur}s`}
