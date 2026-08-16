@@ -1,26 +1,29 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef, forwardRef } from 'react'
-import { motion } from 'framer-motion'
+import type { CSSProperties } from 'react'
 import HeroGenesisOrb from '@/components/hero/HeroGenesisOrb'
 import HeroLivingField from '@/components/hero/HeroLivingField'
 import HeroPremiumTagline from '@/components/hero/HeroPremiumTagline'
 import { detectHeroPerfTier, type HeroPerfTier } from '@/lib/hero-performance'
 import { sectionHref } from '@/lib/routes'
 
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.08 } },
-}
-
-const fadeSlideUp = {
-  hidden:  { opacity: 0, y: 16 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay, ease: [0.4, 0, 0.2, 1] },
-  }),
-}
+/**
+ * Retardo de entrada, para la animacion CSS de `.hero-entra`.
+ *
+ * Esto era `variants` + `custom` de framer-motion, lo que dejaba el hero entero
+ * con `opacity: 0` en el HTML del servidor: el texto no aparecia hasta que
+ * hidrataba React. El LCP de la pagina es justamente `.hero-subtitle`, asi que
+ * el mayor coste de pintado lo pagaba el visitante esperando a JavaScript.
+ *
+ * Los tiempos son los mismos de antes; lo unico que cambia es quien los ejecuta.
+ */
+const entra = (retardo: number, opciones?: { desde?: number; duracion?: number }) =>
+  ({
+    '--hero-entra-retardo': `${retardo}s`,
+    ...(opciones?.desde !== undefined ? { '--hero-entra-desde': `${opciones.desde}px` } : {}),
+    ...(opciones?.duracion !== undefined ? { '--hero-entra-dur': `${opciones.duracion}s` } : {}),
+  }) as CSSProperties
 
 function UtcClock() {
   const [time, setTime] = useState('')
@@ -74,13 +77,8 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
         <HeroLivingField tier={tier} />
 
         {/* UI siempre montado — evita desmontar logo/orb por flicker de isActive */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="hero-content-shell relative z-[2] flex w-full flex-col items-center"
-        >
-          <motion.div variants={fadeSlideUp} custom={0} className="hero-status-bar">
+        <div className="hero-content-shell relative z-[2] flex w-full flex-col items-center">
+          <div className="hero-status-bar hero-entra" style={entra(0)}>
             <span>EST. 2019</span>
             <span className="text-genesis-core opacity-50">·</span>
             <span>GENESIS AI</span>
@@ -95,47 +93,45 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
             </span>
             <span className="text-genesis-core opacity-50">·</span>
             <span>V2.0</span>
-          </motion.div>
+          </div>
 
-          <motion.div variants={fadeSlideUp} custom={0.06} className="hero-nucleus-stage">
+          <div className="hero-nucleus-stage hero-entra" style={entra(0.06)}>
             <HeroGenesisOrb tier={tier} />
-          </motion.div>
+          </div>
 
           <HeroPremiumTagline delay={0.12} />
 
-          <motion.div variants={fadeSlideUp} custom={0.14} className="hero-ui-stack">
+          <div className="hero-ui-stack hero-entra" style={entra(0.14)}>
             <p className="hero-subtitle font-body">
               Donde la Inteligencia Artificial y el Blockchain crean{' '}
               <span className="text-white font-medium">un universo en expansión</span>
             </p>
 
-            <motion.a
-              href={sectionHref('trust')}
-              variants={fadeSlideUp}
-              custom={0.28}
-              className="cta-signature focus-ring-signature hero-cta inline-flex min-h-11 items-center justify-center rounded-full px-7 sm:px-8 py-3.5 text-sm sm:text-base font-semibold text-white no-underline font-display pointer-events-auto"
-              whileHover={{ y: -2 }}
-              transition={{ duration: 0.2 }}
-            >
-              Explora el Universo
-            </motion.a>
-          </motion.div>
-        </motion.div>
+            {/*
+              El envoltorio lleva la entrada y el ancla el :hover, porque las dos
+              escriben `transform`. `.hero-ui-stack` es una columna con
+              `align-items: center`, asi que el envoltorio se ajusta al contenido
+              y queda centrado igual: no cambia la maquetacion.
+            */}
+            <div className="hero-entra" style={entra(0.28)}>
+              <a
+                href={sectionHref('trust')}
+                className="cta-signature focus-ring-signature hero-cta inline-flex min-h-11 items-center justify-center rounded-full px-7 sm:px-8 py-3.5 text-sm sm:text-base font-semibold text-white no-underline font-display pointer-events-auto"
+              >
+                Explora el Universo
+              </a>
+            </div>
+          </div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-2"
+        <div
+          className="hero-entra-fundido absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-2"
+          style={entra(1.2, { duracion: 0.8 })}
         >
           <div className="hero-scroll-mouse" aria-hidden="true">
-            <motion.span
-              className="hero-scroll-dot"
-              animate={{ y: [0, 10, 0], opacity: [0.4, 1, 0.4] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-            />
+            <span className="hero-scroll-dot" />
           </div>
-        </motion.div>
+        </div>
       </section>
     )
   }

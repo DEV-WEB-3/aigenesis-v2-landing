@@ -431,6 +431,85 @@ body {
     }
   }
 
+  /*
+   * ENTRADA DEL HERO, EN CSS Y NO EN JAVASCRIPT.
+   *
+   * POR QUE
+   * Todo el hero colgaba de un `motion.div` con `initial="hidden"`, asi que el
+   * HTML que emite el servidor sale con `opacity: 0` y el texto no existe
+   * visualmente hasta que framer-motion arranca. Medido sobre produccion a
+   * 390 px con 4x de freno de CPU: primer pintado con contenido a ~1,0 s y LCP
+   * —el parrafo `.hero-subtitle`— entre 2,6 y 3,7 s. Solo habia dos candidatos a
+   * LCP: el contador "01/14" al principio y el parrafo casi tres segundos
+   * despues. Todo lo de en medio estaba transparente.
+   *
+   * Una animacion CSS corre en cuanto el navegador aplica estilos, sin esperar a
+   * hidratar. La composicion no cambia: cambia QUIEN la ejecuta.
+   *
+   * Los tiempos son los mismos que tenia framer-motion, uno a uno:
+   *   barra de estado   0     s / 0,6  s
+   *   nucleo            0,06  s / 0,6  s
+   *   lema              0,12  s / 0,55 s   (subia 10px, no 16)
+   *   pila de UI        0,14  s / 0,6  s
+   *   boton             0,28  s / 0,6  s
+   *   indicador scroll  1,2   s / 0,8  s   (solo opacidad)
+   * con la misma curva, cubic-bezier(0.4, 0, 0.2, 1).
+   *
+   * `both` como relleno: durante el retardo se mantiene el primer fotograma, que
+   * es lo que hacia el estado `hidden`.
+   */
+  .hero-entra {
+    opacity: 0;
+    transform: translateY(var(--hero-entra-desde, 16px));
+    animation: hero-entra-anim var(--hero-entra-dur, 0.6s) cubic-bezier(0.4, 0, 0.2, 1)
+      var(--hero-entra-retardo, 0s) both;
+  }
+
+  @keyframes hero-entra-anim {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /*
+   * Variante que SOLO funde. El indicador de scroll se centra con
+   * `-translate-x-1/2`, y una animacion que escriba `transform` le borraria el
+   * centrado: hay una sola propiedad `transform`, no una por eje.
+   */
+  .hero-entra-fundido {
+    opacity: 0;
+    animation: hero-entra-fundido-anim var(--hero-entra-dur, 0.6s) cubic-bezier(0.4, 0, 0.2, 1)
+      var(--hero-entra-retardo, 0s) both;
+  }
+
+  @keyframes hero-entra-fundido-anim {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes hero-scroll-dot-loop {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
+    50% {
+      transform: translateY(10px);
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-entra,
+    .hero-entra-fundido {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   .hero-status-bar {
     display: flex;
     flex-wrap: wrap;
@@ -685,8 +764,29 @@ body {
     }
   }
 
+  /*
+   * El `whileHover={{ y: -2 }}` que tenia el boton, ahora en CSS. Va en el
+   * ANCLA y la entrada va en un envoltorio: si las dos escribieran `transform`
+   * sobre el mismo elemento, el relleno `both` de la entrada ganaria al :hover
+   * —una animacion pisa a una declaracion normal— y el boton se quedaria quieto.
+   */
   .hero-cta {
     margin-top: 0.15rem;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hero-scroll-dot {
+    animation: hero-scroll-dot-loop 1.6s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-cta.cta-signature:hover {
+      transform: none;
+    }
+
+    .hero-scroll-dot {
+      animation: none;
+    }
   }
 
   .hero-cta.cta-signature {
@@ -701,6 +801,16 @@ body {
   }
 
   .hero-cta.cta-signature:hover {
+    /*
+     * Los -2px del `whileHover` que tenia framer-motion. Van EN ESTE selector
+     * compuesto y no en `.hero-cta:hover` porque `.cta-base:hover` y
+     * `.cta-signature:hover` ya declaran `translateY(-1px)`, van despues en el
+     * archivo y tienen la misma especificidad: ganaban ellas, y el boton se
+     * quedaba en -1. Antes no pasaba porque framer-motion escribia estilo EN
+     * LINEA, que gana a cualquier hoja. Medido con el raton encima: -1 antes de
+     * esto, -2 despues.
+     */
+    transform: translateY(-2px);
     box-shadow:
       inset 0 1px 1px rgba(255, 255, 255, 0.14),
       inset 0 -4px 14px rgba(2, 4, 10, 0.45),

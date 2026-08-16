@@ -2,7 +2,7 @@
 
 import { EMISSION } from '@/lib/design/tokens'
 
-import { motion } from 'framer-motion'
+import type { CSSProperties } from 'react'
 
 const TAGLINE_ITEMS = [
   { label: 'AI', dot: EMISSION.magenta },
@@ -17,11 +17,20 @@ interface HeroPremiumTaglineProps {
 
 export default function HeroPremiumTagline({ delay = 0.1 }: HeroPremiumTaglineProps) {
   return (
-    <motion.p
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.55, delay, ease: [0.4, 0, 0.2, 1] }}
-      className="hero-premium-tagline"
+    /*
+      Era `motion.p`, que emite `opacity: 0` en el HTML del servidor y no se ve
+      hasta que hidrata React. Pasa a la animacion CSS del hero con sus mismos
+      tiempos —0,55 s de duracion y 10 px de subida, no 16 como el resto.
+    */
+    <p
+      className="hero-premium-tagline hero-entra"
+      style={
+        {
+          '--hero-entra-retardo': `${delay}s`,
+          '--hero-entra-dur': '0.55s',
+          '--hero-entra-desde': '10px',
+        } as CSSProperties
+      }
       aria-label="AI, Blockchain, Marketplace, Intelligence Network"
     >
       {TAGLINE_ITEMS.map((item, index) => (
@@ -38,6 +47,6 @@ export default function HeroPremiumTagline({ delay = 0.1 }: HeroPremiumTaglinePr
           <span>{item.label}</span>
         </span>
       ))}
-    </motion.p>
+    </p>
   )
 }
