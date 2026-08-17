@@ -5,6 +5,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { construirEsferaDeMarca, CARAS_MARCA, ANGULO_CARA } from '@/lib/brand/brandSphere'
 import { useBrandSphereGesture } from '@/lib/brand/useBrandSphereGesture'
+import BrandSphereShell from './BrandSphereShell'
 import type { HeroPerfTier } from '@/lib/hero-performance'
 
 /**
@@ -198,6 +199,13 @@ export default function BrandSphere({ tier, paused = false }: BrandSphereProps) 
           dpr={[1, tier === 'high' ? 2 : 1.5]}
         >
           <EncuadrarEsfera radio={1} />
+          {/*
+            El umbral va DENTRO del mismo lienzo que la nube: un solo contexto
+            WebGL, y el shell se compone con las particulas sin una pasada extra.
+            En `medium` va a media intensidad — el Fresnel es barato pero el
+            relleno de pixeles no es gratis en una GPU integrada.
+          */}
+          <BrandSphereShell radio={1} intensidad={tier === 'high' ? 1 : 0.55} />
           <NubeDeMarca porCara={porCara} radio={1} avanzar={avanzar} />
         </Canvas>
       </div>
