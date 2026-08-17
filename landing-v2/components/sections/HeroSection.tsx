@@ -68,7 +68,18 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
       <section
         ref={setRefs}
         id="hero"
-        className="relative flex min-h-[100svh] w-full flex-col items-center justify-center px-4 sm:px-6 pt-20 sm:pt-24 text-center lg:h-screen"
+        /*
+          `lg:min-h-screen` y no `lg:h-screen`. El hero tenia su propia cadena de
+          clases, escrita aqui y no en `SceneWrapper`, asi que la correccion de
+          las otras doce secciones NO le llegaba.
+
+          Con altura fija mas `overflow: hidden`, en una ventana de 683 px el
+          contenido medía 884 y los botones quedaban 149 px POR DEBAJO del borde,
+          cortados. El techo de `52vh` del nucleo hace que ya quepa; esto es la
+          red por si algun dia vuelve a no caber: crecer se ve mal, pero perder
+          la llamada a la accion se ve peor.
+        */
+        className="relative flex min-h-[100svh] w-full flex-col items-center justify-center px-4 sm:px-6 pt-20 sm:pt-24 text-center lg:min-h-screen"
         style={{
           pointerEvents: 'auto',
           overflow: 'hidden',

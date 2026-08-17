@@ -547,10 +547,30 @@ body {
     pointer-events: none;
   }
 
+  /*
+   * TECHO POR ALTO EN EL NUCLEO DEL HERO — `52vh`.
+   *
+   * Estaba dimensionado SOLO por el ancho: `min(62vw, clamp(24rem,36vw,42rem))`.
+   * En una ventana de 1914x683 eso da 672 px de nucleo... en 683 px de alto. Se
+   * comia la pantalla entera y empujaba los botones 149 px POR DEBAJO del borde,
+   * donde el `overflow: hidden` del hero los cortaba. Es exactamente lo que se
+   * veia al 100 % de zoom.
+   *
+   * El hero es distinto de las demas secciones: no puede CRECER, porque es la
+   * primera pantalla y una llamada a la accion bajo el pliegue no existe. Asi
+   * que en vez de crecer, encoge.
+   *
+   * `52vh` sale del presupuesto real: 683 menos el relleno superior (96), la
+   * barra de estado (18), el lema (17), el subtitulo (104), los botones (57) y
+   * los huecos (~40) deja ~350 px para el nucleo. 52vh de 683 son 355.
+   *
+   * En pantallas altas no cambia NADA: a 1300 px de alto, 52vh son 676 y el
+   * limite por ancho (672) sigue mandando. El techo solo entra cuando estorba.
+   */
   .hero-nucleus {
     position: relative;
-    width: min(92vw, max(16rem, 45vmin));
-    height: min(92vw, max(16rem, 45vmin));
+    width: min(92vw, max(16rem, 45vmin), 52vh);
+    height: min(92vw, max(16rem, 45vmin), 52vh);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -558,22 +578,22 @@ body {
 
   @media (min-width: 1024px) {
     .hero-nucleus {
-      width: min(88vw, clamp(22rem, 34vw, 38rem));
-      height: min(88vw, clamp(22rem, 34vw, 38rem));
+      width: min(88vw, clamp(22rem, 34vw, 38rem), 52vh);
+      height: min(88vw, clamp(22rem, 34vw, 38rem), 52vh);
     }
   }
 
   @media (min-width: 1280px) {
     .hero-nucleus {
-      width: min(62vw, clamp(24rem, 36vw, 42rem));
-      height: min(62vw, clamp(24rem, 36vw, 42rem));
+      width: min(62vw, clamp(24rem, 36vw, 42rem), 52vh);
+      height: min(62vw, clamp(24rem, 36vw, 42rem), 52vh);
     }
   }
 
   @media (min-width: 1536px) {
     .hero-nucleus {
-      width: min(58vw, clamp(26rem, 38vw, 44rem));
-      height: min(58vw, clamp(26rem, 38vw, 44rem));
+      width: min(58vw, clamp(26rem, 38vw, 44rem), 52vh);
+      height: min(58vw, clamp(26rem, 38vw, 44rem), 52vh);
     }
   }
 
@@ -679,6 +699,24 @@ body {
       brightness(1.08)
       contrast(1.18)
       saturate(1.08);
+  }
+
+  /*
+   * EL ENVOLTORIO DEL LOGO TAMBIEN SE ACOTA. Sin esto el techo no llega.
+   *
+   * `GenesisOfficialLogo` envuelve la imagen en un `span` con `inline-flex
+   * shrink-0`, que se dimensiona POR CONTENIDO. Asi que el `width: 90%` de
+   * `.hero-official-logo` no le llegaba: el div media 320 px y su hijo 387,
+   * desbordandolo.
+   *
+   * Medido tras poner el techo de 52vh al nucleo: nucleo 355, logo 390. El logo
+   * se salia 17 px de su nucleo y quedaba a −1 px del lema, es decir tocandolo.
+   * El techo estaba bien puesto; lo que fallaba era que la cadena de cajas se
+   * rompia una capa antes de llegar a la imagen.
+   */
+  .hero-official-logo > span {
+    width: 100%;
+    max-width: 100%;
   }
 
   .hero-logo-fill {
