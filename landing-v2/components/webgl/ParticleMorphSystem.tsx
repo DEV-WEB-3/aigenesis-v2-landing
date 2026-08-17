@@ -2039,13 +2039,34 @@ export default function ParticleMorphSystem({
   return (
     <group ref={groupRef}>
       <points ref={pointsRef} geometry={geometry}>
+        {/*
+          LAS PARTICULAS SON LUZ, NO PINTURA.
+
+          Dos cosas hacian que se leyeran como pegatinas planas de colores en
+          vez de polvo luminoso, y las dos son de material, no de cantidad:
+
+          1. SIN `blending` DECLARADO, three usa NormalBlending. Con eso, dos
+             particulas superpuestas se TAPAN. La luz no funciona asi: se suma.
+             En una nube de 600 puntos sobre fondo negro, esa diferencia es la
+             que separa «polvo estelar» de «confeti».
+
+          2. `alphaTest: 0.05` RECORTA el borde suave de la textura. La textura
+             es un degradado radial que se desvanece a cero — justo lo que hace
+             que un punto parezca un halo y no un disco. Con alphaTest se
+             descartan los pixeles por debajo del umbral y queda un CANTO DURO.
+             Se quita: con blending aditivo y sin escritura de profundidad no
+             hace falta.
+
+          La opacidad baja de 0,78 a 0,52 para compensar: sumando, la misma
+          nube brilla mas: mantenerla en 0,78 quemaria los cumulos a blanco.
+        */}
         <pointsMaterial
           size={0.028}
           sizeAttenuation
           transparent
-          opacity={0.78}
+          opacity={0.52}
           map={circleTexture}
-          alphaTest={0.05}
+          blending={THREE.AdditiveBlending}
           vertexColors
           depthWrite={false}
         />
