@@ -3109,10 +3109,6 @@ body {
 /* Energy streams */
 #mining .mining-constellation-streams {
   position: absolute;
-  inset: 5%;
-  width: 90%;
-  height: 90%;
-  margin: auto;
   overflow: visible;
 }
 
@@ -6996,38 +6992,7 @@ body {
 }
 
 /* Ecosystem satellites */
-/*
-  EL MISMO CUADRADO EN EL QUE DIBUJA EL SVG.
 
-  Los satelites se colocan con `left: X%` sobre este contenedor, mientras que la
-  red neuronal es un `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid
-  meet">`. `meet` dibuja en un CUADRADO del lado menor y lo centra — asi que con
-  una caja de 980x590 el cerebro usaba 590 px por unidad de lienzo y los
-  satelites 980.
-
-  Dos sistemas de coordenadas distintos para cosas que TIENEN que estar
-  alineadas. El anillo salia estirado 1,66x y el satelite de la derecha se iba
-  literalmente fuera de la pantalla: medido en x=1757 con un viewport de 1723.
-
-  `inset: 0` parecia lo correcto —ocupar todo— y era justo el error: lo que hay
-  que ocupar es el cuadrado donde dibuja el SVG, no la caja entera.
-*/
-#goracle .goracle-ecosystem-satellites {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  aspect-ratio: 1;
-  height: 100%;
-  width: auto;
-  max-width: 100%;
-  max-height: 100%;
-  /*
-    Hace que `cqw` dentro de los satelites signifique «1 % de este cuadrado»,
-    que es la unica unidad que coincide con el lienzo 0–100 del SVG.
-  */
-  container-type: size;
-}
 
 #goracle .goracle-ecosystem-satellite {
   position: absolute;
@@ -7476,17 +7441,17 @@ body {
 
 #marketplace .marketplace-global-commerce__layer--back {
   z-index: 0;
-  animation: marketplace-parallax-back 16s ease-in-out infinite;
+  animation: marketplace-parallax-back 32s ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-commerce__layer--mid {
   z-index: 1;
-  animation: marketplace-parallax-mid 12s ease-in-out infinite;
+  animation: marketplace-parallax-mid 16s ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-commerce__layer--front {
   z-index: 2;
-  animation: marketplace-parallax-front 10s ease-in-out infinite;
+  animation: marketplace-parallax-front 8s ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-commerce__stage {
@@ -7503,7 +7468,7 @@ body {
     radial-gradient(circle at 60% 58%, rgba(157, 77, 255, 0.06) 0%, transparent 58%),
     radial-gradient(circle at 50% 50%, rgba(255, 0, 200, 0.04) 0%, transparent 62%);
   filter: blur(30px);
-  animation: marketplace-atmosphere-breathe 6.5s ease-in-out infinite;
+  animation: marketplace-atmosphere-breathe 8s ease-in-out infinite;
 }
 
 /* Abstract globe rings */
@@ -7527,7 +7492,7 @@ body {
   transform: translate(-50%, -50%);
   border-radius: 50%;
   border: 1px solid rgba(157, 77, 255, 0.08);
-  animation: marketplace-activity-band-breathe 5.5s ease-in-out infinite;
+  animation: marketplace-activity-band-breathe 8s ease-in-out infinite;
 }
 
 #marketplace .marketplace-globe-layers__activity-band--outer {
@@ -7557,7 +7522,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(157, 77, 255, 0.05) 0%, transparent 68%);
   filter: blur(12px);
-  animation: marketplace-atmosphere-breathe var(--commerce-pulse-s, 3.6s) ease-in-out infinite;
+  animation: marketplace-atmosphere-breathe var(--commerce-pulse-s, 4s) ease-in-out infinite;
 }
 
 /* Global hubs — abstract connectivity ring */
@@ -7576,20 +7541,20 @@ body {
 }
 
 #marketplace .marketplace-global-hub__aura {
-  animation: marketplace-hub-aura var(--commerce-pulse-s, 3.6s) ease-in-out infinite;
+  animation: marketplace-hub-aura var(--commerce-pulse-s, 4s) ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-hub__ring {
-  animation: marketplace-hub-ring var(--commerce-pulse-s, 3.6s) ease-out infinite;
+  animation: marketplace-hub-ring var(--commerce-pulse-s, 4s) ease-out infinite;
 }
 
 #marketplace .marketplace-global-hub__core {
-  animation: marketplace-hub-pulse var(--commerce-pulse-s, 3.6s) ease-in-out infinite;
+  animation: marketplace-hub-pulse var(--commerce-pulse-s, 4s) ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-hub__satellite {
   opacity: 0.52;
-  animation: marketplace-hub-satellite 2.6s ease-in-out infinite;
+  animation: marketplace-hub-satellite 4s ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-hub-marker {
@@ -7605,7 +7570,7 @@ body {
   border: 1px solid color-mix(in srgb, var(--g-violet-hi) 32%, transparent);
   color: var(--g-cyan);
   box-shadow: 0 0 10px rgba(157, 77, 255, 0.22);
-  animation: marketplace-hub-marker-pulse var(--commerce-pulse-s, 3.6s) ease-in-out infinite;
+  animation: marketplace-hub-marker-pulse var(--commerce-pulse-s, 4s) ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='catalog'] {
@@ -7656,7 +7621,7 @@ body {
   stroke-width: 0.24;
   stroke-linecap: round;
   opacity: 0.28;
-  animation: marketplace-route-glow 2.8s ease-in-out infinite;
+  animation: marketplace-route-glow 4s ease-in-out infinite;
 }
 
 #marketplace .marketplace-trade-route--core {
@@ -7807,7 +7772,7 @@ body {
   fill: none;
   stroke: rgba(157, 77, 255, 0.12);
   stroke-width: 0.35;
-  animation: marketplace-activity-band-breathe var(--commerce-pulse-s, 3.6s) ease-in-out infinite;
+  animation: marketplace-activity-band-breathe var(--commerce-pulse-s, 4s) ease-in-out infinite;
 }
 
 #marketplace .marketplace-commerce-core__activity-band--1 .marketplace-commerce-core__activity-track {
@@ -10720,4 +10685,63 @@ body {
   .genesis-error-page__btn:hover {
     transform: none;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   EL LIENZO CUADRADO — alineacion entre capas SVG y capas DOM.
+
+   Casi todos los visuales del portal mezclan dos tecnicas sobre la misma
+   figura: un `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">`
+   para trazos y conexiones, y `<div>` colocados con `left: X%` para los iconos.
+
+   Y no coinciden. `meet` dibuja en un CUADRADO del lado menor y lo centra;
+   un `%` de CSS se resuelve contra el ancho REAL del contenedor. En una caja
+   de 980x590, el SVG usa 590 px por unidad de lienzo y el DOM 980. Todo lo que
+   no este en el eje central sale desplazado, y el error crece con la distancia
+   al centro.
+
+   Medido en vivo, y por eso esta clase existe en vez de tres parches:
+
+     goracle      el satelite `staking` se pintaba en x=1757 con un viewport
+                  de 1723 — FUERA de la pantalla
+     marketplace  capas DOM de 960 px contra un cuadrado SVG de 578: el icono
+                  de cada concentrador quedaba a 82 px de su propio nodo
+     mining       738 contra 454
+
+   `inset: 0` parece lo correcto —ocupar todo el contenedor— y es justo el
+   error: lo que hay que ocupar es el cuadrado donde dibuja el SVG.
+
+   `container-type: size` ademas hace que `cqw` dentro signifique «1 % de este
+   cuadrado», que es la unica unidad que coincide con el lienzo 0–100.
+   ═══════════════════════════════════════════════════════════════════════ */
+.lienzo-cuadrado,
+#goracle .goracle-ecosystem-satellites,
+#marketplace .marketplace-global-hub-markers,
+#marketplace .marketplace-payment-cores,
+#mining .mining-constellation__stage,
+/*
+  El SVG de mining tambien: traia `inset: 5%` propio, asi que dibujaba en un
+  cuadrado de 454 mientras sus nodos ya estaban en uno de 504. Los trazos
+  salian de los nodos por 50 px — el mismo desajuste, solo que entre dos capas
+  que YA habian sido «arregladas» por separado.
+*/
+#mining .mining-constellation-streams {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 1;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  /*
+    Neutraliza cualquier `inset` de reglas anteriores sobre los mismos
+    elementos: `#mining .mining-constellation__stage` trae `inset: 5%` y
+    `#marketplace .marketplace-payment-cores` trae `inset: 0`. Sin esto, `right`
+    y `bottom` sobreviven y pelean con el ancho automatico.
+  */
+  right: auto;
+  bottom: auto;
+  container-type: size;
 }
