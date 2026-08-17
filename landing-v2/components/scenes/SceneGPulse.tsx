@@ -41,10 +41,10 @@ const SceneGPulse = forwardRef<HTMLElement, Props>(
         </motion.p>
 
         <motion.div variants={containerV} className="grid grid-cols-2 gap-4 mt-2">
-          <FeatureItem num="/01" text="Análisis Real-Time" />
-          <FeatureItem num="/02" text="Señales Automatizadas" />
-          <FeatureItem num="/03" text="Alertas de Mercado" />
-          <FeatureItem num="/04" text="Integración G-BRIDGE" />
+          <FeatureItem text="Análisis Real-Time" />
+          <FeatureItem text="Señales Automatizadas" />
+          <FeatureItem text="Alertas de Mercado" />
+          <FeatureItem text="Integración G-BRIDGE" />
         </motion.div>
 
         <motion.div variants={slideLeft} className="flex gap-10 mt-2">

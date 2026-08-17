@@ -40,17 +40,30 @@ const SceneMarketplace = forwardRef<HTMLElement, Props>(
           <GradientText tone="signature">AiGenesis.</GradientText>
         </motion.h2>
 
+        {/*
+          CADA DATO, UNA SOLA VEZ.
+
+          Antes, «+190 países» aparecía TRES veces —descripción, ficha /04 y
+          métrica— y «+500.000 productos» y los métodos de pago, dos cada uno.
+          El mismo hecho en tres formatos visuales distintos no refuerza: hace
+          que la sección se sienta recargada teniendo sólo 60 palabras.
+
+          El reparto ahora:
+            descripción  qué es y CÓMO se paga (nombra los tres medios)
+            fichas       lo que no es un número: proveedor y capacidad
+            métricas     los números, y sólo ellos
+
+          Se retiró además la métrica «3 MÉTODOS DE PAGO»: contar tres cuando la
+          frase de arriba ya los NOMBRA no añade nada — saber que son AIG, USDT
+          o tarjeta vale más que saber que son tres.
+        */}
         <motion.p variants={slideLeft} className="text-lg leading-relaxed max-w-lg text-genesis-mist">
-          Marketplace con catálogo global de +500,000 productos. Paga con AIG, USDT, o tarjeta.
-          Envío internacional a +190 países con tracking en tiempo real.
+          Catálogo global con envío internacional. Se paga con AIG, USDT o tarjeta.
         </motion.p>
 
-        {/* Features 2×2 */}
         <motion.div variants={containerV} className="grid grid-cols-2 gap-4 mt-2">
-          <FeatureItem glass num="/01" text="Catálogo CJ Global" />
-          <FeatureItem glass num="/02" text="Pago AIG + USDT + Fiat" />
-          <FeatureItem glass num="/03" text="Tracking en vivo" />
-          <FeatureItem glass num="/04" text="Envío a +190 países" />
+          <FeatureItem glass text="Catálogo CJ Global" />
+          <FeatureItem glass text="Seguimiento en vivo" />
         </motion.div>
 
         {/* Stats */}

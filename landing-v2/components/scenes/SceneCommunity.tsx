@@ -40,10 +40,10 @@ const SceneCommunity = forwardRef<HTMLElement, Props>(
         </motion.p>
 
         <motion.div variants={containerV} className="grid grid-cols-2 gap-4 mt-2">
-          <FeatureItem glass num="/01" text="Bono Directo 8-11%" />
-          <FeatureItem glass num="/02" text="Red Binaria Matching" />
-          <FeatureItem glass num="/03" text="Global Pool Top Ranks" />
-          <FeatureItem glass num="/04" text="Liderazgo Progresivo" />
+          <FeatureItem glass text="Bono Directo 8-11%" />
+          <FeatureItem glass text="Red Binaria Matching" />
+          <FeatureItem glass text="Global Pool Top Ranks" />
+          <FeatureItem glass text="Liderazgo Progresivo" />
         </motion.div>
 
         <motion.div variants={slideLeft} className="flex gap-10 mt-2">

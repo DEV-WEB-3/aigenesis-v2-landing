@@ -121,12 +121,27 @@ export function GradientButton({
 }
 
 // ─── Feature item "/01 Texto" ─────────────────────────────────────────────────
+/**
+ * Ficha de característica.
+ *
+ * `num` PASA A SER OPCIONAL, y por una razón que no es de código.
+ *
+ * Un número de orden promete una secuencia: primero esto, después aquello. En
+ * Marketplace rotulaba «/01 Catálogo · /02 Pago · /03 Tracking · /04 Envío», que
+ * no es una secuencia sino una lista de características — no hay un orden que
+ * seguir. Era decoración disfrazada de información, y el lector paga el coste de
+ * intentar entender un orden que no existe.
+ *
+ * Sin `num`, la ficha usa un punto de viñeta: marca el elemento sin prometer
+ * nada. Cuando la lista SÍ sea una secuencia —pasos de un proceso, fases— el
+ * número vuelve a tener sentido y se pasa.
+ */
 export function FeatureItem({
   num,
   text,
   glass = false,
 }: {
-  num: string
+  num?: string
   text: string
   glass?: boolean
 }) {
@@ -135,9 +150,16 @@ export function FeatureItem({
       variants={slideLeft}
       className={glass ? 'glass-info-item flex items-start gap-3' : 'flex items-start gap-3'}
     >
-      <span className="font-mono font-bold text-lg leading-tight text-gradient-genesis-strong">
-        {num}
-      </span>
+      {num ? (
+        <span className="font-mono font-bold text-lg leading-tight text-gradient-genesis-strong">
+          {num}
+        </span>
+      ) : (
+        <span
+          className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-genesis-strong"
+          aria-hidden="true"
+        />
+      )}
       <span className="text-sm text-genesis-mist leading-tight pt-0.5">{text}</span>
     </motion.div>
   )

@@ -138,7 +138,9 @@ export const GPULSE_STATS = [
 export const MARKETPLACE_STATS = [
   { to: 500, suffix: 'K+', label: 'PRODUCTOS' },
   { to: 190, suffix: '+', label: 'PAÍSES DE ALCANCE' },
-  { to: 3, suffix: '', label: 'MÉTODOS DE PAGO' },
+  // Se retiró «3 · MÉTODOS DE PAGO». La descripción de la sección ya NOMBRA los
+  // tres —AIG, USDT o tarjeta—, y saber cuáles vale más que saber cuántos.
+  // Contar lo que la frase de al lado ya enumera es decir dos veces lo mismo.
 ] as const
 
 /** Community — SceneCommunity */

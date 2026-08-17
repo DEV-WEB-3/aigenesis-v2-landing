@@ -126,11 +126,26 @@ async function verificarGenesis() {
   // ::after no existe devolvia null y el enlace quedaba FUERA del conteo, con lo
   // que daba verde justo en el caso que debia cazar. Sin ::after, la zona de
   // toque es la caja del propio elemento — ese es el respaldo correcto.
+  //
+  // SE SALTAN LOS ELEMENTOS QUE AUN SE ESTAN ANIMANDO, subiendo por el arbol.
+  // Mirar el \`transform\` del propio enlace NO basta: la animacion de entrada
+  // vive en un \`motion.div\` ANCESTRO, asi que el enlace da 'none' mientras su
+  // padre lo esta desplazando. Eso produjo dos falsos «fuera de pantalla» en
+  // Trust —dos tarjetas que al medirlas en reposo estaban en 16..370 dentro de
+  // 390—. Un fallo fantasma en una guarda es peor que no tenerla: enseña a
+  // ignorarla.
+  const seEstaAnimando = (el) => {
+    for (let n = el; n && n !== document.body; n = n.parentElement) {
+      if (getComputedStyle(n).transform !== 'none') return true;
+    }
+    return false;
+  };
   if (window.innerWidth <= 480) {
     for (const el of Array.from(document.querySelectorAll('a, button'))) {
       const b = el.getBoundingClientRect();
       if (b.width === 0 || (el.textContent || '').trim().length === 0) continue;
       if (getComputedStyle(el).pointerEvents === 'none') continue;
+      if (seEstaAnimando(el)) continue;
       const a = getComputedStyle(el, '::after');
       let w = b.width, h = b.height;
       if (a.content !== 'none' && a.position === 'absolute') {
