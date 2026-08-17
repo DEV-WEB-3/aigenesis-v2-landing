@@ -41,7 +41,7 @@ const SceneBooster = forwardRef<HTMLElement, Props>(function SceneBooster(
         description="Booster amplifica la participación dentro del protocolo mediante capas y multiplicadores estructurados. Diseñado para progresión — no para esquemas de captación."
       />
 
-      <motion.div variants={containerV} className="flex flex-col gap-genesis-3 mt-2">
+      <motion.div variants={containerV} className="flex flex-col gap-genesis-3">
         {BOOSTER_LAYERS.map((layer) => (
           <motion.div key={layer.title} variants={slideLeft}>
             <Card
@@ -54,7 +54,7 @@ const SceneBooster = forwardRef<HTMLElement, Props>(function SceneBooster(
         ))}
       </motion.div>
 
-        <motion.div variants={slideLeft} className="flex flex-wrap gap-8 mt-4">
+        <motion.div variants={slideLeft} className="flex flex-wrap gap-8">
         <GenesisStatBlock value="3" label="Capas activas" mono />
         <GenesisStatBlock value="Progresivo" label="Modelo" />
         <GenesisStatBlock value="Protocolo" label="Gobernanza" />
@@ -64,7 +64,7 @@ const SceneBooster = forwardRef<HTMLElement, Props>(function SceneBooster(
         <BoosterQuantumAccelerator isActive={isActive} />
       </motion.div>
 
-      <motion.div variants={slideLeft} className="mt-4">
+      <motion.div variants={slideLeft}>
         <Button variant="secondary" size="md" href={EXTERNAL_LINKS.BOOSTER}>
           Conocer Booster
         </Button>

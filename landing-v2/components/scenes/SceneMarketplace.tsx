@@ -61,13 +61,13 @@ const SceneMarketplace = forwardRef<HTMLElement, Props>(
           Catálogo global con envío internacional. Se paga con AIG, USDT o tarjeta.
         </motion.p>
 
-        <motion.div variants={containerV} className="grid grid-cols-2 gap-4 mt-2">
+        <motion.div variants={containerV} className="grid grid-cols-2 gap-4">
           <FeatureItem glass text="Catálogo CJ Global" />
           <FeatureItem glass text="Seguimiento en vivo" />
         </motion.div>
 
         {/* Stats */}
-        <motion.div variants={slideLeft} className="flex gap-10 mt-2">
+        <motion.div variants={slideLeft} className="flex gap-10">
           {MARKETPLACE_STATS.map((stat) => (
             <StatBlock key={stat.label} {...stat} isActive={isActive} />
           ))}
@@ -77,7 +77,7 @@ const SceneMarketplace = forwardRef<HTMLElement, Props>(
           <MarketplaceGlobalCommerce isActive={isActive} />
         </motion.div>
 
-        <GradientButton className="mt-2" href={EXTERNAL_LINKS.MARKETPLACE}>Explorar Marketplace →</GradientButton>
+        <GradientButton href={EXTERNAL_LINKS.MARKETPLACE}>Explorar Marketplace →</GradientButton>
 
       </SceneWrapper>
     )

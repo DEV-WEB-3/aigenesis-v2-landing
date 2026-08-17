@@ -66,7 +66,7 @@ const SceneGOracle = forwardRef<HTMLElement, Props>(function SceneGOracle(
         Medido: de 178 px de ancho se pasa a 554, y de 351 de alto a ~110 por
         tarjeta. Mismo contenido, sin recortar una palabra.
       */}
-      <motion.div variants={containerV} className="flex flex-col gap-genesis-3 mt-2">
+      <motion.div variants={containerV} className="flex flex-col gap-genesis-3">
         {ORACLE_PILLARS.map((pillar) => (
           <motion.div key={pillar.title} variants={slideLeft}>
             {/*
@@ -80,13 +80,13 @@ const SceneGOracle = forwardRef<HTMLElement, Props>(function SceneGOracle(
         ))}
       </motion.div>
 
-      <motion.div variants={slideLeft} className="flex flex-wrap gap-8 mt-4">
+      <motion.div variants={slideLeft} className="flex flex-wrap gap-8">
         <GenesisStatBlock value="IA" label="Motor propietario" />
         <GenesisStatBlock value="24/7" label="Procesamiento" mono />
         <GenesisStatBlock value="Core" label="Capa neurálgica" mono />
       </motion.div>
 
-      <motion.div variants={slideLeft} className="mt-4">
+      <motion.div variants={slideLeft}>
         <Button variant="secondary" size="md" href={EXTERNAL_LINKS.GORACLE}>
           Conocer G-Oracle
         </Button>

@@ -64,7 +64,7 @@ const SceneCTA = forwardRef<HTMLElement, Props>(function SceneCTA(
         </Button>
       </motion.div>
 
-      <motion.div variants={slideLeft} className="cta-final-footer-slot w-full mt-8">
+      <motion.div variants={slideLeft} className="cta-final-footer-slot w-full">
         <InstitutionalFooter />
       </motion.div>
     </motion.div>

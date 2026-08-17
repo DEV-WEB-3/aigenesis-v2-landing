@@ -46,7 +46,7 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
           distribuida, y motor de inteligencia artificial propietario.
         </motion.p>
 
-        <motion.div variants={slideLeft} className="flex flex-wrap gap-2 mt-2">
+        <motion.div variants={slideLeft} className="flex flex-wrap gap-2">
           {TECH_STACK.map((tech) => (
             <span
               key={tech}
@@ -57,7 +57,7 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
           ))}
         </motion.div>
 
-        <motion.div variants={slideLeft} className="mt-2 flex flex-col gap-1">
+        <motion.div variants={slideLeft} className="flex flex-col gap-1">
           <span className="text-xs text-genesis-ghost uppercase tracking-widest">Smart Contract</span>
           <div className="flex items-center gap-3">
             <span className="text-sm font-mono text-genesis-mist">0xC1F076...E2a4</span>
@@ -79,7 +79,7 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
           </div>
         </motion.div>
 
-        <motion.div variants={slideLeft} className="flex gap-10 mt-2">
+        <motion.div variants={slideLeft} className="flex gap-10">
           {STATS.map(({ value, label }) => (
             <div key={label} className="flex flex-col gap-1">
               <span className="text-2xl font-bold text-genesis-text font-display">
@@ -90,7 +90,7 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
           ))}
         </motion.div>
 
-        <GradientButton className="mt-2" href={EXTERNAL_LINKS.DOCS}>Ver Documentación →</GradientButton>
+        <GradientButton href={EXTERNAL_LINKS.DOCS}>Ver Documentación →</GradientButton>
 
       </SceneWrapper>
     )

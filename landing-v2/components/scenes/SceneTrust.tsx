@@ -69,9 +69,9 @@ const SceneTrust = forwardRef<HTMLElement, Props>(function SceneTrust(
         description="AiGenesis prioriza transparencia, seguridad técnica y trazabilidad on-chain. Conoce los pilares que sostienen el ecosistema antes de explorar sus productos."
       />
 
-      <InstitutionalMetrics isActive={isActive} className="mt-1" />
+      <InstitutionalMetrics isActive={isActive} />
 
-      <motion.div variants={containerV} className="grid grid-cols-1 sm:grid-cols-2 gap-genesis-4 mt-2">
+      <motion.div variants={containerV} className="grid grid-cols-1 sm:grid-cols-2 gap-genesis-4">
         {TRUST_ITEMS.map((item) => (
           <motion.div key={item.title} variants={slideLeft}>
             <TrustBadge title={item.title} status={item.status} href={item.href} />
@@ -98,7 +98,7 @@ const SceneTrust = forwardRef<HTMLElement, Props>(function SceneTrust(
         ese si tiene sitio aqui.
       */}
 
-      <motion.div variants={slideLeft} className="mt-2">
+      <motion.div variants={slideLeft}>
         <Button variant="secondary" size="md" href={sectionHref('ecosistema')}>
           Explorar el ecosistema →
         </Button>

@@ -73,7 +73,7 @@ const SceneRoadmap = forwardRef<HTMLElement, Props>(
 
         <motion.div
           variants={slideLeft}
-          className="scene-roadmap-timeline mt-4 border-l-2 border-genesis-core/30 pl-7 flex flex-col gap-7"
+          className="scene-roadmap-timeline border-l-2 border-genesis-core/30 pl-7 flex flex-col gap-7"
         >
           {/*
             ESTA ES LA HOJA DE RUTA OFICIAL. Decidido el 16-ago-2026.
@@ -102,7 +102,7 @@ const SceneRoadmap = forwardRef<HTMLElement, Props>(
           <RoadmapEvolutionPath isActive={isActive} />
         </motion.div>
 
-        <motion.div variants={slideLeft} className="mt-4">
+        <motion.div variants={slideLeft}>
           <OfficialDownloadButton href={EXTERNAL_LINKS.MARKETING_PLAN_ES}>
             Descargar plan de marketing
           </OfficialDownloadButton>

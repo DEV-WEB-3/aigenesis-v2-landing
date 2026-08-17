@@ -41,7 +41,7 @@ const SceneStaking = forwardRef<HTMLElement, Props>(function SceneStaking(
         description="Staking articula periodos de participación, estabilidad y alineación con el ecosistema AiGenesis. Un pilar independiente con reglas propias y trazabilidad on-chain."
       />
 
-      <motion.div variants={containerV} className="staking-cards-grid mt-2">
+      <motion.div variants={containerV} className="staking-cards-grid">
         {STAKING_PERIODS.map((item) => (
           <motion.div key={item.title} variants={slideLeftCrisp}>
             <Card variant="trust" title={item.title} description={item.description} hover />
@@ -49,7 +49,7 @@ const SceneStaking = forwardRef<HTMLElement, Props>(function SceneStaking(
         ))}
       </motion.div>
 
-      <motion.div variants={slideLeft} className="flex flex-wrap gap-8 mt-4">
+      <motion.div variants={slideLeft} className="flex flex-wrap gap-8">
         <GenesisStatBlock value="6+" label="Periodos" mono />
         <GenesisStatBlock value="On-chain" label="Verificación" mono />
         <GenesisStatBlock value="Deflacionario" label="Token base" />
@@ -59,7 +59,7 @@ const SceneStaking = forwardRef<HTMLElement, Props>(function SceneStaking(
         <StakingTimeVault isActive={isActive} />
       </motion.div>
 
-      <motion.div variants={slideLeft} className="mt-4">
+      <motion.div variants={slideLeft}>
         <Button variant="primary" size="md" href={EXTERNAL_LINKS.STAKING}>
           Explorar Staking
         </Button>

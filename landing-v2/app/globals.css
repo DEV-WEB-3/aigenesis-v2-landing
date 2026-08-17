@@ -2117,7 +2117,28 @@ body {
      */
     --fit-pad-y: clamp(8px, 1.6vh, 18px);
     --fit-gap-frame: clamp(0.55rem, 1.5vh, 1.25rem);
-    --fit-gap-stack: clamp(0.3rem, 0.85vh, 0.7rem);
+    /*
+     * RITMO VERTICAL POR PAPEL, no un hueco unico.
+     *
+     * Medido en las trece secciones: los huecos entre bloques iban 9·14·18 con
+     * un rango de 0 a 9 px. Casi iguales, asi que NADA AGRUPA — el titular
+     * parece pertenecer a las metricas tanto como al rotulo de seccion, y el
+     * ojo lee una lista en vez de bloques.
+     *
+     * La causa era un solo `--fit-gap-stack` para toda la pila mas 34 margenes
+     * sueltos (`mt-2`, `mt-4`) repartidos por doce escenas, que se sumaban al
+     * `gap`. Nadie habia decidido esas distancias: salian.
+     *
+     * Ahora hay tres pasos con relacion 1 : 2 : 3, que es la proporcion minima
+     * para que el ojo distinga niveles:
+     *
+     *   apretado   dentro de una cabecera (rotulo, titular, descripcion)
+     *   normal     entre bloques del mismo grupo
+     *   amplio     antes de la accion final, que cierra la seccion
+     */
+    --fit-gap-apretado: clamp(0.2rem, 0.55vh, 0.45rem);
+    --fit-gap-stack: clamp(0.45rem, 1.2vh, 1rem);
+    --fit-gap-amplio: clamp(0.7rem, 1.9vh, 1.6rem);
     --fit-headline: clamp(1.6rem, 3.3vh, 2.35rem);
     --fit-card-pad: clamp(0.8rem, 1.9vh, 1.5rem);
 
@@ -2170,8 +2191,25 @@ body {
     gap: var(--fit-gap-stack);
   }
 
+  /* La cabecera es UN bloque: rotulo, titular y descripcion van juntos. */
   .home-section-fit .scene-section-header {
-    gap: var(--fit-gap-stack);
+    gap: var(--fit-gap-apretado);
+  }
+
+  /*
+   * El ultimo hijo de la pila es siempre la accion. Separarlo mas la convierte
+   * en cierre en vez de en «un elemento mas de la lista».
+   *
+   * `:last-child` y no una clase: asi funciona en las doce escenas sin tocar
+   * ninguna, y sigue funcionando si manana se reordena el contenido.
+   *
+   * Se excluye `.scene-visual-mobile`, que en cinco escenas va justo antes de la
+   * accion y en escritorio esta en `display: none`. Sin la exclusion la regla se
+   * la aplicaria a el —un elemento invisible— y la accion se quedaria sin su
+   * separacion.
+   */
+  .home-section-fit .scene-content-stack > :last-child:not(.scene-visual-mobile) {
+    margin-top: var(--fit-gap-amplio);
   }
 
   /* Las tarjetas también aprietan: son el bloque más alto de las secciones
@@ -2339,12 +2377,15 @@ body {
     font-size: 1rem;
   }
 
+  /*
+   * Este `gap` estaba a fuego en 0.55rem y pisaba la variable de ritmo: misma
+   * especificidad que la regla de arriba pero declarado despues, asi que ganaba
+   * por orden. Resultado medido: la pila separaba 8.8 px y la cabecera 13.6 —
+   * al reves de lo que pide la jerarquia, porque una cabecera es UN bloque y
+   * debe ir mas apretada por dentro que los bloques entre si.
+   */
   .home-section-fit .scene-content-stack {
-    gap: 0.55rem;
-  }
-
-  .home-section-fit .scene-content-stack article.surface-card,
-  .home-section-fit .scene-content-stack .surface-card {
+    gap: var(--fit-gap-stack);
   }
 
   .home-section-fit .scene-content-stack article h3 {

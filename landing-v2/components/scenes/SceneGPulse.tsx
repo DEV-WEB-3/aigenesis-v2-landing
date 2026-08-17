@@ -40,20 +40,20 @@ const SceneGPulse = forwardRef<HTMLElement, Props>(
           Capa de ejecución táctica — complementaria al núcleo de inteligencia G-Oracle.
         </motion.p>
 
-        <motion.div variants={containerV} className="grid grid-cols-2 gap-4 mt-2">
+        <motion.div variants={containerV} className="grid grid-cols-2 gap-4">
           <FeatureItem text="Análisis Real-Time" />
           <FeatureItem text="Señales Automatizadas" />
           <FeatureItem text="Alertas de Mercado" />
           <FeatureItem text="Integración G-BRIDGE" />
         </motion.div>
 
-        <motion.div variants={slideLeft} className="flex gap-10 mt-2">
+        <motion.div variants={slideLeft} className="flex gap-10">
           {GPULSE_STATS.map((stat) => (
             <StatBlock key={stat.label} {...stat} isActive={isActive} />
           ))}
         </motion.div>
 
-        <GradientButton className="mt-2" href={EXTERNAL_LINKS.GPULSE_APP}>
+        <GradientButton href={EXTERNAL_LINKS.GPULSE_APP}>
           Acceder a G-Pulse →
         </GradientButton>
 

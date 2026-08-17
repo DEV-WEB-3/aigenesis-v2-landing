@@ -36,11 +36,11 @@ const SceneToken = forwardRef<HTMLElement, Props>(
           highlight="Genesis Token."
         />
 
-        <motion.p variants={slideLeft} className="text-lg leading-relaxed max-w-lg mt-2 text-genesis-mist">
+        <motion.p variants={slideLeft} className="text-lg leading-relaxed max-w-lg text-genesis-mist">
           Token BEP-20 deflacionario sobre BSC. El activo base que articula participación, utilidad y expansión del ecosistema Genesis.
         </motion.p>
 
-        <motion.div variants={slideLeft} className="grid grid-cols-2 gap-6 mt-4">
+        <motion.div variants={slideLeft} className="grid grid-cols-2 gap-6">
           {TOKEN_DISPLAY_METRICS.map((metric) => (
             <div key={metric.label} className="flex flex-col gap-1">
               <span className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
@@ -83,7 +83,7 @@ const SceneToken = forwardRef<HTMLElement, Props>(
           <TokenOrbitalValueNetwork isActive={isActive} variant="compact" />
         </motion.div>
 
-        <GradientButton className="mt-2" href={ROUTES.BSCSCAN}>Ver en BSCScan →</GradientButton>
+        <GradientButton href={ROUTES.BSCSCAN}>Ver en BSCScan →</GradientButton>
       </SceneWrapper>
     )
   }

@@ -75,7 +75,7 @@ const SceneMining = forwardRef<HTMLElement, Props>(function SceneMining(
         <span className="mining-story-track__node">Distribución</span>
       </motion.div>
 
-      <motion.div variants={containerV} className="mining-flow-grid mt-1">
+      <motion.div variants={containerV} className="mining-flow-grid">
         {MINING_FLOW.map((item) => (
           <motion.article key={item.step} variants={slideLeft} className="mining-flow-card">
             <div className="mining-flow-card__head">
@@ -95,7 +95,7 @@ const SceneMining = forwardRef<HTMLElement, Props>(function SceneMining(
         <MiningConstellation isActive={isActive} variant="compact" />
       </motion.div>
 
-      <motion.div variants={slideLeft} className="mining-kpi-grid mt-2" aria-label="Indicadores de Mining">
+      <motion.div variants={slideLeft} className="mining-kpi-grid" aria-label="Indicadores de Mining">
         {MINING_KPIS.map((kpi) => (
           <div key={kpi.label} className="mining-kpi-card">
             <span className="mining-kpi-card__icon" aria-hidden="true">
@@ -107,7 +107,7 @@ const SceneMining = forwardRef<HTMLElement, Props>(function SceneMining(
         ))}
       </motion.div>
 
-      <motion.div variants={slideLeft} className="mt-2">
+      <motion.div variants={slideLeft}>
         <Button variant="primary" size="md" href={EXTERNAL_LINKS.MINING}>
           Explorar participación
         </Button>

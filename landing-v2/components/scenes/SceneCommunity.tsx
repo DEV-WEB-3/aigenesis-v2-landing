@@ -39,14 +39,14 @@ const SceneCommunity = forwardRef<HTMLElement, Props>(
           y pools globales para los rangos más activos.
         </motion.p>
 
-        <motion.div variants={containerV} className="grid grid-cols-2 gap-4 mt-2">
+        <motion.div variants={containerV} className="grid grid-cols-2 gap-4">
           <FeatureItem glass text="Bono Directo 8-11%" />
           <FeatureItem glass text="Red Binaria Matching" />
           <FeatureItem glass text="Global Pool Top Ranks" />
           <FeatureItem glass text="Liderazgo Progresivo" />
         </motion.div>
 
-        <motion.div variants={slideLeft} className="flex gap-10 mt-2">
+        <motion.div variants={slideLeft} className="flex gap-10">
           {COMMUNITY_STATS.map((stat) => (
             <StatBlock key={stat.label} {...stat} isActive={isActive} />
           ))}
@@ -56,7 +56,7 @@ const SceneCommunity = forwardRef<HTMLElement, Props>(
           <CommunityGenesisNetwork isActive={isActive} />
         </motion.div>
 
-        <GradientButton className="mt-2" href={ROUTES.REGISTER}>Únete a la Comunidad →</GradientButton>
+        <GradientButton href={ROUTES.REGISTER}>Únete a la Comunidad →</GradientButton>
 
       </SceneWrapper>
     )
