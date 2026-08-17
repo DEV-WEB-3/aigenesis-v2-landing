@@ -234,6 +234,7 @@ import {
   resolveDevAnimationTime,
 } from '@/lib/trust/GenesisParticleControlStore'
 import { diagLogParticleSystemFrame } from '@/lib/trust/GenesisParticleControlDiagnostics'
+import { entradaDesde, correlacionEntre, movimientoDeIndice, USAR_LINAJE } from '@/lib/webgl/lineage'
 import '@/lib/trust/genesisColorDebug'
 import '@/lib/trust/genesisColorExecutionAudit'
 import {
@@ -629,6 +630,13 @@ export default function ParticleMorphSystem({
   const ecosystemEnterTimeRef = useRef(-1)
   const miningEnterTimeRef = useRef(-1)
 
+  /** Sonda del linaje: `?sonda=linaje`. Apagada por defecto. */
+  const sondaLinajeRef = useRef(false)
+  useEffect(() => {
+    sondaLinajeRef.current =
+      new URLSearchParams(window.location.search).get('sonda') === 'linaje'
+  }, [])
+
   useEffect(() => {
     const hash = window.location.hash.replace(/^#/, '').toLowerCase()
     if (hash === 'trust' || hash === 'confianza') {
@@ -748,14 +756,94 @@ export default function ParticleMorphSystem({
         trustEnterTimeRef.current = -1
         trustScatterRef.current = null
       }
+      /**
+       * EL LINAJE — la entrada desciende del estado real anterior.
+       *
+       * `pos` en este instante contiene la salida de la seccion que dejamos, asi
+       * que la informacion de linaje estaba disponible todo el tiempo: once de
+       * doce transiciones la descartaban para poner `Math.random()` en una
+       * anilla. Y cuatro de esas anillas eran la misma con constantes movidas
+       * por debajo del umbral perceptible.
+       *
+       * `entradaDesde` no reemplaza el estado anterior: lo transforma segun el
+       * gesto de la seccion que llega. Ninguna particula teletransporta.
+       *
+       * Las dispersiones antiguas siguen en este archivo y vuelven a correr
+       * poniendo USAR_LINAJE a false.
+       */
+      const limiteEntrada = activeParticleCount(
+        sectionIdx,
+        trustParticleCount,
+        morphParticleCount,
+      )
+      const linaje = (respaldo: () => void) => {
+        const mov = movimientoDeIndice(sectionIdx)
+        // El diagnostico se calcula en LOS DOS caminos: sin el baseline del
+        // camino viejo, la correlacion del nuevo no significa nada.
+        const antes = sondaLinajeRef.current ? new Float32Array(pos.subarray(0, limiteEntrada * 3)) : null
+        let diag = { correlacion: 0, desplazamiento: 0 }
+        if (USAR_LINAJE) {
+          diag = entradaDesde(pos, morph, mov, limiteEntrada)
+        } else {
+          respaldo()
+          if (antes) diag = correlacionEntre(antes, morph, limiteEntrada)
+        }
+        /**
+         * La sonda del linaje. Se enciende con `?sonda=linaje` en la URL, igual
+         * que los modos editor que ya existen en este repo.
+         *
+         * Sin esto el linaje no es comprobable: una transicion puede parecer
+         * continua por casualidad —si las dos figuras se parecen— y parecer un
+         * corte aunque funcione, si el gesto es grande. La correlacion no se
+         * deja enganar por ninguno de los dos casos.
+         */
+        if (sondaLinajeRef.current) {
+          let nanPos = 0
+          let rmax = 0
+          let aparcadas = 0
+          for (let i = 0; i < limiteEntrada; i++) {
+            const bi = i * 3
+            const x = pos[bi]
+            const y = pos[bi + 1]
+            const z = pos[bi + 2]
+            if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) {
+              nanPos++
+            } else if (x! <= -100) {
+              // aparcadero: (-120,-120,0). Medir el radio aqui daria 169,7 y
+              // taparia el radio real de la escena, que es lo que importa.
+              aparcadas++
+            } else {
+              rmax = Math.max(rmax, Math.hypot(x!, y!, z!))
+            }
+          }
+          const registro = (window as unknown as { __linaje?: unknown[] }).__linaje ?? []
+          registro.push({
+            de: prevSectionRef.current,
+            a: sectionIdx,
+            gesto: mov,
+            correlacion: Number(diag.correlacion.toFixed(4)),
+            desplazamiento: Number(diag.desplazamiento.toFixed(4)),
+            limite: limiteEntrada,
+            bufferParticulas: pos.length / 3,
+            fueraDeRango: Math.max(0, limiteEntrada - pos.length / 3),
+            nanEnPos: nanPos,
+            aparcadas,
+            radioMaximo: Number(rmax.toFixed(3)),
+          })
+          ;(window as unknown as { __linaje?: unknown[] }).__linaje = registro
+        }
+      }
+
       if (sectionIdx === ECOSYSTEM_SECTION_INDEX) {
-        scatterEcosystemMorph(morph, prevSectionRef.current === TRUST_SECTION_INDEX)
+        linaje(() =>
+          scatterEcosystemMorph(morph, prevSectionRef.current === TRUST_SECTION_INDEX),
+        )
         ecosystemEnterTimeRef.current = clock.getElapsedTime()
       } else if (sectionIdx !== ECOSYSTEM_SECTION_INDEX) {
         ecosystemEnterTimeRef.current = -1
       }
       if (sectionIdx === TOKEN_SECTION_INDEX) {
-        scatterTokenMorph(morph)
+        linaje(() => scatterTokenMorph(morph))
         tokenScatterRef.current = new Float32Array(morph)
         tokenEnterTimeRef.current = clock.getElapsedTime()
       } else if (sectionIdx !== TOKEN_SECTION_INDEX) {
@@ -763,45 +851,45 @@ export default function ParticleMorphSystem({
         tokenScatterRef.current = null
       }
       if (sectionIdx === MINING_SECTION_INDEX) {
-        scatterMiningStardustMorph(morph)
+        linaje(() => scatterMiningStardustMorph(morph))
         miningEnterTimeRef.current = clock.getElapsedTime()
       } else if (sectionIdx !== MINING_SECTION_INDEX) {
         miningEnterTimeRef.current = -1
       }
       if (sectionIdx === BOOSTER_SECTION_INDEX) {
-        scatterBoosterFromBelow(morph, getBoosterStackMeta())
+        linaje(() => scatterBoosterFromBelow(morph, getBoosterStackMeta()))
         boosterEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === STAKING_SECTION_INDEX) {
-        scatterStakingFromExterior(morph)
+        linaje(() => scatterStakingFromExterior(morph))
         stakingEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === GPULSE_SECTION_INDEX) {
-        scatterGpulseMorph(morph)
+        linaje(() => scatterGpulseMorph(morph))
         gpulseEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === GORACLE_SECTION_INDEX) {
-        scatterGoracleMorph(morph)
+        linaje(() => scatterGoracleMorph(morph))
         goracleEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === MARKETPLACE_SECTION_INDEX) {
-        scatterMarketplaceMorph(morph)
+        linaje(() => scatterMarketplaceMorph(morph))
         marketplaceEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === COMMUNITY_SECTION_INDEX) {
-        scatterCommunityMorph(morph)
+        linaje(() => scatterCommunityMorph(morph))
         communityEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === TECHNOLOGY_SECTION_INDEX) {
-        scatterTechnologyMorph(morph)
+        linaje(() => scatterTechnologyMorph(morph))
         technologyEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === ROADMAP_SECTION_INDEX) {
-        scatterRoadmapMorph(morph)
+        linaje(() => scatterRoadmapMorph(morph))
         roadmapEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === CTA_SECTION_INDEX) {
-        scatterPortalMorph(morph)
+        linaje(() => scatterPortalMorph(morph))
         portalEnterTimeRef.current = clock.getElapsedTime()
       }
       prevSectionRef.current = sectionIdx
