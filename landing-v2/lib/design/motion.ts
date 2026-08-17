@@ -207,3 +207,40 @@ export function llegadaDe(seccion: SectionId): number {
  */
 export const PULSOS_ADMITIDOS = [2, 4, 8] as const
 export const LLEGADAS_ADMITIDAS = [0.8, 1.2, 1.6] as const
+
+/**
+ * PARALAJE — las tres profundidades del fondo.
+ *
+ * Deliberadamente GLOBAL, no derivado de la seccion. El paralaje describe la
+ * PROFUNDIDAD DEL ESPACIO, no el caracter de la seccion: si cada una inventa
+ * sus velocidades de fondo, el portal se siente como doce habitaciones. Con las
+ * mismas tres en todas, se siente como un solo espacio por el que te mueves.
+ *
+ * Que sean 1 : 2 : 4 importa para que la separacion se PERCIBA. Mining tenia
+ * 14 · 11 · 9 para sus tres capas: la mas lenta era 1,55 veces la mas rapida, y
+ * a esa distancia tres capas se leen como una sola algo borrosa. Con 8 · 16 ·
+ * 32 hay profundidad de verdad.
+ */
+export const PARALAJE = {
+  /** Lo mas cercano. Se mueve visiblemente. */
+  frente: 8,
+  medio: 16,
+  /** El fondo lejano. Casi imperceptible, y esa es la idea. */
+  fondo: 32,
+} as const
+
+/**
+ * DESFASE — como se desincroniza un grupo de elementos iguales.
+ *
+ * Nunca cambiando la duracion. Mining daba a cada nodo `4 + (index % 3) * 0,65`
+ * —4 · 4,65 · 5,3— para que no latieran a la vez: la intencion es correcta y el
+ * metodo hace que los nodos deriven unos de otros para siempre, sin volver a
+ * coincidir jamas.
+ *
+ * Misma duracion y distinto RETARDO consigue lo mismo a la vista, y ademas
+ * mantiene el grupo en fase con el resto del portal. Reparte los elementos de
+ * forma pareja dentro de un ciclo.
+ */
+export function desfase(indice: number, total: number, ciclo: number): number {
+  return ((indice % total) / total) * ciclo
+}

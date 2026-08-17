@@ -3043,17 +3043,17 @@ body {
 
 #mining .mining-constellation__layer--back {
   z-index: 0;
-  animation: mining-parallax-back 14s ease-in-out infinite;
+  animation: mining-parallax-back 32s ease-in-out infinite;
 }
 
 #mining .mining-constellation__layer--mid {
   z-index: 1;
-  animation: mining-parallax-mid 11s ease-in-out infinite;
+  animation: mining-parallax-mid 16s ease-in-out infinite;
 }
 
 #mining .mining-constellation__layer--front {
   z-index: 2;
-  animation: mining-parallax-front 9s ease-in-out infinite;
+  animation: mining-parallax-front 8s ease-in-out infinite;
 }
 
 #mining .mining-constellation__stage {
@@ -3125,7 +3125,7 @@ body {
   opacity: 0.42;
   stroke-linecap: round;
   stroke-dasharray: 8 14;
-  animation: mining-stream-flow 6.5s linear infinite;
+  animation: mining-stream-flow 4s linear infinite;
 }
 
 #mining .mining-constellation-stream--pulse {
@@ -3205,21 +3205,21 @@ body {
   inset: 18%;
   border-color: rgba(255, 0, 200, 0.42);
   opacity: 0.58;
-  animation: mining-ring-spin 14s linear infinite;
+  animation: mining-ring-spin 8s linear infinite;
 }
 
 #mining .mining-constellation-core__ring--mid {
   inset: 6%;
   border-color: rgba(157, 77, 255, 0.32);
   opacity: 0.38;
-  animation: mining-ring-spin-rev 22s linear infinite;
+  animation: mining-ring-spin-rev 16s linear infinite;
 }
 
 #mining .mining-constellation-core__ring--outer {
   inset: -4%;
   border-color: rgba(41, 98, 255, 0.2);
   opacity: 0.22;
-  animation: mining-ring-spin 34s linear infinite;
+  animation: mining-ring-spin 32s linear infinite;
 }
 
 #mining .mining-constellation-core__orbit-field {
@@ -3238,7 +3238,7 @@ body {
   border-radius: 50%;
   background: rgba(255, 46, 219, 0.75);
   box-shadow: 0 0 4px rgba(255, 0, 200, 0.6);
-  animation: mining-orbit-particle 5.5s linear infinite;
+  animation: mining-orbit-particle 4s linear infinite;
   transform-origin: 0 0;
 }
 
@@ -3299,7 +3299,8 @@ body {
   width: 2.45rem;
   height: 2.45rem;
   z-index: 3;
-  animation: mining-node-float var(--node-breathe-s, 5s) ease-in-out infinite;
+  animation: mining-node-float var(--node-breathe-s, 4s) ease-in-out infinite;
+  animation-delay: var(--node-breathe-delay, 0s);
 }
 
 #mining .mining-constellation-node__halo {
@@ -3308,7 +3309,8 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, var(--node-glow) 0%, transparent 68%);
   opacity: 0.35;
-  animation: mining-node-halo-breathe var(--node-breathe-s, 5s) ease-in-out infinite;
+  animation: mining-node-halo-breathe var(--node-breathe-s, 4s) ease-in-out infinite;
+  animation-delay: var(--node-breathe-delay, 0s);
   filter: blur(4px);
 }
 
@@ -3318,7 +3320,8 @@ body {
   border-radius: 50%;
   border: 0.5px solid color-mix(in srgb, var(--node-color) 42%, transparent);
   opacity: 0.55;
-  animation: mining-node-ring-breathe var(--node-breathe-s, 5s) ease-in-out infinite;
+  animation: mining-node-ring-breathe var(--node-breathe-s, 4s) ease-in-out infinite;
+  animation-delay: var(--node-breathe-delay, 0s);
 }
 
 #mining .mining-constellation-node__pulse-flash {
