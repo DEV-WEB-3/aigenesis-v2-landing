@@ -6836,7 +6836,7 @@ body {
 }
 
 #goracle .goracle-quantum-brain--enter .goracle-quantum-brain__layer--front {
-  animation: goracle-brain-form var(--oracle-form-s, 1.2s) ease-out both;
+  animation: goracle-brain-form var(--oracle-form-s, 1.6s) ease-out both;
 }
 
 #goracle .goracle-quantum-brain__layer {
@@ -6847,17 +6847,17 @@ body {
 
 #goracle .goracle-quantum-brain__layer--back {
   z-index: 0;
-  animation: goracle-parallax-back 18s ease-in-out infinite;
+  animation: goracle-parallax-back 32s ease-in-out infinite;
 }
 
 #goracle .goracle-quantum-brain__layer--mid {
   z-index: 1;
-  animation: goracle-parallax-mid 14s ease-in-out infinite;
+  animation: goracle-parallax-mid 16s ease-in-out infinite;
 }
 
 #goracle .goracle-quantum-brain__layer--front {
   z-index: 2;
-  animation: goracle-parallax-front 11s ease-in-out infinite;
+  animation: goracle-parallax-front 8s ease-in-out infinite;
 }
 
 #goracle .goracle-quantum-brain__stage {
@@ -6874,7 +6874,7 @@ body {
     radial-gradient(ellipse at 62% 58%, rgba(157, 77, 255, 0.075) 0%, transparent 55%),
     radial-gradient(ellipse at 50% 50%, rgba(255, 0, 200, 0.045) 0%, transparent 60%);
   filter: blur(32px);
-  animation: goracle-field-breathe 7s ease-in-out infinite;
+  animation: goracle-field-breathe 16s ease-in-out infinite;
 }
 
 /* Neural layers — abstract cloud silhouette */
@@ -6908,7 +6908,7 @@ body {
     transparent 72%
   );
   filter: blur(8px);
-  animation: goracle-layer-drift 22s ease-in-out infinite;
+  animation: goracle-layer-drift 32s ease-in-out infinite;
 }
 
 #goracle .goracle-neural-layer__veil {
@@ -6916,16 +6916,33 @@ body {
   inset: -0.4rem;
   border-radius: 50%;
   border: 1px solid rgba(157, 77, 255, 0.08);
-  animation: goracle-layer-pulse var(--oracle-pulse-s, 5s) ease-in-out infinite;
+  animation: goracle-layer-pulse var(--oracle-pulse-s, 8s) ease-in-out infinite;
+}
+
+/*
+  Los tres velos del cerebro, en la escalera de profundidad.
+
+  Iban a 32 · 26 · 30 y el problema no era que fueran numeros sueltos: el
+  SEGUNDO velo corria mas rapido que el tercero, lo que invierte la
+  profundidad. Lo que esta mas al fondo tiene que ser lo mas lento — es lo unico
+  que hace que tres capas superpuestas se lean como distancia y no como tres
+  manchas que se mueven.
+
+  Ahora 8 · 16 · 32, la misma escalera de paralaje que usa el resto del portal.
+  El `reverse` del segundo se queda: separa las capas sin sacarlas de la
+  escalera, que es exactamente para lo que sirve.
+*/
+#goracle .goracle-neural-layer:nth-child(1) .goracle-neural-layer__cloud {
+  animation-duration: 8s;
 }
 
 #goracle .goracle-neural-layer:nth-child(2) .goracle-neural-layer__cloud {
-  animation-duration: 26s;
+  animation-duration: 16s;
   animation-direction: reverse;
 }
 
 #goracle .goracle-neural-layer:nth-child(3) .goracle-neural-layer__cloud {
-  animation-duration: 30s;
+  animation-duration: 32s;
 }
 
 /* Neural network + synapses */
@@ -6942,12 +6959,12 @@ body {
   stroke-width: 0.18;
   stroke-linecap: round;
   opacity: 0;
-  animation: goracle-synapse-fire 4.8s ease-in-out infinite;
+  animation: goracle-synapse-fire 4s ease-in-out infinite;
 }
 
 #goracle .goracle-neural-node__dot {
   opacity: 0.45;
-  animation: goracle-node-flicker 5.5s ease-in-out infinite;
+  animation: goracle-node-flicker 4s ease-in-out infinite;
 }
 
 /* Data streams */
@@ -6975,24 +6992,76 @@ body {
 
 #goracle .goracle-data-stream__core-anchor {
   filter: drop-shadow(0 0 5px rgba(255, 0, 200, 0.65));
-  animation: goracle-core-anchor-pulse var(--oracle-pulse-s, 5s) ease-in-out infinite;
+  animation: goracle-core-anchor-pulse var(--oracle-pulse-s, 8s) ease-in-out infinite;
 }
 
 /* Ecosystem satellites */
+/*
+  EL MISMO CUADRADO EN EL QUE DIBUJA EL SVG.
+
+  Los satelites se colocan con `left: X%` sobre este contenedor, mientras que la
+  red neuronal es un `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid
+  meet">`. `meet` dibuja en un CUADRADO del lado menor y lo centra — asi que con
+  una caja de 980x590 el cerebro usaba 590 px por unidad de lienzo y los
+  satelites 980.
+
+  Dos sistemas de coordenadas distintos para cosas que TIENEN que estar
+  alineadas. El anillo salia estirado 1,66x y el satelite de la derecha se iba
+  literalmente fuera de la pantalla: medido en x=1757 con un viewport de 1723.
+
+  `inset: 0` parecia lo correcto —ocupar todo— y era justo el error: lo que hay
+  que ocupar es el cuadrado donde dibuja el SVG, no la caja entera.
+*/
 #goracle .goracle-ecosystem-satellites {
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 1;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  /*
+    Hace que `cqw` dentro de los satelites signifique «1 % de este cuadrado»,
+    que es la unica unidad que coincide con el lienzo 0–100 del SVG.
+  */
+  container-type: size;
 }
 
 #goracle .goracle-ecosystem-satellite {
   position: absolute;
+  /*
+    El gesto de la seccion es CONVERGER: los cinco llegan desde fuera y se
+    reconocen en su anillo. `--sat-desde` es cuanto se alejan del centro al
+    empezar; la variable multiplica su propio vector, asi que cada uno entra
+    por su lado en vez de todos por el mismo.
+  */
   transform: translate(-50%, -50%);
   width: 2.4rem;
   height: 2.4rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: goracle-satellite-pulse var(--oracle-pulse-s, 5s) ease-out infinite;
+  animation:
+    goracle-satellite-converger var(--oracle-form-s, 1.6s) cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--sat-entrada, 0s);
+}
+
+#goracle .goracle-ecosystem-satellite__icon {
+  animation: goracle-satellite-pulse var(--oracle-pulse-s, 8s) ease-out infinite;
+  animation-delay: var(--sat-pulso, 0s);
+}
+
+@keyframes goracle-satellite-converger {
+  from {
+    transform: translate(-50%, -50%) translate(var(--sat-dx, 0px), var(--sat-dy, 0px));
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) translate(0, 0);
+    opacity: 1;
+  }
 }
 
 #goracle .goracle-ecosystem-satellite__halo {
@@ -7000,7 +7069,7 @@ body {
   inset: -0.5rem;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(0, 245, 255, 0.12) 0%, transparent 70%);
-  animation: goracle-satellite-halo var(--oracle-pulse-s, 5s) ease-out infinite;
+  animation: goracle-satellite-halo var(--oracle-pulse-s, 8s) ease-out infinite;
 }
 
 #goracle .goracle-ecosystem-satellite__ring {
@@ -7048,7 +7117,7 @@ body {
   inset: 0;
   border-radius: 50%;
   filter: blur(18px);
-  animation: goracle-core-volume-breathe var(--oracle-pulse-s, 5s) ease-in-out infinite;
+  animation: goracle-core-volume-breathe var(--oracle-pulse-s, 8s) ease-in-out infinite;
 }
 
 #goracle .goracle-neural-core__volume--a {
@@ -7082,7 +7151,7 @@ body {
   background: var(--g-violet-hi);
   box-shadow: 0 0 5px rgba(157, 77, 255, 0.55);
   transform: rotate(var(--orbit-angle)) translateX(3.4rem);
-  animation: goracle-orbit-drift 20s linear infinite;
+  animation: goracle-orbit-drift 16s linear infinite;
 }
 
 #goracle .goracle-neural-core__nucleus {
@@ -7098,7 +7167,7 @@ body {
   box-shadow:
     0 0 32px rgba(255, 0, 200, 0.26),
     inset 0 0 20px rgba(157, 77, 255, 0.14);
-  animation: goracle-inference-pulse var(--oracle-pulse-s, 5s) ease-in-out infinite;
+  animation: goracle-inference-pulse var(--oracle-pulse-s, 8s) ease-in-out infinite;
 }
 
 #goracle .goracle-neural-core__inner-glow {
@@ -7114,7 +7183,7 @@ body {
   border-radius: 50%;
   border: 1px solid rgba(255, 0, 200, 0.3);
   opacity: 0;
-  animation: goracle-inference-expand var(--oracle-pulse-s, 5s) ease-out infinite;
+  animation: goracle-inference-expand var(--oracle-pulse-s, 8s) ease-out infinite;
 }
 
 #goracle .goracle-neural-core__inference-ring--b {
