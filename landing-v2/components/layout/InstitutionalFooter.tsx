@@ -29,7 +29,7 @@ export default function InstitutionalFooter({ className = '' }: InstitutionalFoo
     >
       <div className="institutional-footer__watermark" aria-hidden="true">
         <Image
-          src="/brand/logo-genesis-mark.png"
+          src="/brand/genesis-symbol-512.png"
           alt=""
           width={320}
           height={320}

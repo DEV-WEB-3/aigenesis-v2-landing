@@ -31,7 +31,7 @@ const graph = {
       email: OFFICIAL_SOCIAL.EMAIL.replace('mailto:', ''),
       logo: {
         '@type': 'ImageObject',
-        url: `${SITE_URL}/brand/logo-genesis-mark.png`,
+        url: `${SITE_URL}/brand/genesis-symbol-512.png`,
       },
       sameAs: socialProfiles,
     },

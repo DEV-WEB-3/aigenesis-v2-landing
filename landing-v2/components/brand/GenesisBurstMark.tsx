@@ -18,7 +18,18 @@ export interface GenesisBurstMarkProps {
   className?: string
 }
 
-/** Isotipo oficial GENESIS — G burst (fondo transparente). */
+/**
+ * Isotipo oficial GENESIS — la G, sin la palabra.
+ *
+ * Usa `genesis-symbol-*`, derivado del logotipo NUEVO recortando su lockup (ver
+ * `scripts/derive-genesis-symbol.py`). Antes apuntaba a `logo-genesis-mark.png`,
+ * que es el isotipo de la version VIEJA —plana, sin volumen— asi que el nav
+ * llevaba una marca de otra epoca que la del resto del portal.
+ *
+ * Aqui hace falta el simbolo SOLO: a 36-48 px, la palabra del lockup mediria
+ * menos de 4 px de alto. Ilegible, y ensucia una marca que a esa escala tiene
+ * que leerse como simbolo.
+ */
 export default function GenesisBurstMark({
   size = 'md',
   tone = 'color',
@@ -29,7 +40,7 @@ export default function GenesisBurstMark({
 
   return (
     <Image
-      src="/brand/logo-genesis-mark.png"
+      src="/brand/genesis-symbol-512.png"
       alt=""
       width={px}
       height={px}

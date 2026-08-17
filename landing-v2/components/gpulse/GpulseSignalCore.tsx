@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 import { GPULSE_SIGNAL_CENTER, GPULSE_SIGNAL_PULSE_S } from '@/lib/gpulse/signalNetworkLayout'
 
 const ORBIT_COUNT = 10
@@ -39,17 +41,34 @@ export default function GpulseSignalCore() {
       <div className="gpulse-signal-core__nucleus">
         <span className="gpulse-signal-core__inner-glow" aria-hidden="true" />
         <span className="gpulse-signal-core__pulse-ring" aria-hidden="true" />
-        <span className="gpulse-signal-core__glyph" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="32" height="32" fill="none">
-            <circle cx="12" cy="12" r="3.2" stroke="currentColor" strokeWidth="1.1" />
-            <path
-              d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.1 5.1l2.1 2.1M16.8 16.8l2.1 2.1M5.1 18.9l2.1-2.1M16.8 7.2l2.1-2.1"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeLinecap="round"
-              opacity="0.75"
-            />
-          </svg>
+        {/*
+          EL LOGO REAL DE G-PULSE, no un icono genérico.
+
+          Aquí había un SVG de 24×24 dibujado a mano: un círculo con ocho rayos,
+          el icono de «señal» de cualquier biblioteca. Mientras tanto el logotipo
+          oficial de G-Pulse llevaba en `public/brand/` sin que lo usara NADIE
+          —tres tamaños, PNG y WebP—.
+
+          O sea que la sección de G-Pulse no mostraba el logo de G-Pulse. Ésa es
+          la desalineación de marca de verdad, y no cuesta nada arreglarla.
+
+          Encaja además por contenido: el logotipo ES un radar de anillos
+          concéntricos con núcleo magenta, que es exactamente lo que esta sección
+          cuenta. Y su paleta ya es la de Genesis —magenta, violeta, azul, cian—,
+          así que no hay nada que rebrandear.
+
+          El tamaño sube de 32 a 44 px: a 32 los anillos del logo se empastaban
+          entre sí dentro de un núcleo de 94.
+        */}
+        <span className="gpulse-signal-core__glyph marca-halo marca-halo--gpulse" aria-hidden="true">
+          <Image
+            src="/brand/gpulse-128.png"
+            alt=""
+            width={44}
+            height={44}
+            className="object-contain"
+            aria-hidden
+          />
         </span>
       </div>
     </div>

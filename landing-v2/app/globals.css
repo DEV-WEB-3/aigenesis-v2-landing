@@ -791,6 +791,59 @@ body {
     text-wrap: pretty;
   }
 
+  /*
+   * HALO DE MARCA — una sola receta, tres acentos.
+   *
+   * EL PROBLEMA
+   * Los núcleos de G-Pulse y Marketplace llevaban el MISMO halo magenta
+   * —`drop-shadow(0 0 6px rgba(255,0,200,.5))` en los dos—, heredado de cuando
+   * el glifo era un SVG monocromo que tomaba `currentColor`. Con el logotipo
+   * real dentro eso deja de funcionar: medido sobre los píxeles con color,
+   * G-Pulse es VIOLETA dominante (51,5 %) y Gevy MAGENTA (33,7 %). Un violeta
+   * metido en un halo magenta se enturbia — los dos tonos compiten y ninguno
+   * gana.
+   *
+   * LA REGLA
+   * Lo que comparten las tres marcas no es el color: es el MATERIAL. Misma
+   * receta de halo —dos capas, misma caída, mismas opacidades— y el acento lo
+   * pone cada marca según su tono medido. Así se leen como un cuerpo sin que
+   * ninguna pierda su carácter.
+   *
+   * El segundo halo, más abierto, toma el tono VECINO en la rampa de marca
+   * (magenta → violeta → azul → cian). Eso es lo que hace que el borde del
+   * resplandor se funda con el fondo de la página en vez de recortarse contra
+   * él: la transición ya existe en la paleta, sólo hay que seguirla.
+   */
+  .marca-halo {
+    filter:
+      drop-shadow(0 0 6px var(--halo-cerca))
+      drop-shadow(0 0 18px var(--halo-lejos));
+  }
+
+  /* Genesis — 57 % azul, 24 % violeta */
+  .marca-halo--genesis {
+    --halo-cerca: rgba(61, 139, 255, 0.5);
+    --halo-lejos: rgba(110, 86, 207, 0.28);
+  }
+
+  /* G-Pulse — 51 % violeta, 42 % azul */
+  .marca-halo--gpulse {
+    --halo-cerca: rgba(157, 77, 255, 0.5);
+    --halo-lejos: rgba(61, 139, 255, 0.26);
+  }
+
+  /* Gevy — 34 % magenta, y violeta como puente hacia el resto */
+  .marca-halo--gevy {
+    --halo-cerca: rgba(255, 0, 200, 0.5);
+    --halo-lejos: rgba(157, 77, 255, 0.26);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marca-halo {
+      filter: drop-shadow(0 0 6px var(--halo-cerca));
+    }
+  }
+
   /* ── Menú de cinco cabezas ─────────────────────────────────────────── */
 
   /* Marca de que la cabeza despliega. Sólo aparece si tiene más de un hijo. */
@@ -5997,11 +6050,23 @@ body {
   animation: gpulse-core-expand var(--gpulse-pulse-s, 2s) ease-out infinite;
 }
 
+  /*
+   * SIN `filter` AQUI: lo pone `.marca-halo`, en el mismo elemento.
+   *
+   * Habia un `drop-shadow` magenta heredado de cuando el glifo era un SVG
+   * monocromo. Con el logotipo real dentro es un error medible: G-Pulse es VIOLETA dominante (51,5 % de sus pixeles con
+   * color) y el halo magenta lo enturbiaba.
+   *
+   * Y no bastaba con anadir la clase nueva — esta regla lleva `#gpulse` delante,
+   * asi que su especificidad (1,1,0) gana a `.marca-halo` (0,1,0) SIEMPRE, no
+   * por orden. Habia que quitarlo de origen.
+   *
+   * `opacity` y `color` se conservan: el pseudo-elemento hermano usa `color`.
+   */
 #gpulse .gpulse-signal-core__glyph {
   position: relative;
   color: var(--g-magenta);
   opacity: 0.88;
-  filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.5));
 }
 
 /* Streams + nodes */
@@ -7232,11 +7297,23 @@ body {
   animation: marketplace-core-expand var(--commerce-pulse-s, 4s) ease-out infinite;
 }
 
+  /*
+   * SIN `filter` AQUI: lo pone `.marca-halo`, en el mismo elemento.
+   *
+   * Habia un `drop-shadow` magenta heredado de cuando el glifo era un SVG
+   * monocromo. Con el logotipo real dentro es un error medible: Gevy SI es magenta dominante (33,7 %), pero el halo
+   * era de una sola capa y sin el tono vecino que lo funde con el fondo.
+   *
+   * Y no bastaba con anadir la clase nueva — esta regla lleva `#marketplace` delante,
+   * asi que su especificidad (1,1,0) gana a `.marca-halo` (0,1,0) SIEMPRE, no
+   * por orden. Habia que quitarlo de origen.
+   *
+   * `opacity` y `color` se conservan: el pseudo-elemento hermano usa `color`.
+   */
 #marketplace .marketplace-commerce-core__glyph {
   position: relative;
   color: var(--g-magenta);
   opacity: 0.88;
-  filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.5));
 }
 
 /* Genesis atmosphere aura */

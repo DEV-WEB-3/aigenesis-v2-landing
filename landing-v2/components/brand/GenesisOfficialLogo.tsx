@@ -5,13 +5,27 @@ import { cn } from '@/lib/utils'
 import GenesisBurstMark from './GenesisBurstMark'
 import type { LogoSize, LogoTone } from './types'
 
-/** Ancho del lockup vertical (icono + GENESIS). Ratio ~1.51 */
+/** Ancho del lockup vertical (icono + GENESIS). */
 const LOCKUP_WIDTH: Record<LogoSize, number> = {
   sm: 108,
   md: 148,
   lg: 240,
   xl: 340,
 }
+
+/**
+ * EL LOCKUP NUEVO ES CUADRADO. El viejo no.
+ *
+ * `logo-genesis-clean.png` medía 981×648 —ratio 1.514— y ese número estaba a
+ * fuego aquí como `/ 1.515`. El logotipo nuevo, `genesis-mark-512.png`, es 1:1.
+ *
+ * Y el cambio no es de archivo, es de FAMILIA VISUAL: el viejo es plano, de
+ * trazo fino y tipografía ligera; el nuevo es volumétrico, con brillo y
+ * profundidad — el mismo tratamiento que Gevy y G-Pulse. Mientras la web usara
+ * el viejo, cualquier sitio donde apareciera Gevy o G-Pulse al lado iba a
+ * cantar, porque son de dos épocas distintas de la marca.
+ */
+const LOCKUP_RATIO = 1
 
 export interface GenesisOfficialLogoProps {
   size?: LogoSize
@@ -38,7 +52,7 @@ export default function GenesisOfficialLogo({
 }: GenesisOfficialLogoProps) {
   const isVertical = layout === 'vertical'
   const width = Math.round(LOCKUP_WIDTH[size] * markScale)
-  const height = Math.round(width / 1.515)
+  const height = Math.round(width / LOCKUP_RATIO)
 
   if (isVertical) {
     return (
@@ -48,7 +62,7 @@ export default function GenesisOfficialLogo({
         aria-label="GENESIS"
       >
         <Image
-          src="/brand/logo-genesis-clean.png"
+          src="/brand/genesis-mark-512.png"
           alt=""
           width={width}
           height={height}
