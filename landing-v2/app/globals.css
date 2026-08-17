@@ -3755,12 +3755,12 @@ body {
 }
 
 .brand-mark-orbit {
-  animation: genesis-orbit-spin 28s linear infinite;
+  animation: genesis-orbit-spin 32s linear infinite;
   transform-origin: 24px 24px;
 }
 
 .brand-mark-core-pulse {
-  animation: genesis-core-pulse 3.5s ease-in-out infinite;
+  animation: genesis-core-pulse 4s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4061,7 +4061,7 @@ body {
   );
   filter: blur(148px);
   -webkit-filter: blur(148px);
-  animation: genesis-aura-breathe var(--genesis-aura-breath-duration, 6.4s) ease-in-out infinite;
+  animation: genesis-aura-breathe var(--genesis-aura-breath-duration, 8s) ease-in-out infinite;
   will-change: transform, opacity;
 }
 
@@ -4943,7 +4943,7 @@ body {
   width: calc(2.35rem * var(--node-size, 1));
   height: calc(2.35rem * var(--node-size, 1));
   z-index: 3;
-  animation: token-node-float var(--node-breathe-s, 5.2s) ease-in-out infinite;
+  animation: token-node-float var(--node-breathe-s, 8s) ease-in-out infinite;
 }
 
 #token .token-value-node__halo {
@@ -4952,7 +4952,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, var(--node-glow) 0%, transparent 68%);
   opacity: 0.32;
-  animation: token-node-halo-breathe var(--node-breathe-s, 5.2s) ease-in-out infinite;
+  animation: token-node-halo-breathe var(--node-breathe-s, 8s) ease-in-out infinite;
   filter: blur(4px);
 }
 
@@ -4962,7 +4962,7 @@ body {
   border-radius: 50%;
   border: 0.5px solid color-mix(in srgb, var(--node-color) 40%, transparent);
   opacity: 0.52;
-  animation: token-node-ring-breathe var(--node-breathe-s, 5.2s) ease-in-out infinite;
+  animation: token-node-ring-breathe var(--node-breathe-s, 8s) ease-in-out infinite;
 }
 
 #token .token-value-node__pulse-flash {
@@ -5548,7 +5548,7 @@ body {
 #booster .booster-accelerator-tier__ring--inner {
   inset: 18%;
   animation-direction: reverse;
-  animation-duration: 4.2s;
+  animation-duration: 4s;
 }
 
 #booster .booster-accelerator-tier--multiplier .booster-accelerator-tier__ring--outer {
@@ -8559,7 +8559,7 @@ body {
 }
 
 #technology .technology-genesis-stack--enter {
-  animation: technology-stack-form var(--tech-form-s, 1.1s) ease-out both;
+  animation: technology-stack-form var(--tech-form-s, 1.2s) ease-out both;
 }
 
 #technology .technology-genesis-stack__layer {
@@ -8820,7 +8820,7 @@ body {
 }
 
 #roadmap .roadmap-evolution-path--enter {
-  animation: roadmap-evolution-form var(--roadmap-form-s, 1.1s) ease-out both;
+  animation: roadmap-evolution-form var(--roadmap-form-s, 0.8s) ease-out both;
 }
 
 #roadmap .roadmap-evolution-path__field {
@@ -9061,17 +9061,17 @@ body {
 
 #cta .genesis-portal-rings__outer {
   transform-origin: 50% 50%;
-  animation: genesis-portal-spin-cw var(--portal-spin-dur, 48s) linear infinite;
+  animation: genesis-portal-spin-cw var(--portal-spin-dur, 32s) linear infinite;
 }
 
 #cta .genesis-portal-rings__middle {
   transform-origin: 50% 50%;
-  animation: genesis-portal-spin-ccw var(--portal-spin-dur, 36s) linear infinite;
+  animation: genesis-portal-spin-ccw var(--portal-spin-dur, 16s) linear infinite;
 }
 
 #cta .genesis-portal-rings__core {
   transform-origin: 50% 50%;
-  animation: genesis-portal-spin-cw var(--portal-spin-dur, 28s) linear infinite;
+  animation: genesis-portal-spin-cw var(--portal-spin-dur, 8s) linear infinite;
 }
 
 #cta .genesis-portal-streams__path {
@@ -10595,7 +10595,7 @@ body {
   height: min(52vw, 620px);
   background: radial-gradient(circle at center, var(--g-violet-hi) 0%, transparent 68%);
   opacity: 0.16;
-  animation: genesis-static-breathe 11s ease-in-out infinite;
+  animation: genesis-static-breathe 8s ease-in-out infinite;
 }
 
 .genesis-static-world__emission--b {
@@ -10605,7 +10605,7 @@ body {
   height: min(58vw, 700px);
   background: radial-gradient(circle at center, var(--g-blue) 0%, transparent 70%);
   opacity: 0.18;
-  animation: genesis-static-breathe 14s ease-in-out infinite reverse;
+  animation: genesis-static-breathe 16s ease-in-out infinite reverse;
 }
 
 .genesis-static-world__emission--c {
@@ -10615,7 +10615,7 @@ body {
   height: min(34vw, 400px);
   background: radial-gradient(circle at center, var(--g-magenta) 0%, transparent 66%);
   opacity: 0.1;
-  animation: genesis-static-breathe 17s ease-in-out infinite;
+  animation: genesis-static-breathe 32s ease-in-out infinite;
 }
 
 /* Grano finísimo: rompe el bandeado de los degradados en pantallas de 8 bits */
