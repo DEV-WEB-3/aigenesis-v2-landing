@@ -5858,7 +5858,7 @@ body {
 }
 
 #staking .staking-time-vault--enter .staking-time-vault__layer--front {
-  animation: staking-vault-form var(--vault-form-s, 1.4s) ease-out both;
+  animation: staking-vault-form var(--vault-form-s, 1.6s) ease-out both;
 }
 
 #staking .staking-time-vault__layer {
@@ -5869,17 +5869,17 @@ body {
 
 #staking .staking-time-vault__layer--back {
   z-index: 0;
-  animation: staking-parallax-back 16s ease-in-out infinite;
+  animation: staking-parallax-back 32s ease-in-out infinite;
 }
 
 #staking .staking-time-vault__layer--mid {
   z-index: 1;
-  animation: staking-parallax-mid 12s ease-in-out infinite;
+  animation: staking-parallax-mid 16s ease-in-out infinite;
 }
 
 #staking .staking-time-vault__layer--front {
   z-index: 2;
-  animation: staking-parallax-front 10s ease-in-out infinite;
+  animation: staking-parallax-front 8s ease-in-out infinite;
 }
 
 #staking .staking-time-vault__stage {
@@ -5893,7 +5893,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(41, 98, 255, 0.08) 0%, transparent 68%);
   filter: blur(24px);
-  animation: staking-ambient-breathe 7s ease-in-out infinite;
+  animation: staking-ambient-breathe 16s ease-in-out infinite;
 }
 
 /* Lock streams + shield */
@@ -5911,7 +5911,7 @@ body {
   opacity: 0.22;
   stroke-linecap: round;
   stroke-linejoin: round;
-  animation: staking-shield-breathe var(--vault-pulse-s, 5s) ease-in-out infinite;
+  animation: staking-shield-breathe var(--vault-pulse-s, 8s) ease-in-out infinite;
 }
 
 #staking .staking-lock-stream--in {
@@ -5960,12 +5960,25 @@ body {
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--ring-color) 48%, transparent);
   box-shadow: 0 0 14px color-mix(in srgb, var(--ring-color) 22%, transparent);
-  animation: staking-ring-spin 22s linear infinite;
+  animation: staking-ring-spin 32s linear infinite;
 }
 
-#staking .staking-time-ring:nth-child(even) .staking-time-ring__track {
+/*
+  Un plano por anillo, no dos.
+
+  Con `nth-child(even)` solo el segundo cambiaba, asi que el primero y el
+  TERCERO acababan identicos —32 s los dos— y volviamos a tener tres capas
+  donde solo se distinguen dos. La escalera 32 · 16 · 8 da a cada anillo su
+  distancia, y el sentido invertido del de en medio impide que los tres se lean
+  como un solo cuerpo girando.
+*/
+#staking .staking-time-ring:nth-child(2) .staking-time-ring__track {
   animation-direction: reverse;
-  animation-duration: 26s;
+  animation-duration: 16s;
+}
+
+#staking .staking-time-ring:nth-child(3) .staking-time-ring__track {
+  animation-duration: 8s;
 }
 
 #staking .staking-time-ring__glow {
@@ -5982,8 +5995,8 @@ body {
   border-radius: 50%;
   border: 1px solid var(--ring-color);
   opacity: 0;
-  animation: staking-kpi-pulse var(--vault-pulse-s, 5s) ease-out infinite;
-  animation-delay: calc(var(--ring-pulse-offset, 0) * var(--vault-pulse-s, 5s));
+  animation: staking-kpi-pulse var(--vault-pulse-s, 8s) ease-out infinite;
+  animation-delay: calc(var(--ring-pulse-offset, 0) * var(--vault-pulse-s, 8s));
 }
 
 /* Vault core */
@@ -6005,7 +6018,7 @@ body {
   inset: 0;
   border-radius: 50%;
   filter: blur(16px);
-  animation: staking-core-volume-breathe var(--vault-pulse-s, 5s) ease-in-out infinite;
+  animation: staking-core-volume-breathe var(--vault-pulse-s, 8s) ease-in-out infinite;
 }
 
 #staking .staking-vault-core__volume--a {
@@ -6033,7 +6046,7 @@ body {
   background: var(--g-cyan);
   box-shadow: 0 0 4px rgba(0, 245, 255, 0.5);
   transform: rotate(var(--orbit-angle)) translateX(3.75rem);
-  animation: staking-orbit-drift 18s linear infinite;
+  animation: staking-orbit-drift 16s linear infinite;
 }
 
 #staking .staking-vault-core__nucleus {
@@ -6049,7 +6062,7 @@ body {
   box-shadow:
     0 0 24px rgba(255, 0, 200, 0.22),
     inset 0 0 18px rgba(157, 77, 255, 0.12);
-  animation: staking-core-pulse var(--vault-pulse-s, 5s) ease-in-out infinite;
+  animation: staking-core-pulse var(--vault-pulse-s, 8s) ease-in-out infinite;
 }
 
 #staking .staking-vault-core__inner-glow {
