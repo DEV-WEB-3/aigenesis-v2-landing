@@ -20,11 +20,29 @@ export interface GpulseRingDef {
   pulseOffset: number
 }
 
-export const GPULSE_SIGNAL_RINGS: readonly GpulseRingDef[] = [
-  { id: 'capture', r: 11, ry: 4.2, color: EMISSION.cyan, glow: 'rgba(0, 245, 255, 0.45)', pulseOffset: 0.08 },
-  { id: 'analysis', r: 16, ry: 5.8, color: EMISSION.violetHi, glow: 'rgba(157, 77, 255, 0.48)', pulseOffset: 0.22 },
-  { id: 'signal', r: 22, ry: 7.2, color: EMISSION.magenta, glow: 'rgba(255, 0, 200, 0.42)', pulseOffset: 0.38 },
+/**
+ * Los tres anillos de la senal: captura -> analisis -> senal.
+ *
+ * El color NO se toca, y conviene dejar escrito por que. Va cian -> violeta ->
+ * magenta hacia FUERA, que es el recorrido inverso al que usa Booster para
+ * subir. Parece una incoherencia y no lo es: aqui la rampa no codifica
+ * profundidad sino ETAPA DEL PROCESO, y los identificadores lo confirman —
+ * captura, analisis, senal. Cambiarlo por simetria con otra seccion romperia
+ * lo unico que estos tres anillos estan diciendo.
+ *
+ * `pulseOffset` si cambia: era 0,08 / 0,22 / 0,38, tres numeros sin relacion
+ * para algo cuyo trabajo es que los anillos no laten a la vez.
+ */
+const ANILLOS = [
+  { id: 'capture', r: 11, ry: 4.2, color: EMISSION.cyan, glow: 'rgba(0, 245, 255, 0.45)' },
+  { id: 'analysis', r: 16, ry: 5.8, color: EMISSION.violetHi, glow: 'rgba(157, 77, 255, 0.48)' },
+  { id: 'signal', r: 22, ry: 7.2, color: EMISSION.magenta, glow: 'rgba(255, 0, 200, 0.42)' },
 ] as const
+
+export const GPULSE_SIGNAL_RINGS: readonly GpulseRingDef[] = ANILLOS.map((a, i) => ({
+  ...a,
+  pulseOffset: i / ANILLOS.length,
+}))
 
 export function gpulseNodeAngleDeg(index: number, total = GPULSE_NODE_COUNT): number {
   return -90 + (360 / total) * index

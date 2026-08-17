@@ -103,6 +103,21 @@ export const LLEGADA_S: Record<Movimiento, number> = {
 export const LLEGADA_ESTABLECIMIENTO_S = LLEGADA_S.condensar * 2.5
 
 /**
+ * LLEGADA DE PRIMERA PINTURA — la segunda excepcion declarada, y la ultima.
+ *
+ * La entrada del hero no es una llegada mas: ocurre ANTES que nada, es lo
+ * primero que ve alguien que abre la pagina, y compite con la percepcion de
+ * velocidad de carga. La llegada mas rapida de la rejilla son 0,8 s, y a 0,8 s
+ * el hero se siente lento aunque haya pintado igual de rapido.
+ *
+ * Valia 0,6 con dos variantes sueltas a 0,55 y 0,5. Es exactamente el rango con
+ * el que el LCP bajo de 3,3 s a 1,7 s, asi que el numero se conserva; lo que se
+ * quita son las variantes. Como en todas partes: misma duracion, y la
+ * separacion por RETARDO, que para eso existe `--hero-entra-retardo`.
+ */
+export const LLEGADA_PRIMERA_PINTURA_S = 0.6
+
+/**
  * EL GUION — que gesto hace cada seccion.
  *
  * El orden es el de `SECTION_DEFS` sin mover nada, porque el arco narrativo ya

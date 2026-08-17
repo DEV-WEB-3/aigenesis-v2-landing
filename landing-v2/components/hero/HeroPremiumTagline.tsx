@@ -27,7 +27,9 @@ export default function HeroPremiumTagline({ delay = 0.1 }: HeroPremiumTaglinePr
       style={
         {
           '--hero-entra-retardo': `${delay}s`,
-          '--hero-entra-dur': '0.55s',
+          // Era `0.55s`: una duracion propia para separarse del resto. La
+          // separacion la hace el RETARDO de la linea de arriba; una duracion
+          // distinta solo saca este elemento de la rejilla del portal.
           '--hero-entra-desde': '10px',
         } as CSSProperties
       }

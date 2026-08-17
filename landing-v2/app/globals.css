@@ -486,6 +486,7 @@ body {
   .hero-entra {
     opacity: 0;
     transform: translateY(var(--hero-entra-desde, 16px));
+    /* 0,6 s es LLEGADA_PRIMERA_PINTURA_S en lib/design/motion.ts */
     animation: hero-entra-anim var(--hero-entra-dur, 0.6s) cubic-bezier(0.4, 0, 0.2, 1)
       var(--hero-entra-retardo, 0s) both;
   }
@@ -901,7 +902,7 @@ body {
     white-space: nowrap;
     color: var(--g-ink-muted);
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
-    animation: brand-rotulo-entra 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+    animation: brand-rotulo-entra 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
   }
 
   @keyframes brand-rotulo-entra {
@@ -3941,7 +3942,7 @@ body {
 .eco-energy-link {
   stroke-width: 0.55;
   stroke-dasharray: 3 2;
-  animation: eco-link-idle 3.2s ease-in-out infinite, eco-link-transfer 4.8s linear infinite;
+  animation: eco-link-idle 4s ease-in-out infinite, eco-link-transfer 8s linear infinite;
 }
 
 .eco-energy-link--primary {
@@ -3964,7 +3965,7 @@ body {
   stroke: rgba(255, 0, 200, 0.55);
   stroke-width: 0.6;
   transform-origin: 50px 10px;
-  animation: eco-token-pulse 3.5s ease-out infinite;
+  animation: eco-token-pulse 4s ease-out infinite;
 }
 
 .eco-token-core-glow {
@@ -3973,7 +3974,7 @@ body {
 }
 
 .eco-node-module {
-  animation: eco-node-breathe 4.5s ease-in-out infinite;
+  animation: eco-node-breathe 8s ease-in-out infinite;
 }
 
 .eco-node-module:nth-child(odd) {
@@ -3981,7 +3982,7 @@ body {
 }
 
 .eco-node-token {
-  animation: eco-energy-react 3.5s ease-in-out infinite;
+  animation: eco-energy-react 4s ease-in-out infinite;
 }
 
 .eco-node-token .surface-card {
@@ -4673,7 +4674,7 @@ body {
 #token .token-value-orbit__energy-point {
   opacity: 0.55;
   filter: drop-shadow(0 0 1.2px rgba(255, 77, 219, 0.5));
-  animation: token-orbit-energy-breathe 5.5s ease-in-out infinite;
+  animation: token-orbit-energy-breathe 8s ease-in-out infinite;
 }
 
 #token .token-value-orbit__traveler {
@@ -4754,7 +4755,7 @@ body {
   border-radius: 42% 58% 53% 47% / 44% 49% 51% 56%;
   filter: blur(26px);
   opacity: 0.5;
-  animation: token-volume-drift 9s ease-in-out infinite;
+  animation: token-volume-drift 8s ease-in-out infinite;
 }
 
 #token .token-value-core__volume--a {
@@ -4812,7 +4813,7 @@ body {
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  animation: token-energy-ring-spin 48s linear infinite;
+  animation: token-energy-ring-spin 32s linear infinite;
 }
 
 #token .token-value-core__energy-ring-img {
@@ -6285,7 +6286,7 @@ body {
 }
 
 #gpulse .gpulse-signal-network--enter .gpulse-signal-network__layer--front {
-  animation: gpulse-network-form var(--gpulse-form-s, 1s) ease-out both;
+  animation: gpulse-network-form var(--gpulse-form-s, 0.8s) ease-out both;
 }
 
 #gpulse .gpulse-signal-network__layer {
@@ -6296,17 +6297,17 @@ body {
 
 #gpulse .gpulse-signal-network__layer--back {
   z-index: 0;
-  animation: gpulse-parallax-back 14s ease-in-out infinite;
+  animation: gpulse-parallax-back 32s ease-in-out infinite;
 }
 
 #gpulse .gpulse-signal-network__layer--mid {
   z-index: 1;
-  animation: gpulse-parallax-mid 11s ease-in-out infinite;
+  animation: gpulse-parallax-mid 16s ease-in-out infinite;
 }
 
 #gpulse .gpulse-signal-network__layer--front {
   z-index: 2;
-  animation: gpulse-parallax-front 9s ease-in-out infinite;
+  animation: gpulse-parallax-front 8s ease-in-out infinite;
 }
 
 #gpulse .gpulse-signal-network__stage {
@@ -6323,7 +6324,7 @@ body {
     radial-gradient(ellipse at 65% 58%, rgba(157, 77, 255, 0.07) 0%, transparent 58%),
     radial-gradient(ellipse at 50% 50%, rgba(255, 0, 200, 0.04) 0%, transparent 62%);
   filter: blur(28px);
-  animation: gpulse-field-breathe 6s ease-in-out infinite;
+  animation: gpulse-field-breathe 4s ease-in-out infinite;
 }
 
 /* Radar sweep */
@@ -6401,22 +6402,22 @@ body {
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--ring-color) 42%, transparent);
   box-shadow: 0 0 12px color-mix(in srgb, var(--ring-color) 20%, transparent);
-  animation: gpulse-ring-wobble 18s ease-in-out infinite;
+  animation: gpulse-ring-wobble 32s ease-in-out infinite;
 }
 
 #gpulse .gpulse-signal-ring:nth-child(1) .gpulse-signal-ring__track {
-  animation-duration: 16s;
+  animation-duration: 8s;
   transform: rotate(-4deg) scaleX(1.02);
 }
 
 #gpulse .gpulse-signal-ring:nth-child(2) .gpulse-signal-ring__track {
-  animation-duration: 20s;
+  animation-duration: 16s;
   animation-direction: reverse;
   transform: rotate(3deg) scaleY(0.98);
 }
 
 #gpulse .gpulse-signal-ring:nth-child(3) .gpulse-signal-ring__track {
-  animation-duration: 24s;
+  animation-duration: 32s;
   transform: rotate(-2deg) scale(1.01);
 }
 
@@ -6502,7 +6503,7 @@ body {
   background: var(--g-violet-hi);
   box-shadow: 0 0 5px rgba(157, 77, 255, 0.55);
   transform: rotate(var(--orbit-angle)) translateX(3.1rem);
-  animation: gpulse-orbit-drift 14s linear infinite;
+  animation: gpulse-orbit-drift 16s linear infinite;
 }
 
 #gpulse .gpulse-signal-core__nucleus {
