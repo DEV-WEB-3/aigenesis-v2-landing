@@ -3,6 +3,7 @@
  * Hero cinematic drop · bidirectional left/right convergence.
  */
 import { deviceClassForWidth } from '@/lib/viewport'
+import { llegadaDe, LLEGADA_ESTABLECIMIENTO_S } from '@/lib/design/motion'
 import { getGenesisLogoMaskBounds } from './GenesisLogoMaskSampler'
 import {
   NEON_BLUE,
@@ -18,11 +19,20 @@ export type GenesisFormationMode =
   | 'fromBottom'
   | 'direct'
 
-/** Cinematic Hero → Trust — total runtime ~2.0s. */
-export const GENESIS_LOGO_FORM_DURATION = 2.0
+/**
+ * El relevo Hero → Trust. Vale 2 s, igual que antes de entrar en la rejilla:
+ * la mitad del plano de establecimiento. La esfera se disuelve durante la
+ * primera mitad y el logo se forma durante la segunda, asi que las dos partes
+ * suman exactamente el plano completo.
+ */
+export const GENESIS_LOGO_FORM_DURATION = LLEGADA_ESTABLECIMIENTO_S / 2
 
-/** Trust bidirectional streams — left magenta · right cyan, meet at G center. */
-export const BIDIRECTIONAL_FORM_DURATION = 1.7
+/**
+ * Formacion bidireccional — magenta por la izquierda, cian por la derecha,
+ * encuentro en el centro de la G. Era 1,7: un valor suelto entre los trece que
+ * habia. Ahora es la llegada que la rejilla asigna a Trust.
+ */
+export const BIDIRECTIONAL_FORM_DURATION = llegadaDe('trust')
 
 const BIDIRECTIONAL_EXTREME_MULT = 3.5
 
@@ -107,11 +117,56 @@ export function scatterRadiusForViewport(width: number): number {
   return FORMATION_SCATTER_RADIUS[deviceClassForWidth(width)]
 }
 
+/**
+ * EL RELEVO — de donde vienes decide como se forma el logo.
+ *
+ * Esta funcion ignoraba sus DOS parametros y devolvia siempre `bidirectional`.
+ * Consecuencia: las 16 ramas de `fromHeroLogoDrop` repartidas por
+ * ParticleMorphSystem y por este archivo eran inalcanzables. Habia una caida
+ * cinematografica completa —offset de grupo, bloqueo de color, tamano de punto
+ * y easing propio— construida y desconectada.
+ *
+ * No estaba rota: `bidirectional` se anadio despues y la sustituyo. Fue una
+ * decision de diseno, no un arreglo, asi que no se revierte. Lo que se
+ * recupera es la distincion que los parametros pedian desde el principio.
+ *
+ * Y la distincion importa para la narrativa: son dos situaciones distintas.
+ *
+ *   viniendo del hero    la esfera de marca acaba de disolverse ahi mismo. Su
+ *                        materia CAE y se convierte en el logo. Es el plano de
+ *                        establecimiento del portal, y ocurre una sola vez.
+ *
+ *   viniendo de otra     no hay esfera de la que descender. La formacion
+ *                        bidireccional —magenta por la izquierda, cian por la
+ *                        derecha, encuentro en la G— es la correcta y se queda.
+ *
+ *   entrada directa      alguien llego por #trust sin pasar por el hero. No ha
+ *                        visto la esfera, asi que una caida DESDE ella no
+ *                        significaria nada: bidireccional.
+ */
 export function resolveGenesisFormationMode(
-  _fromSection: number,
-  _directEntry = false
+  fromSection: number,
+  directEntry = false
 ): GenesisFormationMode {
-  return 'bidirectional'
+  if (directEntry) return 'bidirectional'
+  return fromSection === HERO_SECTION_INDEX ? 'fromHeroLogoDrop' : 'bidirectional'
+}
+
+/** El hero es la seccion 0 de SECTION_DEFS. */
+const HERO_SECTION_INDEX = 0
+
+/**
+ * Sonda del relevo: `?sonda=relevo`. Se resuelve una sola vez y se guarda,
+ * porque la comprueba una funcion que corre dentro del bucle de render.
+ */
+let sondaRelevo: boolean | null = null
+function sondaRelevoActiva(): boolean {
+  if (sondaRelevo === null) {
+    sondaRelevo =
+      typeof window !== 'undefined' &&
+      new URLSearchParams(window.location.search).get('sonda') === 'relevo'
+  }
+  return sondaRelevo
 }
 
 export function genesisFormationDuration(mode: GenesisFormationMode): number {
@@ -524,7 +579,13 @@ export function computeGenesisLogoFormationPosition(
       identityScale
     )
 
-    if (particleIndex === 0) {
+    /**
+     * Este registro llevaba dos meses sin ejecutarse porque la rama entera era
+     * inalcanzable. Al reconectar el relevo se enciende — y sin esta guarda
+     * escupiria en la consola de produccion cada 500 ms. Se abre con
+     * `?sonda=relevo`, igual que el resto de sondas del portal.
+     */
+    if (particleIndex === 0 && sondaRelevoActiva()) {
       const now = typeof performance !== 'undefined' ? performance.now() : Date.now()
       if (now - heroDropLogLastAt > 500) {
         heroDropLogLastAt = now

@@ -630,11 +630,13 @@ export default function ParticleMorphSystem({
   const ecosystemEnterTimeRef = useRef(-1)
   const miningEnterTimeRef = useRef(-1)
 
-  /** Sonda del linaje: `?sonda=linaje`. Apagada por defecto. */
+  /** Sondas: `?sonda=linaje` y `?sonda=relevo`. Apagadas por defecto. */
   const sondaLinajeRef = useRef(false)
+  const sondaRelevoRef = useRef(false)
   useEffect(() => {
-    sondaLinajeRef.current =
-      new URLSearchParams(window.location.search).get('sonda') === 'linaje'
+    const s = new URLSearchParams(window.location.search).get('sonda')
+    sondaLinajeRef.current = s === 'linaje'
+    sondaRelevoRef.current = s === 'relevo'
   }, [])
 
   useEffect(() => {
@@ -697,11 +699,15 @@ export default function ParticleMorphSystem({
           const trustGroup = particleGroupTarget(TRUST_SECTION_INDEX, desktopLayout)
           setHeroDropGroupOffset([trustGroup.x, trustGroup.y, trustGroup.z])
         }
-        console.log('[GenesisDrop] trust enter', {
-          fromSection,
-          mode: trustFormationModeRef.current,
-          directEntry,
-        })
+        // Corria en produccion en cada entrada a Trust. Ahora dice ademas que
+        // modo de relevo se eligio, que es justo lo que hay que poder ver.
+        if (sondaLinajeRef.current || sondaRelevoRef.current) {
+          console.log('[Relevo] trust enter', {
+            fromSection,
+            mode: trustFormationModeRef.current,
+            directEntry,
+          })
+        }
         trustEnterTimeRef.current = clock.getElapsedTime()
         const trustLimit = activeParticleCount(sectionIdx, trustParticleCount, morphParticleCount)
         const meta = getTrustShieldMeta()
