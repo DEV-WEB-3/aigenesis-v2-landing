@@ -520,7 +520,21 @@ body {
     font-size: 0.6rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--g-ink-muted);
+    /*
+     * `faint` y no `muted`. Medido: seis colores de texto en el hero, y
+     * `rgb(170,180,200)` hacia NUEVE trabajos — la barra de estado, el lema y el
+     * subtitulo compartian tono. El subtitulo es el <h1> de la pagina, o sea lo
+     * que dice QUE ES esto, y llevaba el mismo color que «EST. 2019».
+     *
+     * Sin diferencia de color, la unica jerarquia que queda es el tamano: la
+     * mitad de las herramientas. La escala de tres niveles ya existia en los
+     * tokens, solo no se estaba usando.
+     *
+     *   faint   dato de contexto   barra de estado
+     *   muted   apoyo              lema de categorias
+     *   ink     mensaje            subtitulo / propuesta
+     */
+    color: var(--g-ink-faint);
     opacity: 0.92;
     text-shadow: 0 1px 12px rgba(0, 0, 0, 0.75);
   }
@@ -543,7 +557,27 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-bottom: clamp(0.65rem, 1.8vw, 1rem);
+    /*
+     * RITMO VERTICAL POR GRUPOS.
+     *
+     * Los huecos del hero iban 14 · 16 · 11 · 18 px: casi iguales, asi que nada
+     * agrupaba — la barra de estado parecia pertenecer al nucleo tanto como el
+     * lema al subtitulo.
+     *
+     * Ahora hay dos grupos: [barra + nucleo] arriba y [lema + subtitulo +
+     * botones] abajo, con el doble de aire entre ellos que dentro de cada uno.
+     * Ese salto es lo que hace que el ojo lea bloques en vez de una lista.
+     *
+     * El margen incluye ademas el sitio de los indicadores de marca, que se
+     * apoyan en el borde inferior del nucleo.
+     */
+    /*
+     * El margen reserva sitio para DOS controles bajo el nucleo —el rotulo de
+     * marca y los tres puntos— mas el aire que separa el grupo [barra+nucleo]
+     * del grupo [lema+subtitulo+botones]. Medido: con 2.2rem los puntos caian
+     * en 538 y el lema empieza en 525.
+     */
+    margin-bottom: clamp(2.6rem, 5vw, 3.4rem);
     pointer-events: none;
   }
 
@@ -748,9 +782,23 @@ body {
      * por ALTO lo resuelve — la esfera nunca pasa del 82 % de la ventana, y el
      * lateral crece libre porque ahi sobra espacio.
      */
-    inset: -52%;
-    max-height: 82vh;
-    max-width: 82vh;
+    /*
+     * El contenedor crece para compensar el margen que ahora deja la camara: la
+     * esfera ocupa el 73 % del lienzo en vez del 93 %, asi que el lienzo tiene
+     * que ser mayor para que la esfera se vea del MISMO tamano y su resplandor
+     * tenga sitio donde apagarse.
+     *
+     * `-78%` sobre un nucleo de 355 da ~910 px de lienzo para una esfera de
+     * ~665 — el mismo diametro aparente de antes, con ~120 px de aire alrededor.
+     */
+    inset: -78%;
+    /*
+     * `92vh` y no `96`: con 96 el lienzo empezaba en y=-6 y el
+     * `overflow: hidden` del hero le recortaba esos 6 px. El resplandor tiene
+     * margen suficiente sin llegar al borde de la ventana.
+     */
+    max-height: 92vh;
+    max-width: 92vh;
     margin: auto;
     z-index: 2;
 
@@ -773,54 +821,80 @@ body {
    * Los tres indicadores. Van bajo el nucleo, no sobre la esfera: encima
    * competirian con las particulas y con el logotipo.
    */
+  /*
+   * Los tres indicadores, dentro de la pila de controles.
+   *
+   * Hicieron falta CINCO intentos hasta dar con el sitio, y lo dejo escrito
+   * porque cada uno fallaba por una razon distinta:
+   *
+   *   `static`               caian en y=322, en mitad del logotipo
+   *   `bottom: -2.1rem`      chocaban con el lema
+   *   `top: 100%` + margen   512..536 contra un lema que empieza en 525
+   *   `bottom: 2%`           478..502, encima del logotipo (acaba en 491)
+   *   anclados por separado  se solapaban con el rotulo (-3 px)
+   *
+   * El fallo de fondo era anclar rotulo y puntos POR SEPARADO al mismo borde:
+   * cada ajuste movia los dos. Agrupados en `.brand-sphere-controles`, el hueco
+   * entre ellos lo decide un `gap` y ya no hay dos calculos peleandose.
+   */
   .brand-sphere-dots {
-    /*
-     * `static` y no `absolute`. Anclados al nucleo caian en y=519 con el lema
-     * empezando en 525: encima del texto, y ademas el logotipo —que va en z 3—
-     * los tapaba. Aqui fluyen bajo el nucleo, dentro de la pila del hero, con su
-     * propio sitio reservado.
-     */
-    /*
-     * Anclados al BORDE INFERIOR del nucleo, por fuera.
-     *
-     * En `static` caian en y=322, o sea en mitad del logotipo: el nucleo es un
-     * flex centrado y los metia dentro. Y en `absolute` con `bottom: -2.1rem`
-     * chocaban con el lema, que empieza en 525 cuando el nucleo acaba en 509.
-     *
-     * `top: 100%` mas `margin-top` los pone justo debajo del nucleo con su
-     * propio aire, sin depender de cuanto mida el nucleo en cada ventana — que
-     * cambia con el techo de 52vh.
-     */
-    /*
-     * DENTRO del nucleo, sobre su borde inferior. Y no es la primera opcion:
-     *
-     *   `static`                 caian en y=322, en mitad del logotipo
-     *   `bottom: -2.1rem`        chocaban con el lema
-     *   `top: 100%` + margen     512..536 contra un lema que empieza en 525
-     *
-     * El hueco real entre el nucleo (acaba en 509) y el lema (empieza en 525)
-     * son DIECISEIS pixeles, y el area pulsable minima son 24. No caben fuera.
-     *
-     * Dentro si hay sitio: la parte baja del nucleo es fondo del logotipo, no
-     * el logotipo — la palabra GENESIS acaba antes. Se apoyan ahi, por encima
-     * de la esfera (z 2) y del logotipo (z 3).
-     */
-    position: absolute;
-    bottom: 2%;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     justify-content: center;
     gap: 0.55rem;
-    z-index: 5;
-
-    /*
-     * `.hero-nucleus-stage` pone `pointer-events: none` para que el nucleo no
-     * bloquee el fondo del hero, y eso se HEREDA. Los indicadores son controles
-     * de verdad, asi que lo recuperan aqui — es la unica parte del nucleo que
-     * debe recibir clics.
-     */
     pointer-events: auto;
+  }
+
+
+  /*
+   * El rotulo de la marca al frente. Va sobre los indicadores y comparte su
+   * anclaje al pie del nucleo.
+   *
+   * `muted` y no `ink`: nombra lo que la esfera YA esta mostrando, asi que es
+   * apoyo — si compitiera con el subtitulo tendriamos dos mensajes peleando
+   * justo debajo del logotipo.
+   */
+  /* Pila unica de controles, anclada bajo el nucleo. */
+  .brand-sphere-controles {
+    position: absolute;
+    bottom: -2.9rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    pointer-events: none;
+  }
+
+  .brand-sphere-rotulo {
+    pointer-events: none;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--g-ink-muted);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
+    animation: brand-rotulo-entra 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  @keyframes brand-rotulo-entra {
+    from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  /*
+   * `visibility` y no `display`: el hueco se conserva, asi que los puntos y todo
+   * lo que hay debajo NO SE MUEVEN cada vez que la esfera pasa por Genesis. Un
+   * salto de 15 px tres veces por vuelta se nota mas que el propio rotulo.
+   */
+  .brand-sphere-rotulo--oculto {
+    visibility: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-sphere-rotulo { animation: none; }
   }
 
   .brand-sphere-dot {
@@ -953,7 +1027,8 @@ body {
     max-width: 34rem;
     font-size: clamp(0.875rem, 2.1vw, 1.05rem);
     line-height: 1.55;
-    color: var(--g-ink-muted);
+    /* Es el <h1>: el mensaje, no el apoyo. Ver la nota de `.hero-status-bar`. */
+    color: var(--g-ink);
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.92), 0 0 40px rgba(5, 7, 13, 0.6);
     margin: 0;
     padding: 0 0.5rem;

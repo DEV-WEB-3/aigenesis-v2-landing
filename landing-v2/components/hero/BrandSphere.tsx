@@ -94,10 +94,25 @@ function EncuadrarEsfera({ radio }: { radio: number }) {
   useEffect(() => {
     const cam = camera as THREE.PerspectiveCamera
     const aspecto = size.width / size.height
-    // margen para que el resplandor no toque el borde
-    // 1.12 y no 1.5: con 1.5 la esfera solo llenaba dos tercios del lienzo y,
-    // sumado al recorte del logotipo por delante, apenas quedaba anillo visible.
-    const objetivo = radio * 1.12
+    /*
+     * 1.42 y no 1.12. AQUI ESTA EL CORTE QUE SE VEIA EN LOS CUATRO LADOS.
+     *
+     * `objetivo` es cuanto del lienzo ocupa la esfera. Con 1.12 el circulo
+     * llenaba el 93 % del lienzo — pero el resplandor Fresnel NO TERMINA en el
+     * borde geometrico de la malla: se extiende mas alla, y ese halo quedaba
+     * cortado por el borde del lienzo.
+     *
+     * Por eso mi medida anterior decia «cabe»: medi el radio de la MALLA (260
+     * px en un lienzo de 560) y daba de sobra. Lo que no cabia era la LUZ.
+     * Medido en el perfil horizontal a la altura del centro: luminancia 88 justo
+     * dentro del borde y 190 justo fuera — el resplandor estaba vivo
+     * exactamente donde el lienzo se acababa.
+     *
+     * Con 1.42 la esfera ocupa el 73 % y quedan ~75 px de margen por lado para
+     * que el halo se apague solo. El tamano aparente se recupera agrandando el
+     * contenedor en la hoja de estilos, no acercando la camara.
+     */
+    const objetivo = radio * 1.42
     const fovRad = (cam.fov * Math.PI) / 180
     const distV = objetivo / Math.tan(fovRad / 2)
     const distH = objetivo / (Math.tan(fovRad / 2) * aspecto)
@@ -226,7 +241,48 @@ export default function BrandSphere({ tier, paused = false }: BrandSphereProps) 
         no servia —el nucleo tiene su propio contexto—, asi que se sacan aqui y
         la hoja de estilos los ancla al pie del nucleo con sitio propio.
       */}
-      <div className="brand-sphere-dots">
+      {/*
+        EL ROTULO NOMBRA LA MARCA QUE ESTA AL FRENTE.
+
+        La esfera revela Genesis, G-Pulse y Gevy — la historia del proyecto en
+        una imagen. Pero el texto del hero hablaba solo en abstracto, asi que
+        cuando la esfera mostraba Gevy el visitante veia un logotipo que NO
+        APARECIA por ningun lado en la pagina. La imagen prometia concrecion y
+        la palabra devolvia abstraccion.
+
+        El estado ya sabia cual esta al frente —lo usaban los indicadores y la
+        region viva para lectores de pantalla—. Solo faltaba mostrarselo a quien
+        si ve.
+
+        `key` fuerza el remontaje al cambiar de marca: sin el, React reutiliza el
+        nodo y la animacion de entrada no se reproduce.
+      */}
+      {/*
+        Rotulo y puntos en UNA sola pila.
+        Iban anclados por separado al mismo borde del nucleo, asi que cada
+        ajuste movia los dos y acababan solapados —medido: -3 px entre ellos—.
+        Agrupados, el hueco lo decide un `gap` y no dos calculos que se pisan.
+      */}
+      <div className="brand-sphere-controles">
+        {/*
+          EL ROTULO CALLA CUANDO LA MARCA AL FRENTE ES GENESIS.
+
+          El logotipo estatico ya dice GENESIS en grande, justo encima. Repetirlo
+          en pequeño doce pixeles mas abajo no informa de nada: es ruido, y de
+          los que se notan.
+
+          Para G-Pulse y Gevy si aporta, porque son las dos marcas que el
+          visitante NO reconoce todavia — que es justo el problema que este
+          rotulo existe para resolver.
+        */}
+        <span
+          key={caraActiva}
+          className={`brand-sphere-rotulo${caraActiva === 0 ? ' brand-sphere-rotulo--oculto' : ''}`}
+        >
+          {ROTULO[CARAS_MARCA[caraActiva]]}
+        </span>
+
+        <div className="brand-sphere-dots">
         {CARAS_MARCA.map((cara, i) => (
           <button
             key={cara}
@@ -234,9 +290,10 @@ export default function BrandSphere({ tier, paused = false }: BrandSphereProps) 
             className={`brand-sphere-dot${i === caraActiva ? ' brand-sphere-dot--activo' : ''}`}
             aria-label={`Ver ${ROTULO[cara]}`}
             aria-current={i === caraActiva ? 'true' : undefined}
-            onClick={() => irACara(i)}
-          />
-        ))}
+              onClick={() => irACara(i)}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Cambia poco y sin interrumpir: `polite` es lo correcto aqui. */}
