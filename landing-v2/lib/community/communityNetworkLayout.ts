@@ -3,11 +3,21 @@
  * Organic human network — no pyramid, no MLM triangle, no arrow.
  */
 
-import { pulsoDe, llegadaDe } from '@/lib/design/motion'
+import { pulsoDe, llegadaDe, respiracionDe } from '@/lib/design/motion'
 
 export const COMMUNITY_PULSE_S = pulsoDe('comunidad')
 export const COMMUNITY_FORM_S = llegadaDe('comunidad')
-export const COMMUNITY_GROWTH_CYCLE_S = 4.5
+/**
+ * El ciclo con el que emergen los nodos nuevos.
+ *
+ * Era 4,5 y se multiplicaba por 3,2 y por 3,6 en dos sitios distintos, dando
+ * 14,4 y 16,2 segundos: dos valores sueltos que ademas no coincidian entre si,
+ * para lo que deberia ser el mismo latido de crecimiento.
+ *
+ * Ahora es la respiracion de la seccion, y los dos usos la comparten sin
+ * multiplicadores. Una comunidad que crece es un fondo lento, no un pulso.
+ */
+export const COMMUNITY_GROWTH_CYCLE_S = respiracionDe('comunidad')
 export const COMMUNITY_CENTER = { x: 50, y: 50 } as const
 export const COMMUNITY_LEADER_COUNT = 6
 export const COMMUNITY_MEMBER_COUNT = 58

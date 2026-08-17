@@ -65,7 +65,7 @@ export default function CommunityNodes() {
                 <animate
                   attributeName="opacity"
                   values="0;0;0.55;0;0"
-                  dur={`${COMMUNITY_GROWTH_CYCLE_S * 3.6}s`}
+                  dur={`${COMMUNITY_GROWTH_CYCLE_S}s`}
                   begin={`${growthDelay + 0.8}s`}
                   repeatCount="indefinite"
                 />

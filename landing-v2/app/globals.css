@@ -8077,7 +8077,7 @@ body {
 }
 
 #comunidad .community-genesis-network--enter .community-genesis-network__layer--front {
-  animation: community-network-form var(--community-form-s, 1.2s) ease-out both;
+  animation: community-network-form var(--community-form-s, 1.6s) ease-out both;
 }
 
 #comunidad .community-genesis-network__layer {
@@ -8088,17 +8088,17 @@ body {
 
 #comunidad .community-genesis-network__layer--back {
   z-index: 0;
-  animation: community-parallax-back 17s ease-in-out infinite;
+  animation: community-parallax-back 32s ease-in-out infinite;
 }
 
 #comunidad .community-genesis-network__layer--mid {
   z-index: 1;
-  animation: community-parallax-mid 13s ease-in-out infinite;
+  animation: community-parallax-mid 16s ease-in-out infinite;
 }
 
 #comunidad .community-genesis-network__layer--front {
   z-index: 2;
-  animation: community-parallax-front 11s ease-in-out infinite;
+  animation: community-parallax-front 8s ease-in-out infinite;
 }
 
 #comunidad .community-genesis-network__stage {
@@ -8115,7 +8115,7 @@ body {
     radial-gradient(circle at 58% 56%, rgba(157, 77, 255, 0.06) 0%, transparent 58%),
     radial-gradient(circle at 50% 50%, rgba(0, 245, 255, 0.04) 0%, transparent 62%);
   filter: blur(8px);
-  animation: community-atmosphere-breathe var(--community-pulse-s, 4.2s) ease-in-out infinite;
+  animation: community-atmosphere-breathe var(--community-pulse-s, 8s) ease-in-out infinite;
 }
 
 #comunidad .community-organic-field {
@@ -8130,7 +8130,7 @@ body {
   transform: translate(-50%, -50%);
   border-radius: 50%;
   border: 1px solid rgba(157, 77, 255, 0.08);
-  animation: community-band-breathe 6s ease-in-out infinite;
+  animation: community-band-breathe 16s ease-in-out infinite;
 }
 
 #comunidad .community-organic-field__band--outer {
@@ -8162,7 +8162,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(157, 77, 255, 0.05) 0%, transparent 68%);
   filter: blur(12px);
-  animation: community-atmosphere-breathe var(--community-pulse-s, 4.2s) ease-in-out infinite;
+  animation: community-atmosphere-breathe var(--community-pulse-s, 8s) ease-in-out infinite;
 }
 
 #comunidad .community-links,
@@ -8175,27 +8175,71 @@ body {
   overflow: visible;
 }
 
+/*
+  LA ESTRUCTURA ES PERMANENTE; LO QUE VIAJA ES LA ACTIVIDAD.
+
+  Los 193 enlaces existian y NO SE VEIAN. Medido: el degradado va de 0,55 a
+  0,28 de opacidad y la animacion multiplicaba por 0,46 en su pico, asi que la
+  visibilidad real era de 0,13 a 0,25 sobre un fondo casi negro, con 1,16 px de
+  grosor y ademas discontinuo. El ciclo pasaba el 34 % del tiempo en opacidad 0
+  exacta.
+
+  Una seccion que se llama «red humana organica», con 193 enlaces, donde la red
+  no se ve — solo quedaba el polvo de los nodos. Y el gesto de la seccion es
+  CONVERGER: el reconocerse SON los enlaces. Sin ellos no hay convergencia, hay
+  dispersion.
+
+  El arreglo no es subir la opacidad y ya. Es separar dos cosas que estaban
+  mezcladas en una sola animacion:
+
+    ESTRUCTURA  la red esta SIEMPRE ahi, respirando entre 0,26 y 0,5. Nunca
+                llega a cero, porque una red que desaparece deja de ser una red.
+    ACTIVIDAD   el trazo discontinuo se desplaza, y eso es lo que se mueve.
+
+  Antes las dos colgaban del mismo `opacity`, asi que para que la actividad se
+  notara la estructura tenia que apagarse.
+*/
 #comunidad .community-link {
-  stroke-width: 0.2;
+  stroke-width: 0.32;
   stroke-linecap: round;
   stroke-dasharray: 3 2;
-  animation: community-link-lifecycle 7.5s ease-in-out infinite;
+  animation:
+    community-link-respirar 16s ease-in-out infinite backwards,
+    community-link-flujo 8s linear infinite backwards;
+  animation-delay: var(--link-fase, 0s), var(--link-fase, 0s);
+}
+/*
+  `backwards` no es un detalle. Sin el, un enlace con retardo se pinta con su
+  opacidad BASE —1— hasta que su animacion arranca, y entonces cae de golpe a
+  0,26. Con retardos de hasta 2 s, eso es la red entera destellando a plena luz
+  y apagandose por partes durante los primeros segundos de la seccion. Medido:
+  la opacidad maxima salia 1 cuando el keyframe no pasa de 0,5.
+*/
+
+@keyframes community-link-respirar {
+  0%, 100% { opacity: 0.26; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes community-link-flujo {
+  from { stroke-dashoffset: 10; }
+  to { stroke-dashoffset: 0; }
 }
 
 #comunidad .community-node__dot {
-  animation: community-node-breathe var(--community-pulse-s, 4.2s) ease-in-out infinite;
+  animation: community-node-breathe var(--community-pulse-s, 8s) ease-in-out infinite;
 }
 
 #comunidad .community-node--leader .community-node__dot {
-  animation: community-leader-pulse var(--community-pulse-s, 4.2s) ease-in-out infinite;
+  animation: community-leader-pulse var(--community-pulse-s, 8s) ease-in-out infinite;
 }
 
 #comunidad .community-node__halo {
-  animation: community-leader-halo var(--community-pulse-s, 4.2s) ease-out infinite;
+  animation: community-leader-halo var(--community-pulse-s, 8s) ease-out infinite;
 }
 
 #comunidad .community-node {
-  animation: community-node-emerge calc(var(--community-growth-s, 4.5s) * 3.2) ease-in-out infinite;
+  animation: community-node-emerge var(--community-growth-s, 16s) ease-in-out infinite;
 }
 
 #comunidad .community-pool-pulse__particle {
@@ -8225,7 +8269,7 @@ body {
   inset: 0;
   border-radius: 50%;
   filter: blur(14px);
-  animation: community-core-volume-breathe var(--community-pulse-s, 4.2s) ease-in-out infinite;
+  animation: community-core-volume-breathe var(--community-pulse-s, 8s) ease-in-out infinite;
 }
 
 #comunidad .community-core__volume--a {
@@ -8251,7 +8295,7 @@ body {
   box-shadow:
     0 0 28px rgba(255, 0, 200, 0.28),
     inset 0 0 18px rgba(157, 77, 255, 0.12);
-  animation: community-core-pulse var(--community-pulse-s, 4.2s) ease-in-out infinite;
+  animation: community-core-pulse var(--community-pulse-s, 8s) ease-in-out infinite;
 }
 
 #comunidad .community-core__inner-glow {
@@ -8267,11 +8311,11 @@ body {
   border-radius: 50%;
   border: 1px solid rgba(255, 0, 200, 0.34);
   opacity: 0;
-  animation: community-core-expand var(--community-pulse-s, 4.2s) ease-out infinite;
+  animation: community-core-expand var(--community-pulse-s, 8s) ease-out infinite;
 }
 
 #comunidad .community-core__pulse-ring--b {
-  animation-delay: calc(var(--community-pulse-s, 4.2s) * 0.24);
+  animation-delay: calc(var(--community-pulse-s, 8s) * 0.24);
 }
 
 #comunidad .community-core__glyph {
