@@ -10888,15 +10888,38 @@ body {
 */
 @media (min-width: 1024px) {
   /*
-    `left`, NO `padding-left`.
+    EL CAMPO SANGRA A LA DERECHA, COMO EL RESTO DEL PORTAL.
 
-    Con relleno no pasaba nada, y el motivo no es obvio: `.lienzo-apaisado` esta
-    posicionado en absoluto, y una caja absoluta se resuelve contra el PADDING
-    BOX del padre — que incluye el relleno. Asi que `padding-left: 20%` movia el
-    flujo normal, que aqui no lo usa nadie, y dejaba el lienzo exactamente donde
-    estaba. Compilaba, no daba aviso y no hacia nada.
+    Medido en las once secciones con visual: el ancho medio dibujado es 835 px y
+    la ocupacion media de su hueco, 94 %. Confianza daba 464 y 80 % — el visual
+    mas pequeno del portal, y por bastante.
+
+    La causa no era el campo sino su hueco: 580 px cuando la media ronda 900.
+    G-Oracle tiene EXACTAMENTE la misma rejilla (563 + 563) y saca 980, porque
+    deja que el visual se salga de su columna. Todas lo hacen.
+
+    Aqui no se puede sangrar a la izquierda —ahi vive el texto y este campo
+    lleva rotulos—, pero a la derecha no hay nada hasta el borde de la ventana.
+    Asi que se reserva el 20 % izquierdo y se extiende el derecho.
+
+    `overflow-x: hidden` en la seccion no es opcional: sin el, un visual que se
+    sale crea barra horizontal, y eso es el fallo numero 1 del verificador.
+
+    Nota que conviene conservar: esto se intento primero con `padding-left` y NO
+    HIZO NADA. `.lienzo-apaisado` esta posicionado en absoluto, y una caja
+    absoluta se resuelve contra el PADDING BOX del padre —que incluye el
+    relleno—, asi que movia un flujo normal que aqui no usa nadie. Compilaba, no
+    avisaba, y el lienzo seguia exactamente donde estaba.
   */
-  #trust .trust-scan { left: 20%; }
+  #trust .trust-scan {
+    left: 20%;
+    right: -54%;
+  }
+}
+
+#trust.trust-section-layout {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 @keyframes trust-scan-entra {
