@@ -92,10 +92,10 @@ export default function MarketplaceCommerceCore() {
         */}
         <span className="marketplace-commerce-core__glyph marca-halo marca-halo--gevy" aria-hidden="true">
           <Image
-            src="/brand/gevy-alt-128.png"
+            src="/brand/gevy-alt-512.png"
             alt=""
-            width={42}
-            height={42}
+            width={90}
+            height={90}
             className="object-contain"
             aria-hidden
           />

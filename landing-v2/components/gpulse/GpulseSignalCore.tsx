@@ -57,15 +57,22 @@ export default function GpulseSignalCore() {
           cuenta. Y su paleta ya es la de Genesis —magenta, violeta, azul, cian—,
           así que no hay nada que rebrandear.
 
-          El tamaño sube de 32 a 44 px: a 32 los anillos del logo se empastaban
-          entre sí dentro de un núcleo de 94.
+          EL TAMAÑO: el logo ES el núcleo, no un glifo dentro de la decoración.
+
+          Medido: a 45 px dentro de un visual de 864 era el 5,2 % del ancho —
+          imperceptible. El logotipo del hero, que sí funciona como ancla de
+          marca, ocupa el 24,3 % de su ventana. Aquí queda en el 18 % contando
+          la escala del núcleo, que es lo que hace que se lea sin competir con
+          la red de señales que lo rodea.
+
+          Fuente de 512 y no de 128: a 156 px pintados, una retina pide 312.
         */}
         <span className="gpulse-signal-core__glyph marca-halo marca-halo--gpulse" aria-hidden="true">
           <Image
-            src="/brand/gpulse-128.png"
+            src="/brand/gpulse-512.png"
             alt=""
-            width={44}
-            height={44}
+            width={78}
+            height={78}
             className="object-contain"
             aria-hidden
           />

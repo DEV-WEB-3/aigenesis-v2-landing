@@ -5971,7 +5971,24 @@ body {
 /* Signal core */
 #gpulse .gpulse-signal-core {
   position: absolute;
-  transform: translate(-50%, -50%);
+  /*
+   * ESCALA DEL NUCLEO — G-Pulse
+   *
+   * Medido antes: el logotipo ocupaba el 5,2 % del ancho del visual, contra el
+   * 24,3 % que ocupa el del hero sobre su ventana. Casi cinco veces menos en
+   * proporcion: imperceptible.
+   *
+   * Se escala el NUCLEO ENTERO y no solo el logo. Un `scale` sobre el
+   * contenedor arrastra anillos, resplandor, particulas de orbita y radios de
+   * desenfoque a la vez, asi que la pieza crece SIN deformarse — con una sola
+   * cifra en vez de retocar una docena de valores en rem que acabarian
+   * desincronizados.
+   *
+   * Va DESPUES del `translate(-50%, -50%)` a proposito: el orden importa en
+   * `transform`, y al reves escalaria tambien el desplazamiento de centrado y
+   * la pieza se iria de sitio.
+   */
+  transform: translate(-50%, -50%) scale(2);
   width: 6.4rem;
   height: 6.4rem;
   z-index: 5;
@@ -7197,7 +7214,24 @@ body {
 /* Commerce core — +30% scale */
 #marketplace .marketplace-commerce-core {
   position: absolute;
-  transform: translate(-50%, -50%);
+  /*
+   * ESCALA DEL NUCLEO — Marketplace / Gevy
+   *
+   * Medido antes: el logotipo ocupaba el 4,9 % del ancho del visual, contra el
+   * 24,3 % que ocupa el del hero sobre su ventana. Casi cinco veces menos en
+   * proporcion: imperceptible.
+   *
+   * Se escala el NUCLEO ENTERO y no solo el logo. Un `scale` sobre el
+   * contenedor arrastra anillos, resplandor, particulas de orbita y radios de
+   * desenfoque a la vez, asi que la pieza crece SIN deformarse — con una sola
+   * cifra en vez de retocar una docena de valores en rem que acabarian
+   * desincronizados.
+   *
+   * Va DESPUES del `translate(-50%, -50%)` a proposito: el orden importa en
+   * `transform`, y al reves escalaria tambien el desplazamiento de centrado y
+   * la pieza se iria de sitio.
+   */
+  transform: translate(-50%, -50%) scale(1.75);
   width: 8.06rem;
   height: 8.06rem;
   z-index: 5;
@@ -9783,6 +9817,25 @@ body {
     gap: 0.6rem;
     padding-top: 0.85rem;
     padding-bottom: 0.5rem;
+  }
+
+  /*
+   * EL NUCLEO SE ACHICA EN MOVIL, y no por gusto.
+   *
+   * El `scale` de escritorio esta calculado sobre un visual de 896 px, donde el
+   * nucleo queda en el 23 % y la red de comercio respira alrededor. En movil ese
+   * mismo contenedor mide 240, asi que el MISMO numero da el 94 %: el logotipo
+   * se come la red y ademas se le montan encima las metricas y el boton, porque
+   * aqui el visual va DETRAS del contenido y no en una columna aparte.
+   *
+   * Medido a 390 px: 226 px de nucleo sobre 240 de contenedor. Con 1.15 baja a
+   * ~148 y vuelve al 62 %, que deja sitio a los nodos y al texto.
+   *
+   * G-Pulse no lo necesita: alli el contenedor movil son 338 px y el nucleo ya
+   * queda en el 55 %.
+   */
+  #marketplace .marketplace-commerce-core {
+    transform: translate(-50%, -50%) scale(1.15);
   }
 
   #cta .institutional-footer__link,
