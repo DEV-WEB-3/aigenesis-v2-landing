@@ -719,6 +719,56 @@ body {
     max-width: 100%;
   }
 
+  /*
+   * LA ESFERA DE MARCA, en su sitio dentro del nucleo.
+   *
+   * `inset: -18%` la hace algo mayor que el nucleo: las tres marcas giran
+   * ALREDEDOR del logotipo plano, que se queda al frente. Asi el logotipo sigue
+   * siendo el ancla —y el elemento LCP— y la esfera es el umbral de energia que
+   * lo rodea.
+   *
+   * `z-index: 2` la deja DEBAJO del logotipo (que va en 3) y encima del canvas
+   * 2D del orbe. `pointer-events: none` porque de momento solo gira sola; la
+   * interaccion llega en la fase siguiente y entonces esto cambia.
+   */
+  .brand-sphere {
+    position: absolute;
+    /*
+     * `-52%` y no `-18%`. Medido: con -18 la esfera media 483 px sobre un
+     * logotipo de 322, o sea 81 px de anillo por lado — y como la camara la
+     * encuadra al 66 % del lienzo, quedaban ~54 px reales para tres marcas
+     * girando. Se intuia un halo y no se leia nada.
+     *
+     * Con -52 la esfera pasa a ~735 px: 206 px de anillo por lado, sitio de
+     * sobra para que una marca entera se lea cuando pasa por delante.
+     */
+    /*
+     * `-52%` daba 725 px y se salia del hero por arriba y por abajo: el nucleo
+     * mide 355 y la ventana util 683, asi que no hay sitio para tanto. El techo
+     * por ALTO lo resuelve — la esfera nunca pasa del 82 % de la ventana, y el
+     * lateral crece libre porque ahi sobra espacio.
+     */
+    inset: -52%;
+    max-height: 82vh;
+    max-width: 82vh;
+    margin: auto;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .brand-sphere canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* La esfera es movimiento continuo; sin el, no aporta nada y molesta. */
+    .brand-sphere {
+      display: none;
+    }
+  }
+
   .hero-logo-fill {
     width: 100% !important;
     height: auto !important;

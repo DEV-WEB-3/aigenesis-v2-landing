@@ -1,5 +1,7 @@
 'use client'
 
+import dynamic from 'next/dynamic'
+
 import { useCallback, useEffect, useRef } from 'react'
 import { GenesisOfficialLogo } from '@/components/brand'
 import type { LogoSize } from '@/components/brand/types'
@@ -8,6 +10,8 @@ import { BURST_PARTICLE_COUNTS, ORB_RING_PARTICLE_COUNTS, type HeroPerfTier } fr
 import { cn } from '@/lib/utils'
 
 export type GenesisOrbVariant = 'hero' | 'signature'
+
+const BrandSphere = dynamic(() => import('./BrandSphere'), { ssr: false, loading: () => null })
 
 interface HeroGenesisOrbProps {
   tier?: HeroPerfTier
@@ -219,6 +223,19 @@ export default function HeroGenesisOrb({
   return (
     <div className={cn('hero-nucleus', variant === 'signature' && 'hero-nucleus--signature', className)}>
       <canvas ref={canvasRef} className="hero-burst-canvas" aria-hidden="true" />
+
+      {/*
+        La esfera de marca va ENCIMA del orbe 2D y solo en el hero.
+
+        No lo sustituye: el `<img>` del logotipo es el elemento LCP de la pagina,
+        asi que pinta primero y la esfera materializa alrededor. Si WebGL falla o
+        el trozo de Three tarda, debajo sigue el orbe de siempre — no se pierde
+        nada.
+
+        `ssr: false` porque necesita WebGL, y carga diferida para que los 578 KB
+        de Three no entren en el camino critico del primer pintado.
+      */}
+      {variant === 'hero' ? <BrandSphere tier={tier} paused={paused} /> : null}
       <div className="hero-energy-aura" aria-hidden="true" />
       <div className="hero-energy-ring" aria-hidden="true" />
       <div className="hero-energy-ring hero-energy-ring--ion" aria-hidden="true" />
