@@ -303,8 +303,19 @@ export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { classN
            * crece si hace falta. El `overflow-hidden` se conserva: sigue
            * haciendo falta para recortar las capas decorativas de fondo, que
            * SI se salen a proposito.
+           *
+           * PERO LA ALTURA YA NO SE FIJA AQUI. `lg:min-h-screen` vale 100dvh, y
+           * eso NO descuenta los 76 px que tapa la barra al engancharse: medido
+           * en las catorce, todas sobraban exactamente ese margen. No era el
+           * contenido, era la construccion.
+           *
+           * Ahora manda `.home-section-fit`, que resta `--enganche-alto`. La
+           * utilidad se quita en vez de intentar ganarle: Tailwind vive en una
+           * capa POSTERIOR, asi que gana a la hoja pase lo que pase con la
+           * especificidad, y pelearse con eso solo produce reglas cada vez mas
+           * largas que siguen perdiendo.
            */
-          className={`home-section-fit relative w-full flex items-center overflow-visible lg:overflow-hidden lg:min-h-screen ${className}`}
+          className={`home-section-fit relative w-full flex items-center overflow-visible lg:overflow-hidden ${className}`}
           style={{ pointerEvents: 'auto' }}
         >
           {sectionOverlay}

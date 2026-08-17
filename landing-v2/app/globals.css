@@ -2000,7 +2000,27 @@ body {
    * esa variable describe otra cosa y se quedaba corta: la barra crece con su
    * propio `padding` responsive.
    */
-  scroll-padding-top: 76px;
+  scroll-padding-top: var(--enganche-alto);
+}
+
+/*
+ * EL ALTO QUE SE COME LA BARRA — una variable, dos usos, y por eso existe.
+ *
+ * Este numero aparece en DOS sitios que tienen que decir lo mismo: el
+ * `scroll-padding-top` que baja el enganche, y la altura minima de cada
+ * seccion. Estaban desacoplados —76 aqui y `100dvh` alla— y esa es exactamente
+ * la razon de que las CATORCE secciones sobraran 76 px:
+ *
+ *   ventana            615
+ *   se come la barra    76
+ *   util real          539
+ *   pero la seccion    615   (100dvh)
+ *
+ * O sea que ninguna cabia, y no por su contenido: por construccion. Con la
+ * variable compartida, mover la barra reajusta las catorce a la vez.
+ */
+:root {
+  --enganche-alto: 76px;
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -2116,8 +2136,18 @@ body {
      * de breakpoint. Al agrandar el zoom (que reduce el viewport CSS) reacciona
      * igual, porque para el navegador es exactamente lo mismo.
      */
-    --fit-pad-y: clamp(8px, 1.6vh, 18px);
-    --fit-gap-frame: clamp(0.55rem, 1.5vh, 1.25rem);
+    /*
+     * EL HUECO UTIL, no la ventana.
+     *
+     * Toda la escala de densidad de abajo se calculaba con `vh`, que mide la
+     * ventana ENTERA — incluidos los 76 px que tapa la barra al engancharse.
+     * O sea que apretaba contra un espacio que no existe: en una ventana de
+     * 615, repartia para 615 cuando lo visible son 539.
+     */
+    --alto-util: calc(100dvh - var(--enganche-alto));
+
+    --fit-pad-y: clamp(8px, calc(var(--alto-util) * 0.016), 18px);
+    --fit-gap-frame: clamp(0.55rem, calc(var(--alto-util) * 0.015), 1.25rem);
     /*
      * RITMO VERTICAL POR PAPEL, no un hueco unico.
      *
@@ -2137,11 +2167,11 @@ body {
      *   normal     entre bloques del mismo grupo
      *   amplio     antes de la accion final, que cierra la seccion
      */
-    --fit-gap-apretado: clamp(0.2rem, 0.55vh, 0.45rem);
-    --fit-gap-stack: clamp(0.45rem, 1.2vh, 1rem);
-    --fit-gap-amplio: clamp(0.7rem, 1.9vh, 1.6rem);
-    --fit-headline: clamp(1.6rem, 3.3vh, 2.35rem);
-    --fit-card-pad: clamp(0.8rem, 1.9vh, 1.5rem);
+    --fit-gap-apretado: clamp(0.2rem, calc(var(--alto-util) * 0.0055), 0.45rem);
+    --fit-gap-stack: clamp(0.45rem, calc(var(--alto-util) * 0.012), 1rem);
+    --fit-gap-amplio: clamp(0.7rem, calc(var(--alto-util) * 0.019), 1.6rem);
+    --fit-headline: clamp(1.6rem, calc(var(--alto-util) * 0.033), 2.35rem);
+    --fit-card-pad: clamp(0.8rem, calc(var(--alto-util) * 0.019), 1.5rem);
 
     --section-fit-pad-y: var(--fit-pad-y);
   }
@@ -2165,7 +2195,20 @@ body {
    * cortas por 32-67 px ya entran justas.
    */
   .home-section-fit {
-    min-height: 100dvh;
+    /*
+     * `100dvh` MENOS lo que tapa la barra.
+     *
+     * Con `100dvh` a secas la seccion medía la ventana entera, pero al
+     * engancharse sus 76 primeros pixeles quedan detras de la barra fija. El
+     * resultado es que las catorce sobraban exactamente ese margen — medido en
+     * las catorce, el exceso minimo era 76 clavado, que es la firma de un fallo
+     * estructural y no de contenido.
+     *
+     * Sigue siendo `min-height`: si el contenido pide mas, la seccion crece y
+     * no se pierde nada. Lo que cambia es el suelo, que ahora es el hueco que
+     * de verdad se ve.
+     */
+    min-height: calc(100dvh - var(--enganche-alto));
     padding-top: var(--section-fit-pad-y);
     padding-bottom: 10px;
     box-sizing: border-box;

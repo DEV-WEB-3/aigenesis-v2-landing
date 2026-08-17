@@ -79,7 +79,15 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
           red por si algun dia vuelve a no caber: crecer se ve mal, pero perder
           la llamada a la accion se ve peor.
         */
-        className="relative flex min-h-[100svh] w-full flex-col items-center justify-center px-4 sm:px-6 pt-20 sm:pt-24 text-center lg:min-h-screen"
+        /*
+          El hero tampoco fija su altura con utilidades.
+
+          Tenia `min-h-[100svh]` y `lg:min-h-screen`, y las dos miden la ventana
+          ENTERA — sin descontar la barra que las tapa al engancharse. Medido:
+          sobraba 95 px. Ahora lleva `home-section-fit` como las otras trece y
+          la altura sale de un solo sitio.
+        */
+        className="home-section-fit relative flex w-full flex-col items-center justify-center px-4 sm:px-6 pt-20 sm:pt-24 text-center"
         style={{
           pointerEvents: 'auto',
           overflow: 'hidden',
