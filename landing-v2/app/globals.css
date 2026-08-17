@@ -753,18 +753,143 @@ body {
     max-width: 82vh;
     margin: auto;
     z-index: 2;
-    pointer-events: none;
+
+    /*
+     * `auto` para poder arrastrar, y `pan-y` para NO robar el scroll: un gesto
+     * vertical sigue desplazando la pagina, uno horizontal gira la esfera. Sin
+     * `pan-y`, en movil la esfera secuestra el scroll y la seccion se vuelve una
+     * trampa.
+     */
+    pointer-events: auto;
+    touch-action: pan-y;
+    cursor: grab;
   }
 
+  .brand-sphere:active {
+    cursor: grabbing;
+  }
+
+  /*
+   * Los tres indicadores. Van bajo el nucleo, no sobre la esfera: encima
+   * competirian con las particulas y con el logotipo.
+   */
+  .brand-sphere-dots {
+    /*
+     * `static` y no `absolute`. Anclados al nucleo caian en y=519 con el lema
+     * empezando en 525: encima del texto, y ademas el logotipo —que va en z 3—
+     * los tapaba. Aqui fluyen bajo el nucleo, dentro de la pila del hero, con su
+     * propio sitio reservado.
+     */
+    /*
+     * Anclados al BORDE INFERIOR del nucleo, por fuera.
+     *
+     * En `static` caian en y=322, o sea en mitad del logotipo: el nucleo es un
+     * flex centrado y los metia dentro. Y en `absolute` con `bottom: -2.1rem`
+     * chocaban con el lema, que empieza en 525 cuando el nucleo acaba en 509.
+     *
+     * `top: 100%` mas `margin-top` los pone justo debajo del nucleo con su
+     * propio aire, sin depender de cuanto mida el nucleo en cada ventana — que
+     * cambia con el techo de 52vh.
+     */
+    /*
+     * DENTRO del nucleo, sobre su borde inferior. Y no es la primera opcion:
+     *
+     *   `static`                 caian en y=322, en mitad del logotipo
+     *   `bottom: -2.1rem`        chocaban con el lema
+     *   `top: 100%` + margen     512..536 contra un lema que empieza en 525
+     *
+     * El hueco real entre el nucleo (acaba en 509) y el lema (empieza en 525)
+     * son DIECISEIS pixeles, y el area pulsable minima son 24. No caben fuera.
+     *
+     * Dentro si hay sitio: la parte baja del nucleo es fondo del logotipo, no
+     * el logotipo — la palabra GENESIS acaba antes. Se apoyan ahi, por encima
+     * de la esfera (z 2) y del logotipo (z 3).
+     */
+    position: absolute;
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 0.55rem;
+    z-index: 5;
+
+    /*
+     * `.hero-nucleus-stage` pone `pointer-events: none` para que el nucleo no
+     * bloquee el fondo del hero, y eso se HEREDA. Los indicadores son controles
+     * de verdad, asi que lo recuperan aqui — es la unica parte del nucleo que
+     * debe recibir clics.
+     */
+    pointer-events: auto;
+  }
+
+  .brand-sphere-dot {
+    /*
+     * El punto VISIBLE mide 7px, pero el area pulsable son 24 —el minimo de
+     * WCAG 2.2 AA—. De ahi el relleno transparente en vez de un punto grande:
+     * se toca facil sin engordar el diseno.
+     */
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+
+  .brand-sphere-dot::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--g-ink-muted);
+    opacity: 0.32;
+    transition: opacity 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .brand-sphere-dot--activo::before {
+    background: var(--g-violet-hi);
+    opacity: 1;
+    transform: scale(1.25);
+    box-shadow: 0 0 10px rgba(157, 77, 255, 0.6);
+  }
+
+  .brand-sphere-dot:hover::before {
+    opacity: 0.7;
+  }
+
+  /*
+   * El LIENZO no recibe punteros; los recibe su contenedor `.brand-sphere`.
+   *
+   * Sin esto el canvas se llevaba el clic de los indicadores: `.brand-sphere`
+   * tiene `z-index: 2` y crea su propio contexto de apilado, asi que el z 5 de
+   * los indicadores solo compite DENTRO de ese contexto — y el canvas, al estar
+   * en el mismo, ganaba por orden en el arbol.
+   *
+   * El arrastre no se pierde: el manejador vive en `.brand-sphere`, que sigue
+   * con `pointer-events: auto`, y los eventos del canvas burbujean hasta el.
+   */
+  /*
+   * Los DIVS internos que crea react-three-fiber alrededor del lienzo tampoco
+   * reciben punteros. Sin esto se llevaban el clic de los indicadores: el
+   * canvas ya estaba en `none`, pero sus envoltorios no.
+   */
+  .brand-sphere > div,
   .brand-sphere canvas {
+    pointer-events: none;
     display: block;
     width: 100% !important;
     height: 100% !important;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    /* La esfera es movimiento continuo; sin el, no aporta nada y molesta. */
-    .brand-sphere {
+    /* La esfera es movimiento continuo; sin el, no aporta nada y molesta.
+       Los indicadores se van con ella: no tiene sentido ofrecer control sobre
+       algo que no esta. */
+    .brand-sphere,
+    .brand-sphere-dots {
       display: none;
     }
   }

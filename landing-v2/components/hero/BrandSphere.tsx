@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { construirEsferaDeMarca, CARAS_MARCA, ANGULO_CARA } from '@/lib/brand/brandSphere'
+import { useBrandSphereGesture } from '@/lib/brand/useBrandSphereGesture'
 import type { HeroPerfTier } from '@/lib/hero-performance'
 
 /**
@@ -27,9 +28,6 @@ const POR_CARA: Record<HeroPerfTier, number> = {
  */
 const OPACIDAD = 0.55
 
-/** Vuelta completa, en segundos. Las tres marcas se revelan solas en ese tiempo. */
-const PERIODO_S = 26
-
 /**
  * Nube de partículas de las tres marcas sobre una esfera.
  *
@@ -40,11 +38,11 @@ const PERIODO_S = 26
 function NubeDeMarca({
   porCara,
   radio,
-  giroRef,
+  avanzar,
 }: {
   porCara: number
   radio: number
-  giroRef: React.MutableRefObject<number>
+  avanzar: (delta: number, ahora: number) => number
 }) {
   const grupo = useRef<THREE.Group>(null)
   const { posiciones, colores } = useMemo(
@@ -63,8 +61,9 @@ function NubeDeMarca({
 
   useFrame((_, delta) => {
     if (!grupo.current) return
-    giroRef.current += (delta * Math.PI * 2) / PERIODO_S
-    grupo.current.rotation.y = giroRef.current
+    // El gesto decide el giro: rotacion automatica, inercia o encaje. Aqui solo
+    // se aplica — el bucle no conoce el modo en el que esta.
+    grupo.current.rotation.y = avanzar(delta, performance.now())
   })
 
   return (
@@ -148,10 +147,18 @@ export interface BrandSphereProps {
  * El montaje espera a `requestIdleCallback` por el mismo motivo que el mundo
  * WebGL global: no competir con el primer pintado.
  */
+/** Nombre visible de cada marca, para los indicadores y el lector de pantalla. */
+const ROTULO: Record<(typeof CARAS_MARCA)[number], string> = {
+  genesis: 'Genesis',
+  gpulse: 'G-Pulse',
+  gevy: 'Gevy',
+}
+
 export default function BrandSphere({ tier, paused = false }: BrandSphereProps) {
   const [listo, setListo] = useState(false)
-  const giroRef = useRef(0)
+  const [caraActiva, setCaraActiva] = useState(0)
   const porCara = POR_CARA[tier]
+  const { avanzar, alBajar, irACara } = useBrandSphereGesture(setCaraActiva)
 
   useEffect(() => {
     if (porCara === 0) return
@@ -167,17 +174,68 @@ export default function BrandSphere({ tier, paused = false }: BrandSphereProps) 
   if (porCara === 0 || !listo) return null
 
   return (
-    <div className="brand-sphere" aria-hidden="true">
-      <Canvas
-        frameloop={paused ? 'never' : 'always'}
-        camera={{ position: [0, 0, 3.2], fov: 50 }}
-        gl={{ antialias: tier === 'high', alpha: true, powerPreference: 'low-power' }}
-        dpr={[1, tier === 'high' ? 2 : 1.5]}
+    <>
+      {/*
+        `pointer-events: auto` SOLO aqui, y `touch-action: pan-y` en la hoja de
+        estilos: un gesto vertical tiene que seguir desplazando la pagina. Robar
+        el scroll es la forma mas rapida de que alguien no pueda salir de la
+        seccion.
+
+        Sin `aria-hidden`: la esfera ya no es decoracion, es un control. Lleva
+        `role="group"` con su nombre y lo que anuncia es la MARCA que esta al
+        frente, no el angulo — que es lo unico que le importa a quien no la ve.
+      */}
+      <div
+        className="brand-sphere"
+        role="group"
+        aria-label="Marcas del ecosistema"
+        onPointerDown={(e) => alBajar(e.nativeEvent)}
       >
-        <EncuadrarEsfera radio={1} />
-        <NubeDeMarca porCara={porCara} radio={1} giroRef={giroRef} />
-      </Canvas>
-    </div>
+        <Canvas
+          frameloop={paused ? 'never' : 'always'}
+          camera={{ position: [0, 0, 3.2], fov: 50 }}
+          gl={{ antialias: tier === 'high', alpha: true, powerPreference: 'low-power' }}
+          dpr={[1, tier === 'high' ? 2 : 1.5]}
+        >
+          <EncuadrarEsfera radio={1} />
+          <NubeDeMarca porCara={porCara} radio={1} avanzar={avanzar} />
+        </Canvas>
+      </div>
+
+      {/*
+        LOS INDICADORES SON EL CONTROL ACCESIBLE, no un adorno.
+
+        Arrastrar es un gesto que no todo el mundo puede hacer, y ademas no se
+        descubre solo. Estos tres botones hacen lo mismo, se alcanzan con el
+        teclado y dicen a donde llevan. La esfera gira sola de todas formas, asi
+        que nadie DEPENDE de ellos — pero quien quiera ir a una marca concreta
+        puede.
+      */}
+      {/*
+        Los indicadores viven FUERA del nucleo: dentro caian en y=519 y el lema
+        empieza en 525, asi que se solapaban con el texto y el logotipo estatico
+        los tapaba. `position: fixed` respecto al hero via `.hero-content-shell`
+        no servia —el nucleo tiene su propio contexto—, asi que se sacan aqui y
+        la hoja de estilos los ancla al pie del nucleo con sitio propio.
+      */}
+      <div className="brand-sphere-dots">
+        {CARAS_MARCA.map((cara, i) => (
+          <button
+            key={cara}
+            type="button"
+            className={`brand-sphere-dot${i === caraActiva ? ' brand-sphere-dot--activo' : ''}`}
+            aria-label={`Ver ${ROTULO[cara]}`}
+            aria-current={i === caraActiva ? 'true' : undefined}
+            onClick={() => irACara(i)}
+          />
+        ))}
+      </div>
+
+      {/* Cambia poco y sin interrumpir: `polite` es lo correcto aqui. */}
+      <span className="sr-only" aria-live="polite">
+        {ROTULO[CARAS_MARCA[caraActiva]]}
+      </span>
+    </>
   )
 }
 
