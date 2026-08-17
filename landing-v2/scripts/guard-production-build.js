@@ -15,6 +15,19 @@ const {
   DEFAULT_PORT,
 } = require('./next-dev-env')
 
+/*
+ * En CI no hay stack de desarrollo que detener: el runner arranca limpio y hace
+ * `npm ci` + `build`. Buscar procesos ahí no protege de nada y sí puede fallar
+ * —este guard rastrea procesos con utilidades de Windows— convirtiendo un
+ * detalle de entorno en un build rojo que no dice nada útil.
+ *
+ * GitHub Actions define `CI=true` por su cuenta; no hay que configurarlo.
+ */
+if (process.env.CI) {
+  log.ok('guard-production-build: CI detectado — sin stack dev que detener')
+  process.exit(0)
+}
+
 const procs = listProjectNextProcesses({ scope: 'dev-stack' })
 
 if (procs.length === 0) {

@@ -1,0 +1,68 @@
+# Verificación automática de cada PR y de master.
+#
+# POR QUE EXISTE
+# --------------
+# El repositorio no tenía CI. Nadie comprobaba nada hasta que alguien lo abría
+# en su máquina, y eso dejó pasar un fallo concreto: la configuración de ESLint
+# quedó INVÁLIDA por una clave que la herramienta no reconoce, y con ella dejó
+# de ejecutarse la regla que impide colores a fuego. `next build` imprimía el
+# aviso y terminaba EN VERDE, así que la puerta llevaba tiempo sin morder y
+# nadie lo notó.
+#
+# De ahí el orden de los pasos y, sobre todo, que `lint` sea un paso PROPIO:
+# comprobado a mano, `next lint` sí devuelve código 1 con esa configuración rota
+# —«Unexpected top-level property»— mientras que `next build` devuelve 0.
+# Delegar el lint en el build es exactamente lo que falló.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+# Un PR con varios empujones seguidos cancela sus ejecuciones anteriores: no
+# tiene sentido gastar minutos verificando un commit que ya quedó atrás.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    name: Tipos, lint y build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: landing-v2
+
+    steps:
+      - name: Traer el código
+        uses: actions/checkout@v4
+
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          # Node 20 LTS. Next 14.2 pide 18.17 como mínimo; se fija una versión
+          # concreta para que el CI no cambie de pie bajo nuestros pies cuando
+          # el runner mueva su versión por defecto.
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: landing-v2/package-lock.json
+
+      - name: Instalar dependencias
+        # `ci` y no `install`: respeta el lockfile al pie de la letra y falla si
+        # se ha desincronizado, en vez de resolver versiones nuevas en silencio.
+        run: npm ci
+
+      - name: Comprobar tipos
+        run: npx tsc --noEmit
+
+      - name: Lint
+        # Paso propio a propósito — ver la nota de arriba. Si esta configuración
+        # vuelve a quedar inválida, aquí se ve en rojo y con el nombre de la
+        # clave culpable.
+        run: npm run lint
+
+      - name: Construir
+        run: npm run build
