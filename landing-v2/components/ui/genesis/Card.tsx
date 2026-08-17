@@ -81,7 +81,18 @@ export function Card({
     <HeadingLevel>
       <article
         className={cn(
-          'flex flex-col text-genesis-text',
+          /*
+           * `h-full`: la tarjeta llena su celda de rejilla.
+           *
+           * El envoltorio de animación SÍ se estiraba —una celda de rejilla lo
+           * hace por defecto— pero la tarjeta de dentro conservaba su altura
+           * automática. Resultado medido en G-Oracle: tres tarjetas contiguas de
+           * 300, 326 y 351 px, con el borde inferior en escalera de 51 px.
+           *
+           * Es la última desalineación que quedaba: Trust, Booster, Staking y
+           * Ecosistema ya daban 0 tras el trabajo anterior.
+           */
+          'flex flex-col text-genesis-text h-full',
           soloRotulo ? 'gap-0 px-genesis-6 py-genesis-3' : 'gap-genesis-4 p-genesis-6',
           variantClasses[variant],
           hover && 'card-genesis-hover',

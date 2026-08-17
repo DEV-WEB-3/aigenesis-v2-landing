@@ -51,7 +51,22 @@ const SceneGOracle = forwardRef<HTMLElement, Props>(function SceneGOracle(
         description="G-Oracle es la capa de inteligencia que interpreta, conecta y gobierna el flujo de información. GPulse entrega señales; G-Oracle define la inteligencia estratégica del protocolo."
       />
 
-      <motion.div variants={containerV} className="grid grid-cols-1 sm:grid-cols-3 gap-genesis-3 mt-2">
+      {/*
+        APILADAS, no tres en fila — como Booster y Staking.
+
+        Era `sm:grid-cols-3`, y eso dejaba cada tarjeta en 178 px de ancho dentro
+        de una columna de 554. Con ~95 caracteres de descripción, 178 px obliga a
+        envolver hasta los 351 px de alto: tres columnas altas y estrechas.
+
+        Booster y Staking tienen tarjetas del mismo tipo —etiqueta, título y
+        descripción— y las apilan a 408 y 476 px de ancho. G-Oracle era la única
+        que las ponía en horizontal, y de ahí venía que se sintiera de otra
+        familia.
+
+        Medido: de 178 px de ancho se pasa a 554, y de 351 de alto a ~110 por
+        tarjeta. Mismo contenido, sin recortar una palabra.
+      */}
+      <motion.div variants={containerV} className="flex flex-col gap-genesis-3 mt-2">
         {ORACLE_PILLARS.map((pillar) => (
           <motion.div key={pillar.title} variants={slideLeft}>
             {/*

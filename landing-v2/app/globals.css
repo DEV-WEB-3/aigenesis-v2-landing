@@ -770,6 +770,27 @@ body {
    * sobre el mismo elemento, el relleno `both` de la entrada ganaria al :hover
    * —una animacion pisa a una declaracion normal— y el boton se quedaria quieto.
    */
+  /*
+   * TEXTO DE PÁRRAFO: `pretty` en vez de dejarlo al azar.
+   *
+   * `text-wrap: pretty` mira las últimas líneas del bloque y evita dejar una
+   * palabra sola colgando. Aquí no es cosmético: una huérfana es una LÍNEA
+   * ENTERA de más, y en una tarjeta de 175 px de ancho eso son ~26 px de alto
+   * que empujan a todas sus hermanas.
+   *
+   * Va sobre párrafos y descripciones, NO sobre titulares —esos ya usan
+   * `balance`, que reparte las líneas en vez de cuidar la última—.
+   *
+   * Comprobado que el navegador lo soporta antes de ponerlo. Donde no, la
+   * declaración se ignora y el texto envuelve como siempre: no hay nada que
+   * degradar.
+   */
+  .surface-card p,
+  .scene-section-header p,
+  .glass-info-item span {
+    text-wrap: pretty;
+  }
+
   /* ── Menú de cinco cabezas ─────────────────────────────────────────── */
 
   /* Marca de que la cabeza despliega. Sólo aparece si tiene más de un hijo. */
