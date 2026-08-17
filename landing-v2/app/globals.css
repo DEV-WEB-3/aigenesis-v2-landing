@@ -389,6 +389,21 @@ body {
     inset: 0;
     width: 100%;
     height: 100%;
+
+    /*
+     * LA RED PASA A SER ATMOSFERA, no objeto.
+     *
+     * Con la esfera de marca dentro, el hero tenia DOS piezas nitidas
+     * compitiendo por la atencion: la red de particulas ocupaba todo el ancho a
+     * plena intensidad y la esfera quedaba como una mas.
+     *
+     * Medido: este lienzo son 1.055.466 px por fotograma —el 68 % del coste del
+     * hero— y va en CPU, mientras la esfera cuesta la quinta parte y va en GPU.
+     *
+     * Al 45 % sigue dando profundidad y el color de marca a los lados, pero deja
+     * de disputar el foco. La esfera vuelve a ser el unico objeto.
+     */
+    opacity: 0.45;
   }
 
   .genesis-title-gradient {

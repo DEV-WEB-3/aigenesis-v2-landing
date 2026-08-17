@@ -67,10 +67,18 @@ export const RING_PARTICLE_COUNTS: Record<HeroPerfTier, { inner: number; middle:
 
 export const PARTICLE_COUNTS = RING_PARTICLE_COUNTS
 
+/*
+ * Recuentos bajados ~40 % al entrar la esfera de marca en el hero.
+ *
+ * Bajar solo la opacidad habria sido maquillaje: el coste de dibujar 3.200
+ * particulas se paga igual aunque se vean al 45 %. Como ahora la red es fondo
+ * atmosferico y no objeto, no hace falta esa densidad — a 1.900 la textura se
+ * mantiene y se ahorra trabajo de CPU de verdad.
+ */
 export const FIELD_PARTICLE_COUNTS: Record<HeroPerfTier, number> = {
-  high: 3200,
-  medium: 1200,
-  low: 380,
+  high: 1900,
+  medium: 750,
+  low: 300,
 }
 
 export const NETWORK_NODE_COUNTS: Record<HeroPerfTier, number> = {
