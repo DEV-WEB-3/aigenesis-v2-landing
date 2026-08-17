@@ -686,7 +686,7 @@ body {
     );
     filter: blur(32px);
     opacity: 0.58;
-    animation: hero-energy-aura-pulse 7s ease-in-out infinite;
+    animation: hero-energy-aura-pulse 8s ease-in-out infinite;
     z-index: 2;
     pointer-events: none;
   }
@@ -712,7 +712,7 @@ body {
       transparent 78%
     );
     filter: blur(40px);
-    animation: hero-energy-aura-pulse 7s ease-in-out infinite;
+    animation: hero-energy-aura-pulse 8s ease-in-out infinite;
     z-index: 0;
     opacity: 0.48;
   }
@@ -725,7 +725,7 @@ body {
     box-shadow:
       0 0 40px rgba(255, 0, 200, 0.22),
       0 0 72px rgba(61, 139, 255, 0.14);
-    animation: hero-energy-ring-spin 36s linear infinite;
+    animation: hero-energy-ring-spin 32s linear infinite;
     z-index: 1;
     opacity: 0.52;
     pointer-events: none;
@@ -735,7 +735,7 @@ body {
     inset: 10%;
     border-color: rgba(61, 139, 255, 0.24);
     animation-direction: reverse;
-    animation-duration: 48s;
+    animation-duration: 16s;
     opacity: 0.42;
   }
 
@@ -8996,17 +8996,17 @@ body {
 
 #cta .genesis-portal__layer--background {
   z-index: 0;
-  animation: genesis-portal-parallax-bg 14s ease-in-out infinite alternate;
+  animation: genesis-portal-parallax-bg 32s ease-in-out infinite alternate;
 }
 
 #cta .genesis-portal__layer--midground {
   z-index: 1;
-  animation: genesis-portal-parallax-mid 11s ease-in-out infinite alternate;
+  animation: genesis-portal-parallax-mid 16s ease-in-out infinite alternate;
 }
 
 #cta .genesis-portal__layer--foreground {
   z-index: 2;
-  animation: genesis-portal-parallax-fg 9s ease-in-out infinite alternate;
+  animation: genesis-portal-parallax-fg 8s ease-in-out infinite alternate;
 }
 
 #cta .genesis-future-field {
@@ -9022,7 +9022,25 @@ body {
 }
 
 #cta .genesis-portal-rings,
-#cta .genesis-portal-streams {
+/*
+  LOS ANILLOS DEL PORTAL NO TENIAN NINGUNA REGLA.
+
+  `.genesis-portal-rings` no aparecia en toda la hoja: sin `position` ni
+  tamano, el SVG se quedaba en flujo normal DEBAJO del de los flujos, que ya
+  ocupa el alto completo de la capa.
+
+  Medido: nucleo centrado en (859, 395) y anillos en (863, 905) — 510 px de
+  separacion, con los anillos enteros por debajo del pliegue. La imagen que
+  CIERRA la historia del portal estaba partida en dos, y la mitad no se veia.
+
+  Que las dos capas se apilen en vez de superponerse es lo que pasa cuando una
+  tiene regla y la otra no. No hubo sintoma: la parte visible —el nucleo y los
+  flujos— se veia perfectamente bien.
+*/
+#cta .genesis-portal-streams,
+#cta .genesis-portal-rings {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
 }
@@ -9045,7 +9063,7 @@ body {
 #cta .genesis-portal-streams__path {
   stroke-linecap: round;
   opacity: 0.28;
-  animation: genesis-portal-stream-flow calc(var(--portal-absorb-s, 6s) * 1.4) ease-in-out infinite;
+  animation: genesis-portal-stream-flow var(--portal-absorb-s, 8s) ease-in-out infinite;
 }
 
 #cta .genesis-portal-core {
@@ -9063,7 +9081,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 0, 200, 0.55) 0%, rgba(155, 77, 255, 0.18) 42%, transparent 72%);
   filter: blur(10px);
-  animation: genesis-portal-core-pulse var(--portal-core-pulse-s, 4s) ease-in-out infinite;
+  animation: genesis-portal-core-pulse var(--portal-core-pulse-s, 8s) ease-in-out infinite;
 }
 
 #cta .genesis-portal-core__nucleus {
@@ -9074,7 +9092,7 @@ body {
     0 0 18px rgba(255, 0, 200, 0.85),
     0 0 42px rgba(255, 0, 200, 0.45),
     0 0 64px rgba(155, 77, 255, 0.28);
-  animation: genesis-portal-core-pulse var(--portal-core-pulse-s, 4s) ease-in-out infinite;
+  animation: genesis-portal-core-pulse var(--portal-core-pulse-s, 8s) ease-in-out infinite;
 }
 
 #cta .genesis-portal-stardust {
@@ -9091,7 +9109,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, #fff 0%, var(--g-cyan) 35%, transparent 100%);
   opacity: 0;
-  animation: genesis-portal-stardust-in var(--portal-absorb-s, 6s) linear infinite;
+  animation: genesis-portal-stardust-in var(--portal-absorb-s, 8s) linear infinite;
   animation-delay: var(--stardust-delay, 0s);
 }
 
@@ -9236,8 +9254,8 @@ body {
 
 #cta .genesis-portal-core__nucleus {
   animation:
-    genesis-portal-core-pulse var(--portal-core-pulse-s, 4s) ease-in-out infinite,
-    genesis-portal-core-scale var(--portal-core-pulse-s, 4s) ease-in-out infinite;
+    genesis-portal-core-pulse var(--portal-core-pulse-s, 8s) ease-in-out infinite,
+    genesis-portal-core-scale var(--portal-core-pulse-s, 8s) ease-in-out infinite;
 }
 
 @keyframes genesis-portal-core-scale {
