@@ -55,7 +55,9 @@ export const INK = {
   /** Texto secundario. */
   muted: '#AAB4C8',
   /** Texto terciario, metadatos. */
-  faint: '#5C6B82',
+  /* Subido de #5C6B82: aquel daba 3.65 de contraste sobre el fondo de seccion,
+     por debajo del 4.5 de WCAG AA. Ver la nota en `--g-ink-faint`. */
+  faint: '#6B7A94',
 } as const
 
 /* ─────────────────────  la emisión  ───────────────────────── */

@@ -50,7 +50,7 @@ const SceneToken = forwardRef<HTMLElement, Props>(
                   <StatBlock to={metric.to} suffix={metric.suffix} label="" isActive={isActive} />
                 )}
               </span>
-              <span className="text-xs text-gray-500 uppercase tracking-wider">{metric.label}</span>
+              <span className="text-xs text-genesis-ghost uppercase tracking-wider">{metric.label}</span>
             </div>
           ))}
         </motion.div>
