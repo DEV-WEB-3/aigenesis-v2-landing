@@ -2,8 +2,10 @@
  * Phase 11.0 — G-Oracle Quantum Brain layout (viewBox 0–100).
  */
 
-export const ORACLE_INFERENCE_PULSE_S = 5
-export const ORACLE_BRAIN_FORM_S = 1.2
+import { pulsoDe, llegadaDe } from '@/lib/design/motion'
+
+export const ORACLE_INFERENCE_PULSE_S = pulsoDe('goracle')
+export const ORACLE_BRAIN_FORM_S = llegadaDe('goracle')
 export const ORACLE_NEURAL_NODE_COUNT = 72
 export const ORACLE_BRAIN_CENTER = { x: 50, y: 50 } as const
 

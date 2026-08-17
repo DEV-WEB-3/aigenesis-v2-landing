@@ -1,3 +1,5 @@
+import { llegadaDe } from '@/lib/design/motion'
+
 /**
  * Phase 12.0 — Genesis Global Commerce Network (WebGL star dust, sección 9).
  */
@@ -13,7 +15,7 @@ import {
 type Rgb = readonly [number, number, number]
 
 export const MARKETPLACE_SECTION_INDEX = 9
-export const MARKETPLACE_FORM_DURATION = 1.2
+export const MARKETPLACE_FORM_DURATION = llegadaDe('marketplace')
 
 export const MARKETPLACE_ROLE = {
   CORE: 0,

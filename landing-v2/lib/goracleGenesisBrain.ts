@@ -1,3 +1,5 @@
+import { llegadaDe } from '@/lib/design/motion'
+
 /**
  * Phase 11.0 — G-Oracle Quantum Brain (WebGL star dust, sección 8).
  */
@@ -11,7 +13,7 @@ import {
 type Rgb = readonly [number, number, number]
 
 export const GORACLE_SECTION_INDEX = 8
-export const GORACLE_FORM_DURATION = 1.2
+export const GORACLE_FORM_DURATION = llegadaDe('goracle')
 export const GORACLE_CORE_PULSE_CYCLE = ORACLE_INFERENCE_PULSE_S
 
 export const GORACLE_ROLE = {

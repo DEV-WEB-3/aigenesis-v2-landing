@@ -1,3 +1,5 @@
+import { llegadaDe } from '@/lib/design/motion'
+
 /**
  * Phase 15.0 — Genesis Evolution Path (WebGL star dust, sección 12).
  */
@@ -13,7 +15,7 @@ type Rgb = readonly [number, number, number]
 
 export const ROADMAP_SECTION_INDEX = 12
 export const ROADMAP_LOOP_DURATION = ROADMAP_EVOLUTION_PULSE_S
-export const ROADMAP_FORM_DURATION = 1.1
+export const ROADMAP_FORM_DURATION = llegadaDe('roadmap')
 
 export const ROADMAP_ROLE = {
   PATH: 0,

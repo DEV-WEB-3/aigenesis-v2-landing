@@ -2,11 +2,12 @@
  * Phase 9.0 — Genesis Time Vault (WebGL star dust, sección 6).
  */
 import { STAKING_VAULT_PULSE_S } from '@/lib/staking/timeVaultLayout'
+import { llegadaDe } from '@/lib/design/motion'
 
 type Rgb = readonly [number, number, number]
 
 export const STAKING_SECTION_INDEX = 6
-export const STAKING_FORM_DURATION = 1.4
+export const STAKING_FORM_DURATION = llegadaDe('staking')
 
 export const STAKING_ROLE = {
   SHACKLE: 0,

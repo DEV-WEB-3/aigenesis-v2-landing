@@ -1,3 +1,5 @@
+import { llegadaDe } from '@/lib/design/motion'
+
 /**
  * Phase 10.0 — G-Pulse Live Signal Network (WebGL star dust, sección 7).
  */
@@ -10,7 +12,7 @@ import {
 type Rgb = readonly [number, number, number]
 
 export const GPULSE_SECTION_INDEX = 7
-export const GPULSE_FORM_DURATION = 1
+export const GPULSE_FORM_DURATION = llegadaDe('gpulse')
 export const GPULSE_LOOP_DURATION = 12
 
 export const GPULSE_ROLE = {

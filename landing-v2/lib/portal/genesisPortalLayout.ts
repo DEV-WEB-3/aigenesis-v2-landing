@@ -1,13 +1,14 @@
 import { EMISSION } from '@/lib/design/tokens'
+import { pulsoDe, llegadaDe } from '@/lib/design/motion'
 /** Phase 16.0 — Genesis Final Portal layout (viewBox 0–100). */
 
 export const PORTAL_CORE_COLOR = EMISSION.magenta
 export const PORTAL_CYAN = EMISSION.cyan
 export const PORTAL_PURPLE = EMISSION.violetHi
 
-export const PORTAL_CORE_PULSE_S = 4
+export const PORTAL_CORE_PULSE_S = pulsoDe('cta')
 export const PORTAL_ABSORB_S = 6
-export const PORTAL_FORM_S = 1.1
+export const PORTAL_FORM_S = llegadaDe('cta')
 
 export const PORTAL_CENTER = { x: 50, y: 50 } as const
 

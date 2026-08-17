@@ -1,9 +1,10 @@
 import { EMISSION, STATE } from '@/lib/design/tokens'
+import { pulsoDe } from '@/lib/design/motion'
 /**
  * Phase 7.5 — Mining Constellation V2 layout (viewBox 0–100).
  */
 
-export const MINING_CONSTELLATION_PULSE_S = 4
+export const MINING_CONSTELLATION_PULSE_S = pulsoDe('mining')
 export const MINING_CONSTELLATION_NODE_COUNT = 8
 
 export type MiningConstellationNodeId =

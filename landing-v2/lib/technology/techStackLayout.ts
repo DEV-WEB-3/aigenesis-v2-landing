@@ -1,11 +1,12 @@
 import { EMISSION } from '@/lib/design/tokens'
+import { pulsoDe, llegadaDe } from '@/lib/design/motion'
 /**
  * Phase 14.0 — Genesis Technology Stack (viewBox 0–100).
  * Backend → Infraestructura → IA → Blockchain → Aplicaciones
  */
 
-export const TECH_STACK_PULSE_S = 4
-export const TECH_STACK_FORM_S = 1.1
+export const TECH_STACK_PULSE_S = pulsoDe('technology')
+export const TECH_STACK_FORM_S = llegadaDe('technology')
 export const TECH_STACK_CENTER = { x: 50, y: 50 } as const
 
 export type TechStackLayerId =

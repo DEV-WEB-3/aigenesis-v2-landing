@@ -1,9 +1,10 @@
 import { EMISSION } from '@/lib/design/tokens'
+import { pulsoDe } from '@/lib/design/motion'
 /**
  * Phase 23.0 — Free-form orbit paths (control points) centered on Genesis nucleus.
  */
 
-export const TOKEN_VALUE_PULSE_S = 4
+export const TOKEN_VALUE_PULSE_S = pulsoDe('token')
 export const TOKEN_VALUE_NODE_COUNT = 8
 export const TOKEN_ATOMIC_ORBIT_COUNT = 5
 export const TOKEN_ORBIT_DEFAULT_POINT_COUNT = 10

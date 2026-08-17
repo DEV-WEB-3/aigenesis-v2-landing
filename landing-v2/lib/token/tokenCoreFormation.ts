@@ -3,8 +3,9 @@
  */
 import { easeOutCubic } from '@/lib/trust/GenesisStardustFormation'
 import { TOKEN_ROLE } from '@/lib/tokenGravityCore'
+import { llegadaDe } from '@/lib/design/motion'
 
-export const TOKEN_FORM_DURATION = 1.5
+export const TOKEN_FORM_DURATION = llegadaDe('token')
 
 export function tokenCoreFormationProgress(elapsed: number): number {
   if (elapsed <= 0) return 0

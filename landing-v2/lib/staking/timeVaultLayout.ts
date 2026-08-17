@@ -1,10 +1,11 @@
 import { EMISSION } from '@/lib/design/tokens'
+import { pulsoDe, llegadaDe } from '@/lib/design/motion'
 /**
  * Phase 9.0 — Genesis Time Vault layout (viewBox 0–100).
  */
 
-export const STAKING_VAULT_PULSE_S = 5
-export const STAKING_VAULT_FORM_S = 1.4
+export const STAKING_VAULT_PULSE_S = pulsoDe('staking')
+export const STAKING_VAULT_FORM_S = llegadaDe('staking')
 export const STAKING_VAULT_CENTER = { x: 50, y: 52 } as const
 
 export const STAKING_TIME_RINGS = [

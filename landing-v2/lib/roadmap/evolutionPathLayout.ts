@@ -1,11 +1,12 @@
 import { EMISSION } from '@/lib/design/tokens'
+import { pulsoDe, llegadaDe } from '@/lib/design/motion'
 /**
  * Phase 15.0 — Genesis Evolution Path (viewBox 0–100).
  * Ascending curve · 2019 → 2027 · not a vertical timeline.
  */
 
-export const ROADMAP_EVOLUTION_PULSE_S = 4
-export const ROADMAP_EVOLUTION_FORM_S = 1.1
+export const ROADMAP_EVOLUTION_PULSE_S = pulsoDe('roadmap')
+export const ROADMAP_EVOLUTION_FORM_S = llegadaDe('roadmap')
 export const ROADMAP_MILESTONE_COUNT = 5
 
 export interface RoadmapMilestoneDef {

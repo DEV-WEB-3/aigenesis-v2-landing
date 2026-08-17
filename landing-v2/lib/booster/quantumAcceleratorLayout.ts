@@ -1,9 +1,10 @@
 import { EMISSION } from '@/lib/design/tokens'
+import { pulsoDe } from '@/lib/design/motion'
 /**
  * Phase 8.0 — Booster Quantum Accelerator layout (viewBox 0–100).
  */
 
-export const BOOSTER_ACCELERATOR_PULSE_S = 4
+export const BOOSTER_ACCELERATOR_PULSE_S = pulsoDe('booster')
 export const BOOSTER_STREAM_COUNT = 5
 export const BOOSTER_COLUMN_X = 50
 

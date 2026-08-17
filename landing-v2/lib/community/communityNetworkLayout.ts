@@ -3,8 +3,10 @@
  * Organic human network — no pyramid, no MLM triangle, no arrow.
  */
 
-export const COMMUNITY_PULSE_S = 4.2
-export const COMMUNITY_FORM_S = 1.2
+import { pulsoDe, llegadaDe } from '@/lib/design/motion'
+
+export const COMMUNITY_PULSE_S = pulsoDe('comunidad')
+export const COMMUNITY_FORM_S = llegadaDe('comunidad')
 export const COMMUNITY_GROWTH_CYCLE_S = 4.5
 export const COMMUNITY_CENTER = { x: 50, y: 50 } as const
 export const COMMUNITY_LEADER_COUNT = 6

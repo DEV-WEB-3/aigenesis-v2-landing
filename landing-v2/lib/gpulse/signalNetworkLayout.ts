@@ -1,10 +1,11 @@
 import { EMISSION } from '@/lib/design/tokens'
+import { pulsoDe, llegadaDe } from '@/lib/design/motion'
 /**
  * Phase 10.0 — G-Pulse Live Signal Network layout (viewBox 0–100).
  */
 
-export const GPULSE_SIGNAL_PULSE_S = 2
-export const GPULSE_SIGNAL_FORM_S = 1
+export const GPULSE_SIGNAL_PULSE_S = pulsoDe('gpulse')
+export const GPULSE_SIGNAL_FORM_S = llegadaDe('gpulse')
 export const GPULSE_NODE_COUNT = 16
 export const GPULSE_SIGNAL_CENTER = { x: 50, y: 50 } as const
 

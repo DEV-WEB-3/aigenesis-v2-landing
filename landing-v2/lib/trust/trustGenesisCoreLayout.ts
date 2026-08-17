@@ -1,7 +1,8 @@
 import { EMISSION } from '@/lib/design/tokens'
+import { pulsoDe } from '@/lib/design/motion'
 /** Phase 17.0 — Trust Genesis Core timing + DOM layout. */
 
-export const TRUST_CORE_PULSE_S = 4
+export const TRUST_CORE_PULSE_S = pulsoDe('trust')
 export const TRUST_GENESIS_WAVE_S = 6
 export const TRUST_FLOW_ORBIT_S = 28
 

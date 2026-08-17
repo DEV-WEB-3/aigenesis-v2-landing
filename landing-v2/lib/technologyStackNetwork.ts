@@ -1,3 +1,5 @@
+import { llegadaDe } from '@/lib/design/motion'
+
 /**
  * Phase 14.0 — Genesis Technology Stack (WebGL star dust, sección 11).
  */
@@ -12,7 +14,7 @@ import {
 type Rgb = readonly [number, number, number]
 
 export const TECHNOLOGY_SECTION_INDEX = 11
-export const TECHNOLOGY_FORM_DURATION = 1.1
+export const TECHNOLOGY_FORM_DURATION = llegadaDe('technology')
 
 export const TECHNOLOGY_ROLE = {
   LAYER: 0,
