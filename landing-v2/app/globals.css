@@ -9333,7 +9333,7 @@ body {
 }
 
 #trust .trust-genesis-core--enter {
-  animation: trust-genesis-core-form 1s ease-out both;
+  animation: trust-genesis-core-form var(--trust-form-s, 1.6s) ease-out both;
 }
 
 #trust .trust-genesis-core__layer {
@@ -9367,7 +9367,7 @@ body {
     radial-gradient(circle at 50% 50%, rgba(155, 77, 255, 0.08) 0%, transparent 58%);
   filter: blur(52px);
   opacity: var(--section-atmosphere-opacity, 0.55);
-  animation: trust-genesis-nebula-breathe 7s ease-in-out infinite;
+  animation: trust-genesis-nebula-breathe 16s ease-in-out infinite;
 }
 
 #trust .trust-quantum-rings {
@@ -9378,19 +9378,19 @@ body {
 #trust .trust-quantum-rings__outer {
   opacity: var(--trust-ring-opacity, 0.12);
   transform-origin: 50% 50%;
-  animation: trust-quantum-spin-cw var(--trust-ring-dur, 52s) linear infinite;
+  animation: trust-quantum-spin-cw var(--trust-ring-dur, 32s) linear infinite;
 }
 
 #trust .trust-quantum-rings__middle {
   opacity: var(--trust-ring-opacity, 0.07);
   transform-origin: 50% 50%;
-  animation: trust-quantum-spin-ccw var(--trust-ring-dur, 40s) linear infinite;
+  animation: trust-quantum-spin-ccw var(--trust-ring-dur, 16s) linear infinite;
 }
 
 #trust .trust-quantum-rings__inner {
   opacity: var(--trust-ring-opacity, 0.04);
   transform-origin: 50% 50%;
-  animation: trust-quantum-spin-cw var(--trust-ring-dur, 32s) linear infinite;
+  animation: trust-quantum-spin-cw var(--trust-ring-dur, 8s) linear infinite;
 }
 
 #trust .trust-genesis-wave {
@@ -9409,7 +9409,7 @@ body {
     0 0 24px rgba(255, 0, 200, 0.12),
     inset 0 0 18px rgba(0, 245, 255, 0.08);
   opacity: 0;
-  animation: trust-genesis-wave-pulse var(--trust-wave-s, 6s) ease-out infinite;
+  animation: trust-genesis-wave-pulse var(--trust-wave-s, 8s) ease-out infinite;
 }
 
 #trust .trust-genesis-wave__ring--b {

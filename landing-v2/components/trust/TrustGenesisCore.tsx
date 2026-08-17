@@ -5,6 +5,7 @@ import TrustGenesisNebula from '@/components/trust/TrustGenesisNebula'
 import TrustQuantumRings from '@/components/trust/TrustQuantumRings'
 import TrustGenesisWave from '@/components/trust/TrustGenesisWave'
 import TrustGenesisCoreSphere from '@/components/trust/TrustGenesisCoreSphere'
+import { llegadaDe } from '@/lib/design/motion'
 
 interface TrustGenesisCoreProps {
   isActive: boolean
@@ -22,6 +23,13 @@ export default function TrustGenesisCore({ isActive, editorMode = false }: Trust
         {
           '--trust-core-pulse-s': `${TRUST_CORE_PULSE_S}s`,
           '--trust-wave-s': `${TRUST_GENESIS_WAVE_S}s`,
+          /*
+            La formacion del nucleo valia 1 s a fuego en el CSS, sin variable
+            que la conectara con nada. Es la LLEGADA de la seccion, asi que sale
+            de la rejilla como todas las demas — y ahora ademas se puede ver
+            desde aqui que existe.
+          */
+          '--trust-form-s': `${llegadaDe('trust')}s`,
         } as React.CSSProperties
       }
     >
