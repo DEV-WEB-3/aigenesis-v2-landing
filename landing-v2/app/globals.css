@@ -8504,8 +8504,57 @@ body {
   overflow: visible;
 }
 
-#technology .technology-stack-layer__plate {
+/*
+  EL GESTO DE LA SECCION: DIFERENCIAR.
+
+  Los cinco estratos parten JUNTOS del centro del lienzo y se separan a su
+  altura. Eso es literalmente lo que significa esta seccion —una masa unica que
+  se abre en capas ordenadas— y antes no ocurria: los rectangulos simplemente
+  estaban ahi desde el primer cuadro.
+
+  `--estrato-desde` lleva cuanto tiene que recorrer cada uno, y el retardo los
+  escalona. Se abren de abajo arriba, que es como se construye una pila.
+*/
+/*
+  La separacion va en el GRUPO y el pulso en el disco, no las dos en el mismo
+  elemento: ambas animan `opacity`, y la segunda de la lista gana. Juntas, el
+  pulso arrancaria en 0,72 desde el primer cuadro y la entrada no se veria
+  nunca — con el codigo puesto y sin nada que lo delatara.
+*/
+#technology .technology-stack-layer {
+  animation: technology-estrato-separar var(--tech-form-s, 1.2s)
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--estrato-entrada, 0s);
+}
+
+#technology .technology-stack-layer__disco {
   animation: technology-layer-pulse var(--tech-pulse-s, 4s) ease-in-out infinite;
+  animation-delay: var(--estrato-pulso, 0s);
+}
+
+@keyframes technology-estrato-separar {
+  from {
+    transform: translateY(calc(var(--estrato-desde, 0) * 1px));
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/*
+  El canto va mas apagado que el disco a proposito: es el espesor, no la
+  superficie. Si los dos brillan igual, el estrato se lee como un cilindro
+  macizo y pierde la sensacion de capa fina apoyada sobre la siguiente.
+*/
+#technology .technology-stack-layer__canto {
+  opacity: 0.22;
+}
+
+#technology .technology-stack-axis {
+  stroke: var(--g-emission-violet, #6e56cf);
+  opacity: 0.3;
 }
 
 #technology .technology-stack-layer__label {
@@ -8819,7 +8868,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   #technology .technology-genesis-stack,
-  #technology .technology-stack-layer__plate,
+  #technology .technology-stack-layer,
   #technology .technology-stack-flow__particle,
   .genesis-technology-aura__atmosphere {
     animation: none !important;
