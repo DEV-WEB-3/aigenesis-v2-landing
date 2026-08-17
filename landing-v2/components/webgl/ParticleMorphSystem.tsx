@@ -906,6 +906,23 @@ export default function ParticleMorphSystem({
 
     const t = clock.getElapsedTime()
     const isTrustSection = sectionIdx === TRUST_SECTION_INDEX
+
+    /**
+     * EN CONFIANZA NO SE PINTAN PARTICULAS.
+     *
+     * Decision del owner, y con motivo: la nube de puntos que formaba el logo
+     * competia con el campo de escaneo que ahora ocupa esa seccion. Dos
+     * estructuras superpuestas en el mismo centro, una nitida y otra difusa, y
+     * la difusa gana en ruido y pierde en lectura.
+     *
+     * CONSECUENCIA QUE NO ES OBVIA: el relevo del hero —la caida del logo en
+     * cuatro tiempos— existe para formar ESE logo. Sin particulas en Confianza,
+     * `fromHeroLogoDrop` sigue eligiendose y calculandose, pero no se ve. El
+     * plano cinematografico queda sin destino visible.
+     *
+     * Se apaga con `visible`, no borrando el codigo: la reversa es esta linea.
+     */
+    pointsRef.current.visible = !isTrustSection
     const isTokenSection = sectionIdx === TOKEN_SECTION_INDEX
     const isMiningSection = sectionIdx === MINING_SECTION_INDEX
     const trustFormElapsed =

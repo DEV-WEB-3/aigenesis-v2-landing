@@ -10821,3 +10821,363 @@ body {
   bottom: auto;
   container-type: size;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CONFIANZA · EL CAMPO DE ESCANEO
+
+   La seccion afirma «infraestructura verificable». Aqui «verificable» deja de
+   ser un adjetivo y pasa a ser lo que el visitante HACE: el campo empieza casi
+   invisible y su puntero es la linterna.
+
+   Todo el tempo sale de la rejilla —pulso 8 s, respiracion 16 s, llegada
+   1,6 s— y las orbitas usan la escalera de paralaje 32 · 16 · 8, igual que el
+   resto del portal.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/*
+   EL LIENZO APAISADO.
+
+   Hermano de `.lienzo-cuadrado`, y existe por el mismo motivo. Un
+   `<svg viewBox="0 0 160 90" preserveAspectRatio="xMidYMid meet">` dibuja en
+   una caja de proporcion 16:9 CENTRADA dentro de su contenedor; los pilares se
+   colocan con `left: X%`, que se resuelve contra el contenedor ENTERO.
+
+   Si las dos capas no ocupan la misma caja, los pilares se separan de sus
+   orbitas y el error crece con la distancia al centro. Eso es exactamente lo
+   que saco un satelite de G-Oracle fuera de la pantalla (x=1757 con un viewport
+   de 1723). Aqui las dos capas viven dentro de este elemento, asi que no puede
+   pasar.
+*/
+.lienzo-apaisado {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  right: auto;
+  bottom: auto;
+  container-type: size;
+}
+
+#trust .trust-scan {
+  position: absolute;
+  inset: 0;
+  --luz-x: 50%;
+  --luz-y: 46.7%;
+  animation: trust-scan-entra var(--scan-llegada, 1.6s) ease-out both;
+}
+
+/*
+  EL CAMPO NO PUEDE SANGRAR SOBRE EL TEXTO.
+
+  Medido en el layout real: el hueco del visual va de 763 a 1343 y la columna de
+  texto acaba en 879 — se solapan 116 px, o sea el 20 % del hueco. Ese sangrado
+  es DELIBERADO y esta bien para los visuales de las demas secciones, que son
+  nubes difusas: unos puntos por encima de un parrafo no molestan a nadie.
+
+  Aqui no vale, porque este campo lleva TEXTO dentro. Los rotulos de los dos
+  pilares izquierdos caian sobre las metricas y sobre una tarjeta.
+
+  Se reserva ese 20 % y el lienzo se centra en lo que queda. La figura pierde
+  algo de tamano y gana no pisar nada — y el gesto del escaneo sigue cubriendo
+  el campo entero, porque la mascara vive dentro del lienzo, no del hueco.
+*/
+@media (min-width: 1024px) {
+  /*
+    `left`, NO `padding-left`.
+
+    Con relleno no pasaba nada, y el motivo no es obvio: `.lienzo-apaisado` esta
+    posicionado en absoluto, y una caja absoluta se resuelve contra el PADDING
+    BOX del padre — que incluye el relleno. Asi que `padding-left: 20%` movia el
+    flujo normal, que aqui no lo usa nadie, y dejaba el lienzo exactamente donde
+    estaba. Compilaba, no daba aviso y no hacia nada.
+  */
+  #trust .trust-scan { left: 20%; }
+}
+
+@keyframes trust-scan-entra {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+#trust .trust-scan__capa { position: absolute; inset: 0; }
+
+/*
+  La capa fantasma NUNCA se enmascara.
+
+  Sin ella, todo lo que queda fuera de la linterna es negro absoluto y la
+  seccion se lee como un fallo de carga, no como una intencion. Al 5 % se
+  percibe que hay una estructura sin desvelarla, que es justo lo que invita a
+  moverse.
+*/
+#trust .trust-scan__capa--fantasma { opacity: 0.05; pointer-events: none; }
+
+#trust .trust-scan__capa--viva {
+  -webkit-mask-image: radial-gradient(circle 26% at var(--luz-x) var(--luz-y),
+    #000 0%, #000 40%, rgba(0,0,0,.38) 64%, transparent 86%);
+  mask-image: radial-gradient(circle 26% at var(--luz-x) var(--luz-y),
+    #000 0%, #000 40%, rgba(0,0,0,.38) 64%, transparent 86%);
+}
+
+#trust .trust-scan__linterna {
+  position: absolute;
+  left: var(--luz-x);
+  top: var(--luz-y);
+  width: 34%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(0,245,255,.07) 0%, rgba(157,77,255,.035) 46%, transparent 72%);
+  border: 1px solid rgba(0,245,255,.1);
+}
+
+#trust .trust-scan__linterna::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(0,245,255,.18);
+  animation: trust-scan-late var(--scan-pulso, 8s) ease-in-out infinite;
+}
+
+@keyframes trust-scan-late {
+  0%, 100% { transform: scale(.9); opacity: .5; }
+  50%      { transform: scale(1);  opacity: .9; }
+}
+
+#trust .trust-scan__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+#trust .trust-scan__orbita { fill: none; stroke-width: .32; transform-origin: 80px 42px; }
+#trust .trust-scan__orbita--fondo  { stroke: rgba(0,245,255,.24);  animation: trust-scan-gira 32s linear infinite; }
+#trust .trust-scan__orbita--medio  { stroke: rgba(157,77,255,.22); animation: trust-scan-gira 16s linear infinite reverse; }
+#trust .trust-scan__orbita--frente { stroke: rgba(255,0,200,.18);  animation: trust-scan-gira 8s linear infinite; }
+@keyframes trust-scan-gira { to { transform: rotate(360deg); } }
+
+#trust .trust-scan__traza {
+  fill: none;
+  stroke: rgba(157,77,255,.17);
+  stroke-width: .22;
+  stroke-dasharray: 1.4 2.2;
+}
+
+#trust .trust-scan__enlace {
+  fill: none;
+  stroke: rgba(157,77,255,.19);
+  stroke-width: .24;
+  transition: stroke .4s ease;
+}
+#trust .trust-scan__enlace--vivo { stroke: var(--tono); }
+
+#trust .trust-scan__nucleo {
+  position: absolute;
+  left: 50%;
+  top: 46.7%;
+  width: min(30%, 300px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
+  pointer-events: none;
+  animation: trust-scan-respira var(--scan-respiracion, 16s) ease-in-out infinite;
+}
+@keyframes trust-scan-respira {
+  0%, 100% { filter: brightness(.88) saturate(.95); }
+  50%      { filter: brightness(1.15) saturate(1.1); }
+}
+
+#trust .trust-scan__lamina {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 4px;
+  width: var(--w);
+  height: var(--w);
+  border: 1px solid var(--c);
+  background: linear-gradient(140deg, var(--f1), var(--f2));
+  box-shadow: 0 0 26px -4px var(--c), inset 0 0 20px -6px var(--c);
+  transform: translate(-50%, -50%) rotateX(60deg) rotateZ(45deg) translateZ(var(--z));
+}
+/* la pila se ESTRECHA al subir: la base sostiene lo que lleva encima */
+#trust .trust-scan__lamina--1 { --w: 100%; --z: -34px; --c: rgba(0,245,255,.37);  --f1: rgba(0,245,255,.06);  --f2: rgba(41,98,255,.03); }
+#trust .trust-scan__lamina--2 { --w: 82%;  --z: -18px; --c: rgba(255,0,200,.40);  --f1: rgba(255,0,200,.10);  --f2: rgba(157,77,255,.06); }
+#trust .trust-scan__lamina--3 { --w: 66%;  --z: -2px;  --c: rgba(157,77,255,.44); --f1: rgba(157,77,255,.13); --f2: rgba(41,98,255,.06); }
+#trust .trust-scan__lamina--4 { --w: 50%;  --z: 14px;  --c: rgba(0,245,255,.48);  --f1: rgba(0,245,255,.11);  --f2: rgba(0,245,255,.03); }
+
+#trust .trust-scan__haz {
+  position: absolute;
+  left: 50%;
+  top: -16%;
+  width: 2px;
+  height: 78%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, transparent, rgba(0,245,255,.8) 22%, rgba(255,77,219,.8) 72%, transparent);
+  animation: trust-scan-haz var(--scan-pulso, 8s) ease-in-out infinite;
+}
+@keyframes trust-scan-haz { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+
+#trust .trust-scan__aro {
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  width: 58%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  background: conic-gradient(from 210deg,
+    var(--g-cyan), var(--g-blue-hi) 28%, var(--g-violet-hi) 52%, var(--g-magenta) 74%, var(--g-cyan)) border-box;
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 12px rgba(255,0,200,.4)) drop-shadow(0 0 20px rgba(0,245,255,.3));
+  transform: translate(-50%, 0) rotateX(66deg);
+  animation: trust-scan-aro 16s linear infinite;
+}
+@keyframes trust-scan-aro {
+  to { transform: translate(-50%, 0) rotateX(66deg) rotateZ(360deg); }
+}
+
+#trust .trust-scan__pilar {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: clamp(38px, 5.4cqw, 60px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--tono);
+  cursor: pointer;
+}
+#trust .trust-scan__pilar-aro {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--tono);
+  background: radial-gradient(circle, rgba(8,10,20,.93) 55%, rgba(8,10,20,.53) 100%);
+  box-shadow: 0 0 16px -4px var(--tono), inset 0 0 12px -6px var(--tono);
+  transition: box-shadow .4s ease;
+}
+#trust .trust-scan__pilar-aro::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid var(--tono);
+  opacity: .22;
+  transition: opacity .4s ease, transform .4s ease;
+}
+#trust .trust-scan__pilar svg { position: relative; width: 44%; height: 44%; }
+#trust .trust-scan__pilar:hover .trust-scan__pilar-aro,
+#trust .trust-scan__pilar:focus-visible .trust-scan__pilar-aro {
+  box-shadow: 0 0 26px -2px var(--tono), inset 0 0 18px -4px var(--tono);
+}
+#trust .trust-scan__pilar:hover .trust-scan__pilar-aro::after,
+#trust .trust-scan__pilar:focus-visible .trust-scan__pilar-aro::after {
+  opacity: .7;
+  transform: scale(1.14);
+}
+#trust .trust-scan__pilar:focus-visible { outline: 2px solid var(--g-cyan); outline-offset: 8px; }
+
+#trust .trust-scan__rotulo { position: absolute; pointer-events: none; width: clamp(120px, 14cqw, 190px); }
+#trust .trust-scan__rotulo b {
+  display: block;
+  font-size: clamp(.62rem, 1cqw, .75rem);
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--g-ink);
+  font-weight: 700;
+  line-height: 1.35;
+}
+#trust .trust-scan__rotulo span {
+  display: block;
+  font-size: clamp(.56rem, .9cqw, .7rem);
+  color: var(--g-ink-faint);
+  line-height: 1.5;
+  margin-top: .28em;
+}
+/*
+  El rotulo se ancla EN el pilar y la direccion la pone el `transform`.
+
+  Asi la colocacion es una decision de CSS y no un numero cocido en el marcado,
+  que es lo que permite cambiarla cuando el hueco se estrecha. Los desfases van
+  en `cqw` para que escalen con el lienzo igual que todo lo demas.
+*/
+#trust .trust-scan__rotulo--derecha {
+  text-align: left;
+  transform: translate(3.6cqw, -50%);
+}
+#trust .trust-scan__rotulo--izquierda {
+  text-align: right;
+  transform: translate(calc(-100% - 3.6cqw), -50%);
+}
+#trust .trust-scan__rotulo--arriba {
+  text-align: center;
+  transform: translate(-50%, calc(-100% - 3.2cqw));
+}
+#trust .trust-scan__rotulo--abajo {
+  text-align: center;
+  transform: translate(-50%, 3.2cqw);
+}
+
+/*
+  EN HUECO ESTRECHO, LOS CUATRO LATERALES SUBEN O BAJAN.
+
+  Medido en el layout real: la columna de texto acaba en x=879 y el pilar
+  izquierdo esta en x=899. Veinte pixeles. Un rotulo al lado no cabe — y no es
+  culpa del rotulo: el hueco del visual arranca en 763, asi que las dos columnas
+  YA se solapan 116 px antes de que aqui se dibuje nada.
+
+  Colocarlos arriba y abajo elimina el choque sin encoger la figura ni recortar
+  ningun nombre. La mitad del anillo decide hacia donde va cada uno.
+*/
+@container (max-width: 700px) {
+  #trust .trust-scan__rotulo--derecha,
+  #trust .trust-scan__rotulo--izquierda {
+    text-align: center;
+    width: clamp(90px, 26cqw, 150px);
+  }
+  #trust .trust-scan__rotulo--derecha[data-mitad='alta'],
+  #trust .trust-scan__rotulo--izquierda[data-mitad='alta'] {
+    transform: translate(-50%, calc(-100% - 3.2cqw));
+  }
+  #trust .trust-scan__rotulo--derecha[data-mitad='baja'],
+  #trust .trust-scan__rotulo--izquierda[data-mitad='baja'] {
+    transform: translate(-50%, 3.2cqw);
+  }
+}
+
+/*
+  En hueco estrecho la descripcion se va y queda solo el nombre.
+
+  Doce lineas de texto pequeno alrededor de una figura no se leen en 400 px de
+  ancho: se amontonan. El nombre del pilar si cabe y es lo que la seccion
+  necesita decir — el detalle sigue en el `aria-label` para quien lo pida.
+*/
+@container (max-width: 620px) {
+  #trust .trust-scan__rotulo span { display: none; }
+  #trust .trust-scan__rotulo { width: clamp(84px, 22cqw, 130px); }
+}
+
+/*
+  Sin movimiento, NO hay mascara y NO hay fantasma.
+
+  El escaneo es el adorno; la informacion no puede depender de el. Quien pide
+  menos movimiento ve el campo entero y encendido desde el primer cuadro.
+*/
+@media (prefers-reduced-motion: reduce) {
+  #trust .trust-scan__capa--viva { -webkit-mask-image: none; mask-image: none; }
+  #trust .trust-scan__capa--fantasma { display: none; }
+  #trust .trust-scan__linterna { display: none; }
+}

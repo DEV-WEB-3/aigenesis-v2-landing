@@ -20,20 +20,42 @@ const statusConfig: Record<
   TrustStatus,
   { label: string; dotClass: string; textClass: string }
 > = {
+  /*
+    EL COLOR CODIFICA EL TIPO DE PRUEBA, NO «TODO BIEN».
+
+    Los tres estados positivos usaban `state-success` — el MISMO verde para los
+    tres. Verificado, auditado y en vivo se veian identicos, asi que el color no
+    distinguia nada: era decoracion con disfraz de semantica. Y el verde no esta
+    en la paleta de marca.
+
+    Ahora cada uno toma un tramo de la rampa Genesis segun QUE clase de prueba
+    ofrece, que es la distincion que la seccion necesita hacer:
+
+      verificado  cian     — comprobable en cadena, ahora mismo
+      auditado    violeta  — revisado por un tercero
+      en vivo     magenta  — esta ocurriendo, y por eso late
+
+    OJO: la clase es `genesis-fuchsia`, no `genesis-magenta`. Esa segunda NO
+    existe en la escala, y usarla deja el punto SIN color de fondo — sin error
+    de compilacion, sin aviso en consola y sin nada que lo delate salvo mirarlo.
+
+    `pending` conserva el ambar: ese SI es un estado distinto de los otros tres,
+    y ahi el color semantico esta haciendo su trabajo.
+  */
   verified: {
     label: 'Verificado',
-    dotClass: 'bg-state-success',
-    textClass: 'text-state-success',
+    dotClass: 'bg-genesis-cyan',
+    textClass: 'text-genesis-cyan',
   },
   live: {
     label: 'En vivo',
-    dotClass: 'bg-state-success animate-pulse',
-    textClass: 'text-state-success',
+    dotClass: 'bg-genesis-fuchsia animate-pulse',
+    textClass: 'text-genesis-fuchsia',
   },
   audited: {
     label: 'Auditado',
-    dotClass: 'bg-state-success',
-    textClass: 'text-state-success',
+    dotClass: 'bg-genesis-violet',
+    textClass: 'text-genesis-violet',
   },
   pending: {
     label: 'Pendiente',

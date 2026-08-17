@@ -6,7 +6,7 @@ import { SectionHeader, TrustBadge, Button } from '@/components/ui/genesis'
 import { SceneWrapper, slideLeft, containerV } from '@/components/ui/SceneShared'
 import InstitutionalMetrics from '@/components/ui/InstitutionalMetrics'
 import { EXTERNAL_LINKS, ROUTES, sectionHref } from '@/lib/routes'
-import TrustGenesisCore from '@/components/trust/TrustGenesisCore'
+import TrustScanField from '@/components/trust/TrustScanField'
 import { useTrustCoreLogoEditorMode } from '@/lib/trust/useTrustCoreLogoEditorMode'
 
 interface Props {
@@ -60,7 +60,14 @@ const SceneTrust = forwardRef<HTMLElement, Props>(function SceneTrust(
       sectionId="trust"
       particleColumn
       className={`trust-section-layout${logoEditorMode ? ' trust-section-layout--logo-editor' : ''}`}
-      particleSlot={<TrustGenesisCore isActive={isActive} editorMode={logoEditorMode} />}
+      /*
+        EL CAMPO DE ESCANEO sustituye a `TrustGenesisCore`.
+
+        El anterior sigue en el repo sin tocar: revertir es cambiar esta linea.
+        Se sustituye y no se suma porque los dos ocupan el mismo centro, que es
+        ademas donde aterriza el logo que cae desde el hero.
+      */
+      particleSlot={<TrustScanField isActive={isActive} />}
     >
       <SectionHeader
         label="Confianza"
