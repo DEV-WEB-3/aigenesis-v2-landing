@@ -5428,12 +5428,12 @@ body {
 
 #booster .booster-quantum-accelerator__layer--back {
   z-index: 0;
-  animation: booster-parallax-back 13s ease-in-out infinite;
+  animation: booster-parallax-back 32s ease-in-out infinite;
 }
 
 #booster .booster-quantum-accelerator__layer--mid {
   z-index: 1;
-  animation: booster-parallax-mid 10s ease-in-out infinite;
+  animation: booster-parallax-mid 16s ease-in-out infinite;
 }
 
 #booster .booster-quantum-accelerator__layer--front {
@@ -5457,7 +5457,7 @@ body {
   border-radius: 42% 42% 38% 38%;
   filter: blur(28px);
   opacity: 0.35;
-  animation: booster-volume-breathe 6s ease-in-out infinite;
+  animation: booster-volume-breathe 4s ease-in-out infinite;
 }
 
 #booster .booster-quantum-accelerator__volume--a {
@@ -5495,14 +5495,14 @@ body {
   opacity: 0.4;
   stroke-linecap: round;
   stroke-dasharray: 2.2 3.8;
-  animation: booster-stream-flow 3.8s linear infinite;
+  animation: booster-stream-flow 2s linear infinite;
 }
 
 #booster .booster-accelerator-stream--pulse {
   stroke-width: 0.55;
   opacity: 0;
   stroke-linecap: round;
-  animation: booster-genesis-pulse var(--booster-pulse-s, 4s) ease-out infinite;
+  animation: booster-genesis-pulse var(--booster-pulse-s, 2s) ease-out infinite;
 }
 
 #booster .booster-accelerator-stream__particle,
@@ -5536,7 +5536,7 @@ body {
   box-shadow:
     0 0 18px var(--tier-glow),
     inset 0 0 14px color-mix(in srgb, var(--tier-color) 12%, transparent);
-  animation: booster-tier-breathe 5s ease-in-out infinite;
+  animation: booster-tier-breathe 4s ease-in-out infinite;
 }
 
 #booster .booster-accelerator-tier__ring--single,
@@ -5551,11 +5551,11 @@ body {
 }
 
 #booster .booster-accelerator-tier--multiplier .booster-accelerator-tier__ring--outer {
-  animation: booster-ring-spin 7s linear infinite;
+  animation: booster-ring-spin 8s linear infinite;
 }
 
 #booster .booster-accelerator-tier--multiplier .booster-accelerator-tier__ring--inner {
-  animation: booster-ring-spin-reverse 5.5s linear infinite;
+  animation: booster-ring-spin-reverse 16s linear infinite;
 }
 
 #booster .booster-accelerator-tier__gather {
@@ -5564,7 +5564,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, var(--tier-glow) 0%, transparent 68%);
   opacity: 0.4;
-  animation: booster-gather-pulse 3.5s ease-in-out infinite;
+  animation: booster-gather-pulse 2s ease-in-out infinite;
 }
 
 #booster .booster-accelerator-tier__burst {
@@ -5573,8 +5573,8 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(0, 245, 255, 0.22) 0%, transparent 62%);
   opacity: 0.35;
-  animation: booster-progression-burst var(--booster-pulse-s, 4s) ease-out infinite;
-  animation-delay: calc(var(--tier-pulse-offset, 0.5) * var(--booster-pulse-s, 4s));
+  animation: booster-progression-burst var(--booster-pulse-s, 2s) ease-out infinite;
+  animation-delay: calc(var(--tier-pulse-offset, 0.5) * var(--booster-pulse-s, 2s));
 }
 
 #booster .booster-accelerator-tier__pulse-flash {
@@ -5583,8 +5583,8 @@ body {
   border-radius: 50%;
   border: 1px solid var(--tier-color);
   opacity: 0;
-  animation: booster-tier-genesis-flash var(--booster-pulse-s, 4s) ease-out infinite;
-  animation-delay: calc(var(--tier-pulse-offset, 0) * var(--booster-pulse-s, 4s));
+  animation: booster-tier-genesis-flash var(--booster-pulse-s, 2s) ease-out infinite;
+  animation-delay: calc(var(--tier-pulse-offset, 0) * var(--booster-pulse-s, 2s));
 }
 
 #booster .booster-accelerator-column-beam {
@@ -5609,7 +5609,7 @@ body {
   );
   filter: blur(6px);
   opacity: 0.55;
-  animation: booster-beam-pulse 4s ease-in-out infinite;
+  animation: booster-beam-pulse 2s ease-in-out infinite;
 }
 
 #booster .booster-accelerator-column-beam__sheath {
