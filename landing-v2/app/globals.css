@@ -1670,6 +1670,23 @@ body {
   scroll-snap-stop: normal;
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
+
+  /*
+   * EL ENGANCHE RESERVA SITIO A LA BARRA FIJA.
+   *
+   * Sin esto, `scroll-snap-align: start` alinea el borde de la seccion con el
+   * borde del contenedor — pero la barra de navegacion es `fixed` y esta
+   * ENCIMA, asi que los primeros pixeles de cada seccion quedan debajo de ella.
+   *
+   * Medido con Booster enganchada: barra de 69 px de alto, titular empezando en
+   * y=45. Veinticuatro pixeles del titular tapados, en TODAS las secciones y en
+   * cada enganche.
+   *
+   * 76 px = los 69 medidos mas un respiro. No se usa `--nav-offset` (64) porque
+   * esa variable describe otra cosa y se quedaba corta: la barra crece con su
+   * propio `padding` responsive.
+   */
+  scroll-padding-top: 76px;
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -1755,33 +1772,104 @@ body {
 @media (min-width: 1024px) {
   :root {
     --nav-offset: 64px;
-    --section-fit-pad-y: 18px;
+
+    /*
+     * DENSIDAD LIGADA AL ALTO DE LA VENTANA. Esto es la correccion de fondo.
+     *
+     * EL FALLO
+     * En una plataforma de paginas completas la restriccion es VERTICAL: cada
+     * seccion mide exactamente `100dvh` y su contenido tiene que caber dentro.
+     * Pero todo el espaciado y la tipografia se dimensionaban en `rem` fijos o
+     * en `vw` — es decir, respondiendo al ANCHO. Con lo cual la pagina se
+     * componia bien en una ventana alta y se rompia en una baja, sin que nada
+     * en el codigo dependiera del alto.
+     *
+     * MEDIDO en la ventana real de un portatil a zoom 100 % (1914x683):
+     *
+     *   seccion    683 px   (100dvh, overflow: hidden)
+     *   marco      874 px   -93 arriba .. 781 abajo
+     *                       -> 93 px cortados por arriba y 97 por abajo
+     *
+     * Booster perdia 190 px de contenido. Y no se veia en pruebas porque el
+     * emulador con el que verifico aplica un `devicePixelRatio` de 0,9 que
+     * INFLA `innerWidth`/`innerHeight` un 11 %: medi siempre a 1000 px de alto,
+     * donde 874 si cabe. El instrumento tapaba el fallo.
+     *
+     * LA REGLA
+     * `clamp(minimo, N vh, maximo)`: en ventanas altas se conserva el
+     * espaciado comodo de siempre —el maximo es el valor que ya habia— y al
+     * bajar el alto la pagina se aprieta sola, de forma continua y sin saltos
+     * de breakpoint. Al agrandar el zoom (que reduce el viewport CSS) reacciona
+     * igual, porque para el navegador es exactamente lo mismo.
+     */
+    --fit-pad-y: clamp(8px, 1.6vh, 18px);
+    --fit-gap-frame: clamp(0.55rem, 1.5vh, 1.25rem);
+    --fit-gap-stack: clamp(0.3rem, 0.85vh, 0.7rem);
+    --fit-headline: clamp(1.6rem, 3.3vh, 2.35rem);
+    --fit-card-pad: clamp(0.8rem, 1.9vh, 1.5rem);
+
+    --section-fit-pad-y: var(--fit-pad-y);
   }
 
+  /*
+   * LA SECCION CRECE SI HACE FALTA. `min-height`, no `height` fijo.
+   *
+   * Con `height` + `max-height` a `100dvh` y `overflow: hidden`, una seccion
+   * cuyo contenido no cupiera perdia texto sin remedio. La primera correccion
+   * fue dejar que el marco se desplazara por dentro, y eso ya no pierde nada —
+   * pero crea DOS contextos de scroll anidados, y con enganche por paginas se
+   * pelean: giras la rueda, se mueve el de dentro, y luego salta el de fuera.
+   *
+   * El modelo correcto para una plataforma de paginas es el que ya usa el
+   * movil: la seccion mide el alto de ventana COMO MINIMO, y si su contenido
+   * pide mas, crece. El scroll sigue siendo uno solo, el de la pagina, y el
+   * enganche se alinea al principio de cada seccion.
+   *
+   * Con la escala de densidad de arriba, en una ventana de 683 px solo Booster
+   * necesita crecer —le faltaban 149 px— y las otras cuatro que se quedaban
+   * cortas por 32-67 px ya entran justas.
+   */
   .home-section-fit {
-    height: 100dvh;
     min-height: 100dvh;
-    max-height: 100dvh;
     padding-top: var(--section-fit-pad-y);
     padding-bottom: 10px;
     box-sizing: border-box;
   }
 
+  /*
+   * VALVULA DE SEGURIDAD: por mucho que se apriete, NUNCA se recorta.
+   *
+   * El marco se limita al alto de su seccion y, si aun asi el contenido no
+   * cupiera, se desplaza por dentro. Antes desbordaba con `overflow: visible`
+   * y era la SECCION —que tiene `overflow: hidden`— la que lo cortaba: el
+   * contenido no se podia alcanzar de ninguna manera.
+   *
+   * Desplazar es peor que caber, pero infinitamente mejor que perder texto.
+   * Y con la escala de densidad de arriba deberia no llegar a hacer falta casi
+   * nunca; si se activa a menudo en una seccion, es que esa seccion lleva
+   * demasiado dentro y hay que quitarle, no seguir comprimiendo.
+   */
   .home-section-fit .scene-content-frame {
-    gap: 1.25rem;
+    gap: var(--fit-gap-frame);
   }
 
   .home-section-fit .scene-content-stack {
-    gap: 0.7rem;
+    gap: var(--fit-gap-stack);
   }
 
   .home-section-fit .scene-section-header {
-    gap: 0.7rem;
+    gap: var(--fit-gap-stack);
+  }
+
+  /* Las tarjetas también aprietan: son el bloque más alto de las secciones
+     densas —525 px de los 874 de Booster, el 60 %—. */
+  .home-section-fit .surface-card {
+    padding: var(--fit-card-pad);
   }
 
   .home-section-fit .scene-headline,
   .home-section-fit .scene-content-stack > h2.text-5xl {
-    font-size: 2.35rem;
+    font-size: var(--fit-headline);
     /* 1.06 cortaba los descendentes: la «g» de «Ingeniería» y «vanguardia»
        se salía de su caja de línea. 1.12 sigue siendo apretado para un
        titular y ya las contiene. Los CONTADORES se dejan en 1.1 a propósito:
@@ -1791,7 +1879,7 @@ body {
 
   .home-section-fit .scene-section-header .text-display,
   .home-section-fit .scene-content-stack .text-display {
-    font-size: 2.35rem;
+    font-size: var(--fit-headline);
     /* 1.06 cortaba los descendentes: la «g» de «Ingeniería» y «vanguardia»
        se salía de su caja de línea. 1.12 sigue siendo apretado para un
        titular y ya las contiene. Los CONTADORES se dejan en 1.1 a propósito:

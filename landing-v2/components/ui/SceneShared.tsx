@@ -288,7 +288,23 @@ export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { classN
         <section
           ref={setSectionRef}
           id={sectionId}
-          className={`home-section-fit relative w-full flex items-center overflow-visible lg:overflow-hidden lg:h-screen ${className}`}
+          /*
+           * `lg:min-h-screen` y NO `lg:h-screen`.
+           *
+           * `h-screen` fija `height: 100vh`, y con `overflow-hidden` al lado
+           * una seccion cuyo contenido pidiera mas lo perdia sin remedio.
+           * Medido en la ventana real de un portatil a zoom 100 % (1914x683):
+           * Booster necesitaba 808 px y se le recortaban 190 —93 arriba y 97
+           * abajo—. Y ademas ganaba a la regla `min-height` de la hoja de
+           * estilos, porque `h-screen` fija `height` y eso manda sobre un
+           * minimo.
+           *
+           * Con `min-h-screen` la seccion mide el alto de ventana COMO MINIMO y
+           * crece si hace falta. El `overflow-hidden` se conserva: sigue
+           * haciendo falta para recortar las capas decorativas de fondo, que
+           * SI se salen a proposito.
+           */
+          className={`home-section-fit relative w-full flex items-center overflow-visible lg:overflow-hidden lg:min-h-screen ${className}`}
           style={{ pointerEvents: 'auto' }}
         >
           {sectionOverlay}

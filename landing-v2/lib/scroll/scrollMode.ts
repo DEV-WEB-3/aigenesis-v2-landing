@@ -31,8 +31,29 @@ export type ScrollMode = 'flow' | 'snap' | 'proximity' | 'natural'
  */
 export const SCROLL_BREAKPOINTS = VIEWPORT
 
+/**
+ * ESCRITORIO VUELVE A `snap`. Y el porqué importa, porque yo mismo lo saqué.
+ *
+ * `flow` se eligió por una razón real: con enganche OBLIGATORIO y secciones de
+ * alto fijo con `overflow: hidden`, el contenido que no cabía quedaba
+ * inalcanzable — no había forma de llegar a él, porque el enganche impedía
+ * descansar a media sección y el recorte lo escondía. Con eso, `flow` era la
+ * decisión correcta.
+ *
+ * Lo que estaba mal no era el enganche: era que las secciones NO CABÍAN.
+ * Medido en una ventana real de portátil a zoom 100 % (1914×683), Booster
+ * perdía 190 px de contenido, recortados 93 arriba y 97 abajo.
+ *
+ * Resuelto eso —densidad ligada al alto de ventana, y `min-height` para que la
+ * sección crezca en vez de cortar—, ya no hay nada inalcanzable, y el enganche
+ * por páginas deja de tener coste. Vuelve, que es además lo que la plataforma
+ * pide: catorce capítulos se leen de uno en uno.
+ *
+ * El orden fue el que importaba: primero que quepa, después el enganche. Al
+ * revés, el enganche vuelve a esconder lo que no cabe.
+ */
 export function resolveScrollMode(width: number): ScrollMode {
-  if (width >= VIEWPORT.DESKTOP_MIN) return 'flow'
+  if (width >= VIEWPORT.DESKTOP_MIN) return 'snap'
   if (width > VIEWPORT.MOBILE_MAX) return 'proximity'
   return 'natural'
 }
