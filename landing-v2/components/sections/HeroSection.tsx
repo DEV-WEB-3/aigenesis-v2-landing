@@ -7,6 +7,7 @@ import HeroLivingField from '@/components/hero/HeroLivingField'
 import HeroPremiumTagline from '@/components/hero/HeroPremiumTagline'
 import { detectHeroPerfTier, type HeroPerfTier } from '@/lib/hero-performance'
 import { ROUTES, sectionHref } from '@/lib/routes'
+import { useFitToBand } from '@/hooks/useFitToBand'
 
 /**
  * Retardo de entrada, para la animacion CSS de `.hero-entra`.
@@ -56,13 +57,28 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
       setTier(detectHeroPerfTier())
     }, [])
 
+    /*
+     * El hero guarda su propio nodo ademas de reenviarlo. Sin esto no hay a
+     * quien medir: `useFitToBand` necesita una referencia estable a la seccion,
+     * y la que llega por `forwardRef` puede ser una funcion.
+     */
+    const seccionRef = useRef<HTMLElement | null>(null)
+
     const setRefs = useCallback(
       (node: HTMLElement | null) => {
+        seccionRef.current = node
         if (typeof ref === 'function') ref(node)
         else if (ref) ref.current = node
       },
       [ref]
     )
+
+    /*
+     * El hero se quedaba fuera del ajuste automatico porque no usa
+     * `SceneWrapper`. Era la unica seccion sin factor, y por eso la unica que
+     * seguia sin caber cuando las otras trece ya entraban.
+     */
+    useFitToBand(seccionRef, true)
 
     return (
       <section
@@ -88,17 +104,22 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
           la altura sale de un solo sitio.
         */
         /*
-          SIN `pt-20 sm:pt-24`: el mismo doble conteo que tenia trust.
+          EL HERO SI NECESITA DESPEJAR LA BARRA, y quitarselo fue un error mio.
 
-          Ese relleno existia para despejar la barra fija, pero
-          `.home-section-fit` ya resta `--enganche-alto` del alto disponible, asi
-          que la barra se contaba dos veces. Medido: contenido 574 px, relleno
-          superior 96, seccion 680 contra un hueco de 607 — el contenido cabia y
-          la seccion no.
+          Razone que `.home-section-fit` ya resta `--enganche-alto` y que sumar
+          relleno la contaba dos veces. Eso es cierto para la ALTURA de la
+          seccion, pero NO para el hero: es la primera, se ve a scroll 0, y ahi
+          la barra fija se le superpone directamente. Las otras trece no lo
+          necesitan porque el enganche ya las deja por debajo.
 
-          El relleno comun de las catorce lo pone `--section-fit-pad-y`.
+          Se vio al instante: la barra de estado del hero quedo MONTADA sobre el
+          menu de navegacion.
+
+          Ahora el despeje vale exactamente `--enganche-alto` —lo que la barra
+          tapa, ni un pixel mas— en vez de los 96 px fijos de `pt-24`, y el
+          contenido lo ajusta `useFitToBand`, que es lo que faltaba.
         */
-        className="home-section-fit relative flex w-full flex-col items-center justify-center px-4 sm:px-6 text-center"
+        className="home-section-fit hero-fit relative flex w-full flex-col items-center justify-center px-4 sm:px-6 text-center"
         style={{
           pointerEvents: 'auto',
           overflow: 'hidden',

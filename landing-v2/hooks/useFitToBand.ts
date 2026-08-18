@@ -68,7 +68,14 @@ export function useFitToBand(
      * Escalando el marco entero se adaptan las dos columnas a la vez, que es lo
      * que hace falta para que la seccion quepa.
      */
-    const marco = seccion.querySelector<HTMLElement>('.scene-content-frame')
+    /*
+     * El hero no usa `.scene-content-frame` —tiene estructura propia— y por eso
+     * se quedaba fuera del ajuste: era la unica seccion sin factor. Se acepta su
+     * envoltura como marco.
+     */
+    const marco =
+      seccion.querySelector<HTMLElement>('.scene-content-frame') ??
+      seccion.querySelector<HTMLElement>('.hero-content-shell')
     if (!marco) return
 
     const medirYAjustar = () => {

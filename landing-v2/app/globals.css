@@ -2544,6 +2544,22 @@ body {
     zoom: var(--fit-escala, 1);
   }
 
+  /*
+   * El hero despeja la barra con su ALTO EXACTO, no con un relleno inventado.
+   *
+   * Es la unica seccion que se ve a scroll 0, donde la barra fija se le
+   * superpone; las otras trece llegan ya enganchadas por debajo. Llevaba
+   * `pt-24` —96 px— y ahora usa los 76 que la barra tapa de verdad.
+   */
+  .hero-fit {
+    padding-top: calc(var(--enganche-alto) + var(--section-fit-pad-y));
+  }
+
+  /* El hero no tiene `.scene-content-frame`: el factor va a su envoltura. */
+  .hero-fit .hero-content-shell {
+    zoom: var(--fit-escala, 1);
+  }
+
   .home-section-fit .scene-content-stack article h3 {
     font-size: 1.45rem;
   }
