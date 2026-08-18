@@ -1,7 +1,7 @@
 'use client'
 
 import { useId } from 'react'
-import { EMISSION } from '@/lib/design/tokens'
+import { EMISSION, INK } from '@/lib/design/tokens'
 import RoadmapMilestoneIcon from '@/components/roadmap/RoadmapMilestoneIcon'
 import {
   ROADMAP_MILESTONES,
@@ -75,10 +75,21 @@ export default function RoadmapEvolutionMilestones() {
           <stop offset="100%" stopColor={EMISSION.cyan} stopOpacity="0.95" />
         </linearGradient>
 
+        {/*
+          El halo usa `INK.base`, no un `#ffffff` a fuego.
+          La regla `no-restricted-syntax` del proyecto lo prohibe y tiene razon:
+          antes habia 50 colores distintos en 372 apariciones y tres sistemas de
+          color compitiendo. `INK.base` es el blanco de la marca —#F8FAFC—, no el
+          blanco puro, y esa diferencia se nota en un halo grande sobre negro.
+
+          Nota de metodo: el build LOCAL paso con esto como aviso y Vercel fallo
+          con lo mismo como error. La severidad no es la misma en CI, asi que un
+          verde en local no garantiza el despliegue.
+        */}
         <radialGradient id={ID.halo} cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.5" />
-          <stop offset="45%" stopColor="#ffffff" stopOpacity="0.12" />
-          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+          <stop offset="0%" stopColor={INK.base} stopOpacity="0.5" />
+          <stop offset="45%" stopColor={INK.base} stopOpacity="0.12" />
+          <stop offset="100%" stopColor={INK.base} stopOpacity="0" />
         </radialGradient>
 
         <radialGradient id={ID.globo} cx="50%" cy="50%" r="50%">
