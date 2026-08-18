@@ -10,6 +10,7 @@ import { SectionVisualProvider } from '@/hooks/useSectionVisualActive'
 import EcosystemEnergyLinks from '@/components/ecosystem/EcosystemEnergyLinks'
 import { sectionHref, type SectionId } from '@/lib/routes'
 import { HeadingLevel } from '@/components/ui/genesis/Heading'
+import { LLEGADA_CONTENIDO_S, LLEGADA_CIFRA_S } from '@/lib/design/motion'
 
 const containerVariants = {
   hidden: {},
@@ -17,16 +18,18 @@ const containerVariants = {
   exit: { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
 }
 
+/* Mismos `exit` inalcanzables que en `SceneShared`, y por el mismo motivo:
+   `shouldMountContent` es pegajoso y el contenido no se desmonta nunca. */
+const ENTRADA = { duration: LLEGADA_CONTENIDO_S, ease: [0.4, 0, 0.2, 1] } as const
+
 const slideInLeft = {
   hidden: { opacity: 0, x: -40, filter: 'blur(6px)' },
-  visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.4, 0, 0.2, 1] } },
-  exit: { opacity: 0, x: -24, transition: { duration: 0.25 } },
+  visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: ENTRADA },
 }
 
 const slideInRight = {
   hidden: { opacity: 0, x: 40, filter: 'blur(6px)' },
-  visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.4, 0, 0.2, 1] } },
-  exit: { opacity: 0, x: 24, transition: { duration: 0.25 } },
+  visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: ENTRADA },
 }
 
 function StackArrow() {
@@ -82,7 +85,7 @@ function AnimatedCounter({
     const obj = { val: 0 }
     const tween = gsap.to(obj, {
       val: to,
-      duration: 1.8,
+      duration: LLEGADA_CIFRA_S,
       delay: 0.5,
       ease: 'power2.out',
       onUpdate: () => {

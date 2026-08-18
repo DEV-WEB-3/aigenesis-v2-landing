@@ -8,28 +8,40 @@ import { useSectionEnterAnimation } from '@/hooks/useSectionEnterAnimation'
 import { SectionVisualProvider } from '@/hooks/useSectionVisualActive'
 import GenesisOrbSignature, { type GenesisOrbPlacement } from '@/components/brand/GenesisOrbSignature'
 import { HeadingLevel } from '@/components/ui/genesis/Heading'
+import { LLEGADA_CONTENIDO_S, LLEGADA_CIFRA_S } from '@/lib/design/motion'
 
 // ─── Variants compartidos ─────────────────────────────────────────────────────
+/*
+  LOS `exit` SE HAN QUITADO PORQUE NO PODIAN EJECUTARSE.
+
+  Llevaban 0,25 · 0,22 · 0,2 s, tres duraciones fuera de la rejilla, en ramas
+  inalcanzables. `AnimatePresence` envuelve `{shouldMountContent && ...}` y
+  `shouldMountContent` es `entered || isActive`, con `entered` PEGAJOSO: el hook
+  solo hace `setEntered(true)` y nunca lo revierte. El contenido, una vez
+  montado, no se desmonta jamas — asi que nada sale nunca.
+
+  Una rama que no puede ejecutarse es peor que ninguna: invita a razonar sobre
+  un comportamiento que no existe, y ademas escondia tres valores sueltos donde
+  ninguna guarda los buscaba.
+*/
+const ENTRADA = { duration: LLEGADA_CONTENIDO_S, ease: [0.4, 0, 0.2, 1] } as const
+
 export const containerV = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.10, delayChildren: 0.05 } },
-  exit:   { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
 }
 export const slideLeft = {
   hidden:  { opacity: 0, x: -50, filter: 'blur(6px)' },
-  visible: { opacity: 1, x: 0,   filter: 'blur(0px)', transition: { duration: 0.75, ease: [0.4, 0, 0.2, 1] } },
-  exit:    { opacity: 0, x: -30, filter: 'blur(4px)', transition: { duration: 0.25 } },
+  visible: { opacity: 1, x: 0,   filter: 'blur(0px)', transition: ENTRADA },
 }
 /** Text-safe entrance — no filter blur (mobile card readability) */
 export const slideLeftCrisp = {
   hidden:  { opacity: 0, x: -28 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.65, ease: [0.4, 0, 0.2, 1] } },
-  exit:    { opacity: 0, x: -18, transition: { duration: 0.22 } },
+  visible: { opacity: 1, x: 0, transition: ENTRADA },
 }
 export const wordV = {
   hidden:  { opacity: 0, y: 28, filter: 'blur(4px)' },
-  visible: { opacity: 1, y: 0,  filter: 'blur(0px)', transition: { duration: 0.65, ease: [0.4, 0, 0.2, 1] } },
-  exit:    { opacity: 0, y: -20, transition: { duration: 0.2 } },
+  visible: { opacity: 1, y: 0,  filter: 'blur(0px)', transition: ENTRADA },
 }
 
 // ─── SectionLabel — prefer SectionHeader; kept for legacy one-off labels ───────
@@ -179,7 +191,7 @@ export function AnimatedCounter({
     animated.current = true
     const obj = { val: 0 }
     const tween = gsap.to(obj, {
-      val: to, duration: 1.8, delay: 0.4, ease: 'power2.out',
+      val: to, duration: LLEGADA_CIFRA_S, delay: 0.4, ease: 'power2.out',
       onUpdate: () => {
         if (ref.current) ref.current.textContent = obj.val.toFixed(decimals) + suffix
       },

@@ -224,6 +224,39 @@ export const PULSOS_ADMITIDOS = [2, 4, 8] as const
 export const LLEGADAS_ADMITIDAS = [0.8, 1.2, 1.6] as const
 
 /**
+ * LLEGADA DEL CONTENIDO — el texto, no la figura.
+ *
+ * `LLEGADA_S` describe cuanto tarda LA MATERIA en formar la figura de la
+ * seccion, y por eso se deriva del gesto. El bloque de texto —antetitulo,
+ * titular, parrafo, tarjetas, boton— es otra cosa: es el mismo tipo de material
+ * en las catorce, asi que entra igual en las catorce. Lo que cambia de una
+ * seccion a otra es su VISUAL, y de eso ya se encarga cada `*_FORM_S`.
+ *
+ * Valia 0,75 en `slideLeft`, 0,65 en `slideLeftCrisp`, 0,65 en `wordV` y 0,7 en
+ * las dos variantes propias de ecosistema. Cuatro numeros distintos, ninguno en
+ * la rejilla, para el mismo gesto repetido catorce veces — exactamente el
+ * desorden que este archivo existe para eliminar, sobreviviendo en la capa de
+ * framer-motion.
+ *
+ * Se toma el escalon MAS RAPIDO de la rejilla porque un bloque de texto que
+ * tarda en llegar se siente lento aunque haya pintado a tiempo; es el mismo
+ * razonamiento que la excepcion de primera pintura del hero.
+ */
+export const LLEGADA_CONTENIDO_S = LLEGADAS_ADMITIDAS[0]
+
+/**
+ * LLEGADA DE UNA CIFRA — lo que tarda un contador en subir hasta su valor.
+ *
+ * Es deliberadamente el escalon MAS LENTO: una cifra que sube tiene que poder
+ * leerse mientras sube, o el efecto no aporta nada y solo retrasa el dato.
+ *
+ * Valia 1,8 en dos sitios —`SceneShared` y `EcosystemSection` tienen cada uno
+ * su contador, con el mismo numero copiado y distinto retardo—. El retardo
+ * puede diferir; la duracion no tenia por que.
+ */
+export const LLEGADA_CIFRA_S = LLEGADAS_ADMITIDAS[2]
+
+/**
  * PARALAJE — las tres profundidades del fondo.
  *
  * Deliberadamente GLOBAL, no derivado de la seccion. El paralaje describe la
