@@ -38,9 +38,28 @@ export default function StakingVaultCore() {
 
       <div className="staking-vault-core__nucleus">
         <span className="staking-vault-core__inner-glow" aria-hidden="true" />
+
+        {/*
+          EL CICLO SE CIERRA: el candado TAMBIEN se abre.
+
+          Antes solo se cerraba, y esa media verdad hacia dano. La seccion dice
+          «condiciones transparentes de participacion Y LIBERACION», pero la
+          imagen mostraba algo que entra a una caja fuerte y se queda ahi. Al
+          lado de «sin garantias de rendimiento financiero», esa lectura es mas
+          dura que lo que la seccion de verdad afirma.
+
+          El ciclo dura lo mismo que una vuelta del registro —32 s—, asi que el
+          candado se abre cuando el cabezal completa la vuelta: el periodo se
+          cumple y lo retenido sale. Los dos relojes de la boveda cuentan lo
+          mismo en vez de ir cada uno por su lado.
+        */}
+        <span className="staking-vault-core__release" aria-hidden="true" />
+
         <span className="staking-vault-core__lock-glyph" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="36" height="36" fill="none">
+            {/* el arco es la unica pieza movil: se levanta al vencer el periodo */}
             <path
+              className="staking-vault-core__shackle"
               d="M7 11V8a5 5 0 0 1 10 0v3"
               stroke="currentColor"
               strokeWidth="1.2"

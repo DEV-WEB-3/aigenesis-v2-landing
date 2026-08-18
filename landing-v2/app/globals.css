@@ -6339,6 +6339,47 @@ body {
   color: var(--g-magenta);
   opacity: 0.85;
   filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.45));
+  /* vira a cian mientras esta abierto: el mismo color que las liberaciones
+     del registro, para que se lea que son el mismo hecho */
+  animation: staking-lock-tinte var(--ledger-lap-s, 32s) ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EL CANDADO SE ABRE — el ciclo completo, no solo el cierre
+   ═══════════════════════════════════════════════════════════
+
+   La seccion promete «participacion Y LIBERACION» y la imagen solo mostraba el
+   cierre. Un candado es binario y no dice nada de tiempo; mostrando unicamente
+   como se cierra, contaba que el AIG entra y no vuelve a salir — mas duro que
+   lo que la seccion de verdad afirma, y justo al lado de «sin garantias de
+   rendimiento financiero».
+
+   El periodo dura una vuelta del registro (32 s). Cuando el cabezal la
+   completa, el arco se levanta y sale un pulso. Los dos relojes de la boveda
+   cuentan lo mismo.
+
+   Solo se anima `transform` y `opacity`; el color del glifo es la unica
+   excepcion y es un elemento de 36 px.
+*/
+#staking .staking-vault-core__shackle {
+  /*
+    `fill-box` importa: sin el, el origen de la transformacion es el del SVG
+    entero y no el de la pieza. Aqui es un translate puro, asi que no cambia el
+    resultado, pero deja el elemento preparado para cualquier giro o escala
+    futura sin el salto que eso provocaria.
+  */
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: staking-lock-ciclo var(--ledger-lap-s, 32s) ease-in-out infinite;
+}
+
+#staking .staking-vault-core__release {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--g-cyan);
+  opacity: 0;
+  animation: staking-lock-liberacion var(--ledger-lap-s, 32s) ease-out infinite;
 }
 
 @keyframes staking-parallax-back {
@@ -6377,6 +6418,34 @@ body {
 @keyframes staking-ledger-lap {
   from { transform: rotate(-90deg); }
   to { transform: rotate(270deg); }
+}
+
+/*
+  Los tres tiempos del candado, sobre la misma vuelta de 32 s:
+
+    0 -> 58%    cerrado. El periodo corre.
+    58 -> 68%   se abre. La condicion se ha cumplido.
+    68 -> 86%   abierto. Es cuando el AIG puede salir.
+    86 -> 100%  vuelve a cerrarse para el siguiente periodo.
+
+  Que se cierre otra vez no es decorativo: staking es un ciclo, no un final.
+*/
+@keyframes staking-lock-ciclo {
+  0%, 58% { transform: translateY(0); }
+  68%, 86% { transform: translateY(-3.4px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes staking-lock-tinte {
+  0%, 56% { color: var(--g-magenta); }
+  68%, 84% { color: var(--g-cyan); }
+  100% { color: var(--g-magenta); }
+}
+
+@keyframes staking-lock-liberacion {
+  0%, 62% { opacity: 0; transform: scale(0.55); }
+  70% { opacity: 0.65; transform: scale(1); }
+  88%, 100% { opacity: 0; transform: scale(2.1); }
 }
 
 @keyframes staking-ledger-engrave {
@@ -6464,6 +6533,9 @@ body {
   #staking .staking-ledger__spin,
   #staking .staking-ledger__anchor,
   #staking .staking-vault-core__orbit-particle,
+  #staking .staking-vault-core__shackle,
+  #staking .staking-vault-core__release,
+  #staking .staking-vault-core__lock-glyph,
   .genesis-staking-aura__vault-glow {
     animation: none !important;
   }
