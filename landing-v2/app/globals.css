@@ -9197,7 +9197,20 @@ body {
   animation: roadmap-field-breathe var(--roadmap-pulse-s, 4s) ease-in-out infinite;
 }
 
-#roadmap .roadmap-evolution-milestones {
+/* ═══════════════════════════════════════════════════════════
+   LA SENDA DE EVOLUCION — historia y proyeccion, con vida
+   ═══════════════════════════════════════════════════════════
+
+   Todo el recorrido vive dentro de UN solo SVG de 160x100: senda, nodos,
+   anillos, iconos, rotulos, estrellas y la esfera del fondo. No hay dos
+   sistemas de coordenadas que puedan desalinearse — que es exactamente lo que
+   separaba las capas en el resto del portal cuando un porcentaje de CSS se
+   mezclaba con el cuadrado de un SVG `meet`.
+
+   Lo que se mueve es `opacity` y `transform`, mas un `animateMotion` para la
+   chispa. Nada repinta por cuadro.
+*/
+#roadmap .roadmap-senda {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -9205,38 +9218,246 @@ body {
   overflow: visible;
 }
 
-#roadmap .roadmap-evolution-curve {
+/* ── fondo ─────────────────────────────────────────────────── */
+#roadmap .roadmap-senda__cascara {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: roadmap-cascara var(--senda-fondo-s, 32s) linear infinite;
+}
+
+#roadmap .roadmap-senda__globo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: roadmap-globo var(--senda-fondo-s, 32s) ease-in-out infinite;
+}
+
+#roadmap .roadmap-senda__globo-halo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: roadmap-globo-halo var(--senda-anillo-s, 16s) ease-in-out infinite;
+}
+
+/*
+  Las estrellas centellean con RETARDO distinto y MISMA duracion. Si cada una
+  llevara su propio ciclo, setenta y ocho ritmos derivarian unos de otros para
+  siempre y el campo se leeria como ruido en vez de como un cielo.
+*/
+#roadmap .roadmap-senda__estrella {
+  animation: roadmap-estrella 4s ease-in-out infinite;
+}
+
+/* ── la senda ──────────────────────────────────────────────── */
+#roadmap .roadmap-senda__traza {
   stroke-linecap: round;
-  opacity: 0.42;
-  filter: drop-shadow(0 0 3px rgba(157, 77, 255, 0.35));
+  opacity: 0.3;
 }
 
-#roadmap .roadmap-evolution-pulse {
-  opacity: 0.85;
-  filter: drop-shadow(0 0 4px rgba(0, 245, 255, 0.75));
+#roadmap .roadmap-senda__energia {
+  stroke-linecap: round;
+  opacity: 0.5;
+  animation: roadmap-energia var(--senda-viaje-s, 8s) ease-in-out infinite;
 }
 
-#roadmap .roadmap-evolution-node__halo {
-  animation: roadmap-node-halo var(--roadmap-pulse-s, 4s) ease-out infinite;
+#roadmap .roadmap-senda__flecha {
+  opacity: 0.9;
+  animation: roadmap-flecha var(--senda-pulso-s, 2s) ease-in-out infinite;
 }
 
-#roadmap .roadmap-evolution-node__core {
-  animation: roadmap-node-core var(--roadmap-pulse-s, 4s) ease-in-out infinite;
+#roadmap .roadmap-senda__chispa {
+  opacity: 0.95;
 }
 
-#roadmap .roadmap-evolution-node--future .roadmap-evolution-node__core {
-  animation: roadmap-future-core var(--roadmap-pulse-s, 4s) ease-in-out infinite;
+#roadmap .roadmap-senda__chispa--cola {
+  opacity: 0.38;
 }
 
-#roadmap .roadmap-evolution-node__future-aura {
-  animation: roadmap-future-aura var(--roadmap-pulse-s, 4s) ease-out infinite;
+/* ── los hitos ─────────────────────────────────────────────── */
+#roadmap .roadmap-hito {
+  animation: roadmap-hito-llega var(--roadmap-form-s, 0.8s) ease-out both;
 }
 
-#roadmap .roadmap-evolution-node__year {
+#roadmap .roadmap-hito__halo {
+  animation: roadmap-hito-halo var(--senda-pulso-s, 2s) ease-in-out infinite;
+}
+
+#roadmap .roadmap-hito__disco {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: roadmap-hito-disco var(--senda-pulso-s, 2s) ease-in-out infinite;
+}
+
+/*
+  El anillo de la plataforma gira sobre SU PROPIA caja. `transform-box: fill-box`
+  es imprescindible: sin el, el origen de la transformacion es el del SVG entero
+  y la elipse describe una vuelta alrededor del lienzo en vez de girar sobre si
+  misma. Es el mismo detalle que en los anillos de staking.
+*/
+/*
+  LA PLATAFORMA NO GIRA.
+
+  Le puse una rotacion y quedaba fatal por un motivo que ya conocia de los
+  anillos de staking: una elipse muy aplanada, al rotar, DA TUMBOS — pasa de
+  tendida a vertical y vuelve. Medido, la caja de un anillo que debia ser plano
+  llegaba a 77 px de alto.
+
+  Una plataforma esta tendida en el suelo por definicion. Lo que respira es su
+  luz, no su plano.
+*/
+#roadmap .roadmap-hito__anillo {
+  animation: roadmap-hito-plataforma var(--senda-anillo-s, 16s) ease-in-out infinite;
+}
+
+#roadmap .roadmap-hito__latido {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: roadmap-hito-latido var(--senda-pulso-s, 2s) ease-out infinite;
+}
+
+#roadmap .roadmap-hito__futuro {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: roadmap-hito-futuro var(--senda-fondo-s, 32s) linear infinite;
+}
+
+#roadmap .roadmap-hito--upcoming .roadmap-hito__disco {
+  fill: rgba(6, 8, 20, 0.6);
+}
+
+#roadmap .roadmap-hito__anio {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 5.4px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  dominant-baseline: middle;
+}
+
+#roadmap .roadmap-hito__trimestre {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 2.8px;
+  font-weight: 500;
+  fill: var(--g-ink-muted);
+  dominant-baseline: middle;
+}
+
+#roadmap .roadmap-hito__titulo {
+  font-size: 2.9px;
+  font-weight: 500;
+  fill: var(--g-ink);
+  opacity: 0.82;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LA LISTA — el mismo recorrido, legible en orden
+   ═══════════════════════════════════════════════════════════ */
+#roadmap .roadmap-lista {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0.8rem 0.85rem;
+  display: grid;
+  gap: 0.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.85rem;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.008));
+}
+
+#roadmap .roadmap-lista__fila {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem 0.85rem 1fr;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.26rem 0.45rem;
+  border: 1px solid transparent;
+  border-radius: 0.6rem;
+  animation: roadmap-hito-llega var(--roadmap-form-s, 0.8s) ease-out both;
+}
+
+/*
+  EL HILO que une las filas se dibuja con un pseudo-elemento de la fila y no con
+  un `border-left` del contenedor: asi arranca en el primer punto y termina en el
+  ultimo, en vez de recorrer tambien el relleno de la tarjeta.
+*/
+#roadmap .roadmap-lista__fila::before {
+  content: '';
+  position: absolute;
+  left: calc(0.45rem + 2rem + 0.35rem + 0.42rem);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--g-violet-hi) 26%, transparent);
+}
+
+#roadmap .roadmap-lista__fila:first-child::before { top: 50%; }
+#roadmap .roadmap-lista__fila:last-child::before { bottom: 50%; }
+
+#roadmap .roadmap-lista__fila--active {
+  border-color: color-mix(in srgb, var(--fila-color) 55%, transparent);
+  background: linear-gradient(100deg, color-mix(in srgb, var(--fila-color) 12%, transparent), transparent 70%);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--fila-color) 15%, transparent);
+}
+
+#roadmap .roadmap-lista__marco {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--fila-color) 34%, transparent);
+  background: rgba(6, 8, 20, 0.55);
+}
+
+#roadmap .roadmap-lista__icono {
+  width: 1rem;
+  height: 1rem;
+  overflow: visible;
+}
+
+#roadmap .roadmap-lista__punto {
+  justify-self: center;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--fila-color);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--fila-color) 65%, transparent);
+}
+
+#roadmap .roadmap-lista__fila--upcoming .roadmap-lista__punto {
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--fila-color) 60%, transparent);
+  box-shadow: none;
+}
+
+#roadmap .roadmap-lista__fila--active .roadmap-lista__punto {
+  animation: roadmap-hito-latido var(--roadmap-pulse-s, 2s) ease-out infinite;
+}
+
+#roadmap .roadmap-lista__texto {
+  display: grid;
+  gap: 0.02rem;
+  min-width: 0;
+}
+
+#roadmap .roadmap-lista__anio {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  opacity: 0.88;
-  pointer-events: none;
+  letter-spacing: 0.04em;
+}
+
+#roadmap .roadmap-lista__trimestre {
+  color: var(--g-ink-muted);
+  font-weight: 500;
+}
+
+#roadmap .roadmap-lista__titulo {
+  font-size: 0.84rem;
+  color: var(--g-ink);
+  line-height: 1.25;
+}
+
+#roadmap .roadmap-lista__fila--upcoming .roadmap-lista__titulo {
+  color: var(--g-ink-muted);
 }
 
 .genesis-roadmap-aura {
@@ -9263,6 +9484,69 @@ body {
   animation:
     genesis-roadmap-aura-breathe var(--roadmap-aura-breath-duration, 5.4s) ease-in-out infinite,
     genesis-roadmap-aura-pulse var(--roadmap-aura-pulse-duration, 4s) ease-out infinite;
+}
+
+@keyframes roadmap-hito-llega {
+  from { opacity: 0; transform: translateY(3px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes roadmap-hito-halo {
+  0%, 100% { opacity: 0.26; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes roadmap-hito-disco {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+
+@keyframes roadmap-hito-plataforma {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes roadmap-hito-anillo {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes roadmap-hito-latido {
+  0% { opacity: 0.7; transform: scale(0.94); }
+  70% { opacity: 0; transform: scale(1.32); }
+  100% { opacity: 0; transform: scale(1.32); }
+}
+
+@keyframes roadmap-hito-futuro {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes roadmap-cascara {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes roadmap-globo {
+  0%, 100% { transform: rotate(-2deg) scale(1); }
+  50% { transform: rotate(2deg) scale(1.03); }
+}
+
+@keyframes roadmap-globo-halo {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+
+@keyframes roadmap-estrella {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.95; }
+}
+
+@keyframes roadmap-energia {
+  0%, 100% { opacity: 0.32; }
+  50% { opacity: 0.72; }
+}
+
+@keyframes roadmap-flecha {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 @keyframes roadmap-evolution-form {
@@ -9314,8 +9598,19 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   #roadmap .roadmap-evolution-path,
-  #roadmap .roadmap-evolution-node__core,
-  #roadmap .roadmap-evolution-pulse,
+  #roadmap .roadmap-hito,
+  #roadmap .roadmap-hito__halo,
+  #roadmap .roadmap-hito__disco,
+  #roadmap .roadmap-hito__anillo,
+  #roadmap .roadmap-hito__latido,
+  #roadmap .roadmap-hito__futuro,
+  #roadmap .roadmap-senda__cascara,
+  #roadmap .roadmap-senda__globo,
+  #roadmap .roadmap-senda__globo-halo,
+  #roadmap .roadmap-senda__estrella,
+  #roadmap .roadmap-senda__energia,
+  #roadmap .roadmap-senda__flecha,
+  #roadmap .roadmap-lista__fila,
   .genesis-roadmap-aura__atmosphere {
     animation: none !important;
   }
