@@ -1,10 +1,12 @@
+import { EMISSION } from '@/lib/design/tokens'
+import { pulsoDe, llegadaDe } from '@/lib/design/motion'
 /**
  * Phase 14.0 — Genesis Technology Stack (viewBox 0–100).
  * Backend → Infraestructura → IA → Blockchain → Aplicaciones
  */
 
-export const TECH_STACK_PULSE_S = 4
-export const TECH_STACK_FORM_S = 1.1
+export const TECH_STACK_PULSE_S = pulsoDe('technology')
+export const TECH_STACK_FORM_S = llegadaDe('technology')
 export const TECH_STACK_CENTER = { x: 50, y: 50 } as const
 
 export type TechStackLayerId =
@@ -32,14 +34,64 @@ export interface TechStackFlowDef {
   delay: number
 }
 
-/** Top → bottom as specified: Backend down to Aplicaciones */
-export const TECH_STACK_LAYERS: readonly TechStackLayerDef[] = [
-  { id: 'backend', label: 'Backend', index: 0, y: 15, width: 52, color: '#9D4DFF', pulseOffset: 0 },
-  { id: 'infraestructura', label: 'Infraestructura', index: 1, y: 30, width: 58, color: '#3D8BFF', pulseOffset: 0.12 },
-  { id: 'ia', label: 'IA', index: 2, y: 45, width: 54, color: '#FF00C8', pulseOffset: 0.24 },
-  { id: 'blockchain', label: 'Blockchain', index: 3, y: 60, width: 56, color: '#9D4DFF', pulseOffset: 0.36 },
-  { id: 'aplicaciones', label: 'Aplicaciones', index: 4, y: 75, width: 62, color: '#00F5FF', pulseOffset: 0.48 },
+/**
+ * LOS CINCO ESTRATOS, del sustrato a la superficie.
+ *
+ * Tres cosas cambiaron aqui, y ninguna es cosmetica:
+ *
+ * 1. LA PILA ESTABA INVERTIDA. Backend arriba (y=15) y Aplicaciones abajo
+ *    (y=75). Todo diagrama de stack se construye hacia arriba: lo que sostiene
+ *    va debajo. Y el gesto de esta seccion es DIFERENCIAR — «el sustrato, lo
+ *    que sostenia todo lo anterior, mostrado en capas». Con la base arriba, la
+ *    figura decia lo contrario que la seccion.
+ *
+ * 2. LOS ANCHOS NO CODIFICABAN NADA. Eran 52 · 58 · 54 · 56 · 62: ruido con
+ *    aspecto de dato. Ahora el ancho ES la informacion — el sustrato es el mas
+ *    ancho porque sostiene todo lo que tiene encima, y cada capa se estrecha
+ *    conforme se acerca a lo que el usuario toca.
+ *
+ * 3. EL REPARTO VERTICAL ERA IRREGULAR (15, 30, 45, 60, 75 con la figura
+ *    descentrada). Ahora los cinco estan repartidos de forma pareja alrededor
+ *    del centro del lienzo.
+ *
+ * El `pulseOffset` se deriva del indice en vez de escribirse a mano: cinco
+ * capas repartidas dentro de un ciclo, sin numeros sueltos que mantener.
+ */
+const ESTRATOS = [
+  { id: 'backend', label: 'Backend', color: EMISSION.violetHi },
+  { id: 'infraestructura', label: 'Infraestructura', color: EMISSION.blueHi },
+  { id: 'ia', label: 'IA', color: EMISSION.magenta },
+  { id: 'blockchain', label: 'Blockchain', color: EMISSION.violet },
+  { id: 'aplicaciones', label: 'Aplicaciones', color: EMISSION.cyan },
 ] as const
+
+/** Base abajo (y alta), superficie arriba (y baja). */
+const ESTRATO_BASE_Y = 80
+const ESTRATO_SALTO_Y = 14
+/** El sustrato es el mas ancho: sostiene todo lo que lleva encima. */
+const ESTRATO_ANCHO_BASE = 68
+const ESTRATO_MERMA = 7
+
+export const TECH_STACK_LAYERS: readonly TechStackLayerDef[] = ESTRATOS.map(
+  (e, index) => ({
+    ...e,
+    index,
+    y: ESTRATO_BASE_Y - index * ESTRATO_SALTO_Y,
+    width: ESTRATO_ANCHO_BASE - index * ESTRATO_MERMA,
+    pulseOffset: index / ESTRATOS.length,
+  }),
+)
+
+/**
+ * Aplastamiento de la perspectiva.
+ *
+ * Un estrato es un DISCO visto en angulo, no un rectangulo. Esa es la
+ * diferencia entre «capas» y «una lista». Y aqui importaba de verdad: la
+ * columna izquierda de esta misma seccion ya muestra once pastillas con las
+ * tecnologias, asi que dibujar cinco pastillas mas a la derecha repetia la
+ * misma forma y el grafico no anadia nada que el texto no dijera ya.
+ */
+export const ESTRATO_APLASTADO = 0.19
 
 export function techLayerPosition(index: number): { x: number; y: number; w: number } {
   const layer = TECH_STACK_LAYERS[index % TECH_STACK_LAYERS.length]

@@ -1,3 +1,4 @@
+import { EMISSION, INK, VOID } from '@/lib/design/tokens'
 import type {
   FlowDevControls,
   GenesisParticleControlConfig,
@@ -23,8 +24,8 @@ export function createDefaultLayerControls(): LayerParticleControls {
     particleSize: 1,
     speed: 1,
     opacity: 1,
-    primaryColor: '#22d3ee',
-    secondaryColor: '#e91e8b',
+    primaryColor: EMISSION.cyan,
+    secondaryColor: EMISSION.magenta,
     offsetX: 0,
     offsetY: 0,
     offsetZ: 0,
@@ -37,20 +38,22 @@ export function createDefaultLayers(): Record<TrustControlLayerId, LayerParticle
   for (const id of TRUST_CONTROL_LAYER_IDS) {
     layers[id] = createDefaultLayerControls()
   }
-  layers.logoGenesis.primaryColor = '#e91e8b'
-  layers.logoGenesis.secondaryColor = '#22d3ee'
-  layers.nucleusGenesis.primaryColor = '#e91e8b'
-  layers.nucleusGenesis.secondaryColor = '#fff5f0'
-  layers.shieldInner.primaryColor = '#3b82f6'
-  layers.shieldMid.primaryColor = '#3b82f6'
-  layers.shieldOuter.primaryColor = '#2d70e0'
-  layers.logoBridges.primaryColor = '#22d3ee'
-  layers.neural.primaryColor = '#22d3ee'
-  layers.validation.primaryColor = '#f8fbff'
-  layers.validation.secondaryColor = '#a5f3fc'
-  layers.flow.primaryColor = '#3b82f6'
-  layers.aura.primaryColor = '#1e4a8a'
-  layers.background.primaryColor = '#0f172a'
+  layers.logoGenesis.primaryColor = EMISSION.magenta
+  layers.logoGenesis.secondaryColor = EMISSION.cyan
+  layers.nucleusGenesis.primaryColor = EMISSION.magenta
+  // Era '#fff5f0', un blanco cálido que no existía en ninguna paleta: un valor
+  // suelto de un solo uso. Se unifica con la tinta base.
+  layers.nucleusGenesis.secondaryColor = INK.base
+  layers.shieldInner.primaryColor = EMISSION.blueHi
+  layers.shieldMid.primaryColor = EMISSION.blueHi
+  layers.shieldOuter.primaryColor = EMISSION.blueHi
+  layers.logoBridges.primaryColor = EMISSION.cyan
+  layers.neural.primaryColor = EMISSION.cyan
+  layers.validation.primaryColor = INK.base
+  layers.validation.secondaryColor = EMISSION.cyan
+  layers.flow.primaryColor = EMISSION.blueHi
+  layers.aura.primaryColor = EMISSION.blue
+  layers.background.primaryColor = VOID.surface
   return layers
 }
 
@@ -97,7 +100,7 @@ export function createDefaultNeuralControls(): NeuralDevControls {
 export function createDefaultValidationControls(): ValidationDevControls {
   return {
     enabled: true,
-    color: '#f8fbff',
+    color: INK.base,
     brightness: 1,
     speed: 1,
     pulseLength: 1,
@@ -108,7 +111,7 @@ export function createDefaultValidationControls(): ValidationDevControls {
 export function createDefaultFlowControls(): FlowDevControls {
   return {
     enabled: true,
-    color: '#3b82f6',
+    color: EMISSION.blueHi,
     brightness: 1,
     speed: 1,
     trailLength: 1,

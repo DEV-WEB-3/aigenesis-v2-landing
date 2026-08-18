@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import {
   ORACLE_ECOSYSTEM_SATELLITES,
   ORACLE_BRAIN_CENTER,
@@ -20,13 +22,13 @@ export default function GoracleDataStreams() {
     >
       <defs>
         <linearGradient id="goracle-stream-in-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100">
-          <stop offset="0%" stopColor="#00F5FF" stopOpacity="0.6" />
-          <stop offset="55%" stopColor="#9D4DFF" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="#FF00C8" stopOpacity="0.35" />
+          <stop offset="0%" stopColor={EMISSION.cyan} stopOpacity="0.6" />
+          <stop offset="55%" stopColor={EMISSION.violetHi} stopOpacity="0.5" />
+          <stop offset="100%" stopColor={EMISSION.magenta} stopOpacity="0.35" />
         </linearGradient>
         <linearGradient id="goracle-stream-out-grad" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="100" y2="0">
-          <stop offset="0%" stopColor="#9D4DFF" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="#FF00C8" stopOpacity="0.48" />
+          <stop offset="0%" stopColor={EMISSION.violetHi} stopOpacity="0.5" />
+          <stop offset="100%" stopColor={EMISSION.magenta} stopOpacity="0.48" />
         </linearGradient>
       </defs>
 
@@ -37,7 +39,7 @@ export default function GoracleDataStreams() {
         return (
           <g key={`in-${sat.id}`}>
             <path d={d} className="goracle-data-stream goracle-data-stream--in" fill="none" stroke="url(#goracle-stream-in-grad)" />
-            <circle r="0.5" className="goracle-data-stream__particle goracle-data-stream__particle--in" fill="#00F5FF">
+            <circle r="0.5" className="goracle-data-stream__particle goracle-data-stream__particle--in" fill={EMISSION.cyan}>
               <animateMotion dur={dur} repeatCount="indefinite" path={d} begin={begin} />
             </circle>
           </g>
@@ -50,7 +52,7 @@ export default function GoracleDataStreams() {
         return (
           <g key={`out-${i}`}>
             <path d={d} className="goracle-data-stream goracle-data-stream--out" fill="none" stroke="url(#goracle-stream-out-grad)" />
-            <circle r="0.38" className="goracle-data-stream__particle goracle-data-stream__particle--out" fill="#FF00C8">
+            <circle r="0.38" className="goracle-data-stream__particle goracle-data-stream__particle--out" fill={EMISSION.magenta}>
               <animateMotion dur={dur} repeatCount="indefinite" path={d} begin={`${1.5 + i * 0.45}s`} />
             </circle>
           </g>
@@ -62,7 +64,7 @@ export default function GoracleDataStreams() {
         cy={ORACLE_BRAIN_CENTER.y}
         r="1.15"
         className="goracle-data-stream__core-anchor"
-        fill="#FF00C8"
+        fill={EMISSION.magenta}
         style={{ '--oracle-pulse-s': `${ORACLE_INFERENCE_PULSE_S}s` } as React.CSSProperties}
       />
     </svg>

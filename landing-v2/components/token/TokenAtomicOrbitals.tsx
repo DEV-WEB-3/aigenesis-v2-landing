@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION, INK } from '@/lib/design/tokens'
+
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import {
   ATOMIC_ENERGY_COLORS,
@@ -29,36 +31,36 @@ import TokenAtomicNodeMark from '@/components/token/TokenAtomicNodeMark'
 import TokenOrbitEditorHud from '@/components/token/TokenOrbitEditorHud'
 
 const ORBIT_DRAFT_KEY = 'aigenesis-token-orbit-draft'
-const HANDLE_COLORS = ['#FF00C8', '#00F5FF', '#9D4DFF', '#FF4DDB', '#2962FF'] as const
+const HANDLE_COLORS = [EMISSION.magenta, EMISSION.cyan, EMISSION.violetHi, EMISSION.magentaHi, EMISSION.blue] as const
 
 const GRAD_STOPS = [
   [
-    { o: '0%', c: '#FF00C8', a: 0.22 },
-    { o: '40%', c: '#FF4DDB', a: 0.88 },
-    { o: '70%', c: '#00F5FF', a: 0.88 },
-    { o: '100%', c: '#2962FF', a: 0.22 },
+    { o: '0%', c: EMISSION.magenta, a: 0.22 },
+    { o: '40%', c: EMISSION.magentaHi, a: 0.88 },
+    { o: '70%', c: EMISSION.cyan, a: 0.88 },
+    { o: '100%', c: EMISSION.blue, a: 0.22 },
   ],
   [
-    { o: '0%', c: '#9D4DFF', a: 0.18 },
-    { o: '45%', c: '#FF00C8', a: 0.82 },
-    { o: '75%', c: '#00F5FF', a: 0.82 },
-    { o: '100%', c: '#2962FF', a: 0.18 },
+    { o: '0%', c: EMISSION.violetHi, a: 0.18 },
+    { o: '45%', c: EMISSION.magenta, a: 0.82 },
+    { o: '75%', c: EMISSION.cyan, a: 0.82 },
+    { o: '100%', c: EMISSION.blue, a: 0.18 },
   ],
   [
-    { o: '0%', c: '#2962FF', a: 0.18 },
-    { o: '35%', c: '#00F5FF', a: 0.82 },
-    { o: '65%', c: '#FF4DDB', a: 0.82 },
-    { o: '100%', c: '#9D4DFF', a: 0.18 },
+    { o: '0%', c: EMISSION.blue, a: 0.18 },
+    { o: '35%', c: EMISSION.cyan, a: 0.82 },
+    { o: '65%', c: EMISSION.magentaHi, a: 0.82 },
+    { o: '100%', c: EMISSION.violetHi, a: 0.18 },
   ],
   [
-    { o: '0%', c: '#00F5FF', a: 0.2 },
-    { o: '50%', c: '#FF00C8', a: 0.8 },
-    { o: '100%', c: '#9D4DFF', a: 0.2 },
+    { o: '0%', c: EMISSION.cyan, a: 0.2 },
+    { o: '50%', c: EMISSION.magenta, a: 0.8 },
+    { o: '100%', c: EMISSION.violetHi, a: 0.2 },
   ],
   [
-    { o: '0%', c: '#FF4DDB', a: 0.2 },
-    { o: '50%', c: '#2962FF', a: 0.78 },
-    { o: '100%', c: '#00F5FF', a: 0.2 },
+    { o: '0%', c: EMISSION.magentaHi, a: 0.2 },
+    { o: '50%', c: EMISSION.blue, a: 0.78 },
+    { o: '100%', c: EMISSION.cyan, a: 0.2 },
   ],
 ] as const
 
@@ -369,7 +371,7 @@ export default function TokenAtomicOrbitals({
 
         {editorMode && (
           <>
-            <circle cx={cx} cy={cy} r={0.35} className="token-orbit-editor-center" fill="#FF00C8" opacity={0.9} />
+            <circle cx={cx} cy={cy} r={0.35} className="token-orbit-editor-center" fill={EMISSION.magenta} opacity={0.9} />
             <circle
               cx={cx}
               cy={cy}
@@ -434,7 +436,7 @@ export default function TokenAtomicOrbitals({
                       r={isPointActive ? 1.55 : 1.15}
                       className={`token-orbit-editor-handle token-orbit-editor-handle--point${isPointActive ? ' is-active' : ''}`}
                       fill={color}
-                      stroke={isPointActive ? '#fff' : 'rgba(255,255,255,0.65)'}
+                      stroke={isPointActive ? INK.base : 'rgba(255,255,255,0.65)'}
                       strokeWidth={isPointActive ? 0.2 : 0.12}
                       onPointerDown={(e) => beginPointDrag(orbitIndex, pointIndex, e)}
                     />

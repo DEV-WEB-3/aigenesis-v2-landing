@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 import { GPULSE_SIGNAL_CENTER, GPULSE_SIGNAL_PULSE_S } from '@/lib/gpulse/signalNetworkLayout'
 
 const ORBIT_COUNT = 10
@@ -39,17 +41,41 @@ export default function GpulseSignalCore() {
       <div className="gpulse-signal-core__nucleus">
         <span className="gpulse-signal-core__inner-glow" aria-hidden="true" />
         <span className="gpulse-signal-core__pulse-ring" aria-hidden="true" />
-        <span className="gpulse-signal-core__glyph" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="32" height="32" fill="none">
-            <circle cx="12" cy="12" r="3.2" stroke="currentColor" strokeWidth="1.1" />
-            <path
-              d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.1 5.1l2.1 2.1M16.8 16.8l2.1 2.1M5.1 18.9l2.1-2.1M16.8 7.2l2.1-2.1"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeLinecap="round"
-              opacity="0.75"
-            />
-          </svg>
+        {/*
+          EL LOGO REAL DE G-PULSE, no un icono genérico.
+
+          Aquí había un SVG de 24×24 dibujado a mano: un círculo con ocho rayos,
+          el icono de «señal» de cualquier biblioteca. Mientras tanto el logotipo
+          oficial de G-Pulse llevaba en `public/brand/` sin que lo usara NADIE
+          —tres tamaños, PNG y WebP—.
+
+          O sea que la sección de G-Pulse no mostraba el logo de G-Pulse. Ésa es
+          la desalineación de marca de verdad, y no cuesta nada arreglarla.
+
+          Encaja además por contenido: el logotipo ES un radar de anillos
+          concéntricos con núcleo magenta, que es exactamente lo que esta sección
+          cuenta. Y su paleta ya es la de Genesis —magenta, violeta, azul, cian—,
+          así que no hay nada que rebrandear.
+
+          EL TAMAÑO: el logo ES el núcleo, no un glifo dentro de la decoración.
+
+          Medido: a 45 px dentro de un visual de 864 era el 5,2 % del ancho —
+          imperceptible. El logotipo del hero, que sí funciona como ancla de
+          marca, ocupa el 24,3 % de su ventana. Aquí queda en el 18 % contando
+          la escala del núcleo, que es lo que hace que se lea sin competir con
+          la red de señales que lo rodea.
+
+          Fuente de 512 y no de 128: a 156 px pintados, una retina pide 312.
+        */}
+        <span className="gpulse-signal-core__glyph marca-halo marca-halo--gpulse" aria-hidden="true">
+          <Image
+            src="/brand/gpulse-512.png"
+            alt=""
+            width={78}
+            height={78}
+            className="object-contain"
+            aria-hidden
+          />
         </span>
       </div>
     </div>

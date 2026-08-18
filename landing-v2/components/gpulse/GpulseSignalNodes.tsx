@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION, INK } from '@/lib/design/tokens'
+
 import { GPULSE_NODE_COUNT, gpulseNodePosition, GPULSE_SIGNAL_PULSE_S } from '@/lib/gpulse/signalNetworkLayout'
 
 export default function GpulseSignalNodes() {
@@ -32,10 +34,10 @@ export default function GpulseSignalNodes() {
               cy={y}
               r="0.85"
               className="gpulse-signal-node__dot"
-              fill="#00F5FF"
+              fill={EMISSION.cyan}
               filter="url(#gpulse-node-glow)"
             />
-            <circle cx={x} cy={y} r="0.35" className="gpulse-signal-node__core" fill="#ffffff" opacity="0.85" />
+            <circle cx={x} cy={y} r="0.35" className="gpulse-signal-node__core" fill={INK.base} opacity="0.85" />
           </g>
         )
       })}

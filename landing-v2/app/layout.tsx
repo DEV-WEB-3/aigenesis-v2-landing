@@ -1,9 +1,11 @@
+import { VOID } from '@/lib/design/tokens'
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, Inter, IBM_Plex_Mono } from 'next/font/google'
 import { SITE_URL } from '@/lib/routes'
 import SkipLink from '@/components/layout/SkipLink'
 import { WALLET_EXTENSION_GUARD_SCRIPT } from '@/components/layout/WalletExtensionGuard'
 import SiteAnalytics from '@/components/analytics/SiteAnalytics'
+import StructuredData from '@/components/seo/StructuredData'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -26,9 +28,22 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500'],
 })
 
-const siteTitle = 'AiGenesis — AI, Blockchain & Marketplace Ecosystem'
+/**
+ * Título y descripción EN ESPAÑOL, igual que el contenido.
+ *
+ * Estaban en inglés mientras el documento declaraba `lang="es"` y la ficha
+ * social `og:locale: es_ES`. Tres señales, dos idiomas: el buscador recibía una
+ * contradicción y un lector de pantalla leía inglés con fonética española.
+ * La página es española —navegación, titulares y cuerpo— así que lo que sobraba
+ * era el inglés de los metadatos, no el `lang`.
+ *
+ * REVISAR: esto es texto de marketing y es lo primero que se ve en Google y al
+ * compartir el enlace. La traducción es fiel al original inglés, pero la
+ * redacción final es decisión del dueño.
+ */
+const siteTitle = 'AiGenesis — Ecosistema de IA, Blockchain y Marketplace'
 const siteDescription =
-  'AiGenesis is a next-generation ecosystem combining artificial intelligence, blockchain infrastructure, digital assets, marketplace utility and global community expansion.'
+  'AiGenesis es un ecosistema de nueva generación que combina inteligencia artificial, infraestructura blockchain, activos digitales, utilidad de marketplace y expansión de comunidad global.'
 
 /** OG: SVG institucional (PNG derivado en /og-image.png cuando se exporte) */
 const OG_IMAGE_SVG = '/og-image.svg'
@@ -39,15 +54,16 @@ export const metadata: Metadata = {
   title: siteTitle,
   description: siteDescription,
   keywords: [
-    'AI',
-    'artificial intelligence',
+    'AiGenesis',
+    'inteligencia artificial',
     'blockchain',
     'marketplace',
-    'digital assets',
+    'activos digitales',
+    'criptomonedas',
     'BSC',
-    'AiGenesis',
     'Web3',
-    'intelligence network',
+    'token AIG',
+    'artificial intelligence',
   ],
   alternates: {
     canonical: '/',
@@ -102,7 +118,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#050510',
+  themeColor: VOID.black,
 }
 
 export default function RootLayout({
@@ -116,6 +132,7 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable}`}
     >
       <head>
+        <StructuredData />
         <script
           dangerouslySetInnerHTML={{ __html: WALLET_EXTENSION_GUARD_SCRIPT }}
         />

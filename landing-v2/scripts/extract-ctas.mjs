@@ -1,3 +1,13 @@
+/**
+ * Herramienta de desarrollo: rastrea el sitio legacy para sacar los enlaces
+ * oficiales. NO forma parte del build ni viaja al navegador.
+ *
+ * OJO con el patrón de `aigtoken.io`: ese dominio va a redirigir a
+ * aigenesis.io/#token, así que dejará de devolver PDFs y ese bloque saldrá
+ * siempre en cero. Un cero de aquí NO significa que falte un enlace — significa
+ * que el dominio ya no sirve nada. El whitepaper ya no se busca ahí: vive en
+ * `public/docs/`.
+ */
 import https from 'https'
 import fs from 'fs'
 

@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import { COMMERCE_PAYMENT_CORES, COMMERCE_PULSE_S, paymentStreamPath } from '@/lib/marketplace/globalCommerceLayout'
 import MarketplacePaymentIcon from '@/components/marketplace/MarketplacePaymentIcon'
 
@@ -14,8 +16,8 @@ export default function MarketplacePaymentCores() {
       >
         <defs>
           <linearGradient id="marketplace-payment-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100">
-            <stop offset="0%" stopColor="#00F5FF" stopOpacity="0.45" />
-            <stop offset="100%" stopColor="#FF00C8" stopOpacity="0.35" />
+            <stop offset="0%" stopColor={EMISSION.cyan} stopOpacity="0.45" />
+            <stop offset="100%" stopColor={EMISSION.magenta} stopOpacity="0.35" />
           </linearGradient>
         </defs>
 
@@ -25,10 +27,10 @@ export default function MarketplacePaymentCores() {
           return (
             <g key={core.id}>
               <path d={d} className="marketplace-payment-stream" fill="none" stroke="url(#marketplace-payment-grad)" />
-              <circle r="0.38" className="marketplace-payment-stream__particle" fill="#00F5FF">
+              <circle r="0.38" className="marketplace-payment-stream__particle" fill={EMISSION.cyan}>
                 <animateMotion dur={dur} repeatCount="indefinite" path={d} begin={`${core.pulseOffset * COMMERCE_PULSE_S}s`} />
               </circle>
-              <circle r="0.32" className="marketplace-payment-stream__particle marketplace-payment-stream__particle--out" fill="#FF00C8">
+              <circle r="0.32" className="marketplace-payment-stream__particle marketplace-payment-stream__particle--out" fill={EMISSION.magenta}>
                 <animateMotion
                   dur={dur}
                   repeatCount="indefinite"

@@ -234,6 +234,7 @@ import {
   resolveDevAnimationTime,
 } from '@/lib/trust/GenesisParticleControlStore'
 import { diagLogParticleSystemFrame } from '@/lib/trust/GenesisParticleControlDiagnostics'
+import { entradaDesde, correlacionEntre, movimientoDeIndice, USAR_LINAJE } from '@/lib/webgl/lineage'
 import '@/lib/trust/genesisColorDebug'
 import '@/lib/trust/genesisColorExecutionAudit'
 import {
@@ -251,6 +252,61 @@ interface ParticleMorphSystemProps {
 }
 
 const DEFAULT_LERP_SPEED = 0.032
+
+/**
+ * Anticipación de la forma siguiente según el scroll.
+ *
+ * Hasta ahora las partículas sólo interpolaban hacia la forma de la sección
+ * activa a ritmo fijo: el scroll no participaba, así que cada cambio se leía
+ * como un salto entre dos estados. Con el progreso ya cableado, la forma empieza
+ * a inclinarse hacia la de la sección siguiente conforme se avanza.
+ *
+ * LA VENTANA ESTÁ ATADA A CUÁNDO CAMBIA EL ÍNDICE, y eso hay que medirlo cada
+ * vez que cambia el modelo de scroll. No es un número estético.
+ *
+ * El índice lo decide un IntersectionObserver por umbral de ratio, y ese umbral
+ * DEPENDE DEL MODO: 0.48 con snap, 0.32 con flow. Medido en el navegador:
+ *
+ *   con snap ... el índice cambiaba en p ≈ 0.80
+ *   con flow ... cambia en p ≈ 0.50
+ *
+ * Los valores anteriores (START 0.30 / END 0.70 / CUTOFF 0.75) estaban ajustados
+ * al primer caso. Al pasar a flow quedaron mal colocados y se volvieron dañinos:
+ * medido, a p=0.58 la mezcla valía 0.48 con la sección siguiente YA activa, así
+ * que anticipaba dos secciones por delante — exactamente el fallo que el corte
+ * existía para evitar.
+ *
+ * Ahora toda la ventana cabe ANTES del cambio de índice:
+ *
+ *  - START 0.08 — arranca pronto porque sólo hay hasta 0.50 de recorrido útil.
+ *  - END 0.44 — el máximo se alcanza justo antes del cambio.
+ *  - CUTOFF 0.50 — en cuanto el índice cambia, el objetivo YA es la sección
+ *    nueva y anticipar más apuntaría dos por delante. Aquí se apaga.
+ *  - MAX 0.8 — subido desde 0.6. Con el snap obligatorio el progreso intermedio
+ *    apenas existía y un valor alto no llegaba a verse; con flow el recorrido es
+ *    continuo y la anticipación tiene sitio para leerse.
+ *
+ * El corte no produce un salto visible porque lo que cambia es el OBJETIVO, no
+ * la posición: las partículas se mueven un 3.2% por fotograma hacia él, así que
+ * un cambio instantáneo de objetivo se absorbe en la interpolación de siempre.
+ *
+ * SI SE CAMBIA EL MODO DE SCROLL, HAY QUE VOLVER A MEDIR ESTOS CUATRO NÚMEROS.
+ */
+const SCROLL_BLEND_START = 0.08
+const SCROLL_BLEND_END = 0.44
+const SCROLL_BLEND_CUTOFF = 0.5
+const SCROLL_BLEND_MAX = 0.8
+
+function scrollBlendAmount(progress: number): number {
+  if (!Number.isFinite(progress)) return 0
+  if (progress <= SCROLL_BLEND_START || progress > SCROLL_BLEND_CUTOFF) return 0
+  const t = Math.min(
+    1,
+    (progress - SCROLL_BLEND_START) / (SCROLL_BLEND_END - SCROLL_BLEND_START)
+  )
+  // smoothstep: entra y sale sin esquinas
+  return t * t * (3 - 2 * t) * SCROLL_BLEND_MAX
+}
 const DEFAULT_FADE_LERP = 0.06
 const TARGET_OPACITY = 0.78
 const ORGANIC_STRENGTH = 0.014
@@ -414,6 +470,7 @@ function makeCircleTexture(): THREE.CanvasTexture {
 
 export default function ParticleMorphSystem({
   sectionIndexRef,
+  scrollProgressRef,
   heroActive = false,
 }: ParticleMorphSystemProps) {
   const groupRef = useRef<THREE.Group>(null!)
@@ -573,6 +630,15 @@ export default function ParticleMorphSystem({
   const ecosystemEnterTimeRef = useRef(-1)
   const miningEnterTimeRef = useRef(-1)
 
+  /** Sondas: `?sonda=linaje` y `?sonda=relevo`. Apagadas por defecto. */
+  const sondaLinajeRef = useRef(false)
+  const sondaRelevoRef = useRef(false)
+  useEffect(() => {
+    const s = new URLSearchParams(window.location.search).get('sonda')
+    sondaLinajeRef.current = s === 'linaje'
+    sondaRelevoRef.current = s === 'relevo'
+  }, [])
+
   useEffect(() => {
     const hash = window.location.hash.replace(/^#/, '').toLowerCase()
     if (hash === 'trust' || hash === 'confianza') {
@@ -633,11 +699,15 @@ export default function ParticleMorphSystem({
           const trustGroup = particleGroupTarget(TRUST_SECTION_INDEX, desktopLayout)
           setHeroDropGroupOffset([trustGroup.x, trustGroup.y, trustGroup.z])
         }
-        console.log('[GenesisDrop] trust enter', {
-          fromSection,
-          mode: trustFormationModeRef.current,
-          directEntry,
-        })
+        // Corria en produccion en cada entrada a Trust. Ahora dice ademas que
+        // modo de relevo se eligio, que es justo lo que hay que poder ver.
+        if (sondaLinajeRef.current || sondaRelevoRef.current) {
+          console.log('[Relevo] trust enter', {
+            fromSection,
+            mode: trustFormationModeRef.current,
+            directEntry,
+          })
+        }
         trustEnterTimeRef.current = clock.getElapsedTime()
         const trustLimit = activeParticleCount(sectionIdx, trustParticleCount, morphParticleCount)
         const meta = getTrustShieldMeta()
@@ -692,14 +762,94 @@ export default function ParticleMorphSystem({
         trustEnterTimeRef.current = -1
         trustScatterRef.current = null
       }
+      /**
+       * EL LINAJE — la entrada desciende del estado real anterior.
+       *
+       * `pos` en este instante contiene la salida de la seccion que dejamos, asi
+       * que la informacion de linaje estaba disponible todo el tiempo: once de
+       * doce transiciones la descartaban para poner `Math.random()` en una
+       * anilla. Y cuatro de esas anillas eran la misma con constantes movidas
+       * por debajo del umbral perceptible.
+       *
+       * `entradaDesde` no reemplaza el estado anterior: lo transforma segun el
+       * gesto de la seccion que llega. Ninguna particula teletransporta.
+       *
+       * Las dispersiones antiguas siguen en este archivo y vuelven a correr
+       * poniendo USAR_LINAJE a false.
+       */
+      const limiteEntrada = activeParticleCount(
+        sectionIdx,
+        trustParticleCount,
+        morphParticleCount,
+      )
+      const linaje = (respaldo: () => void) => {
+        const mov = movimientoDeIndice(sectionIdx)
+        // El diagnostico se calcula en LOS DOS caminos: sin el baseline del
+        // camino viejo, la correlacion del nuevo no significa nada.
+        const antes = sondaLinajeRef.current ? new Float32Array(pos.subarray(0, limiteEntrada * 3)) : null
+        let diag = { correlacion: 0, desplazamiento: 0 }
+        if (USAR_LINAJE) {
+          diag = entradaDesde(pos, morph, mov, limiteEntrada)
+        } else {
+          respaldo()
+          if (antes) diag = correlacionEntre(antes, morph, limiteEntrada)
+        }
+        /**
+         * La sonda del linaje. Se enciende con `?sonda=linaje` en la URL, igual
+         * que los modos editor que ya existen en este repo.
+         *
+         * Sin esto el linaje no es comprobable: una transicion puede parecer
+         * continua por casualidad —si las dos figuras se parecen— y parecer un
+         * corte aunque funcione, si el gesto es grande. La correlacion no se
+         * deja enganar por ninguno de los dos casos.
+         */
+        if (sondaLinajeRef.current) {
+          let nanPos = 0
+          let rmax = 0
+          let aparcadas = 0
+          for (let i = 0; i < limiteEntrada; i++) {
+            const bi = i * 3
+            const x = pos[bi]
+            const y = pos[bi + 1]
+            const z = pos[bi + 2]
+            if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) {
+              nanPos++
+            } else if (x! <= -100) {
+              // aparcadero: (-120,-120,0). Medir el radio aqui daria 169,7 y
+              // taparia el radio real de la escena, que es lo que importa.
+              aparcadas++
+            } else {
+              rmax = Math.max(rmax, Math.hypot(x!, y!, z!))
+            }
+          }
+          const registro = (window as unknown as { __linaje?: unknown[] }).__linaje ?? []
+          registro.push({
+            de: prevSectionRef.current,
+            a: sectionIdx,
+            gesto: mov,
+            correlacion: Number(diag.correlacion.toFixed(4)),
+            desplazamiento: Number(diag.desplazamiento.toFixed(4)),
+            limite: limiteEntrada,
+            bufferParticulas: pos.length / 3,
+            fueraDeRango: Math.max(0, limiteEntrada - pos.length / 3),
+            nanEnPos: nanPos,
+            aparcadas,
+            radioMaximo: Number(rmax.toFixed(3)),
+          })
+          ;(window as unknown as { __linaje?: unknown[] }).__linaje = registro
+        }
+      }
+
       if (sectionIdx === ECOSYSTEM_SECTION_INDEX) {
-        scatterEcosystemMorph(morph, prevSectionRef.current === TRUST_SECTION_INDEX)
+        linaje(() =>
+          scatterEcosystemMorph(morph, prevSectionRef.current === TRUST_SECTION_INDEX),
+        )
         ecosystemEnterTimeRef.current = clock.getElapsedTime()
       } else if (sectionIdx !== ECOSYSTEM_SECTION_INDEX) {
         ecosystemEnterTimeRef.current = -1
       }
       if (sectionIdx === TOKEN_SECTION_INDEX) {
-        scatterTokenMorph(morph)
+        linaje(() => scatterTokenMorph(morph))
         tokenScatterRef.current = new Float32Array(morph)
         tokenEnterTimeRef.current = clock.getElapsedTime()
       } else if (sectionIdx !== TOKEN_SECTION_INDEX) {
@@ -707,45 +857,45 @@ export default function ParticleMorphSystem({
         tokenScatterRef.current = null
       }
       if (sectionIdx === MINING_SECTION_INDEX) {
-        scatterMiningStardustMorph(morph)
+        linaje(() => scatterMiningStardustMorph(morph))
         miningEnterTimeRef.current = clock.getElapsedTime()
       } else if (sectionIdx !== MINING_SECTION_INDEX) {
         miningEnterTimeRef.current = -1
       }
       if (sectionIdx === BOOSTER_SECTION_INDEX) {
-        scatterBoosterFromBelow(morph, getBoosterStackMeta())
+        linaje(() => scatterBoosterFromBelow(morph, getBoosterStackMeta()))
         boosterEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === STAKING_SECTION_INDEX) {
-        scatterStakingFromExterior(morph)
+        linaje(() => scatterStakingFromExterior(morph))
         stakingEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === GPULSE_SECTION_INDEX) {
-        scatterGpulseMorph(morph)
+        linaje(() => scatterGpulseMorph(morph))
         gpulseEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === GORACLE_SECTION_INDEX) {
-        scatterGoracleMorph(morph)
+        linaje(() => scatterGoracleMorph(morph))
         goracleEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === MARKETPLACE_SECTION_INDEX) {
-        scatterMarketplaceMorph(morph)
+        linaje(() => scatterMarketplaceMorph(morph))
         marketplaceEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === COMMUNITY_SECTION_INDEX) {
-        scatterCommunityMorph(morph)
+        linaje(() => scatterCommunityMorph(morph))
         communityEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === TECHNOLOGY_SECTION_INDEX) {
-        scatterTechnologyMorph(morph)
+        linaje(() => scatterTechnologyMorph(morph))
         technologyEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === ROADMAP_SECTION_INDEX) {
-        scatterRoadmapMorph(morph)
+        linaje(() => scatterRoadmapMorph(morph))
         roadmapEnterTimeRef.current = clock.getElapsedTime()
       }
       if (sectionIdx === CTA_SECTION_INDEX) {
-        scatterPortalMorph(morph)
+        linaje(() => scatterPortalMorph(morph))
         portalEnterTimeRef.current = clock.getElapsedTime()
       }
       prevSectionRef.current = sectionIdx
@@ -756,6 +906,23 @@ export default function ParticleMorphSystem({
 
     const t = clock.getElapsedTime()
     const isTrustSection = sectionIdx === TRUST_SECTION_INDEX
+
+    /**
+     * EN CONFIANZA NO SE PINTAN PARTICULAS.
+     *
+     * Decision del owner, y con motivo: la nube de puntos que formaba el logo
+     * competia con el campo de escaneo que ahora ocupa esa seccion. Dos
+     * estructuras superpuestas en el mismo centro, una nitida y otra difusa, y
+     * la difusa gana en ruido y pierde en lectura.
+     *
+     * CONSECUENCIA QUE NO ES OBVIA: el relevo del hero —la caida del logo en
+     * cuatro tiempos— existe para formar ESE logo. Sin particulas en Confianza,
+     * `fromHeroLogoDrop` sigue eligiendose y calculandose, pero no se ve. El
+     * plano cinematografico queda sin destino visible.
+     *
+     * Se apaga con `visible`, no borrando el codigo: la reversa es esta linea.
+     */
+    pointsRef.current.visible = !isTrustSection
     const isTokenSection = sectionIdx === TOKEN_SECTION_INDEX
     const isMiningSection = sectionIdx === MINING_SECTION_INDEX
     const trustFormElapsed =
@@ -904,9 +1071,23 @@ export default function ParticleMorphSystem({
       particleLimit,
     })
 
+    // Anticipación de la forma siguiente en función del scroll. `blend` es 0
+    // mientras no se haya avanzado lo suficiente dentro de la sección, y ahí
+    // este bloque se comporta exactamente igual que antes de existir.
+    const blend = scrollBlendAmount(scrollProgressRef.current)
+    const nextTarget =
+      blend > 0 ? allTargets[Math.min(sectionIdx + 1, allTargets.length - 1)] : null
+
+    if (process.env.NODE_ENV !== 'production') {
+      ;(window as Window & { __GENESIS_MORPH_BLEND__?: number }).__GENESIS_MORPH_BLEND__ = blend
+    }
+
     for (let i = 0; i < particleLimit * 3; i++) {
       if (!isTrustSection) {
-        morph[i] += (target[i] - morph[i]) * morphLerp
+        const aim = nextTarget
+          ? target[i] + (nextTarget[i] - target[i]) * blend
+          : target[i]
+        morph[i] += (aim - morph[i]) * morphLerp
         col[i] += (colorTarget[i] - col[i]) * COLOR_LERP_SPEED
       }
     }
@@ -1858,13 +2039,34 @@ export default function ParticleMorphSystem({
   return (
     <group ref={groupRef}>
       <points ref={pointsRef} geometry={geometry}>
+        {/*
+          LAS PARTICULAS SON LUZ, NO PINTURA.
+
+          Dos cosas hacian que se leyeran como pegatinas planas de colores en
+          vez de polvo luminoso, y las dos son de material, no de cantidad:
+
+          1. SIN `blending` DECLARADO, three usa NormalBlending. Con eso, dos
+             particulas superpuestas se TAPAN. La luz no funciona asi: se suma.
+             En una nube de 600 puntos sobre fondo negro, esa diferencia es la
+             que separa «polvo estelar» de «confeti».
+
+          2. `alphaTest: 0.05` RECORTA el borde suave de la textura. La textura
+             es un degradado radial que se desvanece a cero — justo lo que hace
+             que un punto parezca un halo y no un disco. Con alphaTest se
+             descartan los pixeles por debajo del umbral y queda un CANTO DURO.
+             Se quita: con blending aditivo y sin escritura de profundidad no
+             hace falta.
+
+          La opacidad baja de 0,78 a 0,52 para compensar: sumando, la misma
+          nube brilla mas: mantenerla en 0,78 quemaria los cumulos a blanco.
+        */}
         <pointsMaterial
           size={0.028}
           sizeAttenuation
           transparent
-          opacity={0.78}
+          opacity={0.52}
           map={circleTexture}
-          alphaTest={0.05}
+          blending={THREE.AdditiveBlending}
           vertexColors
           depthWrite={false}
         />

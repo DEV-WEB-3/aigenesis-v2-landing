@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import { useMemo } from 'react'
 import {
   ORACLE_NEURAL_NODE_COUNT,
@@ -22,9 +24,9 @@ export default function GoracleNeuralNetwork() {
     >
       <defs>
         <linearGradient id="goracle-synapse-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100">
-          <stop offset="0%" stopColor="#00F5FF" stopOpacity="0.35" />
-          <stop offset="50%" stopColor="#9D4DFF" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#FF00C8" stopOpacity="0.3" />
+          <stop offset="0%" stopColor={EMISSION.cyan} stopOpacity="0.35" />
+          <stop offset="50%" stopColor={EMISSION.violetHi} stopOpacity="0.45" />
+          <stop offset="100%" stopColor={EMISSION.magenta} stopOpacity="0.3" />
         </linearGradient>
         <filter id="goracle-node-glow" x="-80%" y="-80%" width="260%" height="260%">
           <feGaussianBlur stdDeviation="0.65" result="blur" />
@@ -55,7 +57,7 @@ export default function GoracleNeuralNetwork() {
         const delay = (i / ORACLE_NEURAL_NODE_COUNT) * 4.8
         return (
           <g key={i} className="goracle-neural-node" style={{ animationDelay: `${delay}s` } as React.CSSProperties}>
-            <circle cx={x} cy={y} r="0.55" className="goracle-neural-node__dot" fill="#9D4DFF" filter="url(#goracle-node-glow)" />
+            <circle cx={x} cy={y} r="0.55" className="goracle-neural-node__dot" fill={EMISSION.violetHi} filter="url(#goracle-node-glow)" />
           </g>
         )
       })}

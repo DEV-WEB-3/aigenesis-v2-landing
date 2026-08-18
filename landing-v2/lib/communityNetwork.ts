@@ -1,3 +1,5 @@
+import { llegadaDe } from '@/lib/design/motion'
+
 /**
  * Phase 13.0 — Genesis Community Network (WebGL star dust, sección 10).
  */
@@ -13,7 +15,7 @@ import {
 type Rgb = readonly [number, number, number]
 
 export const COMMUNITY_SECTION_INDEX = 10
-export const COMMUNITY_FORM_DURATION = 1.2
+export const COMMUNITY_FORM_DURATION = llegadaDe('comunidad')
 
 export const COMMUNITY_ROLE = {
   CORE: 0,

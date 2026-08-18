@@ -19,6 +19,8 @@ export const PAGES = {
   HOME: '/',
   LEGAL: '/legal',
   WHITEPAPER: '/whitepaper',
+  /** Portal de habilitación de la Comunidad G11 — ver `lib/g11.ts`. */
+  G11: '/g11',
 } as const
 
 /**
@@ -36,25 +38,46 @@ export const ROUTES = {
   BSCSCAN: OFFICIAL_BSCSCAN.TOKEN,
 } as const
 
-/** Secciones snap-scroll — orden narrativo (14 capítulos) */
-export const SECTIONS = [
-  { id: 'hero',        label: 'Hero',        navLabel: 'Inicio',      index: 0,  showInNav: false },
-  { id: 'trust',       label: 'Trust',       navLabel: 'Confianza',   index: 1,  showInNav: true },
-  { id: 'ecosistema',  label: 'Ecosistema',  navLabel: 'Ecosistema',  index: 2,  showInNav: true },
-  { id: 'token',       label: 'Token',       navLabel: 'Token',       index: 3,  showInNav: true },
-  { id: 'mining',      label: 'Mining',      navLabel: 'Mining',      index: 4,  showInNav: true },
-  { id: 'booster',     label: 'Booster',     navLabel: 'Booster',     index: 5,  showInNav: true },
-  { id: 'staking',     label: 'Staking',     navLabel: 'Staking',     index: 6,  showInNav: true },
-  { id: 'gpulse',      label: 'G-Pulse',     navLabel: 'G-Pulse',     index: 7,  showInNav: true },
-  { id: 'goracle',     label: 'G-Oracle',    navLabel: 'G-Oracle',    index: 8,  showInNav: true },
-  { id: 'marketplace', label: 'Marketplace', navLabel: 'Marketplace', index: 9,  showInNav: true },
-  { id: 'comunidad',   label: 'Comunidad',   navLabel: 'Comunidad',   index: 10, showInNav: true },
-  { id: 'technology',  label: 'Tech',        navLabel: 'Tecnología',  index: 11, showInNav: true },
-  { id: 'roadmap',     label: 'Roadmap',     navLabel: 'Roadmap',     index: 12, showInNav: true },
-  { id: 'cta',         label: 'CTA',         navLabel: 'Únete',       index: 13, showInNav: false },
+/**
+ * Secciones snap-scroll — orden narrativo (14 capítulos).
+ *
+ * El ORDEN de este array es la única definición del orden de la página. El
+ * índice no se escribe: se deriva de la posición (ver `SECTIONS` abajo). Antes
+ * venía anotado a mano junto a cada entrada, que es una segunda copia del mismo
+ * dato — reordenar el array sin tocar los números dejaba todo desalineado en
+ * silencio.
+ */
+const SECTION_DEFS = [
+  { id: 'hero',        label: 'Hero',        navLabel: 'Inicio',      showInNav: false },
+  { id: 'trust',       label: 'Trust',       navLabel: 'Confianza',   showInNav: true },
+  { id: 'ecosistema',  label: 'Ecosistema',  navLabel: 'Ecosistema',  showInNav: true },
+  { id: 'token',       label: 'Token',       navLabel: 'Token',       showInNav: true },
+  { id: 'mining',      label: 'Mining',      navLabel: 'Mining',      showInNav: true },
+  { id: 'booster',     label: 'Booster',     navLabel: 'Booster',     showInNav: true },
+  { id: 'staking',     label: 'Staking',     navLabel: 'Staking',     showInNav: true },
+  { id: 'gpulse',      label: 'G-Pulse',     navLabel: 'G-Pulse',     showInNav: true },
+  { id: 'goracle',     label: 'G-Oracle',    navLabel: 'G-Oracle',    showInNav: true },
+  { id: 'marketplace', label: 'Marketplace', navLabel: 'Marketplace', showInNav: true },
+  { id: 'comunidad',   label: 'Comunidad',   navLabel: 'Comunidad',   showInNav: true },
+  { id: 'technology',  label: 'Tech',        navLabel: 'Tecnología',  showInNav: true },
+  { id: 'roadmap',     label: 'Roadmap',     navLabel: 'Roadmap',     showInNav: true },
+  { id: 'cta',         label: 'CTA',         navLabel: 'Únete',       showInNav: false },
 ] as const
 
-export type SectionId = (typeof SECTIONS)[number]['id']
+export type SectionId = (typeof SECTION_DEFS)[number]['id']
+
+export type Section = {
+  id: SectionId
+  label: string
+  navLabel: string
+  showInNav: boolean
+  index: number
+}
+
+export const SECTIONS: readonly Section[] = SECTION_DEFS.map((s, index) => ({
+  ...s,
+  index,
+}))
 
 export const TOTAL_SECTIONS = SECTIONS.length
 
@@ -79,6 +102,108 @@ export const EXTERNAL_LINKS = {
 } as const
 
 export const NAV_LINKS = SECTIONS.filter((s) => s.showInNav)
+
+/**
+ * Las cinco cabezas del menú.
+ *
+ * POR QUE EXISTEN
+ * El menú tenía DOCE entradas planas para catorce secciones, que es lo que pasa
+ * cuando cada capítulo nuevo se añade al menú porque no hay dónde meterlo. La
+ * página se escribió como siete capítulos y creció a catorce; los rótulos
+ * «Sección 02/05/06/07» que quedaban en pantalla eran el fósil de esa versión.
+ *
+ * Recortar a cinco BORRANDO siete no arregla nada: esconde contenido que
+ * existe. Lo que faltaba era un piso intermedio. Cada cabeza es un tema, salta
+ * a su primera sección y despliega las suyas — se lee cinco, se llega a doce.
+ *
+ * Y este agrupamiento es además el contenedor de lo que viene: Mercados,
+ * Utilidad y Tokenomics entran bajo `token`; G11 bajo `comunidad`. Sin estos
+ * huecos volverían a ser tres entradas planas más, y el menú tendría quince.
+ *
+ * `Inteligencia` va aparte de `Ecosistema` a propósito: G-Pulse y G-Oracle son
+ * la capa de IA, que es lo que separa este proyecto de cualquier otro con
+ * mining y staking. Enterrarla entre los productos es regalar el argumento.
+ * `Tecnología` y `Roadmap` van bajo `Confianza` porque su contenido real es
+ * prueba —verificación del contrato, hitos cumplidos—, no producto.
+ */
+export interface GrupoNav {
+  id: string
+  label: string
+  /** Sección a la que salta la cabeza al pulsarla. */
+  ancla: SectionId
+  /** Secciones del recorrido que cuelgan de esta cabeza. */
+  hijos: readonly SectionId[]
+  /** Páginas propias (rutas reales), si las hay. */
+  rutas?: readonly { href: string; label: string }[]
+}
+
+/*
+ * El tipo va ANOTADO y no sólo con `satisfies`. Con `as const satisfies`, los
+ * grupos que no declaran `rutas` no tienen esa propiedad en su tipo, y leer
+ * `grupo.rutas` sobre la unión no compila. Anotando, todos comparten la forma
+ * y el campo opcional se puede consultar sin cirugía en cada uso.
+ */
+export const NAV_GROUPS: readonly GrupoNav[] = [
+  {
+    id: 'ecosistema',
+    label: 'Ecosistema',
+    ancla: 'ecosistema',
+    hijos: ['ecosistema', 'mining', 'booster', 'staking', 'marketplace'],
+  },
+  { id: 'inteligencia', label: 'Inteligencia', ancla: 'gpulse', hijos: ['gpulse', 'goracle'] },
+  { id: 'token', label: 'Token', ancla: 'token', hijos: ['token'] },
+  { id: 'confianza', label: 'Confianza', ancla: 'trust', hijos: ['trust', 'technology', 'roadmap'] },
+  {
+    id: 'comunidad',
+    label: 'Comunidad',
+    ancla: 'comunidad',
+    hijos: ['comunidad'],
+    /*
+     * `rutas` son páginas propias, no anclas del recorrido. Van en un campo
+     * aparte a propósito: la guarda de abajo comprueba que `hijos` cubra
+     * exactamente las SECCIONES, y meter aquí una ruta la haría fallar por una
+     * razón falsa. Separarlos deja la guarda intacta y hace explícito que son
+     * dos cosas distintas — una salta dentro de la página, la otra navega.
+     */
+    rutas: [{ href: PAGES.G11, label: 'Comunidad G11' }],
+  },
+]
+
+/**
+ * GUARDA: ninguna sección del menú puede quedarse fuera de una cabeza.
+ *
+ * Corre al evaluar el módulo, o sea durante el build. Si alguien añade una
+ * sección con `showInNav: true` y no la mete en un grupo, el build FALLA
+ * nombrándola — en vez de desplegarse con una sección inalcanzable desde el
+ * menú, que es un fallo que nadie nota porque no rompe nada.
+ *
+ * Cubre los dos lados: la que falta y la que sobra o está repetida.
+ *
+ * Probada rompiéndola: al sacar `roadmap` de `confianza`, el build cae con
+ * «sin cabeza: roadmap»; al ponerlo también en `token`, cae con «en dos
+ * cabezas: roadmap».
+ */
+const _hijosDeclarados = NAV_GROUPS.flatMap((g) => g.hijos as readonly SectionId[])
+const _repetidos = _hijosDeclarados.filter((id, i) => _hijosDeclarados.indexOf(id) !== i)
+const _sinCabeza = NAV_LINKS.filter((s) => !_hijosDeclarados.includes(s.id)).map((s) => s.id)
+const _sobran = _hijosDeclarados.filter((id) => !NAV_LINKS.some((s) => s.id === id))
+
+if (_sinCabeza.length || _repetidos.length || _sobran.length) {
+  throw new Error(
+    [
+      'NAV_GROUPS no cubre exactamente las secciones del menú.',
+      _sinCabeza.length ? `  sin cabeza: ${_sinCabeza.join(', ')}` : '',
+      // `[...new Set()]` necesita downlevelIteration con el target de este
+      // proyecto; filtrar por índice hace lo mismo sin tocar el tsconfig.
+      _repetidos.length
+        ? `  en dos cabezas: ${_repetidos.filter((id, i) => _repetidos.indexOf(id) === i).join(', ')}`
+        : '',
+      _sobran.length ? `  no van en el menú: ${_sobran.join(', ')}` : '',
+    ]
+      .filter(Boolean)
+      .join('\n')
+  )
+}
 
 export function getSectionIndex(id: string): number {
   const section = SECTIONS.find((s) => s.id === id)
@@ -136,7 +261,7 @@ export const PLACEHOLDERS = {
   whitepaper: {
     value: OFFICIAL_DOWNLOADS.WHITEPAPER_PDF,
     status: 'live' as const,
-    note: 'PDF oficial aigtoken.io',
+    note: 'PDF servido desde /docs — ya no depende de aigtoken.io',
   },
   legal: {
     value: PAGES.LEGAL,

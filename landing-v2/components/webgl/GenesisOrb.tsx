@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -71,7 +73,9 @@ const fragmentShader = /* glsl */ `
   void main() {
     float n = noise(vPosition * 2.2 + uTime * 0.08);
 
-    // Tokens: ion #3D8BFF, core #6E56CF, fuchsia #E91E8B (linear aprox)
+    // Aproximación lineal de EMISSION.blueHi / .violet / .magenta.
+    // Sin hex aquí a propósito: una copia del valor en un comentario envejece en
+    // silencio, y esta ya lo había hecho (citaba el magenta retirado).
     vec3 ionDeep  = vec3(0.04, 0.12, 0.38);
     vec3 ionMid   = vec3(0.12, 0.35, 0.92);
     vec3 coreMid  = vec3(0.22, 0.14, 0.68);
@@ -133,7 +137,7 @@ export default function GenesisOrb({ sectionIndexRef }: GenesisOrbProps) {
       <mesh ref={glowRef}>
         <icosahedronGeometry args={[ORB_RADIUS, 3]} />
         <meshBasicMaterial
-          color="#E91E8B"
+          color={EMISSION.magenta}
           transparent
           opacity={0}
           depthWrite={false}

@@ -6,6 +6,7 @@ import {
   constellationNodePosition,
 } from '@/lib/mining/miningConstellationLayout'
 import { MiningNodeIcon } from '@/components/mining/MiningNetworkIcons'
+import { respiracionDe, desfase } from '@/lib/design/motion'
 
 interface MiningConstellationNodeProps {
   index: number
@@ -17,7 +18,19 @@ export default function MiningConstellationNode({ index, compact = false }: Mini
   if (!node) return null
 
   const { x, y } = constellationNodePosition(index)
-  const breatheDur = 4 + (index % 3) * 0.65
+
+  /**
+   * Los nodos respiran TODOS al mismo ritmo, y se separan por retardo.
+   *
+   * Era `4 + (index % 3) * 0,65` — tres duraciones distintas (4 · 4,65 · 5,3)
+   * para que no latieran a la vez. La intencion es buena; el metodo hace que
+   * los nodos deriven unos de otros sin volver a coincidir nunca, y arrastra
+   * dos valores fuera de la rejilla del portal.
+   *
+   * Mismo efecto a la vista, repartiendo el arranque dentro de un ciclo.
+   */
+  const respiracion = respiracionDe('mining')
+  const retardo = desfase(index, 3, respiracion)
 
   return (
     <div
@@ -30,7 +43,8 @@ export default function MiningConstellationNode({ index, compact = false }: Mini
           '--node-color': node.color,
           '--node-glow': node.glow,
           '--node-pulse-offset': node.pulseOffset,
-          '--node-breathe-s': `${breatheDur}s`,
+          '--node-breathe-s': `${respiracion}s`,
+          '--node-breathe-delay': `${retardo.toFixed(3)}s`,
           animationDelay: `${index * 0.18}s`,
         } as React.CSSProperties
       }

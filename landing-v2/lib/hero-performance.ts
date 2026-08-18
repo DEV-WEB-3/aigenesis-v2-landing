@@ -1,4 +1,9 @@
+import { isMobileWidth } from '@/lib/viewport'
+
 export type HeroPerfTier = 'high' | 'medium' | 'low'
+
+/** Móvil pequeño — umbral exclusivo del hero. */
+const HERO_SMALL_PHONE_MAX_WIDTH = 480
 
 export const HERO_LOGO_FOCUS = { x: 0.5, y: 0.44 } as const
 export const HERO_ORB_FOCUS = HERO_LOGO_FOCUS
@@ -46,8 +51,11 @@ export function detectHeroPerfTier(): HeroPerfTier {
   const cores = navigator.hardwareConcurrency ?? 4
   const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 4
 
-  if (w < 480 || cores <= 2) return 'low'
-  if (w < 768 || cores <= 4 || memory <= 4) return 'medium'
+  // 480 es propio del hero (móvil pequeño), no un umbral compartido: aquí el
+  // ancho se cruza con núcleos y memoria, que es una decisión distinta a la de
+  // clasificar el dispositivo por tamaño.
+  if (w < HERO_SMALL_PHONE_MAX_WIDTH || cores <= 2) return 'low'
+  if (isMobileWidth(w) || cores <= 4 || memory <= 4) return 'medium'
   return 'high'
 }
 
@@ -59,10 +67,18 @@ export const RING_PARTICLE_COUNTS: Record<HeroPerfTier, { inner: number; middle:
 
 export const PARTICLE_COUNTS = RING_PARTICLE_COUNTS
 
+/*
+ * Recuentos bajados ~40 % al entrar la esfera de marca en el hero.
+ *
+ * Bajar solo la opacidad habria sido maquillaje: el coste de dibujar 3.200
+ * particulas se paga igual aunque se vean al 45 %. Como ahora la red es fondo
+ * atmosferico y no objeto, no hace falta esa densidad — a 1.900 la textura se
+ * mantiene y se ahorra trabajo de CPU de verdad.
+ */
 export const FIELD_PARTICLE_COUNTS: Record<HeroPerfTier, number> = {
-  high: 3200,
-  medium: 1200,
-  low: 380,
+  high: 1900,
+  medium: 750,
+  low: 300,
 }
 
 export const NETWORK_NODE_COUNTS: Record<HeroPerfTier, number> = {

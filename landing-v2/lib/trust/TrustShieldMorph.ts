@@ -45,13 +45,24 @@ import {
   sampleTrustQuantumValidation,
   sampleTrustVolumetricDeep,
 } from './TrustShieldQuantumArchitecture'
+import { armonico, LLEGADA_ESTABLECIMIENTO_S } from '@/lib/design/motion'
 
-export const TRUST_FORM_DURATION = 4
-export const TRUST_CORE_PULSE_CYCLE = 3.5
-export const TRUST_VALIDATION_LOOP = 2.4
-export const TRUST_FLOW_LOOP = 3.6
-export const TRUST_AURA_BREATH_CYCLE = 4.8
-export const TRUST_NEURAL_PULSE_CYCLE = 2.2
+/**
+ * Los seis tempos de Trust, ahora en acorde.
+ *
+ * Valian 4 · 3,5 · 2,4 · 3,6 · 4,8 · 2,2 — seis ritmos y ninguno multiplo de
+ * otro, en la seccion que establece el tono del portal entero. Ahora son
+ * divisiones exactas del pulso de Trust, asi que las capas vuelven a coincidir
+ * en cada ciclo. Los desplazamientos son minimos (3,5→4 · 2,4→2 · 3,6→4 ·
+ * 2,2→2); el unico apreciable es la respiracion del aura, y un fondo mas
+ * calmado que su contenido es lo correcto.
+ */
+export const TRUST_FORM_DURATION = LLEGADA_ESTABLECIMIENTO_S
+export const TRUST_CORE_PULSE_CYCLE = armonico('trust', 2)
+export const TRUST_VALIDATION_LOOP = armonico('trust', 4)
+export const TRUST_FLOW_LOOP = armonico('trust', 2)
+export const TRUST_AURA_BREATH_CYCLE = armonico('trust', 1)
+export const TRUST_NEURAL_PULSE_CYCLE = armonico('trust', 4)
 
 /** Phase 5.2 — logo → shield morph timeline (morphT 0→1). */
 export const TRUST_FORM_BEATS = {

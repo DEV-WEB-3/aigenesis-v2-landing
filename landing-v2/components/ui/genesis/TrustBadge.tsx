@@ -1,5 +1,7 @@
 'use client'
 
+import { Heading, HeadingLevel } from './Heading'
+
 export type TrustStatus = 'verified' | 'live' | 'audited' | 'pending'
 
 export interface TrustBadgeProps {
@@ -18,20 +20,42 @@ const statusConfig: Record<
   TrustStatus,
   { label: string; dotClass: string; textClass: string }
 > = {
+  /*
+    EL COLOR CODIFICA EL TIPO DE PRUEBA, NO «TODO BIEN».
+
+    Los tres estados positivos usaban `state-success` — el MISMO verde para los
+    tres. Verificado, auditado y en vivo se veian identicos, asi que el color no
+    distinguia nada: era decoracion con disfraz de semantica. Y el verde no esta
+    en la paleta de marca.
+
+    Ahora cada uno toma un tramo de la rampa Genesis segun QUE clase de prueba
+    ofrece, que es la distincion que la seccion necesita hacer:
+
+      verificado  cian     — comprobable en cadena, ahora mismo
+      auditado    violeta  — revisado por un tercero
+      en vivo     magenta  — esta ocurriendo, y por eso late
+
+    OJO: la clase es `genesis-fuchsia`, no `genesis-magenta`. Esa segunda NO
+    existe en la escala, y usarla deja el punto SIN color de fondo — sin error
+    de compilacion, sin aviso en consola y sin nada que lo delate salvo mirarlo.
+
+    `pending` conserva el ambar: ese SI es un estado distinto de los otros tres,
+    y ahi el color semantico esta haciendo su trabajo.
+  */
   verified: {
     label: 'Verificado',
-    dotClass: 'bg-state-success',
-    textClass: 'text-state-success',
+    dotClass: 'bg-genesis-cyan',
+    textClass: 'text-genesis-cyan',
   },
   live: {
     label: 'En vivo',
-    dotClass: 'bg-state-success animate-pulse',
-    textClass: 'text-state-success',
+    dotClass: 'bg-genesis-fuchsia animate-pulse',
+    textClass: 'text-genesis-fuchsia',
   },
   audited: {
     label: 'Auditado',
-    dotClass: 'bg-state-success',
-    textClass: 'text-state-success',
+    dotClass: 'bg-genesis-violet',
+    textClass: 'text-genesis-violet',
   },
   pending: {
     label: 'Pendiente',
@@ -50,7 +74,12 @@ export function TrustBadge({
   const config = statusConfig[status]
 
   const inner = (
-    <>
+    /*
+     * Era <h4> mientras Card era <h3>, y las dos son tarjetas hermanas bajo la
+     * misma sección: de ahí el salto H2 → H4 que marcaba la auditoría. Ahora las
+     * dos bajan el mismo escalón porque ocupan el mismo sitio en el árbol.
+     */
+    <HeadingLevel>
       <div className="flex items-center gap-2">
         <span
           className={cn('inline-block h-2 w-2 rounded-full shrink-0', config.dotClass)}
@@ -60,11 +89,17 @@ export function TrustBadge({
           {config.label}
         </span>
       </div>
-      <h4 className="font-display text-heading text-genesis-text">{title}</h4>
+      <Heading className="font-display text-heading text-genesis-text">{title}</Heading>
+      {/*
+        Era `text-sm` (14px) mientras `Card` usa `text-body-lg` (17px) para lo
+        mismo: la descripción de una tarjeta. Dos tamaños para un mismo papel
+        dentro de la misma sección — medido en Trust, que muestra ambos tipos de
+        tarjeta uno al lado del otro.
+      */}
       {description ? (
-        <p className="text-sm text-genesis-mist leading-relaxed">{description}</p>
+        <p className="text-body-lg text-genesis-mist leading-relaxed">{description}</p>
       ) : null}
-    </>
+    </HeadingLevel>
   )
 
   const baseClass = cn(

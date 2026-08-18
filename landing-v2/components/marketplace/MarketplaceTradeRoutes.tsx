@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import {
   COMMERCE_GLOBE_CENTER,
   COMMERCE_PACKET_COLORS,
@@ -28,9 +30,9 @@ export default function MarketplaceTradeRoutes() {
     >
       <defs>
         <linearGradient id="marketplace-route-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100">
-          <stop offset="0%" stopColor="#00F5FF" stopOpacity="0.58" />
-          <stop offset="50%" stopColor="#9D4DFF" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="#FF00C8" stopOpacity="0.4" />
+          <stop offset="0%" stopColor={EMISSION.cyan} stopOpacity="0.58" />
+          <stop offset="50%" stopColor={EMISSION.violetHi} stopOpacity="0.5" />
+          <stop offset="100%" stopColor={EMISSION.magenta} stopOpacity="0.4" />
         </linearGradient>
       </defs>
 
@@ -72,7 +74,7 @@ export default function MarketplaceTradeRoutes() {
         cy={COMMERCE_GLOBE_CENTER.y}
         r="1.2"
         className="marketplace-trade-routes__hub"
-        fill="#FF00C8"
+        fill={EMISSION.magenta}
       />
     </svg>
   )

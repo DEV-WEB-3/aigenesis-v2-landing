@@ -1,10 +1,12 @@
+import { EMISSION } from '@/lib/design/tokens'
+import { pulsoDe, llegadaDe } from '@/lib/design/motion'
 /**
  * Phase 15.0 — Genesis Evolution Path (viewBox 0–100).
  * Ascending curve · 2019 → 2027 · not a vertical timeline.
  */
 
-export const ROADMAP_EVOLUTION_PULSE_S = 4
-export const ROADMAP_EVOLUTION_FORM_S = 1.1
+export const ROADMAP_EVOLUTION_PULSE_S = pulsoDe('roadmap')
+export const ROADMAP_EVOLUTION_FORM_S = llegadaDe('roadmap')
 export const ROADMAP_MILESTONE_COUNT = 5
 
 export interface RoadmapMilestoneDef {
@@ -60,9 +62,9 @@ export function evolutionCurvePath(): string {
 }
 
 export function evolutionPathColor(t: number): string {
-  if (t < 0.35) return '#9D4DFF'
-  if (t < 0.72) return '#FF00C8'
-  return '#00F5FF'
+  if (t < 0.35) return EMISSION.violetHi
+  if (t < 0.72) return EMISSION.magenta
+  return EMISSION.cyan
 }
 
 export function milestoneColor(index: number): string {

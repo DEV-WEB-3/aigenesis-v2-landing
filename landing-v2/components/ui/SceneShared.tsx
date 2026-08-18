@@ -1,12 +1,13 @@
 'use client'
 
 import { useRef, useEffect, forwardRef, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { Button } from '@/components/ui/genesis'
 import { useSectionEnterAnimation } from '@/hooks/useSectionEnterAnimation'
 import { SectionVisualProvider } from '@/hooks/useSectionVisualActive'
 import GenesisOrbSignature, { type GenesisOrbPlacement } from '@/components/brand/GenesisOrbSignature'
+import { HeadingLevel } from '@/components/ui/genesis/Heading'
 
 // ─── Variants compartidos ─────────────────────────────────────────────────────
 export const containerV = {
@@ -120,12 +121,27 @@ export function GradientButton({
 }
 
 // ─── Feature item "/01 Texto" ─────────────────────────────────────────────────
+/**
+ * Ficha de característica.
+ *
+ * `num` PASA A SER OPCIONAL, y por una razón que no es de código.
+ *
+ * Un número de orden promete una secuencia: primero esto, después aquello. En
+ * Marketplace rotulaba «/01 Catálogo · /02 Pago · /03 Tracking · /04 Envío», que
+ * no es una secuencia sino una lista de características — no hay un orden que
+ * seguir. Era decoración disfrazada de información, y el lector paga el coste de
+ * intentar entender un orden que no existe.
+ *
+ * Sin `num`, la ficha usa un punto de viñeta: marca el elemento sin prometer
+ * nada. Cuando la lista SÍ sea una secuencia —pasos de un proceso, fases— el
+ * número vuelve a tener sentido y se pasa.
+ */
 export function FeatureItem({
   num,
   text,
   glass = false,
 }: {
-  num: string
+  num?: string
   text: string
   glass?: boolean
 }) {
@@ -134,9 +150,16 @@ export function FeatureItem({
       variants={slideLeft}
       className={glass ? 'glass-info-item flex items-start gap-3' : 'flex items-start gap-3'}
     >
-      <span className="font-mono font-bold text-lg leading-tight text-gradient-genesis-strong">
-        {num}
-      </span>
+      {num ? (
+        <span className="font-mono font-bold text-lg leading-tight text-gradient-genesis-strong">
+          {num}
+        </span>
+      ) : (
+        <span
+          className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-genesis-strong"
+          aria-hidden="true"
+        />
+      )}
       <span className="text-sm text-genesis-mist leading-tight pt-0.5">{text}</span>
     </motion.div>
   )
@@ -246,11 +269,17 @@ export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { classN
         key={motionKey}
         variants={containerV}
         initial="hidden"
+        // Sin `exit`: el contenido ya no se desmonta en ningún modo, así que no
+        // hay salida que animar.
         animate={shouldAnimate ? 'visible' : 'hidden'}
-        exit={isNaturalScroll ? undefined : 'exit'}
         className={`scene-content-stack flex flex-col gap-4 lg:max-w-[27rem] lg:justify-self-end lg:pr-1${wideStack ? ' scene-content-stack--wide' : ''}`}
       >
-        {children}
+        {/*
+          Una sección está un escalón por debajo del título de la página, así que
+          su cabecera es h2 y las tarjetas de dentro, h3. El nivel no se escribe
+          en ningún sitio: sale de este anidamiento.
+        */}
+        <HeadingLevel>{children}</HeadingLevel>
       </motion.div>
     )
 
@@ -259,7 +288,34 @@ export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { classN
         <section
           ref={setSectionRef}
           id={sectionId}
-          className={`home-section-fit relative w-full flex items-center overflow-visible lg:overflow-hidden lg:h-screen ${className}`}
+          /*
+           * `lg:min-h-screen` y NO `lg:h-screen`.
+           *
+           * `h-screen` fija `height: 100vh`, y con `overflow-hidden` al lado
+           * una seccion cuyo contenido pidiera mas lo perdia sin remedio.
+           * Medido en la ventana real de un portatil a zoom 100 % (1914x683):
+           * Booster necesitaba 808 px y se le recortaban 190 —93 arriba y 97
+           * abajo—. Y ademas ganaba a la regla `min-height` de la hoja de
+           * estilos, porque `h-screen` fija `height` y eso manda sobre un
+           * minimo.
+           *
+           * Con `min-h-screen` la seccion mide el alto de ventana COMO MINIMO y
+           * crece si hace falta. El `overflow-hidden` se conserva: sigue
+           * haciendo falta para recortar las capas decorativas de fondo, que
+           * SI se salen a proposito.
+           *
+           * PERO LA ALTURA YA NO SE FIJA AQUI. `lg:min-h-screen` vale 100dvh, y
+           * eso NO descuenta los 76 px que tapa la barra al engancharse: medido
+           * en las catorce, todas sobraban exactamente ese margen. No era el
+           * contenido, era la construccion.
+           *
+           * Ahora manda `.home-section-fit`, que resta `--enganche-alto`. La
+           * utilidad se quita en vez de intentar ganarle: Tailwind vive en una
+           * capa POSTERIOR, asi que gana a la hoja pase lo que pase con la
+           * especificidad, y pelearse con eso solo produce reglas cada vez mas
+           * largas que siguen perdiendo.
+           */
+          className={`home-section-fit relative w-full flex items-center overflow-visible lg:overflow-hidden ${className}`}
           style={{ pointerEvents: 'auto' }}
         >
           {sectionOverlay}
@@ -267,13 +323,19 @@ export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { classN
             <GenesisOrbSignature placement={orbSignature} isActive={isActive} />
           ) : null}
           <div className="scene-content-frame w-full max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-center">
-            {isNaturalScroll ? (
-              shouldMountContent ? contentStack : null
-            ) : (
-              <AnimatePresence mode="wait">
-                {shouldMountContent ? contentStack : null}
-              </AnimatePresence>
-            )}
+            {/*
+              Antes había aquí dos ramas: en scroll natural el contenido se
+              montaba y se quedaba; en el resto iba envuelto en
+              `AnimatePresence mode="wait"`, que lo desmontaba al dejar de ser la
+              sección activa. Esa rama es la que dejaba 1 de 14 secciones en el
+              DOM en escritorio.
+
+              Ahora el contenido persiste en todos los modos, así que
+              `AnimatePresence` no tenía nada que hacer: no queda nada que salga.
+              Una rama que no puede ejecutarse es peor que ninguna, porque invita
+              a razonar sobre un comportamiento que ya no existe.
+            */}
+            {shouldMountContent ? contentStack : null}
             <div
               className={`scene-particle-gutter ${
                 particleColumn

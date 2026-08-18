@@ -16,49 +16,86 @@
  */
 
 :root {
-  /* Genesis — superficies y texto */
-  --genesis-void: #02040a;
-  --genesis-base: #080a14;
-  --genesis-surface: #0f111c;
-  --genesis-text: #f8fafc;
-  --genesis-ion: #3d8bff;
-  --genesis-cyan: #22d3ee;
-  --genesis-pulse: #5b6cff;
-  --genesis-core: #6e56cf;
-  --genesis-mist: #aab4c8;
-  --genesis-ghost: #5c6b82;
-  --genesis-fuchsia: #e91e8b;
-  --genesis-fuchsia-soft: #ff4fb8;
-  --genesis-fuchsia-deep: #c4187a;
-  --genesis-fuchsia-rgb: 233, 30, 139;
-  --genesis-core-rgb: 110, 86, 207;
-  --genesis-ion-rgb: 61, 139, 255;
-  --genesis-cyan-rgb: 34, 211, 238;
+  /*
+   * FUNDACIÓN — espejo de lib/design/tokens.ts.
+   *
+   * Antes había aquí 23 variables de las que CASI NINGUNA se usaba:
+   * --genesis-core, --genesis-ion, --genesis-pulse, --genesis-violet,
+   * --genesis-turquoise y todas las *-rgb tenían CERO referencias, mientras sus
+   * hex aparecían a fuego 372 veces por el proyecto. El sistema estaba
+   * declarado y sistemáticamente esquivado.
+   *
+   * Los valores no se han elegido: se han medido. Cada uno es el que YA se
+   * renderiza y cae dentro de la banda de tono del logo oficial.
+   */
 
-  /* Estados */
-  --state-success: #2fd07f;
-  --state-warning: #e6b450;
-  --state-error: #e85d5d;
-  --state-info: #00d1ff;
+  /* El vacío — neutros con sesgo azul, no grises puros */
+  --g-void: #02040a;
+  --g-base: #080a14;
+  --g-surface: #0f111c;
+  --g-raised: #161a2b;
 
-  /* WebGL (referencia visual — no usado en CSS runtime aún) */
-  --webgl-particle-core: #22d3ee;
-  --webgl-particle-edge: #6e56cf;
-  --webgl-orb-inner: #1a2744;
-  --webgl-orb-glow: #e91e8b;
-  --webgl-energy-line: rgba(233, 30, 139, 0.35);
+  /* Tinta */
+  --g-ink: #f8fafc;
+  --g-ink-muted: #aab4c8;
+  /*
+   * `#6b7a94` y no `#5c6b82`. Medido contra el fondo real de seccion (#080A14),
+   * el valor anterior daba 3.65 de contraste — por debajo del 4.5 que pide
+   * WCAG AA, y lo usan rotulos de 11-12 px que son justo los que mas lo
+   * necesitan.
+   *
+   * 4.55 es el minimo que cumple sin aplanar la escala: sigue habiendo tres
+   * escalones claros (faint 4.6 · muted 9.7 · ink 19.3) y el nivel bajo se
+   * sigue leyendo como secundario.
+   */
+  --g-ink-faint: #6b7a94;
 
-  /* Legacy — compatibilidad migración (alias → usar --genesis-fuchsia) */
-  --genesis-violet: #6e56cf;
-  --genesis-turquoise: #00bcd4;
-  --genesis-legacy-magenta: var(--genesis-fuchsia);
-  --genesis-legacy-cyan: #00e5ff;
+  /* Emisión — las estrellas dentro del vacío */
+  --g-blue: #2962ff;
+  --g-blue-hi: #3d8bff;
+  --g-violet: #6e56cf;
+  --g-violet-hi: #9d4dff;
+  --g-magenta: #ff00c8;
+  --g-magenta-hi: #ff4ddb;
+  --g-cyan: #00f5ff;
+
+  /*
+   * Desenfoque de cristal. Habia CUATRO radios sueltos por el CSS (8, 10, 12 y
+   * 18px) y cada seccion se inventaba el suyo; el token declaraba tres y uno
+   * de ellos no lo usaba nadie. Dos pasos bastan: uno para elementos pequenos
+   * y otro para superficies grandes.
+   */
+  --g-blur-soft: 12px;
+  --g-blur-base: 18px;
+
+  /* Estado — deliberadamente FUERA del espacio de marca */
+  --g-success: #2fd07f;
+  --g-warning: #e6b450;
+  --g-error: #e85d5d;
+  --g-info: var(--g-blue-hi);
+
+  /*
+   * Alias de compatibilidad. Existen sólo para que el barrido pueda avanzar por
+   * capas sin romper nada a medio camino. Se retiran cuando no queden usos.
+   */
+  --genesis-void: var(--g-void);
+  --genesis-base: var(--g-base);
+  --genesis-surface: var(--g-surface);
+  --genesis-text: var(--g-ink);
+  --genesis-mist: var(--g-ink-muted);
+  --genesis-ghost: var(--g-ink-faint);
+  --genesis-fuchsia: var(--g-magenta);
+  --genesis-cyan: var(--g-cyan);
+  --state-success: var(--g-success);
+  --state-warning: var(--g-warning);
+  --state-error: var(--g-error);
+  --state-info: var(--g-info);
 
   /* UI */
   --genesis-line: rgba(255, 255, 255, 0.08);
   --genesis-line-strong: rgba(255, 255, 255, 0.14);
-  --ui-hover-glow: rgba(233, 30, 139, 0.25);
-  --ui-signature-glow: rgba(233, 30, 139, 0.25);
+  --ui-hover-glow: rgba(255, 0, 200, 0.25);
+  --ui-signature-glow: rgba(255, 0, 200, 0.25);
   --ui-focus-ring: rgba(61, 139, 255, 0.5);
 
   /* Section lighting — unified band (reference: #token) */
@@ -68,28 +105,28 @@
   --section-vignette-mid: rgba(4, 6, 14, 0.35);
   --section-vignette-edge: rgba(2, 3, 8, 0.55);
   --section-atmosphere-opacity: 0.55;
-  --ui-focus-ring-signature: rgba(233, 30, 139, 0.48);
+  --ui-focus-ring-signature: rgba(255, 0, 200, 0.48);
   --ui-ion-glow: rgba(61, 139, 255, 0.2);
 
   /* Gradiente oficial Genesis: fuchsia → core → ion → cyan */
   --gradient-genesis-strong: linear-gradient(
     90deg,
-    #e91e8b 0%,
-    #6e56cf 35%,
-    #3d8bff 70%,
-    #22d3ee 100%
+    var(--g-magenta) 0%,
+    var(--g-violet) 35%,
+    var(--g-blue-hi) 70%,
+    var(--g-cyan) 100%
   );
   --gradient-genesis-button: linear-gradient(
     90deg,
-    #e91e8b 0%,
-    #6e56cf 35%,
-    #3d8bff 70%,
-    #22d3ee 100%
+    var(--g-magenta) 0%,
+    var(--g-violet) 35%,
+    var(--g-blue-hi) 70%,
+    var(--g-cyan) 100%
   );
   --gradient-brand: var(--gradient-genesis-button);
   --gradient-intelligence: var(--gradient-genesis-strong);
   --gradient-genesis-signature: var(--gradient-genesis-button);
-  --gradient-fuchsia-core: linear-gradient(90deg, #e91e8b 0%, #6e56cf 100%);
+  --gradient-fuchsia-core: linear-gradient(90deg, var(--g-magenta) 0%, var(--g-violet) 100%);
 
   /* Motion */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -145,20 +182,20 @@ body {
 
 .glass {
   background: rgba(10, 14, 20, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(var(--g-blur-soft));
+  -webkit-backdrop-filter: blur(var(--g-blur-soft));
   border: 1px solid rgba(0, 229, 255, 0.15);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #00e5ff, #7c3aed);
+  background: linear-gradient(135deg, var(--g-cyan), var(--g-violet));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .btn-genesis {
-  background: linear-gradient(135deg, #00e5ff, #7c3aed);
+  background: linear-gradient(135deg, var(--g-cyan), var(--g-violet));
   transition: box-shadow var(--duration-base) var(--ease-in-out),
     transform var(--duration-fast) var(--ease-in-out);
 }
@@ -173,8 +210,8 @@ body {
   /* Superficies */
   .surface-glass {
     background: rgba(17, 24, 32, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(var(--g-blur-soft));
+    -webkit-backdrop-filter: blur(var(--g-blur-soft));
     border: 1px solid var(--genesis-line);
   }
 
@@ -182,14 +219,13 @@ body {
     position: relative;
     overflow: hidden;
     background: rgba(12, 18, 40, 0.28);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(var(--g-blur-base));
+    -webkit-backdrop-filter: blur(var(--g-blur-base));
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.25),
-      0 0 20px rgba(191, 0, 255, 0.08),
-      0 0 30px rgba(0, 225, 255, 0.05);
+      0 0 20px rgba(157, 77, 255, 0.08),
+      0 0 30px rgba(0, 245, 255, 0.05);
   }
 
   .surface-card::before {
@@ -250,7 +286,7 @@ body {
 
   .glow-signature {
     box-shadow:
-      0 0 24px rgba(233, 30, 139, 0.25),
+      0 0 24px rgba(255, 0, 200, 0.25),
       0 0 32px rgba(61, 139, 255, 0.2);
   }
 
@@ -264,10 +300,9 @@ body {
   .card-genesis-hover:hover,
   .card-genesis-hover:focus-visible {
     transform: translateY(-2px);
-    border-color: rgba(0, 225, 255, 0.25);
+    border-color: rgba(0, 245, 255, 0.25);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.25),
-      0 0 30px rgba(0, 225, 255, 0.12);
+      0 0 30px rgba(0, 245, 255, 0.12);
   }
 
   /* Info chips — Marketplace / Comunidad (mismo cristal, sin cambiar layout) */
@@ -275,14 +310,13 @@ body {
     position: relative;
     overflow: hidden;
     background: rgba(12, 18, 40, 0.28);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(var(--g-blur-base));
+    -webkit-backdrop-filter: blur(var(--g-blur-base));
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.25),
-      0 0 20px rgba(191, 0, 255, 0.08),
-      0 0 30px rgba(0, 225, 255, 0.05);
+      0 0 20px rgba(157, 77, 255, 0.08),
+      0 0 30px rgba(0, 245, 255, 0.05);
     transition:
       transform var(--duration-base) var(--ease-out-expo),
       border-color var(--duration-base) var(--ease-in-out),
@@ -307,10 +341,9 @@ body {
 
   .glass-info-item:hover {
     transform: translateY(-2px);
-    border-color: rgba(0, 225, 255, 0.25);
+    border-color: rgba(0, 245, 255, 0.25);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.25),
-      0 0 30px rgba(0, 225, 255, 0.12);
+      0 0 30px rgba(0, 245, 255, 0.12);
   }
 
   /* Páginas estáticas — Legal / Whitepaper */
@@ -327,7 +360,7 @@ body {
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 70% 50% at 15% 20%, rgba(233, 30, 139, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 50% at 15% 20%, rgba(255, 0, 200, 0.08) 0%, transparent 60%),
       radial-gradient(ellipse 60% 45% at 85% 75%, rgba(61, 139, 255, 0.07) 0%, transparent 55%),
       radial-gradient(ellipse 50% 40% at 50% 50%, rgba(110, 86, 207, 0.04) 0%, transparent 50%);
   }
@@ -337,7 +370,7 @@ body {
     z-index: 1;
     border-bottom: 1px solid var(--genesis-line);
     background: rgba(8, 10, 20, 0.85);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(var(--g-blur-soft));
   }
 
   .static-page-main {
@@ -358,7 +391,7 @@ body {
     overflow: hidden;
     pointer-events: none;
     z-index: 0;
-    background: #02040a;
+    background: var(--g-void);
   }
 
   .hero-ocean-canvas {
@@ -366,6 +399,21 @@ body {
     inset: 0;
     width: 100%;
     height: 100%;
+
+    /*
+     * LA RED PASA A SER ATMOSFERA, no objeto.
+     *
+     * Con la esfera de marca dentro, el hero tenia DOS piezas nitidas
+     * compitiendo por la atencion: la red de particulas ocupaba todo el ancho a
+     * plena intensidad y la esfera quedaba como una mas.
+     *
+     * Medido: este lienzo son 1.055.466 px por fotograma —el 68 % del coste del
+     * hero— y va en CPU, mientras la esfera cuesta la quinta parte y va en GPU.
+     *
+     * Al 45 % sigue dando profundidad y el color de marca a los lados, pero deja
+     * de disputar el foco. La esfera vuelve a ser el unico objeto.
+     */
+    opacity: 0.45;
   }
 
   .genesis-title-gradient {
@@ -408,6 +456,86 @@ body {
     }
   }
 
+  /*
+   * ENTRADA DEL HERO, EN CSS Y NO EN JAVASCRIPT.
+   *
+   * POR QUE
+   * Todo el hero colgaba de un `motion.div` con `initial="hidden"`, asi que el
+   * HTML que emite el servidor sale con `opacity: 0` y el texto no existe
+   * visualmente hasta que framer-motion arranca. Medido sobre produccion a
+   * 390 px con 4x de freno de CPU: primer pintado con contenido a ~1,0 s y LCP
+   * —el parrafo `.hero-subtitle`— entre 2,6 y 3,7 s. Solo habia dos candidatos a
+   * LCP: el contador "01/14" al principio y el parrafo casi tres segundos
+   * despues. Todo lo de en medio estaba transparente.
+   *
+   * Una animacion CSS corre en cuanto el navegador aplica estilos, sin esperar a
+   * hidratar. La composicion no cambia: cambia QUIEN la ejecuta.
+   *
+   * Los tiempos son los mismos que tenia framer-motion, uno a uno:
+   *   barra de estado   0     s / 0,6  s
+   *   nucleo            0,06  s / 0,6  s
+   *   lema              0,12  s / 0,55 s   (subia 10px, no 16)
+   *   pila de UI        0,14  s / 0,6  s
+   *   boton             0,28  s / 0,6  s
+   *   indicador scroll  1,2   s / 0,8  s   (solo opacidad)
+   * con la misma curva, cubic-bezier(0.4, 0, 0.2, 1).
+   *
+   * `both` como relleno: durante el retardo se mantiene el primer fotograma, que
+   * es lo que hacia el estado `hidden`.
+   */
+  .hero-entra {
+    opacity: 0;
+    transform: translateY(var(--hero-entra-desde, 16px));
+    /* 0,6 s es LLEGADA_PRIMERA_PINTURA_S en lib/design/motion.ts */
+    animation: hero-entra-anim var(--hero-entra-dur, 0.6s) cubic-bezier(0.4, 0, 0.2, 1)
+      var(--hero-entra-retardo, 0s) both;
+  }
+
+  @keyframes hero-entra-anim {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /*
+   * Variante que SOLO funde. El indicador de scroll se centra con
+   * `-translate-x-1/2`, y una animacion que escriba `transform` le borraria el
+   * centrado: hay una sola propiedad `transform`, no una por eje.
+   */
+  .hero-entra-fundido {
+    opacity: 0;
+    animation: hero-entra-fundido-anim var(--hero-entra-dur, 0.6s) cubic-bezier(0.4, 0, 0.2, 1)
+      var(--hero-entra-retardo, 0s) both;
+  }
+
+  @keyframes hero-entra-fundido-anim {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes hero-scroll-dot-loop {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
+    50% {
+      transform: translateY(10px);
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-entra,
+    .hero-entra-fundido {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   .hero-status-bar {
     display: flex;
     flex-wrap: wrap;
@@ -418,7 +546,21 @@ body {
     font-size: 0.6rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #aab4c8;
+    /*
+     * `faint` y no `muted`. Medido: seis colores de texto en el hero, y
+     * `rgb(170,180,200)` hacia NUEVE trabajos — la barra de estado, el lema y el
+     * subtitulo compartian tono. El subtitulo es el <h1> de la pagina, o sea lo
+     * que dice QUE ES esto, y llevaba el mismo color que «EST. 2019».
+     *
+     * Sin diferencia de color, la unica jerarquia que queda es el tamano: la
+     * mitad de las herramientas. La escala de tres niveles ya existia en los
+     * tokens, solo no se estaba usando.
+     *
+     *   faint   dato de contexto   barra de estado
+     *   muted   apoyo              lema de categorias
+     *   ink     mensaje            subtitulo / propuesta
+     */
+    color: var(--g-ink-faint);
     opacity: 0.92;
     text-shadow: 0 1px 12px rgba(0, 0, 0, 0.75);
   }
@@ -441,14 +583,54 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-bottom: clamp(0.65rem, 1.8vw, 1rem);
+    /*
+     * RITMO VERTICAL POR GRUPOS.
+     *
+     * Los huecos del hero iban 14 · 16 · 11 · 18 px: casi iguales, asi que nada
+     * agrupaba — la barra de estado parecia pertenecer al nucleo tanto como el
+     * lema al subtitulo.
+     *
+     * Ahora hay dos grupos: [barra + nucleo] arriba y [lema + subtitulo +
+     * botones] abajo, con el doble de aire entre ellos que dentro de cada uno.
+     * Ese salto es lo que hace que el ojo lea bloques en vez de una lista.
+     *
+     * El margen incluye ademas el sitio de los indicadores de marca, que se
+     * apoyan en el borde inferior del nucleo.
+     */
+    /*
+     * El margen reserva sitio para DOS controles bajo el nucleo —el rotulo de
+     * marca y los tres puntos— mas el aire que separa el grupo [barra+nucleo]
+     * del grupo [lema+subtitulo+botones]. Medido: con 2.2rem los puntos caian
+     * en 538 y el lema empieza en 525.
+     */
+    margin-bottom: clamp(2.6rem, 5vw, 3.4rem);
     pointer-events: none;
   }
 
+  /*
+   * TECHO POR ALTO EN EL NUCLEO DEL HERO — `52vh`.
+   *
+   * Estaba dimensionado SOLO por el ancho: `min(62vw, clamp(24rem,36vw,42rem))`.
+   * En una ventana de 1914x683 eso da 672 px de nucleo... en 683 px de alto. Se
+   * comia la pantalla entera y empujaba los botones 149 px POR DEBAJO del borde,
+   * donde el `overflow: hidden` del hero los cortaba. Es exactamente lo que se
+   * veia al 100 % de zoom.
+   *
+   * El hero es distinto de las demas secciones: no puede CRECER, porque es la
+   * primera pantalla y una llamada a la accion bajo el pliegue no existe. Asi
+   * que en vez de crecer, encoge.
+   *
+   * `52vh` sale del presupuesto real: 683 menos el relleno superior (96), la
+   * barra de estado (18), el lema (17), el subtitulo (104), los botones (57) y
+   * los huecos (~40) deja ~350 px para el nucleo. 52vh de 683 son 355.
+   *
+   * En pantallas altas no cambia NADA: a 1300 px de alto, 52vh son 676 y el
+   * limite por ancho (672) sigue mandando. El techo solo entra cuando estorba.
+   */
   .hero-nucleus {
     position: relative;
-    width: min(92vw, max(16rem, 45vmin));
-    height: min(92vw, max(16rem, 45vmin));
+    width: min(92vw, max(16rem, 45vmin), 52vh);
+    height: min(92vw, max(16rem, 45vmin), 52vh);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -456,22 +638,22 @@ body {
 
   @media (min-width: 1024px) {
     .hero-nucleus {
-      width: min(88vw, clamp(22rem, 34vw, 38rem));
-      height: min(88vw, clamp(22rem, 34vw, 38rem));
+      width: min(88vw, clamp(22rem, 34vw, 38rem), 52vh);
+      height: min(88vw, clamp(22rem, 34vw, 38rem), 52vh);
     }
   }
 
   @media (min-width: 1280px) {
     .hero-nucleus {
-      width: min(62vw, clamp(24rem, 36vw, 42rem));
-      height: min(62vw, clamp(24rem, 36vw, 42rem));
+      width: min(62vw, clamp(24rem, 36vw, 42rem), 52vh);
+      height: min(62vw, clamp(24rem, 36vw, 42rem), 52vh);
     }
   }
 
   @media (min-width: 1536px) {
     .hero-nucleus {
-      width: min(58vw, clamp(26rem, 38vw, 44rem));
-      height: min(58vw, clamp(26rem, 38vw, 44rem));
+      width: min(58vw, clamp(26rem, 38vw, 44rem), 52vh);
+      height: min(58vw, clamp(26rem, 38vw, 44rem), 52vh);
     }
   }
 
@@ -498,14 +680,14 @@ body {
     border-radius: 50%;
     background: radial-gradient(
       ellipse at center,
-      rgba(233, 30, 139, 0.14) 0%,
+      rgba(255, 0, 200, 0.14) 0%,
       rgba(110, 86, 207, 0.06) 38%,
       rgba(61, 139, 255, 0.1) 58%,
       transparent 74%
     );
     filter: blur(32px);
     opacity: 0.58;
-    animation: hero-energy-aura-pulse 7s ease-in-out infinite;
+    animation: hero-energy-aura-pulse 8s ease-in-out infinite;
     z-index: 2;
     pointer-events: none;
   }
@@ -525,13 +707,13 @@ body {
     border-radius: 50%;
     background: radial-gradient(
       ellipse at center,
-      rgba(233, 30, 139, 0.16) 0%,
+      rgba(255, 0, 200, 0.16) 0%,
       rgba(110, 86, 207, 0.05) 42%,
       rgba(61, 139, 255, 0.12) 62%,
       transparent 78%
     );
     filter: blur(40px);
-    animation: hero-energy-aura-pulse 7s ease-in-out infinite;
+    animation: hero-energy-aura-pulse 8s ease-in-out infinite;
     z-index: 0;
     opacity: 0.48;
   }
@@ -540,11 +722,11 @@ body {
     position: absolute;
     inset: 4%;
     border-radius: 50%;
-    border: 1px solid rgba(233, 30, 139, 0.28);
+    border: 1px solid rgba(255, 0, 200, 0.28);
     box-shadow:
-      0 0 40px rgba(233, 30, 139, 0.22),
+      0 0 40px rgba(255, 0, 200, 0.22),
       0 0 72px rgba(61, 139, 255, 0.14);
-    animation: hero-energy-ring-spin 36s linear infinite;
+    animation: hero-energy-ring-spin 32s linear infinite;
     z-index: 1;
     opacity: 0.52;
     pointer-events: none;
@@ -554,7 +736,7 @@ body {
     inset: 10%;
     border-color: rgba(61, 139, 255, 0.24);
     animation-direction: reverse;
-    animation-duration: 48s;
+    animation-duration: 16s;
     opacity: 0.42;
   }
 
@@ -571,12 +753,245 @@ body {
     filter:
       drop-shadow(0 10px 36px rgba(0, 0, 0, 0.92))
       drop-shadow(0 6px 20px rgba(2, 4, 10, 0.88))
-      drop-shadow(0 0 22px rgba(233, 30, 139, 0.42))
-      drop-shadow(0 0 52px rgba(233, 30, 139, 0.22))
+      drop-shadow(0 0 22px rgba(255, 0, 200, 0.42))
+      drop-shadow(0 0 52px rgba(255, 0, 200, 0.22))
       drop-shadow(0 0 34px rgba(61, 139, 255, 0.14))
       brightness(1.08)
       contrast(1.18)
       saturate(1.08);
+  }
+
+  /*
+   * EL ENVOLTORIO DEL LOGO TAMBIEN SE ACOTA. Sin esto el techo no llega.
+   *
+   * `GenesisOfficialLogo` envuelve la imagen en un `span` con `inline-flex
+   * shrink-0`, que se dimensiona POR CONTENIDO. Asi que el `width: 90%` de
+   * `.hero-official-logo` no le llegaba: el div media 320 px y su hijo 387,
+   * desbordandolo.
+   *
+   * Medido tras poner el techo de 52vh al nucleo: nucleo 355, logo 390. El logo
+   * se salia 17 px de su nucleo y quedaba a −1 px del lema, es decir tocandolo.
+   * El techo estaba bien puesto; lo que fallaba era que la cadena de cajas se
+   * rompia una capa antes de llegar a la imagen.
+   */
+  .hero-official-logo > span {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /*
+   * LA ESFERA DE MARCA, en su sitio dentro del nucleo.
+   *
+   * `inset: -18%` la hace algo mayor que el nucleo: las tres marcas giran
+   * ALREDEDOR del logotipo plano, que se queda al frente. Asi el logotipo sigue
+   * siendo el ancla —y el elemento LCP— y la esfera es el umbral de energia que
+   * lo rodea.
+   *
+   * `z-index: 2` la deja DEBAJO del logotipo (que va en 3) y encima del canvas
+   * 2D del orbe. `pointer-events: none` porque de momento solo gira sola; la
+   * interaccion llega en la fase siguiente y entonces esto cambia.
+   */
+  .brand-sphere {
+    position: absolute;
+    /*
+     * `-52%` y no `-18%`. Medido: con -18 la esfera media 483 px sobre un
+     * logotipo de 322, o sea 81 px de anillo por lado — y como la camara la
+     * encuadra al 66 % del lienzo, quedaban ~54 px reales para tres marcas
+     * girando. Se intuia un halo y no se leia nada.
+     *
+     * Con -52 la esfera pasa a ~735 px: 206 px de anillo por lado, sitio de
+     * sobra para que una marca entera se lea cuando pasa por delante.
+     */
+    /*
+     * `-52%` daba 725 px y se salia del hero por arriba y por abajo: el nucleo
+     * mide 355 y la ventana util 683, asi que no hay sitio para tanto. El techo
+     * por ALTO lo resuelve — la esfera nunca pasa del 82 % de la ventana, y el
+     * lateral crece libre porque ahi sobra espacio.
+     */
+    /*
+     * El contenedor crece para compensar el margen que ahora deja la camara: la
+     * esfera ocupa el 73 % del lienzo en vez del 93 %, asi que el lienzo tiene
+     * que ser mayor para que la esfera se vea del MISMO tamano y su resplandor
+     * tenga sitio donde apagarse.
+     *
+     * `-78%` sobre un nucleo de 355 da ~910 px de lienzo para una esfera de
+     * ~665 — el mismo diametro aparente de antes, con ~120 px de aire alrededor.
+     */
+    inset: -78%;
+    /*
+     * `92vh` y no `96`: con 96 el lienzo empezaba en y=-6 y el
+     * `overflow: hidden` del hero le recortaba esos 6 px. El resplandor tiene
+     * margen suficiente sin llegar al borde de la ventana.
+     */
+    max-height: 92vh;
+    max-width: 92vh;
+    margin: auto;
+    z-index: 2;
+
+    /*
+     * `auto` para poder arrastrar, y `pan-y` para NO robar el scroll: un gesto
+     * vertical sigue desplazando la pagina, uno horizontal gira la esfera. Sin
+     * `pan-y`, en movil la esfera secuestra el scroll y la seccion se vuelve una
+     * trampa.
+     */
+    pointer-events: auto;
+    touch-action: pan-y;
+    cursor: grab;
+  }
+
+  .brand-sphere:active {
+    cursor: grabbing;
+  }
+
+  /*
+   * Los tres indicadores. Van bajo el nucleo, no sobre la esfera: encima
+   * competirian con las particulas y con el logotipo.
+   */
+  /*
+   * Los tres indicadores, dentro de la pila de controles.
+   *
+   * Hicieron falta CINCO intentos hasta dar con el sitio, y lo dejo escrito
+   * porque cada uno fallaba por una razon distinta:
+   *
+   *   `static`               caian en y=322, en mitad del logotipo
+   *   `bottom: -2.1rem`      chocaban con el lema
+   *   `top: 100%` + margen   512..536 contra un lema que empieza en 525
+   *   `bottom: 2%`           478..502, encima del logotipo (acaba en 491)
+   *   anclados por separado  se solapaban con el rotulo (-3 px)
+   *
+   * El fallo de fondo era anclar rotulo y puntos POR SEPARADO al mismo borde:
+   * cada ajuste movia los dos. Agrupados en `.brand-sphere-controles`, el hueco
+   * entre ellos lo decide un `gap` y ya no hay dos calculos peleandose.
+   */
+  .brand-sphere-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.55rem;
+    pointer-events: auto;
+  }
+
+
+  /*
+   * El rotulo de la marca al frente. Va sobre los indicadores y comparte su
+   * anclaje al pie del nucleo.
+   *
+   * `muted` y no `ink`: nombra lo que la esfera YA esta mostrando, asi que es
+   * apoyo — si compitiera con el subtitulo tendriamos dos mensajes peleando
+   * justo debajo del logotipo.
+   */
+  /* Pila unica de controles, anclada bajo el nucleo. */
+  .brand-sphere-controles {
+    position: absolute;
+    bottom: -2.9rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    pointer-events: none;
+  }
+
+  .brand-sphere-rotulo {
+    pointer-events: none;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--g-ink-muted);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
+    animation: brand-rotulo-entra 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  @keyframes brand-rotulo-entra {
+    from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  /*
+   * `visibility` y no `display`: el hueco se conserva, asi que los puntos y todo
+   * lo que hay debajo NO SE MUEVEN cada vez que la esfera pasa por Genesis. Un
+   * salto de 15 px tres veces por vuelta se nota mas que el propio rotulo.
+   */
+  .brand-sphere-rotulo--oculto {
+    visibility: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-sphere-rotulo { animation: none; }
+  }
+
+  .brand-sphere-dot {
+    /*
+     * El punto VISIBLE mide 7px, pero el area pulsable son 24 —el minimo de
+     * WCAG 2.2 AA—. De ahi el relleno transparente en vez de un punto grande:
+     * se toca facil sin engordar el diseno.
+     */
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+
+  .brand-sphere-dot::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--g-ink-muted);
+    opacity: 0.32;
+    transition: opacity 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .brand-sphere-dot--activo::before {
+    background: var(--g-violet-hi);
+    opacity: 1;
+    transform: scale(1.25);
+    box-shadow: 0 0 10px rgba(157, 77, 255, 0.6);
+  }
+
+  .brand-sphere-dot:hover::before {
+    opacity: 0.7;
+  }
+
+  /*
+   * El LIENZO no recibe punteros; los recibe su contenedor `.brand-sphere`.
+   *
+   * Sin esto el canvas se llevaba el clic de los indicadores: `.brand-sphere`
+   * tiene `z-index: 2` y crea su propio contexto de apilado, asi que el z 5 de
+   * los indicadores solo compite DENTRO de ese contexto — y el canvas, al estar
+   * en el mismo, ganaba por orden en el arbol.
+   *
+   * El arrastre no se pierde: el manejador vive en `.brand-sphere`, que sigue
+   * con `pointer-events: auto`, y los eventos del canvas burbujean hasta el.
+   */
+  /*
+   * Los DIVS internos que crea react-three-fiber alrededor del lienzo tampoco
+   * reciben punteros. Sin esto se llevaban el clic de los indicadores: el
+   * canvas ya estaba en `none`, pero sus envoltorios no.
+   */
+  .brand-sphere > div,
+  .brand-sphere canvas {
+    pointer-events: none;
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* La esfera es movimiento continuo; sin el, no aporta nada y molesta.
+       Los indicadores se van con ella: no tiene sentido ofrecer control sobre
+       algo que no esta. */
+    .brand-sphere,
+    .brand-sphere-dots {
+      display: none;
+    }
   }
 
   .hero-logo-fill {
@@ -601,7 +1016,7 @@ body {
     font-weight: 500;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: #8b97ad;
+    color: var(--g-ink-muted);
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
   }
 
@@ -638,7 +1053,8 @@ body {
     max-width: 34rem;
     font-size: clamp(0.875rem, 2.1vw, 1.05rem);
     line-height: 1.55;
-    color: #aab4c8;
+    /* Es el <h1>: el mensaje, no el apoyo. Ver la nota de `.hero-status-bar`. */
+    color: var(--g-ink);
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.92), 0 0 40px rgba(5, 7, 13, 0.6);
     margin: 0;
     padding: 0 0.5rem;
@@ -662,27 +1078,254 @@ body {
     }
   }
 
+  /*
+   * El `whileHover={{ y: -2 }}` que tenia el boton, ahora en CSS. Va en el
+   * ANCLA y la entrada va en un envoltorio: si las dos escribieran `transform`
+   * sobre el mismo elemento, el relleno `both` de la entrada ganaria al :hover
+   * —una animacion pisa a una declaracion normal— y el boton se quedaria quieto.
+   */
+  /*
+   * TEXTO DE PÁRRAFO: `pretty` en vez de dejarlo al azar.
+   *
+   * `text-wrap: pretty` mira las últimas líneas del bloque y evita dejar una
+   * palabra sola colgando. Aquí no es cosmético: una huérfana es una LÍNEA
+   * ENTERA de más, y en una tarjeta de 175 px de ancho eso son ~26 px de alto
+   * que empujan a todas sus hermanas.
+   *
+   * Va sobre párrafos y descripciones, NO sobre titulares —esos ya usan
+   * `balance`, que reparte las líneas en vez de cuidar la última—.
+   *
+   * Comprobado que el navegador lo soporta antes de ponerlo. Donde no, la
+   * declaración se ignora y el texto envuelve como siempre: no hay nada que
+   * degradar.
+   */
+  .surface-card p,
+  .scene-section-header p,
+  .glass-info-item span {
+    text-wrap: pretty;
+  }
+
+  /*
+   * HALO DE MARCA — una sola receta, tres acentos.
+   *
+   * EL PROBLEMA
+   * Los núcleos de G-Pulse y Marketplace llevaban el MISMO halo magenta
+   * —`drop-shadow(0 0 6px rgba(255,0,200,.5))` en los dos—, heredado de cuando
+   * el glifo era un SVG monocromo que tomaba `currentColor`. Con el logotipo
+   * real dentro eso deja de funcionar: medido sobre los píxeles con color,
+   * G-Pulse es VIOLETA dominante (51,5 %) y Gevy MAGENTA (33,7 %). Un violeta
+   * metido en un halo magenta se enturbia — los dos tonos compiten y ninguno
+   * gana.
+   *
+   * LA REGLA
+   * Lo que comparten las tres marcas no es el color: es el MATERIAL. Misma
+   * receta de halo —dos capas, misma caída, mismas opacidades— y el acento lo
+   * pone cada marca según su tono medido. Así se leen como un cuerpo sin que
+   * ninguna pierda su carácter.
+   *
+   * El segundo halo, más abierto, toma el tono VECINO en la rampa de marca
+   * (magenta → violeta → azul → cian). Eso es lo que hace que el borde del
+   * resplandor se funda con el fondo de la página en vez de recortarse contra
+   * él: la transición ya existe en la paleta, sólo hay que seguirla.
+   */
+  .marca-halo {
+    filter:
+      drop-shadow(0 0 6px var(--halo-cerca))
+      drop-shadow(0 0 18px var(--halo-lejos));
+  }
+
+  /* Genesis — 57 % azul, 24 % violeta */
+  .marca-halo--genesis {
+    --halo-cerca: rgba(61, 139, 255, 0.5);
+    --halo-lejos: rgba(110, 86, 207, 0.28);
+  }
+
+  /* G-Pulse — 51 % violeta, 42 % azul */
+  .marca-halo--gpulse {
+    --halo-cerca: rgba(157, 77, 255, 0.5);
+    --halo-lejos: rgba(61, 139, 255, 0.26);
+  }
+
+  /* Gevy — 34 % magenta, y violeta como puente hacia el resto */
+  .marca-halo--gevy {
+    --halo-cerca: rgba(255, 0, 200, 0.5);
+    --halo-lejos: rgba(157, 77, 255, 0.26);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marca-halo {
+      filter: drop-shadow(0 0 6px var(--halo-cerca));
+    }
+  }
+
+  /* ── Menú de cinco cabezas ─────────────────────────────────────────── */
+
+  /* Marca de que la cabeza despliega. Sólo aparece si tiene más de un hijo. */
+  .nav-cabeza-marca {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 0.4em;
+    vertical-align: middle;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 3.5px solid currentColor;
+    opacity: 0.5;
+    transition: opacity 0.2s var(--ease-in-out, ease), transform 0.2s var(--ease-in-out, ease);
+  }
+
+  .group:hover .nav-cabeza-marca,
+  .group:focus-within .nav-cabeza-marca {
+    opacity: 1;
+    transform: translateY(1px);
+  }
+
+  /*
+   * El desplegable NO se quita del árbol ni se pone en `display: none`: se
+   * atenúa y se vuelve `invisible`. Si se ocultara del todo, quien navega con
+   * teclado no podría tabular hasta él y sería un menú sólo para el ratón.
+   *
+   * QUIEN LO ABRE ES EL ESTADO DE REACT, Y SÓLO EL ESTADO.
+   * La primera versión añadía además una regla `.group:focus-within`, y las dos
+   * se peleaban: como el foco en la propia CABEZA ya cuenta como `focus-within`,
+   * Escape apagaba el estado y el submenú seguía visible — Escape parecía no
+   * hacer nada. El `onFocus` de la cabeza abre igual (el foco burbujea), así
+   * que la regla CSS sobraba y sólo tapaba al estado.
+   */
+  .nav-desplegable {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -4px);
+    margin: 0;
+    padding: 0.4rem;
+    list-style: none;
+    min-width: 12rem;
+    background: rgba(9, 13, 26, 0.97);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--genesis-line);
+    border-radius: 12px;
+    /* Sobre el vacío no se proyecta una sombra negra: el halo es de marca. */
+    box-shadow: 0 0 28px rgba(110, 86, 207, 0.14);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.18s var(--ease-in-out, ease),
+      transform 0.18s var(--ease-in-out, ease),
+      visibility 0.18s;
+    z-index: 60;
+  }
+
+  .nav-desplegable--abierto {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, 4px);
+  }
+
+  .nav-desplegable__enlace {
+    display: block;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 0.82rem;
+    color: var(--genesis-mist);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .nav-desplegable__enlace:hover {
+    color: var(--g-ink);
+    background: rgba(157, 77, 255, 0.1);
+  }
+
+  /* Cabeza de grupo dentro del cajón móvil */
+  .nav-cajon-cabeza {
+    margin: 0 0 0.15rem;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--g-violet-hi);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-desplegable,
+    .nav-cabeza-marca {
+      transition: none;
+    }
+  }
+
   .hero-cta {
     margin-top: 0.15rem;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /*
+   * Las dos acciones del hero. En movil envuelven a dos lineas por si solas,
+   * que es lo que se quiere: la primaria arriba y entera, nunca partida.
+   */
+  .hero-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.6rem, 2vw, 0.9rem);
+  }
+
+  .hero-scroll-dot {
+    animation: hero-scroll-dot-loop 1.6s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-cta.cta-signature:hover,
+    .hero-cta.cta-secondary:hover {
+      transform: none;
+    }
+
+    .hero-scroll-dot {
+      animation: none;
+    }
   }
 
   .hero-cta.cta-signature {
     background: var(--gradient-genesis-button);
-    border: 1px solid rgba(233, 30, 139, 0.35);
+    border: 1px solid rgba(255, 0, 200, 0.35);
     box-shadow:
       inset 0 1px 1px rgba(255, 255, 255, 0.1),
       inset 0 -4px 14px rgba(2, 4, 10, 0.5),
       0 4px 22px rgba(0, 0, 0, 0.55),
-      0 0 24px rgba(233, 30, 139, 0.25),
+      0 0 24px rgba(255, 0, 200, 0.25),
       0 0 32px rgba(61, 139, 255, 0.2);
   }
 
+  /*
+   * Los -2px del `whileHover` que tenia framer-motion. Van EN SELECTOR
+   * COMPUESTO y no en `.hero-cta:hover` porque `.cta-base:hover`,
+   * `.cta-signature:hover` y `.cta-secondary:hover` ya declaran
+   * `translateY(-1px)`, van despues en el archivo y tienen la misma
+   * especificidad: ganaban ellas, y el boton se quedaba en -1. Antes no pasaba
+   * porque framer-motion escribia estilo EN LINEA, que gana a cualquier hoja.
+   * Medido con el raton encima: -1 antes de esto, -2 despues.
+   *
+   * La secundaria del hero entra en la misma regla para que las dos se levanten
+   * igual: dos botones juntos que reaccionan distinto se notan.
+   */
+  .hero-cta.cta-secondary:hover {
+    transform: translateY(-2px);
+  }
+
   .hero-cta.cta-signature:hover {
+    transform: translateY(-2px);
     box-shadow:
       inset 0 1px 1px rgba(255, 255, 255, 0.14),
       inset 0 -4px 14px rgba(2, 4, 10, 0.45),
       0 6px 28px rgba(0, 0, 0, 0.62),
-      0 0 28px rgba(233, 30, 139, 0.32),
+      0 0 28px rgba(255, 0, 200, 0.32),
       0 0 40px rgba(61, 139, 255, 0.22);
   }
 
@@ -701,8 +1344,8 @@ body {
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #e91e8b;
-    box-shadow: 0 0 6px rgba(233, 30, 139, 0.4);
+    background: var(--g-magenta);
+    box-shadow: 0 0 6px rgba(255, 0, 200, 0.4);
   }
 
   @keyframes hero-energy-aura-pulse {
@@ -765,7 +1408,7 @@ body {
     opacity: 0.72;
     filter:
       drop-shadow(0 8px 28px rgba(0, 0, 0, 0.82))
-      drop-shadow(0 0 18px rgba(233, 30, 139, 0.28))
+      drop-shadow(0 0 18px rgba(255, 0, 200, 0.28))
       drop-shadow(0 0 28px rgba(61, 139, 255, 0.12))
       brightness(1.04)
       contrast(1.1)
@@ -874,10 +1517,10 @@ body {
     font-weight: 600;
     color: #ffffff;
     background: var(--gradient-genesis-button);
-    border: 1px solid rgba(233, 30, 139, 0.3);
+    border: 1px solid rgba(255, 0, 200, 0.3);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      0 0 24px rgba(233, 30, 139, 0.25),
+      0 0 24px rgba(255, 0, 200, 0.25),
       0 0 32px rgba(61, 139, 255, 0.2);
     transition: transform var(--duration-fast) var(--ease-out-expo),
       box-shadow var(--duration-base) var(--ease-in-out);
@@ -887,7 +1530,7 @@ body {
     transform: translateY(-1px);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      0 0 28px rgba(233, 30, 139, 0.32),
+      0 0 28px rgba(255, 0, 200, 0.32),
       0 0 40px rgba(61, 139, 255, 0.22);
   }
 
@@ -900,7 +1543,7 @@ body {
     font-weight: 600;
     color: var(--genesis-text);
     background: rgba(2, 4, 10, 0.5);
-    border: 1px solid rgba(233, 30, 139, 0.22);
+    border: 1px solid rgba(255, 0, 200, 0.22);
     box-shadow: inset 0 0 0 1px rgba(61, 139, 255, 0.08);
     transition:
       transform var(--duration-fast) var(--ease-out-expo),
@@ -914,7 +1557,7 @@ body {
     background: rgba(2, 4, 10, 0.72);
     border-color: rgba(61, 139, 255, 0.35);
     box-shadow:
-      0 0 20px rgba(233, 30, 139, 0.15),
+      0 0 20px rgba(255, 0, 200, 0.15),
       0 0 28px rgba(61, 139, 255, 0.12);
   }
 
@@ -928,10 +1571,10 @@ body {
     font-weight: 600;
     color: #ffffff;
     background: var(--gradient-genesis-button);
-    border: 1px solid rgba(233, 30, 139, 0.35);
+    border: 1px solid rgba(255, 0, 200, 0.35);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      0 0 24px rgba(233, 30, 139, 0.25),
+      0 0 24px rgba(255, 0, 200, 0.25),
       0 0 32px rgba(61, 139, 255, 0.2);
     transition: transform var(--duration-fast) var(--ease-out-expo),
       box-shadow var(--duration-base) var(--ease-in-out);
@@ -941,7 +1584,7 @@ body {
     transform: translateY(-1px);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.14),
-      0 0 28px rgba(233, 30, 139, 0.32),
+      0 0 28px rgba(255, 0, 200, 0.32),
       0 0 40px rgba(61, 139, 255, 0.22);
   }
 
@@ -1124,7 +1767,7 @@ body {
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #8b97ad;
+  color: var(--g-ink-muted);
 }
 
 .cta-brand-signature__segment {
@@ -1155,7 +1798,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 1rem;
   background:
-    linear-gradient(135deg, rgba(233, 30, 139, 0.06) 0%, rgba(110, 86, 207, 0.04) 42%, rgba(61, 139, 255, 0.06) 100%),
+    linear-gradient(135deg, rgba(255, 0, 200, 0.06) 0%, rgba(110, 86, 207, 0.04) 42%, rgba(61, 139, 255, 0.06) 100%),
     rgba(5, 7, 13, 0.88);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
@@ -1250,6 +1893,69 @@ body {
   border-radius: 2px;
 }
 
+/*
+ * Zona de toque de los enlaces del pie.
+ *
+ * Medido a 390 px: los sociales son de 16 px de alto y los del nav de 17, y el
+ * de X mide NUEVE pixeles de ancho. El minimo de WCAG 2.2 AA (2.5.8) son 24x24,
+ * asi que los once enlaces del pie estaban por debajo — en un sitio cuyo
+ * trafico es mayoritariamente movil.
+ *
+ * La zona se agranda con un pseudoelemento y no con padding: el padding
+ * cambiaria la maquetacion del flex, y esto no es un cambio de diseno.
+ *
+ * Los numeros salen de los huecos reales, no de un redondeo: hueco horizontal
+ * entre vecinos 13-18 px y separacion entre filas 25-27 px. Con +10 px de ancho
+ * (5 por lado) y 24 px de alto (4 por lado sobre un enlace de 16) queda margen
+ * en los dos ejes y NINGUNA zona de toque invade la del vecino. `min-width` es
+ * lo que salva a X, que con +10 se quedaria en 21.
+ *
+ * Los 44x44 de AAA no caben sin separar mas los enlaces, y eso ya seria una
+ * decision de diseno.
+ */
+.zona-toque {
+  position: relative;
+}
+
+.zona-toque::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + var(--toque-ancho-extra, 10px));
+  min-width: var(--toque-ancho-min, 24px);
+  height: var(--toque-alto, 24px);
+}
+
+.institutional-footer__social-link,
+.institutional-footer__link {
+  position: relative;
+}
+
+.institutional-footer__social-link::after,
+.institutional-footer__link::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + 10px);
+  min-width: 24px;
+  height: 24px;
+}
+
+/*
+ * El enlace de verificacion en cadena esta solo en su fila, asi que aqui SI
+ * caben los 44 px de AAA sin invadir a nadie. Es ademas el unico enlace de la
+ * pagina que permite comprobar el contrato: si hay uno que tiene que ser facil
+ * de pulsar, es este.
+ */
+.enlace-verificacion {
+  --toque-alto: 44px;
+  --toque-ancho-extra: 16px;
+}
+
 .institutional-footer__copyright {
   margin: 0;
   font-size: 0.68rem;
@@ -1278,6 +1984,43 @@ body {
   scroll-snap-stop: normal;
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
+
+  /*
+   * EL ENGANCHE RESERVA SITIO A LA BARRA FIJA.
+   *
+   * Sin esto, `scroll-snap-align: start` alinea el borde de la seccion con el
+   * borde del contenedor — pero la barra de navegacion es `fixed` y esta
+   * ENCIMA, asi que los primeros pixeles de cada seccion quedan debajo de ella.
+   *
+   * Medido con Booster enganchada: barra de 69 px de alto, titular empezando en
+   * y=45. Veinticuatro pixeles del titular tapados, en TODAS las secciones y en
+   * cada enganche.
+   *
+   * 76 px = los 69 medidos mas un respiro. No se usa `--nav-offset` (64) porque
+   * esa variable describe otra cosa y se quedaba corta: la barra crece con su
+   * propio `padding` responsive.
+   */
+  scroll-padding-top: var(--enganche-alto);
+}
+
+/*
+ * EL ALTO QUE SE COME LA BARRA — una variable, dos usos, y por eso existe.
+ *
+ * Este numero aparece en DOS sitios que tienen que decir lo mismo: el
+ * `scroll-padding-top` que baja el enganche, y la altura minima de cada
+ * seccion. Estaban desacoplados —76 aqui y `100dvh` alla— y esa es exactamente
+ * la razon de que las CATORCE secciones sobraran 76 px:
+ *
+ *   ventana            615
+ *   se come la barra    76
+ *   util real          539
+ *   pero la seccion    615   (100dvh)
+ *
+ * O sea que ninguna cabia, y no por su contenido: por construccion. Con la
+ * variable compartida, mover la barra reajusta las catorce a la vez.
+ */
+:root {
+  --enganche-alto: 76px;
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -1303,6 +2046,28 @@ body {
   .home-snap-main[data-scroll-mode='snap'] .cta-final-section {
     scroll-snap-align: start;
     scroll-snap-stop: always;
+  }
+
+  /*
+   * MODO FLOW — el que usa escritorio ahora.
+   *
+   * `proximity` en vez de `mandatory` es la diferencia entera: el navegador
+   * acomoda el scroll al llegar cerca de una sección, pero DEJA DESCANSAR en
+   * cualquier punto intermedio. Con `mandatory` no existe el punto intermedio,
+   * y sin punto intermedio no hay progreso continuo que alimente la animación.
+   *
+   * `scroll-snap-stop: normal` en vez de `always`: con `always` no se puede
+   * saltar una sección de un gesto, lo que en catorce capítulos se hace largo.
+   */
+  .home-snap-main[data-scroll-mode='flow'] {
+    scroll-snap-type: y proximity;
+  }
+
+  .home-snap-main[data-scroll-mode='flow'] .home-section-fit,
+  .home-snap-main[data-scroll-mode='flow'] #hero,
+  .home-snap-main[data-scroll-mode='flow'] .cta-final-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
   }
 }
 
@@ -1341,40 +2106,180 @@ body {
 @media (min-width: 1024px) {
   :root {
     --nav-offset: 64px;
-    --section-fit-pad-y: 18px;
+
+    /*
+     * DENSIDAD LIGADA AL ALTO DE LA VENTANA. Esto es la correccion de fondo.
+     *
+     * EL FALLO
+     * En una plataforma de paginas completas la restriccion es VERTICAL: cada
+     * seccion mide exactamente `100dvh` y su contenido tiene que caber dentro.
+     * Pero todo el espaciado y la tipografia se dimensionaban en `rem` fijos o
+     * en `vw` — es decir, respondiendo al ANCHO. Con lo cual la pagina se
+     * componia bien en una ventana alta y se rompia en una baja, sin que nada
+     * en el codigo dependiera del alto.
+     *
+     * MEDIDO en la ventana real de un portatil a zoom 100 % (1914x683):
+     *
+     *   seccion    683 px   (100dvh, overflow: hidden)
+     *   marco      874 px   -93 arriba .. 781 abajo
+     *                       -> 93 px cortados por arriba y 97 por abajo
+     *
+     * Booster perdia 190 px de contenido. Y no se veia en pruebas porque el
+     * emulador con el que verifico aplica un `devicePixelRatio` de 0,9 que
+     * INFLA `innerWidth`/`innerHeight` un 11 %: medi siempre a 1000 px de alto,
+     * donde 874 si cabe. El instrumento tapaba el fallo.
+     *
+     * LA REGLA
+     * `clamp(minimo, N vh, maximo)`: en ventanas altas se conserva el
+     * espaciado comodo de siempre —el maximo es el valor que ya habia— y al
+     * bajar el alto la pagina se aprieta sola, de forma continua y sin saltos
+     * de breakpoint. Al agrandar el zoom (que reduce el viewport CSS) reacciona
+     * igual, porque para el navegador es exactamente lo mismo.
+     */
+    /*
+     * EL HUECO UTIL, no la ventana.
+     *
+     * Toda la escala de densidad de abajo se calculaba con `vh`, que mide la
+     * ventana ENTERA — incluidos los 76 px que tapa la barra al engancharse.
+     * O sea que apretaba contra un espacio que no existe: en una ventana de
+     * 615, repartia para 615 cuando lo visible son 539.
+     */
+    --alto-util: calc(100dvh - var(--enganche-alto));
+
+    --fit-pad-y: clamp(8px, calc(var(--alto-util) * 0.016), 18px);
+    --fit-gap-frame: clamp(0.55rem, calc(var(--alto-util) * 0.015), 1.25rem);
+    /*
+     * RITMO VERTICAL POR PAPEL, no un hueco unico.
+     *
+     * Medido en las trece secciones: los huecos entre bloques iban 9·14·18 con
+     * un rango de 0 a 9 px. Casi iguales, asi que NADA AGRUPA — el titular
+     * parece pertenecer a las metricas tanto como al rotulo de seccion, y el
+     * ojo lee una lista en vez de bloques.
+     *
+     * La causa era un solo `--fit-gap-stack` para toda la pila mas 34 margenes
+     * sueltos (`mt-2`, `mt-4`) repartidos por doce escenas, que se sumaban al
+     * `gap`. Nadie habia decidido esas distancias: salian.
+     *
+     * Ahora hay tres pasos con relacion 1 : 2 : 3, que es la proporcion minima
+     * para que el ojo distinga niveles:
+     *
+     *   apretado   dentro de una cabecera (rotulo, titular, descripcion)
+     *   normal     entre bloques del mismo grupo
+     *   amplio     antes de la accion final, que cierra la seccion
+     */
+    --fit-gap-apretado: clamp(0.2rem, calc(var(--alto-util) * 0.0055), 0.45rem);
+    --fit-gap-stack: clamp(0.45rem, calc(var(--alto-util) * 0.012), 1rem);
+    --fit-gap-amplio: clamp(0.7rem, calc(var(--alto-util) * 0.019), 1.6rem);
+    --fit-headline: clamp(1.6rem, calc(var(--alto-util) * 0.033), 2.35rem);
+    --fit-card-pad: clamp(0.8rem, calc(var(--alto-util) * 0.019), 1.5rem);
+
+    --section-fit-pad-y: var(--fit-pad-y);
   }
 
+  /*
+   * LA SECCION CRECE SI HACE FALTA. `min-height`, no `height` fijo.
+   *
+   * Con `height` + `max-height` a `100dvh` y `overflow: hidden`, una seccion
+   * cuyo contenido no cupiera perdia texto sin remedio. La primera correccion
+   * fue dejar que el marco se desplazara por dentro, y eso ya no pierde nada —
+   * pero crea DOS contextos de scroll anidados, y con enganche por paginas se
+   * pelean: giras la rueda, se mueve el de dentro, y luego salta el de fuera.
+   *
+   * El modelo correcto para una plataforma de paginas es el que ya usa el
+   * movil: la seccion mide el alto de ventana COMO MINIMO, y si su contenido
+   * pide mas, crece. El scroll sigue siendo uno solo, el de la pagina, y el
+   * enganche se alinea al principio de cada seccion.
+   *
+   * Con la escala de densidad de arriba, en una ventana de 683 px solo Booster
+   * necesita crecer —le faltaban 149 px— y las otras cuatro que se quedaban
+   * cortas por 32-67 px ya entran justas.
+   */
   .home-section-fit {
-    height: 100dvh;
-    min-height: 100dvh;
-    max-height: 100dvh;
+    /*
+     * `100dvh` MENOS lo que tapa la barra.
+     *
+     * Con `100dvh` a secas la seccion medía la ventana entera, pero al
+     * engancharse sus 76 primeros pixeles quedan detras de la barra fija. El
+     * resultado es que las catorce sobraban exactamente ese margen — medido en
+     * las catorce, el exceso minimo era 76 clavado, que es la firma de un fallo
+     * estructural y no de contenido.
+     *
+     * Sigue siendo `min-height`: si el contenido pide mas, la seccion crece y
+     * no se pierde nada. Lo que cambia es el suelo, que ahora es el hueco que
+     * de verdad se ve.
+     */
+    min-height: calc(100dvh - var(--enganche-alto));
     padding-top: var(--section-fit-pad-y);
     padding-bottom: 10px;
     box-sizing: border-box;
   }
 
+  /*
+   * VALVULA DE SEGURIDAD: por mucho que se apriete, NUNCA se recorta.
+   *
+   * El marco se limita al alto de su seccion y, si aun asi el contenido no
+   * cupiera, se desplaza por dentro. Antes desbordaba con `overflow: visible`
+   * y era la SECCION —que tiene `overflow: hidden`— la que lo cortaba: el
+   * contenido no se podia alcanzar de ninguna manera.
+   *
+   * Desplazar es peor que caber, pero infinitamente mejor que perder texto.
+   * Y con la escala de densidad de arriba deberia no llegar a hacer falta casi
+   * nunca; si se activa a menudo en una seccion, es que esa seccion lleva
+   * demasiado dentro y hay que quitarle, no seguir comprimiendo.
+   */
   .home-section-fit .scene-content-frame {
-    gap: 1.25rem;
+    gap: var(--fit-gap-frame);
   }
 
   .home-section-fit .scene-content-stack {
-    gap: 0.7rem;
+    gap: var(--fit-gap-stack);
   }
 
+  /* La cabecera es UN bloque: rotulo, titular y descripcion van juntos. */
   .home-section-fit .scene-section-header {
-    gap: 0.7rem;
+    gap: var(--fit-gap-apretado);
+  }
+
+  /*
+   * El ultimo hijo de la pila es siempre la accion. Separarlo mas la convierte
+   * en cierre en vez de en «un elemento mas de la lista».
+   *
+   * `:last-child` y no una clase: asi funciona en las doce escenas sin tocar
+   * ninguna, y sigue funcionando si manana se reordena el contenido.
+   *
+   * Se excluye `.scene-visual-mobile`, que en cinco escenas va justo antes de la
+   * accion y en escritorio esta en `display: none`. Sin la exclusion la regla se
+   * la aplicaria a el —un elemento invisible— y la accion se quedaria sin su
+   * separacion.
+   */
+  .home-section-fit .scene-content-stack > :last-child:not(.scene-visual-mobile) {
+    margin-top: var(--fit-gap-amplio);
+  }
+
+  /* Las tarjetas también aprietan: son el bloque más alto de las secciones
+     densas —525 px de los 874 de Booster, el 60 %—. */
+  .home-section-fit .surface-card {
+    padding: var(--fit-card-pad);
   }
 
   .home-section-fit .scene-headline,
   .home-section-fit .scene-content-stack > h2.text-5xl {
-    font-size: 2.35rem;
-    line-height: 1.06;
+    font-size: var(--fit-headline);
+    /* 1.06 cortaba los descendentes: la «g» de «Ingeniería» y «vanguardia»
+       se salía de su caja de línea. 1.12 sigue siendo apretado para un
+       titular y ya las contiene. Los CONTADORES se dejan en 1.1 a propósito:
+       las cifras no tienen descendentes. */
+    line-height: 1.12;
   }
 
   .home-section-fit .scene-section-header .text-display,
   .home-section-fit .scene-content-stack .text-display {
-    font-size: 2.35rem;
-    line-height: 1.06;
+    font-size: var(--fit-headline);
+    /* 1.06 cortaba los descendentes: la «g» de «Ingeniería» y «vanguardia»
+       se salía de su caja de línea. 1.12 sigue siendo apretado para un
+       titular y ya las contiene. Los CONTADORES se dejan en 1.1 a propósito:
+       las cifras no tienen descendentes. */
+    line-height: 1.12;
   }
 
   .home-section-fit .text-body-lg,
@@ -1385,8 +2290,6 @@ body {
 
   .home-section-fit .scene-content-stack article.surface-card,
   .home-section-fit .scene-content-stack .surface-card {
-    padding: 1.35rem;
-    gap: 0.875rem;
   }
 
   .home-section-fit .scene-content-stack article h3,
@@ -1455,7 +2358,11 @@ body {
 
   .home-section-fit .cta-final-headline {
     font-size: clamp(1.9rem, 3.8vw, 2.65rem);
-    line-height: 1.06;
+    /* 1.06 cortaba los descendentes: la «g» de «Ingeniería» y «vanguardia»
+       se salía de su caja de línea. 1.12 sigue siendo apretado para un
+       titular y ya las contiene. Los CONTADORES se dejan en 1.1 a propósito:
+       las cifras no tienen descendentes. */
+    line-height: 1.12;
   }
 
   .home-section-fit .cta-brand-signature {
@@ -1495,7 +2402,6 @@ body {
   }
 
   .home-section-fit .ecosystem-map-column .surface-card {
-    padding: 0.85rem 1rem;
   }
 }
 
@@ -1515,14 +2421,15 @@ body {
     font-size: 1rem;
   }
 
+  /*
+   * Este `gap` estaba a fuego en 0.55rem y pisaba la variable de ritmo: misma
+   * especificidad que la regla de arriba pero declarado despues, asi que ganaba
+   * por orden. Resultado medido: la pila separaba 8.8 px y la cabecera 13.6 —
+   * al reves de lo que pide la jerarquia, porque una cabecera es UN bloque y
+   * debe ir mas apretada por dentro que los bloques entre si.
+   */
   .home-section-fit .scene-content-stack {
-    gap: 0.55rem;
-  }
-
-  .home-section-fit .scene-content-stack article.surface-card,
-  .home-section-fit .scene-content-stack .surface-card {
-    padding: 1.1rem;
-    gap: 0.65rem;
+    gap: var(--fit-gap-stack);
   }
 
   .home-section-fit .scene-content-stack article h3 {
@@ -1672,7 +2579,6 @@ body {
   }
 
   #trust .scene-content-stack .surface-card {
-    padding: 0.6rem 0.7rem !important;
   }
 
   #trust .scene-content-stack .surface-card h3,
@@ -1871,8 +2777,24 @@ body {
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.85);
 }
 
+/*
+ * COLORES DE TEXTO A TOKEN. Medido: 37 colores a fuego contra 10 con token — la
+ * proporcion estaba invertida.
+ *
+ * En Mining habia ONCE colores de texto distintos, entre ellos CINCO blancos
+ * casi identicos (.96 .92 .88 .82 y opaco) y DOS magentas —.88 y .75— para la
+ * MISMA palabra en sitios distintos. Ninguna persona distingue esas
+ * diferencias; solo hacen que el sistema tenga once entradas donde deberia
+ * tener tres.
+ *
+ * Cada uno se mapea por su PAPEL y no por su valor:
+ *   ink     mensaje: titulares de tarjeta, descripcion de seccion
+ *   muted   apoyo: cuerpo de tarjeta, rotulos de metrica
+ *   faint   dato menor: numeros de orden
+ *   magenta acento de marca, uno solo
+ */
 #mining .scene-section-header p {
-  color: rgba(232, 236, 248, 0.92);
+  color: var(--g-ink);
   max-width: 34rem;
   line-height: 1.65;
 }
@@ -1890,7 +2812,7 @@ body {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 600;
-  color: rgba(255, 46, 219, 0.88);
+  color: var(--g-magenta);
 }
 
 #mining .mining-story-track__arrow {
@@ -1927,8 +2849,8 @@ body {
     rgba(12, 14, 28, 0.48) 0%,
     rgba(8, 10, 20, 0.32) 100%
   );
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(var(--g-blur-soft));
+  -webkit-backdrop-filter: blur(var(--g-blur-soft));
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.03) inset,
     0 8px 24px rgba(0, 0, 0, 0.18);
@@ -1962,7 +2884,7 @@ body {
   width: 2.15rem;
   height: 2.15rem;
   border-radius: 0.6rem;
-  color: #ff2edb;
+  color: var(--g-magenta-hi);
   background: linear-gradient(
     135deg,
     rgba(255, 0, 200, 0.14) 0%,
@@ -1973,25 +2895,25 @@ body {
 }
 
 #mining .mining-flow-card__icon[data-kind='participation'] {
-  color: #9d4dff;
+  color: var(--g-violet-hi);
 }
 
 #mining .mining-flow-card__icon[data-kind='distribution'] {
-  color: #00f5ff;
+  color: var(--g-cyan);
 }
 
 #mining .mining-flow-card__step {
   font-family: var(--font-jetbrains-mono, ui-monospace, monospace);
   font-size: 0.6875rem;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--g-ink-faint);
 }
 
 #mining .mining-flow-card__track {
   font-size: 0.625rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 46, 219, 0.75);
+  color: var(--g-magenta);
   font-weight: 600;
 }
 
@@ -2000,14 +2922,14 @@ body {
   font-size: clamp(1rem, 1.9vw, 1.2rem);
   font-weight: 600;
   line-height: 1.28;
-  color: rgba(255, 255, 255, 0.96);
+  color: var(--g-ink);
   margin: 0;
 }
 
 #mining .mining-flow-card__desc {
   font-size: 0.8125rem;
   line-height: 1.55;
-  color: rgba(210, 218, 235, 0.88);
+  color: var(--g-ink-muted);
   margin: 0;
   max-width: 36rem;
 }
@@ -2066,7 +2988,7 @@ body {
   font-size: 0.625rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(180, 190, 210, 0.82);
+  color: var(--g-ink-muted);
 }
 
 @media (min-width: 640px) {
@@ -2165,17 +3087,17 @@ body {
 
 #mining .mining-constellation__layer--back {
   z-index: 0;
-  animation: mining-parallax-back 14s ease-in-out infinite;
+  animation: mining-parallax-back 32s ease-in-out infinite;
 }
 
 #mining .mining-constellation__layer--mid {
   z-index: 1;
-  animation: mining-parallax-mid 11s ease-in-out infinite;
+  animation: mining-parallax-mid 16s ease-in-out infinite;
 }
 
 #mining .mining-constellation__layer--front {
   z-index: 2;
-  animation: mining-parallax-front 9s ease-in-out infinite;
+  animation: mining-parallax-front 8s ease-in-out infinite;
 }
 
 #mining .mining-constellation__stage {
@@ -2231,10 +3153,6 @@ body {
 /* Energy streams */
 #mining .mining-constellation-streams {
   position: absolute;
-  inset: 5%;
-  width: 90%;
-  height: 90%;
-  margin: auto;
   overflow: visible;
 }
 
@@ -2247,7 +3165,7 @@ body {
   opacity: 0.42;
   stroke-linecap: round;
   stroke-dasharray: 8 14;
-  animation: mining-stream-flow 6.5s linear infinite;
+  animation: mining-stream-flow 4s linear infinite;
 }
 
 #mining .mining-constellation-stream--pulse {
@@ -2327,21 +3245,21 @@ body {
   inset: 18%;
   border-color: rgba(255, 0, 200, 0.42);
   opacity: 0.58;
-  animation: mining-ring-spin 14s linear infinite;
+  animation: mining-ring-spin 8s linear infinite;
 }
 
 #mining .mining-constellation-core__ring--mid {
   inset: 6%;
   border-color: rgba(157, 77, 255, 0.32);
   opacity: 0.38;
-  animation: mining-ring-spin-rev 22s linear infinite;
+  animation: mining-ring-spin-rev 16s linear infinite;
 }
 
 #mining .mining-constellation-core__ring--outer {
   inset: -4%;
   border-color: rgba(41, 98, 255, 0.2);
   opacity: 0.22;
-  animation: mining-ring-spin 34s linear infinite;
+  animation: mining-ring-spin 32s linear infinite;
 }
 
 #mining .mining-constellation-core__orbit-field {
@@ -2360,7 +3278,7 @@ body {
   border-radius: 50%;
   background: rgba(255, 46, 219, 0.75);
   box-shadow: 0 0 4px rgba(255, 0, 200, 0.6);
-  animation: mining-orbit-particle 5.5s linear infinite;
+  animation: mining-orbit-particle 4s linear infinite;
   transform-origin: 0 0;
 }
 
@@ -2395,7 +3313,7 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  color: #ff00c8;
+  color: var(--g-magenta);
   background: linear-gradient(
     145deg,
     rgba(255, 0, 200, 0.24) 0%,
@@ -2421,7 +3339,8 @@ body {
   width: 2.45rem;
   height: 2.45rem;
   z-index: 3;
-  animation: mining-node-float var(--node-breathe-s, 5s) ease-in-out infinite;
+  animation: mining-node-float var(--node-breathe-s, 4s) ease-in-out infinite;
+  animation-delay: var(--node-breathe-delay, 0s);
 }
 
 #mining .mining-constellation-node__halo {
@@ -2430,7 +3349,8 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, var(--node-glow) 0%, transparent 68%);
   opacity: 0.35;
-  animation: mining-node-halo-breathe var(--node-breathe-s, 5s) ease-in-out infinite;
+  animation: mining-node-halo-breathe var(--node-breathe-s, 4s) ease-in-out infinite;
+  animation-delay: var(--node-breathe-delay, 0s);
   filter: blur(4px);
 }
 
@@ -2440,7 +3360,8 @@ body {
   border-radius: 50%;
   border: 0.5px solid color-mix(in srgb, var(--node-color) 42%, transparent);
   opacity: 0.55;
-  animation: mining-node-ring-breathe var(--node-breathe-s, 5s) ease-in-out infinite;
+  animation: mining-node-ring-breathe var(--node-breathe-s, 4s) ease-in-out infinite;
+  animation-delay: var(--node-breathe-delay, 0s);
 }
 
 #mining .mining-constellation-node__pulse-flash {
@@ -2464,8 +3385,8 @@ body {
   color: var(--node-color);
   background: rgba(6, 8, 20, 0.62);
   border: 0.5px solid color-mix(in srgb, var(--node-color) 38%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(var(--g-blur-soft));
+  -webkit-backdrop-filter: blur(var(--g-blur-soft));
   box-shadow:
     0 0 16px color-mix(in srgb, var(--node-color) 28%, transparent),
     inset 0 0 12px color-mix(in srgb, var(--node-color) 8%, transparent);
@@ -2877,12 +3798,12 @@ body {
 }
 
 .brand-mark-orbit {
-  animation: genesis-orbit-spin 28s linear infinite;
+  animation: genesis-orbit-spin 32s linear infinite;
   transform-origin: 24px 24px;
 }
 
 .brand-mark-core-pulse {
-  animation: genesis-core-pulse 3.5s ease-in-out infinite;
+  animation: genesis-core-pulse 4s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3009,8 +3930,32 @@ body {
 }
 
 @media (min-width: 1024px) {
+  /*
+   * EL MAPA OCUPA SU COLUMNA, NO LA DESBORDA.
+   *
+   * Aquí había `scale(1.35)`. Un escalado no reserva espacio: la caja de
+   * maquetación seguía midiendo 386 px mientras el mapa se dibujaba a 522, así
+   * que los 136 px de diferencia invadían la columna de texto de al lado.
+   *
+   * Medido, el solape horizontal con el párrafo era de 98 px. Es lo que hacía
+   * que el texto pareciera pasar por debajo de la tarjeta «AiG Token».
+   *
+   * Quitar el escalado lo baja a 20 px —un 80% menos—, y esos 20 restantes son
+   * el `translateX` de la columna, que se neutraliza abajo.
+   *
+   * Si el mapa debe verse más grande, la vía es darle más columna, no escalarlo:
+   * agrandar sin reservar espacio es exactamente cómo se produce un solape.
+   */
   .ecosystem-map-visual {
-    transform: scale(1.35);
+    transform: none;
+  }
+
+  /*
+   * El desplazamiento lateral empujaba la columna hacia el texto. Con el mapa ya
+   * ajustado a su caja no hace falta, y sumaba al solape.
+   */
+  .ecosystem-map-column {
+    transform: none;
   }
 }
 
@@ -3022,12 +3967,25 @@ body {
   z-index: 0;
   pointer-events: none;
   overflow: visible;
+
+  /*
+   * El `fill` por defecto de SVG es NEGRO, y se hereda. Una forma a la que se le
+   * olvide el relleno no se queda invisible: se pinta como una mancha opaca
+   * sobre el fondo oscuro. Aqui paso dos elipses —los halos de Marketplace y
+   * Comunidad— que llevaban clase pero ninguna regla, y llevaban asi desde que
+   * se escribieron.
+   *
+   * Con `fill: none` heredado, el olvido falla hacia lo invisible en vez de
+   * hacia lo negro. Las formas que si declaran su relleno no se ven afectadas:
+   * un atributo de presentacion en el propio elemento gana a un valor heredado.
+   */
+  fill: none;
 }
 
 .eco-energy-link {
   stroke-width: 0.55;
   stroke-dasharray: 3 2;
-  animation: eco-link-idle 3.2s ease-in-out infinite, eco-link-transfer 4.8s linear infinite;
+  animation: eco-link-idle 4s ease-in-out infinite, eco-link-transfer 8s linear infinite;
 }
 
 .eco-energy-link--primary {
@@ -3037,29 +3995,29 @@ body {
 
 .eco-energy-particle {
   opacity: 0.85;
-  filter: drop-shadow(0 0 2px rgba(34, 211, 238, 0.8));
+  filter: drop-shadow(0 0 2px rgba(0, 245, 255, 0.8));
 }
 
 .eco-energy-particle--trail {
   opacity: 0.55;
-  filter: drop-shadow(0 0 2px rgba(233, 30, 139, 0.7));
+  filter: drop-shadow(0 0 2px rgba(255, 0, 200, 0.7));
 }
 
 .eco-token-pulse-ring {
   fill: none;
-  stroke: rgba(233, 30, 139, 0.55);
+  stroke: rgba(255, 0, 200, 0.55);
   stroke-width: 0.6;
   transform-origin: 50px 10px;
-  animation: eco-token-pulse 3.5s ease-out infinite;
+  animation: eco-token-pulse 4s ease-out infinite;
 }
 
 .eco-token-core-glow {
-  fill: rgba(233, 30, 139, 0.35);
-  filter: drop-shadow(0 0 4px rgba(233, 30, 139, 0.6));
+  fill: rgba(255, 0, 200, 0.35);
+  filter: drop-shadow(0 0 4px rgba(255, 0, 200, 0.6));
 }
 
 .eco-node-module {
-  animation: eco-node-breathe 4.5s ease-in-out infinite;
+  animation: eco-node-breathe 8s ease-in-out infinite;
 }
 
 .eco-node-module:nth-child(odd) {
@@ -3067,13 +4025,13 @@ body {
 }
 
 .eco-node-token {
-  animation: eco-energy-react 3.5s ease-in-out infinite;
+  animation: eco-energy-react 4s ease-in-out infinite;
 }
 
 .eco-node-token .surface-card {
   box-shadow:
-    0 0 0 1px rgba(233, 30, 139, 0.25),
-    0 0 24px rgba(233, 30, 139, 0.18);
+    0 0 0 1px rgba(255, 0, 200, 0.25),
+    0 0 24px rgba(255, 0, 200, 0.18);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3119,6 +4077,22 @@ body {
   border: 0;
   border-radius: 50%;
   transform: translate(-2%, -50%);
+  /*
+   * ATMÓSFERA, NO COLOR MEDIBLE — y es deliberado.
+   *
+   * Se probó rebalancear estas paradas para acercar el reparto de color al del
+   * logo. No movió nada: +1% de acercamiento. La razón, medida aislando capas:
+   * con blur(148px) y opacidades de 0,06–0,26 sobre negro, estos píxeles quedan
+   * POR DEBAJO del umbral de saturación con el que se mide la presencia de
+   * color. Quitar las auras enteras no baja el cromatismo de la pantalla.
+   *
+   * Eso no es un defecto: es exactamente lo que las hace leerse como ambiente y
+   * no como bloque de color. Aquí no se toca la presencia.
+   *
+   * Las palancas reales están medidas: el canvas WebGL aporta un tercio del
+   * color visible y los elementos del DOM —bordes, texto con degradado, iconos—
+   * los otros dos tercios.
+   */
   background: radial-gradient(
     circle at center,
     rgba(255, 0, 200, 0.16) 0%,
@@ -3130,7 +4104,7 @@ body {
   );
   filter: blur(148px);
   -webkit-filter: blur(148px);
-  animation: genesis-aura-breathe var(--genesis-aura-breath-duration, 6.4s) ease-in-out infinite;
+  animation: genesis-aura-breathe var(--genesis-aura-breath-duration, 8s) ease-in-out infinite;
   will-change: transform, opacity;
 }
 
@@ -3510,7 +4484,7 @@ body {
   border-radius: 12px;
   border: 1px solid rgba(255, 0, 200, 0.28);
   background: rgba(6, 10, 22, 0.92);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(var(--g-blur-soft));
   pointer-events: auto;
   font-family: var(--font-inter, system-ui, sans-serif);
 }
@@ -3542,14 +4516,14 @@ body {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #ff4ddb;
+  color: var(--g-magenta-hi);
 }
 
 #token .token-orbit-editor-hud__hint {
   margin: 0 0 0.65rem;
   font-size: 0.72rem;
   line-height: 1.45;
-  color: rgba(220, 230, 255, 0.72);
+  color: var(--g-ink-muted);
 }
 
 #token .token-orbit-editor-hud__list {
@@ -3594,7 +4568,7 @@ body {
 
 #token .token-orbit-editor-hud__angle {
   font-variant-numeric: tabular-nums;
-  color: #00f5ff;
+  color: var(--g-cyan);
 }
 
 #token .token-orbit-editor-hud__actions {
@@ -3661,7 +4635,7 @@ body {
 
 #token .token-orbit-editor-hud__field input[type='range'] {
   width: 100%;
-  accent-color: #ff00c8;
+  accent-color: var(--g-magenta);
 }
 
 #token .token-orbit-editor-hud__field input[type='number'] {
@@ -3670,7 +4644,7 @@ body {
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(0, 0, 0, 0.35);
-  color: #00f5ff;
+  color: var(--g-cyan);
   font-size: 0.68rem;
 }
 
@@ -3692,7 +4666,7 @@ body {
 #token .token-orbit-editor-hud__subhead {
   margin: 0 0 0.35rem;
   font-size: 0.68rem;
-  color: #00f5ff;
+  color: var(--g-cyan);
   font-weight: 600;
 }
 
@@ -3743,7 +4717,7 @@ body {
 #token .token-value-orbit__energy-point {
   opacity: 0.55;
   filter: drop-shadow(0 0 1.2px rgba(255, 77, 219, 0.5));
-  animation: token-orbit-energy-breathe 5.5s ease-in-out infinite;
+  animation: token-orbit-energy-breathe 8s ease-in-out infinite;
 }
 
 #token .token-value-orbit__traveler {
@@ -3824,7 +4798,7 @@ body {
   border-radius: 42% 58% 53% 47% / 44% 49% 51% 56%;
   filter: blur(26px);
   opacity: 0.5;
-  animation: token-volume-drift 9s ease-in-out infinite;
+  animation: token-volume-drift 8s ease-in-out infinite;
 }
 
 #token .token-value-core__volume--a {
@@ -3882,7 +4856,7 @@ body {
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  animation: token-energy-ring-spin 48s linear infinite;
+  animation: token-energy-ring-spin 32s linear infinite;
 }
 
 #token .token-value-core__energy-ring-img {
@@ -4012,7 +4986,7 @@ body {
   width: calc(2.35rem * var(--node-size, 1));
   height: calc(2.35rem * var(--node-size, 1));
   z-index: 3;
-  animation: token-node-float var(--node-breathe-s, 5.2s) ease-in-out infinite;
+  animation: token-node-float var(--node-breathe-s, 8s) ease-in-out infinite;
 }
 
 #token .token-value-node__halo {
@@ -4021,7 +4995,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, var(--node-glow) 0%, transparent 68%);
   opacity: 0.32;
-  animation: token-node-halo-breathe var(--node-breathe-s, 5.2s) ease-in-out infinite;
+  animation: token-node-halo-breathe var(--node-breathe-s, 8s) ease-in-out infinite;
   filter: blur(4px);
 }
 
@@ -4031,7 +5005,7 @@ body {
   border-radius: 50%;
   border: 0.5px solid color-mix(in srgb, var(--node-color) 40%, transparent);
   opacity: 0.52;
-  animation: token-node-ring-breathe var(--node-breathe-s, 5.2s) ease-in-out infinite;
+  animation: token-node-ring-breathe var(--node-breathe-s, 8s) ease-in-out infinite;
 }
 
 #token .token-value-node__pulse-flash {
@@ -4059,8 +5033,8 @@ body {
     rgba(6, 8, 20, 0.62) 100%
   );
   border: 0.5px solid color-mix(in srgb, var(--node-color) 34%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(var(--g-blur-soft));
+  -webkit-backdrop-filter: blur(var(--g-blur-soft));
   box-shadow:
     0 0 12px color-mix(in srgb, var(--node-color) 22%, transparent),
     inset 0 0 8px color-mix(in srgb, var(--node-color) 6%, transparent);
@@ -4498,12 +5472,12 @@ body {
 
 #booster .booster-quantum-accelerator__layer--back {
   z-index: 0;
-  animation: booster-parallax-back 13s ease-in-out infinite;
+  animation: booster-parallax-back 32s ease-in-out infinite;
 }
 
 #booster .booster-quantum-accelerator__layer--mid {
   z-index: 1;
-  animation: booster-parallax-mid 10s ease-in-out infinite;
+  animation: booster-parallax-mid 16s ease-in-out infinite;
 }
 
 #booster .booster-quantum-accelerator__layer--front {
@@ -4527,7 +5501,7 @@ body {
   border-radius: 42% 42% 38% 38%;
   filter: blur(28px);
   opacity: 0.35;
-  animation: booster-volume-breathe 6s ease-in-out infinite;
+  animation: booster-volume-breathe 4s ease-in-out infinite;
 }
 
 #booster .booster-quantum-accelerator__volume--a {
@@ -4565,14 +5539,14 @@ body {
   opacity: 0.4;
   stroke-linecap: round;
   stroke-dasharray: 2.2 3.8;
-  animation: booster-stream-flow 3.8s linear infinite;
+  animation: booster-stream-flow 2s linear infinite;
 }
 
 #booster .booster-accelerator-stream--pulse {
   stroke-width: 0.55;
   opacity: 0;
   stroke-linecap: round;
-  animation: booster-genesis-pulse var(--booster-pulse-s, 4s) ease-out infinite;
+  animation: booster-genesis-pulse var(--booster-pulse-s, 2s) ease-out infinite;
 }
 
 #booster .booster-accelerator-stream__particle,
@@ -4606,7 +5580,7 @@ body {
   box-shadow:
     0 0 18px var(--tier-glow),
     inset 0 0 14px color-mix(in srgb, var(--tier-color) 12%, transparent);
-  animation: booster-tier-breathe 5s ease-in-out infinite;
+  animation: booster-tier-breathe 4s ease-in-out infinite;
 }
 
 #booster .booster-accelerator-tier__ring--single,
@@ -4617,15 +5591,15 @@ body {
 #booster .booster-accelerator-tier__ring--inner {
   inset: 18%;
   animation-direction: reverse;
-  animation-duration: 4.2s;
+  animation-duration: 4s;
 }
 
 #booster .booster-accelerator-tier--multiplier .booster-accelerator-tier__ring--outer {
-  animation: booster-ring-spin 7s linear infinite;
+  animation: booster-ring-spin 8s linear infinite;
 }
 
 #booster .booster-accelerator-tier--multiplier .booster-accelerator-tier__ring--inner {
-  animation: booster-ring-spin-reverse 5.5s linear infinite;
+  animation: booster-ring-spin-reverse 16s linear infinite;
 }
 
 #booster .booster-accelerator-tier__gather {
@@ -4634,7 +5608,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, var(--tier-glow) 0%, transparent 68%);
   opacity: 0.4;
-  animation: booster-gather-pulse 3.5s ease-in-out infinite;
+  animation: booster-gather-pulse 2s ease-in-out infinite;
 }
 
 #booster .booster-accelerator-tier__burst {
@@ -4643,8 +5617,8 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(0, 245, 255, 0.22) 0%, transparent 62%);
   opacity: 0.35;
-  animation: booster-progression-burst var(--booster-pulse-s, 4s) ease-out infinite;
-  animation-delay: calc(var(--tier-pulse-offset, 0.5) * var(--booster-pulse-s, 4s));
+  animation: booster-progression-burst var(--booster-pulse-s, 2s) ease-out infinite;
+  animation-delay: calc(var(--tier-pulse-offset, 0.5) * var(--booster-pulse-s, 2s));
 }
 
 #booster .booster-accelerator-tier__pulse-flash {
@@ -4653,8 +5627,8 @@ body {
   border-radius: 50%;
   border: 1px solid var(--tier-color);
   opacity: 0;
-  animation: booster-tier-genesis-flash var(--booster-pulse-s, 4s) ease-out infinite;
-  animation-delay: calc(var(--tier-pulse-offset, 0) * var(--booster-pulse-s, 4s));
+  animation: booster-tier-genesis-flash var(--booster-pulse-s, 2s) ease-out infinite;
+  animation-delay: calc(var(--tier-pulse-offset, 0) * var(--booster-pulse-s, 2s));
 }
 
 #booster .booster-accelerator-column-beam {
@@ -4679,7 +5653,7 @@ body {
   );
   filter: blur(6px);
   opacity: 0.55;
-  animation: booster-beam-pulse 4s ease-in-out infinite;
+  animation: booster-beam-pulse 2s ease-in-out infinite;
 }
 
 #booster .booster-accelerator-column-beam__sheath {
@@ -4928,7 +5902,7 @@ body {
 }
 
 #staking .staking-time-vault--enter .staking-time-vault__layer--front {
-  animation: staking-vault-form var(--vault-form-s, 1.4s) ease-out both;
+  animation: staking-vault-form var(--vault-form-s, 1.6s) ease-out both;
 }
 
 #staking .staking-time-vault__layer {
@@ -4939,17 +5913,17 @@ body {
 
 #staking .staking-time-vault__layer--back {
   z-index: 0;
-  animation: staking-parallax-back 16s ease-in-out infinite;
+  animation: staking-parallax-back 32s ease-in-out infinite;
 }
 
 #staking .staking-time-vault__layer--mid {
   z-index: 1;
-  animation: staking-parallax-mid 12s ease-in-out infinite;
+  animation: staking-parallax-mid 16s ease-in-out infinite;
 }
 
 #staking .staking-time-vault__layer--front {
   z-index: 2;
-  animation: staking-parallax-front 10s ease-in-out infinite;
+  animation: staking-parallax-front 8s ease-in-out infinite;
 }
 
 #staking .staking-time-vault__stage {
@@ -4963,7 +5937,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(41, 98, 255, 0.08) 0%, transparent 68%);
   filter: blur(24px);
-  animation: staking-ambient-breathe 7s ease-in-out infinite;
+  animation: staking-ambient-breathe 16s ease-in-out infinite;
 }
 
 /* Lock streams + shield */
@@ -4981,7 +5955,7 @@ body {
   opacity: 0.22;
   stroke-linecap: round;
   stroke-linejoin: round;
-  animation: staking-shield-breathe var(--vault-pulse-s, 5s) ease-in-out infinite;
+  animation: staking-shield-breathe var(--vault-pulse-s, 8s) ease-in-out infinite;
 }
 
 #staking .staking-lock-stream--in {
@@ -5030,12 +6004,25 @@ body {
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--ring-color) 48%, transparent);
   box-shadow: 0 0 14px color-mix(in srgb, var(--ring-color) 22%, transparent);
-  animation: staking-ring-spin 22s linear infinite;
+  animation: staking-ring-spin 32s linear infinite;
 }
 
-#staking .staking-time-ring:nth-child(even) .staking-time-ring__track {
+/*
+  Un plano por anillo, no dos.
+
+  Con `nth-child(even)` solo el segundo cambiaba, asi que el primero y el
+  TERCERO acababan identicos —32 s los dos— y volviamos a tener tres capas
+  donde solo se distinguen dos. La escalera 32 · 16 · 8 da a cada anillo su
+  distancia, y el sentido invertido del de en medio impide que los tres se lean
+  como un solo cuerpo girando.
+*/
+#staking .staking-time-ring:nth-child(2) .staking-time-ring__track {
   animation-direction: reverse;
-  animation-duration: 26s;
+  animation-duration: 16s;
+}
+
+#staking .staking-time-ring:nth-child(3) .staking-time-ring__track {
+  animation-duration: 8s;
 }
 
 #staking .staking-time-ring__glow {
@@ -5052,8 +6039,8 @@ body {
   border-radius: 50%;
   border: 1px solid var(--ring-color);
   opacity: 0;
-  animation: staking-kpi-pulse var(--vault-pulse-s, 5s) ease-out infinite;
-  animation-delay: calc(var(--ring-pulse-offset, 0) * var(--vault-pulse-s, 5s));
+  animation: staking-kpi-pulse var(--vault-pulse-s, 8s) ease-out infinite;
+  animation-delay: calc(var(--ring-pulse-offset, 0) * var(--vault-pulse-s, 8s));
 }
 
 /* Vault core */
@@ -5075,7 +6062,7 @@ body {
   inset: 0;
   border-radius: 50%;
   filter: blur(16px);
-  animation: staking-core-volume-breathe var(--vault-pulse-s, 5s) ease-in-out infinite;
+  animation: staking-core-volume-breathe var(--vault-pulse-s, 8s) ease-in-out infinite;
 }
 
 #staking .staking-vault-core__volume--a {
@@ -5100,10 +6087,10 @@ body {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: #00F5FF;
+  background: var(--g-cyan);
   box-shadow: 0 0 4px rgba(0, 245, 255, 0.5);
   transform: rotate(var(--orbit-angle)) translateX(3.75rem);
-  animation: staking-orbit-drift 18s linear infinite;
+  animation: staking-orbit-drift 16s linear infinite;
 }
 
 #staking .staking-vault-core__nucleus {
@@ -5115,11 +6102,11 @@ body {
   justify-content: center;
   border-radius: 50%;
   background: rgba(6, 8, 20, 0.55);
-  border: 1px solid color-mix(in srgb, #FF00C8 35%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-magenta) 35%, transparent);
   box-shadow:
     0 0 24px rgba(255, 0, 200, 0.22),
     inset 0 0 18px rgba(157, 77, 255, 0.12);
-  animation: staking-core-pulse var(--vault-pulse-s, 5s) ease-in-out infinite;
+  animation: staking-core-pulse var(--vault-pulse-s, 8s) ease-in-out infinite;
 }
 
 #staking .staking-vault-core__inner-glow {
@@ -5131,7 +6118,7 @@ body {
 
 #staking .staking-vault-core__lock-glyph {
   position: relative;
-  color: #FF00C8;
+  color: var(--g-magenta);
   opacity: 0.85;
   filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.45));
 }
@@ -5342,7 +6329,7 @@ body {
 }
 
 #gpulse .gpulse-signal-network--enter .gpulse-signal-network__layer--front {
-  animation: gpulse-network-form var(--gpulse-form-s, 1s) ease-out both;
+  animation: gpulse-network-form var(--gpulse-form-s, 0.8s) ease-out both;
 }
 
 #gpulse .gpulse-signal-network__layer {
@@ -5353,17 +6340,17 @@ body {
 
 #gpulse .gpulse-signal-network__layer--back {
   z-index: 0;
-  animation: gpulse-parallax-back 14s ease-in-out infinite;
+  animation: gpulse-parallax-back 32s ease-in-out infinite;
 }
 
 #gpulse .gpulse-signal-network__layer--mid {
   z-index: 1;
-  animation: gpulse-parallax-mid 11s ease-in-out infinite;
+  animation: gpulse-parallax-mid 16s ease-in-out infinite;
 }
 
 #gpulse .gpulse-signal-network__layer--front {
   z-index: 2;
-  animation: gpulse-parallax-front 9s ease-in-out infinite;
+  animation: gpulse-parallax-front 8s ease-in-out infinite;
 }
 
 #gpulse .gpulse-signal-network__stage {
@@ -5380,7 +6367,7 @@ body {
     radial-gradient(ellipse at 65% 58%, rgba(157, 77, 255, 0.07) 0%, transparent 58%),
     radial-gradient(ellipse at 50% 50%, rgba(255, 0, 200, 0.04) 0%, transparent 62%);
   filter: blur(28px);
-  animation: gpulse-field-breathe 6s ease-in-out infinite;
+  animation: gpulse-field-breathe 4s ease-in-out infinite;
 }
 
 /* Radar sweep */
@@ -5458,22 +6445,22 @@ body {
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--ring-color) 42%, transparent);
   box-shadow: 0 0 12px color-mix(in srgb, var(--ring-color) 20%, transparent);
-  animation: gpulse-ring-wobble 18s ease-in-out infinite;
+  animation: gpulse-ring-wobble 32s ease-in-out infinite;
 }
 
 #gpulse .gpulse-signal-ring:nth-child(1) .gpulse-signal-ring__track {
-  animation-duration: 16s;
+  animation-duration: 8s;
   transform: rotate(-4deg) scaleX(1.02);
 }
 
 #gpulse .gpulse-signal-ring:nth-child(2) .gpulse-signal-ring__track {
-  animation-duration: 20s;
+  animation-duration: 16s;
   animation-direction: reverse;
   transform: rotate(3deg) scaleY(0.98);
 }
 
 #gpulse .gpulse-signal-ring:nth-child(3) .gpulse-signal-ring__track {
-  animation-duration: 24s;
+  animation-duration: 32s;
   transform: rotate(-2deg) scale(1.01);
 }
 
@@ -5498,7 +6485,24 @@ body {
 /* Signal core */
 #gpulse .gpulse-signal-core {
   position: absolute;
-  transform: translate(-50%, -50%);
+  /*
+   * ESCALA DEL NUCLEO — G-Pulse
+   *
+   * Medido antes: el logotipo ocupaba el 5,2 % del ancho del visual, contra el
+   * 24,3 % que ocupa el del hero sobre su ventana. Casi cinco veces menos en
+   * proporcion: imperceptible.
+   *
+   * Se escala el NUCLEO ENTERO y no solo el logo. Un `scale` sobre el
+   * contenedor arrastra anillos, resplandor, particulas de orbita y radios de
+   * desenfoque a la vez, asi que la pieza crece SIN deformarse — con una sola
+   * cifra en vez de retocar una docena de valores en rem que acabarian
+   * desincronizados.
+   *
+   * Va DESPUES del `translate(-50%, -50%)` a proposito: el orden importa en
+   * `transform`, y al reves escalaria tambien el desplazamiento de centrado y
+   * la pieza se iria de sitio.
+   */
+  transform: translate(-50%, -50%) scale(2);
   width: 6.4rem;
   height: 6.4rem;
   z-index: 5;
@@ -5539,10 +6543,10 @@ body {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: #9D4DFF;
+  background: var(--g-violet-hi);
   box-shadow: 0 0 5px rgba(157, 77, 255, 0.55);
   transform: rotate(var(--orbit-angle)) translateX(3.1rem);
-  animation: gpulse-orbit-drift 14s linear infinite;
+  animation: gpulse-orbit-drift 16s linear infinite;
 }
 
 #gpulse .gpulse-signal-core__nucleus {
@@ -5554,7 +6558,7 @@ body {
   justify-content: center;
   border-radius: 50%;
   background: rgba(6, 8, 20, 0.58);
-  border: 1px solid color-mix(in srgb, #FF00C8 38%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-magenta) 38%, transparent);
   box-shadow:
     0 0 28px rgba(255, 0, 200, 0.24),
     inset 0 0 16px rgba(157, 77, 255, 0.14);
@@ -5577,11 +6581,23 @@ body {
   animation: gpulse-core-expand var(--gpulse-pulse-s, 2s) ease-out infinite;
 }
 
+  /*
+   * SIN `filter` AQUI: lo pone `.marca-halo`, en el mismo elemento.
+   *
+   * Habia un `drop-shadow` magenta heredado de cuando el glifo era un SVG
+   * monocromo. Con el logotipo real dentro es un error medible: G-Pulse es VIOLETA dominante (51,5 % de sus pixeles con
+   * color) y el halo magenta lo enturbiaba.
+   *
+   * Y no bastaba con anadir la clase nueva — esta regla lleva `#gpulse` delante,
+   * asi que su especificidad (1,1,0) gana a `.marca-halo` (0,1,0) SIEMPRE, no
+   * por orden. Habia que quitarlo de origen.
+   *
+   * `opacity` y `color` se conservan: el pseudo-elemento hermano usa `color`.
+   */
 #gpulse .gpulse-signal-core__glyph {
   position: relative;
-  color: #FF00C8;
+  color: var(--g-magenta);
   opacity: 0.88;
-  filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.5));
 }
 
 /* Streams + nodes */
@@ -5873,7 +6889,7 @@ body {
 }
 
 #goracle .goracle-quantum-brain--enter .goracle-quantum-brain__layer--front {
-  animation: goracle-brain-form var(--oracle-form-s, 1.2s) ease-out both;
+  animation: goracle-brain-form var(--oracle-form-s, 1.6s) ease-out both;
 }
 
 #goracle .goracle-quantum-brain__layer {
@@ -5884,17 +6900,17 @@ body {
 
 #goracle .goracle-quantum-brain__layer--back {
   z-index: 0;
-  animation: goracle-parallax-back 18s ease-in-out infinite;
+  animation: goracle-parallax-back 32s ease-in-out infinite;
 }
 
 #goracle .goracle-quantum-brain__layer--mid {
   z-index: 1;
-  animation: goracle-parallax-mid 14s ease-in-out infinite;
+  animation: goracle-parallax-mid 16s ease-in-out infinite;
 }
 
 #goracle .goracle-quantum-brain__layer--front {
   z-index: 2;
-  animation: goracle-parallax-front 11s ease-in-out infinite;
+  animation: goracle-parallax-front 8s ease-in-out infinite;
 }
 
 #goracle .goracle-quantum-brain__stage {
@@ -5911,7 +6927,7 @@ body {
     radial-gradient(ellipse at 62% 58%, rgba(157, 77, 255, 0.075) 0%, transparent 55%),
     radial-gradient(ellipse at 50% 50%, rgba(255, 0, 200, 0.045) 0%, transparent 60%);
   filter: blur(32px);
-  animation: goracle-field-breathe 7s ease-in-out infinite;
+  animation: goracle-field-breathe 16s ease-in-out infinite;
 }
 
 /* Neural layers — abstract cloud silhouette */
@@ -5945,7 +6961,7 @@ body {
     transparent 72%
   );
   filter: blur(8px);
-  animation: goracle-layer-drift 22s ease-in-out infinite;
+  animation: goracle-layer-drift 32s ease-in-out infinite;
 }
 
 #goracle .goracle-neural-layer__veil {
@@ -5953,16 +6969,33 @@ body {
   inset: -0.4rem;
   border-radius: 50%;
   border: 1px solid rgba(157, 77, 255, 0.08);
-  animation: goracle-layer-pulse var(--oracle-pulse-s, 5s) ease-in-out infinite;
+  animation: goracle-layer-pulse var(--oracle-pulse-s, 8s) ease-in-out infinite;
+}
+
+/*
+  Los tres velos del cerebro, en la escalera de profundidad.
+
+  Iban a 32 · 26 · 30 y el problema no era que fueran numeros sueltos: el
+  SEGUNDO velo corria mas rapido que el tercero, lo que invierte la
+  profundidad. Lo que esta mas al fondo tiene que ser lo mas lento — es lo unico
+  que hace que tres capas superpuestas se lean como distancia y no como tres
+  manchas que se mueven.
+
+  Ahora 8 · 16 · 32, la misma escalera de paralaje que usa el resto del portal.
+  El `reverse` del segundo se queda: separa las capas sin sacarlas de la
+  escalera, que es exactamente para lo que sirve.
+*/
+#goracle .goracle-neural-layer:nth-child(1) .goracle-neural-layer__cloud {
+  animation-duration: 8s;
 }
 
 #goracle .goracle-neural-layer:nth-child(2) .goracle-neural-layer__cloud {
-  animation-duration: 26s;
+  animation-duration: 16s;
   animation-direction: reverse;
 }
 
 #goracle .goracle-neural-layer:nth-child(3) .goracle-neural-layer__cloud {
-  animation-duration: 30s;
+  animation-duration: 32s;
 }
 
 /* Neural network + synapses */
@@ -5979,12 +7012,12 @@ body {
   stroke-width: 0.18;
   stroke-linecap: round;
   opacity: 0;
-  animation: goracle-synapse-fire 4.8s ease-in-out infinite;
+  animation: goracle-synapse-fire 4s ease-in-out infinite;
 }
 
 #goracle .goracle-neural-node__dot {
   opacity: 0.45;
-  animation: goracle-node-flicker 5.5s ease-in-out infinite;
+  animation: goracle-node-flicker 4s ease-in-out infinite;
 }
 
 /* Data streams */
@@ -6012,24 +7045,45 @@ body {
 
 #goracle .goracle-data-stream__core-anchor {
   filter: drop-shadow(0 0 5px rgba(255, 0, 200, 0.65));
-  animation: goracle-core-anchor-pulse var(--oracle-pulse-s, 5s) ease-in-out infinite;
+  animation: goracle-core-anchor-pulse var(--oracle-pulse-s, 8s) ease-in-out infinite;
 }
 
 /* Ecosystem satellites */
-#goracle .goracle-ecosystem-satellites {
-  position: absolute;
-  inset: 0;
-}
+
 
 #goracle .goracle-ecosystem-satellite {
   position: absolute;
+  /*
+    El gesto de la seccion es CONVERGER: los cinco llegan desde fuera y se
+    reconocen en su anillo. `--sat-desde` es cuanto se alejan del centro al
+    empezar; la variable multiplica su propio vector, asi que cada uno entra
+    por su lado en vez de todos por el mismo.
+  */
   transform: translate(-50%, -50%);
   width: 2.4rem;
   height: 2.4rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: goracle-satellite-pulse var(--oracle-pulse-s, 5s) ease-out infinite;
+  animation:
+    goracle-satellite-converger var(--oracle-form-s, 1.6s) cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--sat-entrada, 0s);
+}
+
+#goracle .goracle-ecosystem-satellite__icon {
+  animation: goracle-satellite-pulse var(--oracle-pulse-s, 8s) ease-out infinite;
+  animation-delay: var(--sat-pulso, 0s);
+}
+
+@keyframes goracle-satellite-converger {
+  from {
+    transform: translate(-50%, -50%) translate(var(--sat-dx, 0px), var(--sat-dy, 0px));
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) translate(0, 0);
+    opacity: 1;
+  }
 }
 
 #goracle .goracle-ecosystem-satellite__halo {
@@ -6037,7 +7091,7 @@ body {
   inset: -0.5rem;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(0, 245, 255, 0.12) 0%, transparent 70%);
-  animation: goracle-satellite-halo var(--oracle-pulse-s, 5s) ease-out infinite;
+  animation: goracle-satellite-halo var(--oracle-pulse-s, 8s) ease-out infinite;
 }
 
 #goracle .goracle-ecosystem-satellite__ring {
@@ -6051,18 +7105,18 @@ body {
 #goracle .goracle-ecosystem-satellite__icon {
   position: relative;
   z-index: 1;
-  color: #00F5FF;
+  color: var(--g-cyan);
   filter: drop-shadow(0 0 4px rgba(0, 245, 255, 0.45));
 }
 
 #goracle .goracle-ecosystem-satellite[data-satellite='staking'] .goracle-ecosystem-satellite__icon,
 #goracle .goracle-ecosystem-satellite[data-satellite='booster'] .goracle-ecosystem-satellite__icon {
-  color: #9D4DFF;
+  color: var(--g-violet-hi);
   filter: drop-shadow(0 0 4px rgba(157, 77, 255, 0.45));
 }
 
 #goracle .goracle-ecosystem-satellite[data-satellite='gpulse'] .goracle-ecosystem-satellite__icon {
-  color: #FF00C8;
+  color: var(--g-magenta);
   filter: drop-shadow(0 0 4px rgba(255, 0, 200, 0.45));
 }
 
@@ -6085,7 +7139,7 @@ body {
   inset: 0;
   border-radius: 50%;
   filter: blur(18px);
-  animation: goracle-core-volume-breathe var(--oracle-pulse-s, 5s) ease-in-out infinite;
+  animation: goracle-core-volume-breathe var(--oracle-pulse-s, 8s) ease-in-out infinite;
 }
 
 #goracle .goracle-neural-core__volume--a {
@@ -6116,10 +7170,10 @@ body {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: #9D4DFF;
+  background: var(--g-violet-hi);
   box-shadow: 0 0 5px rgba(157, 77, 255, 0.55);
   transform: rotate(var(--orbit-angle)) translateX(3.4rem);
-  animation: goracle-orbit-drift 20s linear infinite;
+  animation: goracle-orbit-drift 16s linear infinite;
 }
 
 #goracle .goracle-neural-core__nucleus {
@@ -6131,11 +7185,11 @@ body {
   justify-content: center;
   border-radius: 50%;
   background: rgba(6, 8, 20, 0.6);
-  border: 1px solid color-mix(in srgb, #FF00C8 40%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-magenta) 40%, transparent);
   box-shadow:
     0 0 32px rgba(255, 0, 200, 0.26),
     inset 0 0 20px rgba(157, 77, 255, 0.14);
-  animation: goracle-inference-pulse var(--oracle-pulse-s, 5s) ease-in-out infinite;
+  animation: goracle-inference-pulse var(--oracle-pulse-s, 8s) ease-in-out infinite;
 }
 
 #goracle .goracle-neural-core__inner-glow {
@@ -6151,7 +7205,7 @@ body {
   border-radius: 50%;
   border: 1px solid rgba(255, 0, 200, 0.3);
   opacity: 0;
-  animation: goracle-inference-expand var(--oracle-pulse-s, 5s) ease-out infinite;
+  animation: goracle-inference-expand var(--oracle-pulse-s, 8s) ease-out infinite;
 }
 
 #goracle .goracle-neural-core__inference-ring--b {
@@ -6160,7 +7214,7 @@ body {
 
 #goracle .goracle-neural-core__glyph {
   position: relative;
-  color: #FF00C8;
+  color: var(--g-magenta);
   opacity: 0.9;
   filter: drop-shadow(0 0 7px rgba(255, 0, 200, 0.55));
 }
@@ -6444,17 +7498,17 @@ body {
 
 #marketplace .marketplace-global-commerce__layer--back {
   z-index: 0;
-  animation: marketplace-parallax-back 16s ease-in-out infinite;
+  animation: marketplace-parallax-back 32s ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-commerce__layer--mid {
   z-index: 1;
-  animation: marketplace-parallax-mid 12s ease-in-out infinite;
+  animation: marketplace-parallax-mid 16s ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-commerce__layer--front {
   z-index: 2;
-  animation: marketplace-parallax-front 10s ease-in-out infinite;
+  animation: marketplace-parallax-front 8s ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-commerce__stage {
@@ -6471,7 +7525,7 @@ body {
     radial-gradient(circle at 60% 58%, rgba(157, 77, 255, 0.06) 0%, transparent 58%),
     radial-gradient(circle at 50% 50%, rgba(255, 0, 200, 0.04) 0%, transparent 62%);
   filter: blur(30px);
-  animation: marketplace-atmosphere-breathe 6.5s ease-in-out infinite;
+  animation: marketplace-atmosphere-breathe 8s ease-in-out infinite;
 }
 
 /* Abstract globe rings */
@@ -6495,7 +7549,7 @@ body {
   transform: translate(-50%, -50%);
   border-radius: 50%;
   border: 1px solid rgba(157, 77, 255, 0.08);
-  animation: marketplace-activity-band-breathe 5.5s ease-in-out infinite;
+  animation: marketplace-activity-band-breathe 8s ease-in-out infinite;
 }
 
 #marketplace .marketplace-globe-layers__activity-band--outer {
@@ -6525,7 +7579,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(157, 77, 255, 0.05) 0%, transparent 68%);
   filter: blur(12px);
-  animation: marketplace-atmosphere-breathe var(--commerce-pulse-s, 3.6s) ease-in-out infinite;
+  animation: marketplace-atmosphere-breathe var(--commerce-pulse-s, 4s) ease-in-out infinite;
 }
 
 /* Global hubs — abstract connectivity ring */
@@ -6544,20 +7598,20 @@ body {
 }
 
 #marketplace .marketplace-global-hub__aura {
-  animation: marketplace-hub-aura var(--commerce-pulse-s, 3.6s) ease-in-out infinite;
+  animation: marketplace-hub-aura var(--commerce-pulse-s, 4s) ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-hub__ring {
-  animation: marketplace-hub-ring var(--commerce-pulse-s, 3.6s) ease-out infinite;
+  animation: marketplace-hub-ring var(--commerce-pulse-s, 4s) ease-out infinite;
 }
 
 #marketplace .marketplace-global-hub__core {
-  animation: marketplace-hub-pulse var(--commerce-pulse-s, 3.6s) ease-in-out infinite;
+  animation: marketplace-hub-pulse var(--commerce-pulse-s, 4s) ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-hub__satellite {
   opacity: 0.52;
-  animation: marketplace-hub-satellite 2.6s ease-in-out infinite;
+  animation: marketplace-hub-satellite 4s ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-hub-marker {
@@ -6570,34 +7624,34 @@ body {
   justify-content: center;
   border-radius: 50%;
   background: rgba(6, 8, 20, 0.62);
-  border: 1px solid color-mix(in srgb, #9D4DFF 32%, transparent);
-  color: #00F5FF;
+  border: 1px solid color-mix(in srgb, var(--g-violet-hi) 32%, transparent);
+  color: var(--g-cyan);
   box-shadow: 0 0 10px rgba(157, 77, 255, 0.22);
-  animation: marketplace-hub-marker-pulse var(--commerce-pulse-s, 3.6s) ease-in-out infinite;
+  animation: marketplace-hub-marker-pulse var(--commerce-pulse-s, 4s) ease-in-out infinite;
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='catalog'] {
-  color: #00F5FF;
+  color: var(--g-cyan);
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='reach'] {
-  color: #9D4DFF;
+  color: var(--g-violet-hi);
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='fulfillment'] {
-  color: #FF00C8;
+  color: var(--g-magenta);
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='payments'] {
-  color: #FF00C8;
+  color: var(--g-magenta);
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='tracking'] {
-  color: #3D8BFF;
+  color: var(--g-blue-hi);
 }
 
 #marketplace .marketplace-global-hub-marker[data-hub='logistics'] {
-  color: #00F5FF;
+  color: var(--g-cyan);
 }
 
 #marketplace .marketplace-core-activity__stream {
@@ -6624,7 +7678,7 @@ body {
   stroke-width: 0.24;
   stroke-linecap: round;
   opacity: 0.28;
-  animation: marketplace-route-glow 2.8s ease-in-out infinite;
+  animation: marketplace-route-glow 4s ease-in-out infinite;
 }
 
 #marketplace .marketplace-trade-route--core {
@@ -6690,21 +7744,21 @@ body {
 #marketplace .marketplace-payment-core__icon {
   position: relative;
   z-index: 1;
-  color: #00F5FF;
+  color: var(--g-cyan);
   filter: drop-shadow(0 0 3px rgba(0, 245, 255, 0.45));
 }
 
 #marketplace .marketplace-payment-core[data-payment='aig'] .marketplace-payment-core__icon {
-  color: #FF00C8;
+  color: var(--g-magenta);
   filter: drop-shadow(0 0 3px rgba(255, 0, 200, 0.45));
 }
 
 #marketplace .marketplace-payment-core[data-payment='usdt'] .marketplace-payment-core__icon {
-  color: #00F5FF;
+  color: var(--g-cyan);
 }
 
 #marketplace .marketplace-payment-core[data-payment='fiat'] .marketplace-payment-core__icon {
-  color: #3D8BFF;
+  color: var(--g-blue-hi);
   filter: drop-shadow(0 0 3px rgba(61, 139, 255, 0.45));
 }
 
@@ -6712,7 +7766,24 @@ body {
 /* Commerce core — +30% scale */
 #marketplace .marketplace-commerce-core {
   position: absolute;
-  transform: translate(-50%, -50%);
+  /*
+   * ESCALA DEL NUCLEO — Marketplace / Gevy
+   *
+   * Medido antes: el logotipo ocupaba el 4,9 % del ancho del visual, contra el
+   * 24,3 % que ocupa el del hero sobre su ventana. Casi cinco veces menos en
+   * proporcion: imperceptible.
+   *
+   * Se escala el NUCLEO ENTERO y no solo el logo. Un `scale` sobre el
+   * contenedor arrastra anillos, resplandor, particulas de orbita y radios de
+   * desenfoque a la vez, asi que la pieza crece SIN deformarse — con una sola
+   * cifra en vez de retocar una docena de valores en rem que acabarian
+   * desincronizados.
+   *
+   * Va DESPUES del `translate(-50%, -50%)` a proposito: el orden importa en
+   * `transform`, y al reves escalaria tambien el desplazamiento de centrado y
+   * la pieza se iria de sitio.
+   */
+  transform: translate(-50%, -50%) scale(1.75);
   width: 8.06rem;
   height: 8.06rem;
   z-index: 5;
@@ -6758,7 +7829,7 @@ body {
   fill: none;
   stroke: rgba(157, 77, 255, 0.12);
   stroke-width: 0.35;
-  animation: marketplace-activity-band-breathe var(--commerce-pulse-s, 3.6s) ease-in-out infinite;
+  animation: marketplace-activity-band-breathe var(--commerce-pulse-s, 4s) ease-in-out infinite;
 }
 
 #marketplace .marketplace-commerce-core__activity-band--1 .marketplace-commerce-core__activity-track {
@@ -6789,7 +7860,7 @@ body {
   justify-content: center;
   border-radius: 50%;
   background: rgba(6, 8, 20, 0.58);
-  border: 1px solid color-mix(in srgb, #FF00C8 38%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-magenta) 38%, transparent);
   box-shadow:
     0 0 26px rgba(255, 0, 200, 0.24),
     inset 0 0 16px rgba(157, 77, 255, 0.12);
@@ -6812,11 +7883,23 @@ body {
   animation: marketplace-core-expand var(--commerce-pulse-s, 4s) ease-out infinite;
 }
 
+  /*
+   * SIN `filter` AQUI: lo pone `.marca-halo`, en el mismo elemento.
+   *
+   * Habia un `drop-shadow` magenta heredado de cuando el glifo era un SVG
+   * monocromo. Con el logotipo real dentro es un error medible: Gevy SI es magenta dominante (33,7 %), pero el halo
+   * era de una sola capa y sin el tono vecino que lo funde con el fondo.
+   *
+   * Y no bastaba con anadir la clase nueva — esta regla lleva `#marketplace` delante,
+   * asi que su especificidad (1,1,0) gana a `.marca-halo` (0,1,0) SIEMPRE, no
+   * por orden. Habia que quitarlo de origen.
+   *
+   * `opacity` y `color` se conservan: el pseudo-elemento hermano usa `color`.
+   */
 #marketplace .marketplace-commerce-core__glyph {
   position: relative;
-  color: #FF00C8;
+  color: var(--g-magenta);
   opacity: 0.88;
-  filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.5));
 }
 
 /* Genesis atmosphere aura */
@@ -7051,7 +8134,7 @@ body {
 }
 
 #comunidad .community-genesis-network--enter .community-genesis-network__layer--front {
-  animation: community-network-form var(--community-form-s, 1.2s) ease-out both;
+  animation: community-network-form var(--community-form-s, 1.6s) ease-out both;
 }
 
 #comunidad .community-genesis-network__layer {
@@ -7062,17 +8145,17 @@ body {
 
 #comunidad .community-genesis-network__layer--back {
   z-index: 0;
-  animation: community-parallax-back 17s ease-in-out infinite;
+  animation: community-parallax-back 32s ease-in-out infinite;
 }
 
 #comunidad .community-genesis-network__layer--mid {
   z-index: 1;
-  animation: community-parallax-mid 13s ease-in-out infinite;
+  animation: community-parallax-mid 16s ease-in-out infinite;
 }
 
 #comunidad .community-genesis-network__layer--front {
   z-index: 2;
-  animation: community-parallax-front 11s ease-in-out infinite;
+  animation: community-parallax-front 8s ease-in-out infinite;
 }
 
 #comunidad .community-genesis-network__stage {
@@ -7089,7 +8172,7 @@ body {
     radial-gradient(circle at 58% 56%, rgba(157, 77, 255, 0.06) 0%, transparent 58%),
     radial-gradient(circle at 50% 50%, rgba(0, 245, 255, 0.04) 0%, transparent 62%);
   filter: blur(8px);
-  animation: community-atmosphere-breathe var(--community-pulse-s, 4.2s) ease-in-out infinite;
+  animation: community-atmosphere-breathe var(--community-pulse-s, 8s) ease-in-out infinite;
 }
 
 #comunidad .community-organic-field {
@@ -7104,7 +8187,7 @@ body {
   transform: translate(-50%, -50%);
   border-radius: 50%;
   border: 1px solid rgba(157, 77, 255, 0.08);
-  animation: community-band-breathe 6s ease-in-out infinite;
+  animation: community-band-breathe 16s ease-in-out infinite;
 }
 
 #comunidad .community-organic-field__band--outer {
@@ -7136,7 +8219,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(157, 77, 255, 0.05) 0%, transparent 68%);
   filter: blur(12px);
-  animation: community-atmosphere-breathe var(--community-pulse-s, 4.2s) ease-in-out infinite;
+  animation: community-atmosphere-breathe var(--community-pulse-s, 8s) ease-in-out infinite;
 }
 
 #comunidad .community-links,
@@ -7149,27 +8232,71 @@ body {
   overflow: visible;
 }
 
+/*
+  LA ESTRUCTURA ES PERMANENTE; LO QUE VIAJA ES LA ACTIVIDAD.
+
+  Los 193 enlaces existian y NO SE VEIAN. Medido: el degradado va de 0,55 a
+  0,28 de opacidad y la animacion multiplicaba por 0,46 en su pico, asi que la
+  visibilidad real era de 0,13 a 0,25 sobre un fondo casi negro, con 1,16 px de
+  grosor y ademas discontinuo. El ciclo pasaba el 34 % del tiempo en opacidad 0
+  exacta.
+
+  Una seccion que se llama «red humana organica», con 193 enlaces, donde la red
+  no se ve — solo quedaba el polvo de los nodos. Y el gesto de la seccion es
+  CONVERGER: el reconocerse SON los enlaces. Sin ellos no hay convergencia, hay
+  dispersion.
+
+  El arreglo no es subir la opacidad y ya. Es separar dos cosas que estaban
+  mezcladas en una sola animacion:
+
+    ESTRUCTURA  la red esta SIEMPRE ahi, respirando entre 0,26 y 0,5. Nunca
+                llega a cero, porque una red que desaparece deja de ser una red.
+    ACTIVIDAD   el trazo discontinuo se desplaza, y eso es lo que se mueve.
+
+  Antes las dos colgaban del mismo `opacity`, asi que para que la actividad se
+  notara la estructura tenia que apagarse.
+*/
 #comunidad .community-link {
-  stroke-width: 0.2;
+  stroke-width: 0.32;
   stroke-linecap: round;
   stroke-dasharray: 3 2;
-  animation: community-link-lifecycle 7.5s ease-in-out infinite;
+  animation:
+    community-link-respirar 16s ease-in-out infinite backwards,
+    community-link-flujo 8s linear infinite backwards;
+  animation-delay: var(--link-fase, 0s), var(--link-fase, 0s);
+}
+/*
+  `backwards` no es un detalle. Sin el, un enlace con retardo se pinta con su
+  opacidad BASE —1— hasta que su animacion arranca, y entonces cae de golpe a
+  0,26. Con retardos de hasta 2 s, eso es la red entera destellando a plena luz
+  y apagandose por partes durante los primeros segundos de la seccion. Medido:
+  la opacidad maxima salia 1 cuando el keyframe no pasa de 0,5.
+*/
+
+@keyframes community-link-respirar {
+  0%, 100% { opacity: 0.26; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes community-link-flujo {
+  from { stroke-dashoffset: 10; }
+  to { stroke-dashoffset: 0; }
 }
 
 #comunidad .community-node__dot {
-  animation: community-node-breathe var(--community-pulse-s, 4.2s) ease-in-out infinite;
+  animation: community-node-breathe var(--community-pulse-s, 8s) ease-in-out infinite;
 }
 
 #comunidad .community-node--leader .community-node__dot {
-  animation: community-leader-pulse var(--community-pulse-s, 4.2s) ease-in-out infinite;
+  animation: community-leader-pulse var(--community-pulse-s, 8s) ease-in-out infinite;
 }
 
 #comunidad .community-node__halo {
-  animation: community-leader-halo var(--community-pulse-s, 4.2s) ease-out infinite;
+  animation: community-leader-halo var(--community-pulse-s, 8s) ease-out infinite;
 }
 
 #comunidad .community-node {
-  animation: community-node-emerge calc(var(--community-growth-s, 4.5s) * 3.2) ease-in-out infinite;
+  animation: community-node-emerge var(--community-growth-s, 16s) ease-in-out infinite;
 }
 
 #comunidad .community-pool-pulse__particle {
@@ -7199,7 +8326,7 @@ body {
   inset: 0;
   border-radius: 50%;
   filter: blur(14px);
-  animation: community-core-volume-breathe var(--community-pulse-s, 4.2s) ease-in-out infinite;
+  animation: community-core-volume-breathe var(--community-pulse-s, 8s) ease-in-out infinite;
 }
 
 #comunidad .community-core__volume--a {
@@ -7221,11 +8348,11 @@ body {
   justify-content: center;
   border-radius: 50%;
   background: rgba(6, 8, 20, 0.58);
-  border: 1px solid color-mix(in srgb, #FF00C8 42%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-magenta) 42%, transparent);
   box-shadow:
     0 0 28px rgba(255, 0, 200, 0.28),
     inset 0 0 18px rgba(157, 77, 255, 0.12);
-  animation: community-core-pulse var(--community-pulse-s, 4.2s) ease-in-out infinite;
+  animation: community-core-pulse var(--community-pulse-s, 8s) ease-in-out infinite;
 }
 
 #comunidad .community-core__inner-glow {
@@ -7241,16 +8368,16 @@ body {
   border-radius: 50%;
   border: 1px solid rgba(255, 0, 200, 0.34);
   opacity: 0;
-  animation: community-core-expand var(--community-pulse-s, 4.2s) ease-out infinite;
+  animation: community-core-expand var(--community-pulse-s, 8s) ease-out infinite;
 }
 
 #comunidad .community-core__pulse-ring--b {
-  animation-delay: calc(var(--community-pulse-s, 4.2s) * 0.24);
+  animation-delay: calc(var(--community-pulse-s, 8s) * 0.24);
 }
 
 #comunidad .community-core__glyph {
   position: relative;
-  color: #FF00C8;
+  color: var(--g-magenta);
   opacity: 0.9;
   filter: drop-shadow(0 0 6px rgba(255, 0, 200, 0.55));
 }
@@ -7475,7 +8602,7 @@ body {
 }
 
 #technology .technology-genesis-stack--enter {
-  animation: technology-stack-form var(--tech-form-s, 1.1s) ease-out both;
+  animation: technology-stack-form var(--tech-form-s, 1.2s) ease-out both;
 }
 
 #technology .technology-genesis-stack__layer {
@@ -7512,8 +8639,57 @@ body {
   overflow: visible;
 }
 
-#technology .technology-stack-layer__plate {
+/*
+  EL GESTO DE LA SECCION: DIFERENCIAR.
+
+  Los cinco estratos parten JUNTOS del centro del lienzo y se separan a su
+  altura. Eso es literalmente lo que significa esta seccion —una masa unica que
+  se abre en capas ordenadas— y antes no ocurria: los rectangulos simplemente
+  estaban ahi desde el primer cuadro.
+
+  `--estrato-desde` lleva cuanto tiene que recorrer cada uno, y el retardo los
+  escalona. Se abren de abajo arriba, que es como se construye una pila.
+*/
+/*
+  La separacion va en el GRUPO y el pulso en el disco, no las dos en el mismo
+  elemento: ambas animan `opacity`, y la segunda de la lista gana. Juntas, el
+  pulso arrancaria en 0,72 desde el primer cuadro y la entrada no se veria
+  nunca — con el codigo puesto y sin nada que lo delatara.
+*/
+#technology .technology-stack-layer {
+  animation: technology-estrato-separar var(--tech-form-s, 1.2s)
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--estrato-entrada, 0s);
+}
+
+#technology .technology-stack-layer__disco {
   animation: technology-layer-pulse var(--tech-pulse-s, 4s) ease-in-out infinite;
+  animation-delay: var(--estrato-pulso, 0s);
+}
+
+@keyframes technology-estrato-separar {
+  from {
+    transform: translateY(calc(var(--estrato-desde, 0) * 1px));
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/*
+  El canto va mas apagado que el disco a proposito: es el espesor, no la
+  superficie. Si los dos brillan igual, el estrato se lee como un cilindro
+  macizo y pierde la sensacion de capa fina apoyada sobre la siguiente.
+*/
+#technology .technology-stack-layer__canto {
+  opacity: 0.22;
+}
+
+#technology .technology-stack-axis {
+  stroke: var(--g-emission-violet, #6e56cf);
+  opacity: 0.3;
 }
 
 #technology .technology-stack-layer__label {
@@ -7687,7 +8863,7 @@ body {
 }
 
 #roadmap .roadmap-evolution-path--enter {
-  animation: roadmap-evolution-form var(--roadmap-form-s, 1.1s) ease-out both;
+  animation: roadmap-evolution-form var(--roadmap-form-s, 0.8s) ease-out both;
 }
 
 #roadmap .roadmap-evolution-path__field {
@@ -7827,7 +9003,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   #technology .technology-genesis-stack,
-  #technology .technology-stack-layer__plate,
+  #technology .technology-stack-layer,
   #technology .technology-stack-flow__particle,
   .genesis-technology-aura__atmosphere {
     animation: none !important;
@@ -7877,17 +9053,17 @@ body {
 
 #cta .genesis-portal__layer--background {
   z-index: 0;
-  animation: genesis-portal-parallax-bg 14s ease-in-out infinite alternate;
+  animation: genesis-portal-parallax-bg 32s ease-in-out infinite alternate;
 }
 
 #cta .genesis-portal__layer--midground {
   z-index: 1;
-  animation: genesis-portal-parallax-mid 11s ease-in-out infinite alternate;
+  animation: genesis-portal-parallax-mid 16s ease-in-out infinite alternate;
 }
 
 #cta .genesis-portal__layer--foreground {
   z-index: 2;
-  animation: genesis-portal-parallax-fg 9s ease-in-out infinite alternate;
+  animation: genesis-portal-parallax-fg 8s ease-in-out infinite alternate;
 }
 
 #cta .genesis-future-field {
@@ -7903,30 +9079,48 @@ body {
 }
 
 #cta .genesis-portal-rings,
-#cta .genesis-portal-streams {
+/*
+  LOS ANILLOS DEL PORTAL NO TENIAN NINGUNA REGLA.
+
+  `.genesis-portal-rings` no aparecia en toda la hoja: sin `position` ni
+  tamano, el SVG se quedaba en flujo normal DEBAJO del de los flujos, que ya
+  ocupa el alto completo de la capa.
+
+  Medido: nucleo centrado en (859, 395) y anillos en (863, 905) — 510 px de
+  separacion, con los anillos enteros por debajo del pliegue. La imagen que
+  CIERRA la historia del portal estaba partida en dos, y la mitad no se veia.
+
+  Que las dos capas se apilen en vez de superponerse es lo que pasa cuando una
+  tiene regla y la otra no. No hubo sintoma: la parte visible —el nucleo y los
+  flujos— se veia perfectamente bien.
+*/
+#cta .genesis-portal-streams,
+#cta .genesis-portal-rings {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
 }
 
 #cta .genesis-portal-rings__outer {
   transform-origin: 50% 50%;
-  animation: genesis-portal-spin-cw var(--portal-spin-dur, 48s) linear infinite;
+  animation: genesis-portal-spin-cw var(--portal-spin-dur, 32s) linear infinite;
 }
 
 #cta .genesis-portal-rings__middle {
   transform-origin: 50% 50%;
-  animation: genesis-portal-spin-ccw var(--portal-spin-dur, 36s) linear infinite;
+  animation: genesis-portal-spin-ccw var(--portal-spin-dur, 16s) linear infinite;
 }
 
 #cta .genesis-portal-rings__core {
   transform-origin: 50% 50%;
-  animation: genesis-portal-spin-cw var(--portal-spin-dur, 28s) linear infinite;
+  animation: genesis-portal-spin-cw var(--portal-spin-dur, 8s) linear infinite;
 }
 
 #cta .genesis-portal-streams__path {
   stroke-linecap: round;
   opacity: 0.28;
-  animation: genesis-portal-stream-flow calc(var(--portal-absorb-s, 6s) * 1.4) ease-in-out infinite;
+  animation: genesis-portal-stream-flow var(--portal-absorb-s, 8s) ease-in-out infinite;
 }
 
 #cta .genesis-portal-core {
@@ -7944,7 +9138,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 0, 200, 0.55) 0%, rgba(155, 77, 255, 0.18) 42%, transparent 72%);
   filter: blur(10px);
-  animation: genesis-portal-core-pulse var(--portal-core-pulse-s, 4s) ease-in-out infinite;
+  animation: genesis-portal-core-pulse var(--portal-core-pulse-s, 8s) ease-in-out infinite;
 }
 
 #cta .genesis-portal-core__nucleus {
@@ -7955,7 +9149,7 @@ body {
     0 0 18px rgba(255, 0, 200, 0.85),
     0 0 42px rgba(255, 0, 200, 0.45),
     0 0 64px rgba(155, 77, 255, 0.28);
-  animation: genesis-portal-core-pulse var(--portal-core-pulse-s, 4s) ease-in-out infinite;
+  animation: genesis-portal-core-pulse var(--portal-core-pulse-s, 8s) ease-in-out infinite;
 }
 
 #cta .genesis-portal-stardust {
@@ -7970,9 +9164,9 @@ body {
   height: 2px;
   margin: -1px 0 0 -1px;
   border-radius: 50%;
-  background: radial-gradient(circle, #fff 0%, #00f5ff 35%, transparent 100%);
+  background: radial-gradient(circle, #fff 0%, var(--g-cyan) 35%, transparent 100%);
   opacity: 0;
-  animation: genesis-portal-stardust-in var(--portal-absorb-s, 6s) linear infinite;
+  animation: genesis-portal-stardust-in var(--portal-absorb-s, 8s) linear infinite;
   animation-delay: var(--stardust-delay, 0s);
 }
 
@@ -8016,7 +9210,7 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
     0 0 0 1px rgba(0, 245, 255, 0.18),
     0 0 22px rgba(155, 77, 255, 0.18);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(var(--g-blur-soft));
 }
 
 #cta .cta-final-actions--portal-keys .cta-secondary:hover {
@@ -8117,8 +9311,8 @@ body {
 
 #cta .genesis-portal-core__nucleus {
   animation:
-    genesis-portal-core-pulse var(--portal-core-pulse-s, 4s) ease-in-out infinite,
-    genesis-portal-core-scale var(--portal-core-pulse-s, 4s) ease-in-out infinite;
+    genesis-portal-core-pulse var(--portal-core-pulse-s, 8s) ease-in-out infinite,
+    genesis-portal-core-scale var(--portal-core-pulse-s, 8s) ease-in-out infinite;
 }
 
 @keyframes genesis-portal-core-scale {
@@ -8196,7 +9390,7 @@ body {
 }
 
 #trust .trust-genesis-core--enter {
-  animation: trust-genesis-core-form 1s ease-out both;
+  animation: trust-genesis-core-form var(--trust-form-s, 1.6s) ease-out both;
 }
 
 #trust .trust-genesis-core__layer {
@@ -8230,7 +9424,7 @@ body {
     radial-gradient(circle at 50% 50%, rgba(155, 77, 255, 0.08) 0%, transparent 58%);
   filter: blur(52px);
   opacity: var(--section-atmosphere-opacity, 0.55);
-  animation: trust-genesis-nebula-breathe 7s ease-in-out infinite;
+  animation: trust-genesis-nebula-breathe 16s ease-in-out infinite;
 }
 
 #trust .trust-quantum-rings {
@@ -8241,19 +9435,19 @@ body {
 #trust .trust-quantum-rings__outer {
   opacity: var(--trust-ring-opacity, 0.12);
   transform-origin: 50% 50%;
-  animation: trust-quantum-spin-cw var(--trust-ring-dur, 52s) linear infinite;
+  animation: trust-quantum-spin-cw var(--trust-ring-dur, 32s) linear infinite;
 }
 
 #trust .trust-quantum-rings__middle {
   opacity: var(--trust-ring-opacity, 0.07);
   transform-origin: 50% 50%;
-  animation: trust-quantum-spin-ccw var(--trust-ring-dur, 40s) linear infinite;
+  animation: trust-quantum-spin-ccw var(--trust-ring-dur, 16s) linear infinite;
 }
 
 #trust .trust-quantum-rings__inner {
   opacity: var(--trust-ring-opacity, 0.04);
   transform-origin: 50% 50%;
-  animation: trust-quantum-spin-cw var(--trust-ring-dur, 32s) linear infinite;
+  animation: trust-quantum-spin-cw var(--trust-ring-dur, 8s) linear infinite;
 }
 
 #trust .trust-genesis-wave {
@@ -8272,7 +9466,7 @@ body {
     0 0 24px rgba(255, 0, 200, 0.12),
     inset 0 0 18px rgba(0, 245, 255, 0.08);
   opacity: 0;
-  animation: trust-genesis-wave-pulse var(--trust-wave-s, 6s) ease-out infinite;
+  animation: trust-genesis-wave-pulse var(--trust-wave-s, 8s) ease-out infinite;
 }
 
 #trust .trust-genesis-wave__ring--b {
@@ -8351,7 +9545,7 @@ body {
   border-radius: 12px;
   border: 1px solid rgba(255, 0, 200, 0.35);
   background: rgba(6, 10, 20, 0.92);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(var(--g-blur-soft));
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
   pointer-events: auto;
 }
@@ -8362,7 +9556,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #ff4ddb;
+  color: var(--g-magenta-hi);
 }
 
 #trust .trust-logo-editor-hud__hint {
@@ -8392,7 +9586,7 @@ body {
 
 #trust .trust-logo-editor-hud__field input[type='range'] {
   width: 100%;
-  accent-color: #ff00c8;
+  accent-color: var(--g-magenta);
 }
 
 #trust .trust-logo-editor-hud__field input[type='number'] {
@@ -8401,7 +9595,7 @@ body {
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(0, 0, 0, 0.35);
-  color: #00f5ff;
+  color: var(--g-cyan);
   font-size: 0.68rem;
 }
 
@@ -8710,8 +9904,8 @@ body {
   box-shadow:
     0 0 20px rgba(255, 0, 200, 0.22),
     inset 0 0 12px rgba(0, 245, 255, 0.08);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(var(--g-blur-soft));
+  -webkit-backdrop-filter: blur(var(--g-blur-soft));
   color: #ffffff;
   font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
   font-size: 12px;
@@ -9261,16 +10455,50 @@ body {
 
   #cta .institutional-footer {
     background:
-      linear-gradient(135deg, rgba(233, 30, 139, 0.04) 0%, rgba(110, 86, 207, 0.03) 42%, rgba(61, 139, 255, 0.04) 100%),
+      linear-gradient(135deg, rgba(255, 0, 200, 0.04) 0%, rgba(110, 86, 207, 0.03) 42%, rgba(61, 139, 255, 0.04) 100%),
       rgba(5, 7, 13, 0.94);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.06),
       0 8px 28px rgba(0, 0, 0, 0.42);
   }
 
+  /*
+   * El navegador de progreso es `position: fixed` y ocupa los ultimos 56 px de
+   * la ventana (42 de alto + 13,6 de separacion). La seccion final es la unica
+   * cuyo contenido llega tan abajo —terminaba en 814 de 844— asi que la ultima
+   * linea del descargo legal quedaba DEBAJO del navegador. Se leia "garantia de
+   * rendimiento financiero" cortado por la pastilla.
+   *
+   * No se puede resolver solo con relleno: la seccion mide 848 px con
+   * `overflow: hidden`, asi que empujar hacia arriba recortaria por abajo. La
+   * holgura sale de apretar el propio pie —relleno y huecos, que en movil van
+   * generosos— y el resultado se verifica midiendo, no calculando.
+   */
   #cta .institutional-footer__inner {
     position: relative;
     z-index: 2;
+    gap: 0.6rem;
+    padding-top: 0.85rem;
+    padding-bottom: 0.5rem;
+  }
+
+  /*
+   * EL NUCLEO SE ACHICA EN MOVIL, y no por gusto.
+   *
+   * El `scale` de escritorio esta calculado sobre un visual de 896 px, donde el
+   * nucleo queda en el 23 % y la red de comercio respira alrededor. En movil ese
+   * mismo contenedor mide 240, asi que el MISMO numero da el 94 %: el logotipo
+   * se come la red y ademas se le montan encima las metricas y el boton, porque
+   * aqui el visual va DETRAS del contenido y no en una columna aparte.
+   *
+   * Medido a 390 px: 226 px de nucleo sobre 240 de contenedor. Con 1.15 baja a
+   * ~148 y vuelve al 62 %, que deja sitio a los nodos y al texto.
+   *
+   * G-Pulse no lo necesita: alli el contenedor movil son 338 px y el nucleo ya
+   * queda en el 55 %.
+   */
+  #marketplace .marketplace-commerce-core {
+    transform: translate(-50%, -50%) scale(1.15);
   }
 
   #cta .institutional-footer__link,
@@ -9386,4 +10614,636 @@ body {
   .scene-visual-mobile {
     display: none !important;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   RESPALDO SIN WEBGL
+
+   Reproduce el reparto medido de la identidad —89–91% de vacío, 6,5–7,5% de
+   emisión desaturada con halo— sin una línea de WebGL. Tres focos en las bandas
+   de tono del logo, muy difuminados y a baja opacidad: lo que se busca es
+   atmósfera por debajo del umbral de consciencia, no manchas de color.
+   ───────────────────────────────────────────────────────────────────────────── */
+.genesis-static-world__emission {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  will-change: transform, opacity;
+}
+
+.genesis-static-world__emission--a {
+  top: 14%;
+  left: 8%;
+  width: min(52vw, 620px);
+  height: min(52vw, 620px);
+  background: radial-gradient(circle at center, var(--g-violet-hi) 0%, transparent 68%);
+  opacity: 0.16;
+  animation: genesis-static-breathe 8s ease-in-out infinite;
+}
+
+.genesis-static-world__emission--b {
+  bottom: 6%;
+  right: 6%;
+  width: min(58vw, 700px);
+  height: min(58vw, 700px);
+  background: radial-gradient(circle at center, var(--g-blue) 0%, transparent 70%);
+  opacity: 0.18;
+  animation: genesis-static-breathe 16s ease-in-out infinite reverse;
+}
+
+.genesis-static-world__emission--c {
+  top: 44%;
+  left: 46%;
+  width: min(34vw, 400px);
+  height: min(34vw, 400px);
+  background: radial-gradient(circle at center, var(--g-magenta) 0%, transparent 66%);
+  opacity: 0.1;
+  animation: genesis-static-breathe 32s ease-in-out infinite;
+}
+
+/* Grano finísimo: rompe el bandeado de los degradados en pantallas de 8 bits */
+.genesis-static-world__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    var(--g-ink) 0.5px,
+    transparent 0
+  );
+  background-size: 3px 3px;
+}
+
+@keyframes genesis-static-breathe {
+  0%, 100% { transform: scale(1) translate3d(0, 0, 0); }
+  50% { transform: scale(1.08) translate3d(1.5%, -1.5%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .genesis-static-world__emission {
+    animation: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PÁGINAS DE ERROR (404 y fallo de ruta)
+
+   Sin WebGL y sin animación a propósito: una página de error tiene que cargar
+   cuando algo ya ha ido mal, así que no puede depender de la misma capa que
+   podría estar fallando. La identidad se sostiene sólo con el vacío y un halo.
+   ───────────────────────────────────────────────────────────────────────────── */
+.genesis-error-page {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: var(--g-void);
+  overflow: hidden;
+}
+
+.genesis-error-page__glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(70vw, 780px);
+  height: min(70vw, 780px);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    var(--g-violet-hi) 0%,
+    var(--g-blue) 45%,
+    transparent 72%
+  );
+  opacity: 0.14;
+  filter: blur(110px);
+  pointer-events: none;
+}
+
+.genesis-error-page__content {
+  position: relative;
+  z-index: 1;
+  max-width: 34rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.genesis-error-page__code {
+  margin: 0;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--g-violet-hi);
+}
+
+.genesis-error-page__title {
+  margin: 0;
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: clamp(1.6rem, 4.5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.14;
+  color: var(--g-ink);
+  text-wrap: balance;
+}
+
+.genesis-error-page__text {
+  margin: 0;
+  max-width: 34ch;
+  color: var(--g-ink-muted);
+  line-height: 1.62;
+}
+
+.genesis-error-page__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.6rem;
+}
+
+.genesis-error-page__btn {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.68rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--genesis-line-strong);
+  color: var(--g-ink);
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 180ms ease, transform 180ms ease;
+}
+
+.genesis-error-page__btn:hover {
+  border-color: var(--g-violet-hi);
+  transform: translateY(-1px);
+}
+
+.genesis-error-page__btn--primary {
+  border-color: transparent;
+  background: var(--gradient-genesis-button);
+}
+
+.genesis-error-page__digest {
+  margin: 1.2rem 0 0;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.74rem;
+  color: var(--g-ink-faint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .genesis-error-page__btn {
+    transition: none;
+  }
+  .genesis-error-page__btn:hover {
+    transform: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   EL LIENZO CUADRADO — alineacion entre capas SVG y capas DOM.
+
+   Casi todos los visuales del portal mezclan dos tecnicas sobre la misma
+   figura: un `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">`
+   para trazos y conexiones, y `<div>` colocados con `left: X%` para los iconos.
+
+   Y no coinciden. `meet` dibuja en un CUADRADO del lado menor y lo centra;
+   un `%` de CSS se resuelve contra el ancho REAL del contenedor. En una caja
+   de 980x590, el SVG usa 590 px por unidad de lienzo y el DOM 980. Todo lo que
+   no este en el eje central sale desplazado, y el error crece con la distancia
+   al centro.
+
+   Medido en vivo, y por eso esta clase existe en vez de tres parches:
+
+     goracle      el satelite `staking` se pintaba en x=1757 con un viewport
+                  de 1723 — FUERA de la pantalla
+     marketplace  capas DOM de 960 px contra un cuadrado SVG de 578: el icono
+                  de cada concentrador quedaba a 82 px de su propio nodo
+     mining       738 contra 454
+
+   `inset: 0` parece lo correcto —ocupar todo el contenedor— y es justo el
+   error: lo que hay que ocupar es el cuadrado donde dibuja el SVG.
+
+   `container-type: size` ademas hace que `cqw` dentro signifique «1 % de este
+   cuadrado», que es la unica unidad que coincide con el lienzo 0–100.
+   ═══════════════════════════════════════════════════════════════════════ */
+.lienzo-cuadrado,
+#goracle .goracle-ecosystem-satellites,
+#marketplace .marketplace-global-hub-markers,
+#marketplace .marketplace-payment-cores,
+#mining .mining-constellation__stage,
+/*
+  El SVG de mining tambien: traia `inset: 5%` propio, asi que dibujaba en un
+  cuadrado de 454 mientras sus nodos ya estaban en uno de 504. Los trazos
+  salian de los nodos por 50 px — el mismo desajuste, solo que entre dos capas
+  que YA habian sido «arregladas» por separado.
+*/
+#mining .mining-constellation-streams {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 1;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  /*
+    Neutraliza cualquier `inset` de reglas anteriores sobre los mismos
+    elementos: `#mining .mining-constellation__stage` trae `inset: 5%` y
+    `#marketplace .marketplace-payment-cores` trae `inset: 0`. Sin esto, `right`
+    y `bottom` sobreviven y pelean con el ancho automatico.
+  */
+  right: auto;
+  bottom: auto;
+  container-type: size;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CONFIANZA · EL CAMPO DE ESCANEO
+
+   La seccion afirma «infraestructura verificable». Aqui «verificable» deja de
+   ser un adjetivo y pasa a ser lo que el visitante HACE: el campo empieza casi
+   invisible y su puntero es la linterna.
+
+   Todo el tempo sale de la rejilla —pulso 8 s, respiracion 16 s, llegada
+   1,6 s— y las orbitas usan la escalera de paralaje 32 · 16 · 8, igual que el
+   resto del portal.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/*
+   EL LIENZO APAISADO.
+
+   Hermano de `.lienzo-cuadrado`, y existe por el mismo motivo. Un
+   `<svg viewBox="0 0 160 90" preserveAspectRatio="xMidYMid meet">` dibuja en
+   una caja de proporcion 16:9 CENTRADA dentro de su contenedor; los pilares se
+   colocan con `left: X%`, que se resuelve contra el contenedor ENTERO.
+
+   Si las dos capas no ocupan la misma caja, los pilares se separan de sus
+   orbitas y el error crece con la distancia al centro. Eso es exactamente lo
+   que saco un satelite de G-Oracle fuera de la pantalla (x=1757 con un viewport
+   de 1723). Aqui las dos capas viven dentro de este elemento, asi que no puede
+   pasar.
+*/
+.lienzo-apaisado {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  right: auto;
+  bottom: auto;
+  container-type: size;
+}
+
+#trust .trust-scan {
+  position: absolute;
+  inset: 0;
+  --luz-x: 50%;
+  --luz-y: 46.7%;
+  animation: trust-scan-entra var(--scan-llegada, 1.6s) ease-out both;
+}
+
+/*
+  EL CAMPO NO PUEDE SANGRAR SOBRE EL TEXTO.
+
+  Medido en el layout real: el hueco del visual va de 763 a 1343 y la columna de
+  texto acaba en 879 — se solapan 116 px, o sea el 20 % del hueco. Ese sangrado
+  es DELIBERADO y esta bien para los visuales de las demas secciones, que son
+  nubes difusas: unos puntos por encima de un parrafo no molestan a nadie.
+
+  Aqui no vale, porque este campo lleva TEXTO dentro. Los rotulos de los dos
+  pilares izquierdos caian sobre las metricas y sobre una tarjeta.
+
+  Se reserva ese 20 % y el lienzo se centra en lo que queda. La figura pierde
+  algo de tamano y gana no pisar nada — y el gesto del escaneo sigue cubriendo
+  el campo entero, porque la mascara vive dentro del lienzo, no del hueco.
+*/
+@media (min-width: 1024px) {
+  /*
+    EL CAMPO SANGRA A LA DERECHA, COMO EL RESTO DEL PORTAL.
+
+    Medido en las once secciones con visual: el ancho medio dibujado es 835 px y
+    la ocupacion media de su hueco, 94 %. Confianza daba 464 y 80 % — el visual
+    mas pequeno del portal, y por bastante.
+
+    La causa no era el campo sino su hueco: 580 px cuando la media ronda 900.
+    G-Oracle tiene EXACTAMENTE la misma rejilla (563 + 563) y saca 980, porque
+    deja que el visual se salga de su columna. Todas lo hacen.
+
+    Aqui no se puede sangrar a la izquierda —ahi vive el texto y este campo
+    lleva rotulos—, pero a la derecha no hay nada hasta el borde de la ventana.
+    Asi que se reserva el 20 % izquierdo y se extiende el derecho.
+
+    `overflow-x: hidden` en la seccion no es opcional: sin el, un visual que se
+    sale crea barra horizontal, y eso es el fallo numero 1 del verificador.
+
+    Nota que conviene conservar: esto se intento primero con `padding-left` y NO
+    HIZO NADA. `.lienzo-apaisado` esta posicionado en absoluto, y una caja
+    absoluta se resuelve contra el PADDING BOX del padre —que incluye el
+    relleno—, asi que movia un flujo normal que aqui no usa nadie. Compilaba, no
+    avisaba, y el lienzo seguia exactamente donde estaba.
+  */
+  #trust .trust-scan {
+    left: 20%;
+    right: -54%;
+  }
+}
+
+#trust.trust-section-layout {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+@keyframes trust-scan-entra {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+#trust .trust-scan__capa { position: absolute; inset: 0; }
+
+/*
+  La capa fantasma NUNCA se enmascara.
+
+  Sin ella, todo lo que queda fuera de la linterna es negro absoluto y la
+  seccion se lee como un fallo de carga, no como una intencion. Al 5 % se
+  percibe que hay una estructura sin desvelarla, que es justo lo que invita a
+  moverse.
+*/
+#trust .trust-scan__capa--fantasma { opacity: 0.05; pointer-events: none; }
+
+#trust .trust-scan__capa--viva {
+  -webkit-mask-image: radial-gradient(circle 26% at var(--luz-x) var(--luz-y),
+    #000 0%, #000 40%, rgba(0,0,0,.38) 64%, transparent 86%);
+  mask-image: radial-gradient(circle 26% at var(--luz-x) var(--luz-y),
+    #000 0%, #000 40%, rgba(0,0,0,.38) 64%, transparent 86%);
+}
+
+#trust .trust-scan__linterna {
+  position: absolute;
+  left: var(--luz-x);
+  top: var(--luz-y);
+  width: 34%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(0,245,255,.07) 0%, rgba(157,77,255,.035) 46%, transparent 72%);
+  border: 1px solid rgba(0,245,255,.1);
+}
+
+#trust .trust-scan__linterna::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(0,245,255,.18);
+  animation: trust-scan-late var(--scan-pulso, 8s) ease-in-out infinite;
+}
+
+@keyframes trust-scan-late {
+  0%, 100% { transform: scale(.9); opacity: .5; }
+  50%      { transform: scale(1);  opacity: .9; }
+}
+
+#trust .trust-scan__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+#trust .trust-scan__orbita { fill: none; stroke-width: .32; transform-origin: 80px 42px; }
+#trust .trust-scan__orbita--fondo  { stroke: rgba(0,245,255,.24);  animation: trust-scan-gira 32s linear infinite; }
+#trust .trust-scan__orbita--medio  { stroke: rgba(157,77,255,.22); animation: trust-scan-gira 16s linear infinite reverse; }
+#trust .trust-scan__orbita--frente { stroke: rgba(255,0,200,.18);  animation: trust-scan-gira 8s linear infinite; }
+@keyframes trust-scan-gira { to { transform: rotate(360deg); } }
+
+#trust .trust-scan__traza {
+  fill: none;
+  stroke: rgba(157,77,255,.17);
+  stroke-width: .22;
+  stroke-dasharray: 1.4 2.2;
+}
+
+#trust .trust-scan__enlace {
+  fill: none;
+  stroke: rgba(157,77,255,.19);
+  stroke-width: .24;
+  transition: stroke .4s ease;
+}
+#trust .trust-scan__enlace--vivo { stroke: var(--tono); }
+
+#trust .trust-scan__nucleo {
+  position: absolute;
+  left: 50%;
+  top: 46.7%;
+  width: min(30%, 300px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
+  pointer-events: none;
+  animation: trust-scan-respira var(--scan-respiracion, 16s) ease-in-out infinite;
+}
+@keyframes trust-scan-respira {
+  0%, 100% { filter: brightness(.88) saturate(.95); }
+  50%      { filter: brightness(1.15) saturate(1.1); }
+}
+
+#trust .trust-scan__lamina {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 4px;
+  width: var(--w);
+  height: var(--w);
+  border: 1px solid var(--c);
+  background: linear-gradient(140deg, var(--f1), var(--f2));
+  box-shadow: 0 0 26px -4px var(--c), inset 0 0 20px -6px var(--c);
+  transform: translate(-50%, -50%) rotateX(60deg) rotateZ(45deg) translateZ(var(--z));
+}
+/* la pila se ESTRECHA al subir: la base sostiene lo que lleva encima */
+#trust .trust-scan__lamina--1 { --w: 100%; --z: -34px; --c: rgba(0,245,255,.37);  --f1: rgba(0,245,255,.06);  --f2: rgba(41,98,255,.03); }
+#trust .trust-scan__lamina--2 { --w: 82%;  --z: -18px; --c: rgba(255,0,200,.40);  --f1: rgba(255,0,200,.10);  --f2: rgba(157,77,255,.06); }
+#trust .trust-scan__lamina--3 { --w: 66%;  --z: -2px;  --c: rgba(157,77,255,.44); --f1: rgba(157,77,255,.13); --f2: rgba(41,98,255,.06); }
+#trust .trust-scan__lamina--4 { --w: 50%;  --z: 14px;  --c: rgba(0,245,255,.48);  --f1: rgba(0,245,255,.11);  --f2: rgba(0,245,255,.03); }
+
+#trust .trust-scan__haz {
+  position: absolute;
+  left: 50%;
+  top: -16%;
+  width: 2px;
+  height: 78%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, transparent, rgba(0,245,255,.8) 22%, rgba(255,77,219,.8) 72%, transparent);
+  animation: trust-scan-haz var(--scan-pulso, 8s) ease-in-out infinite;
+}
+@keyframes trust-scan-haz { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+
+#trust .trust-scan__aro {
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  width: 58%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  background: conic-gradient(from 210deg,
+    var(--g-cyan), var(--g-blue-hi) 28%, var(--g-violet-hi) 52%, var(--g-magenta) 74%, var(--g-cyan)) border-box;
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 12px rgba(255,0,200,.4)) drop-shadow(0 0 20px rgba(0,245,255,.3));
+  transform: translate(-50%, 0) rotateX(66deg);
+  animation: trust-scan-aro 16s linear infinite;
+}
+@keyframes trust-scan-aro {
+  to { transform: translate(-50%, 0) rotateX(66deg) rotateZ(360deg); }
+}
+
+#trust .trust-scan__pilar {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: clamp(38px, 5.4cqw, 60px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--tono);
+  cursor: pointer;
+}
+#trust .trust-scan__pilar-aro {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--tono);
+  background: radial-gradient(circle, rgba(8,10,20,.93) 55%, rgba(8,10,20,.53) 100%);
+  box-shadow: 0 0 16px -4px var(--tono), inset 0 0 12px -6px var(--tono);
+  transition: box-shadow .4s ease;
+}
+#trust .trust-scan__pilar-aro::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid var(--tono);
+  opacity: .22;
+  transition: opacity .4s ease, transform .4s ease;
+}
+#trust .trust-scan__pilar svg { position: relative; width: 44%; height: 44%; }
+#trust .trust-scan__pilar:hover .trust-scan__pilar-aro,
+#trust .trust-scan__pilar:focus-visible .trust-scan__pilar-aro {
+  box-shadow: 0 0 26px -2px var(--tono), inset 0 0 18px -4px var(--tono);
+}
+#trust .trust-scan__pilar:hover .trust-scan__pilar-aro::after,
+#trust .trust-scan__pilar:focus-visible .trust-scan__pilar-aro::after {
+  opacity: .7;
+  transform: scale(1.14);
+}
+#trust .trust-scan__pilar:focus-visible { outline: 2px solid var(--g-cyan); outline-offset: 8px; }
+
+#trust .trust-scan__rotulo { position: absolute; pointer-events: none; width: clamp(120px, 14cqw, 190px); }
+#trust .trust-scan__rotulo b {
+  display: block;
+  font-size: clamp(.62rem, 1cqw, .75rem);
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--g-ink);
+  font-weight: 700;
+  line-height: 1.35;
+}
+#trust .trust-scan__rotulo span {
+  display: block;
+  font-size: clamp(.56rem, .9cqw, .7rem);
+  color: var(--g-ink-faint);
+  line-height: 1.5;
+  margin-top: .28em;
+}
+/*
+  El rotulo se ancla EN el pilar y la direccion la pone el `transform`.
+
+  Asi la colocacion es una decision de CSS y no un numero cocido en el marcado,
+  que es lo que permite cambiarla cuando el hueco se estrecha. Los desfases van
+  en `cqw` para que escalen con el lienzo igual que todo lo demas.
+*/
+#trust .trust-scan__rotulo--derecha {
+  text-align: left;
+  transform: translate(3.6cqw, -50%);
+}
+#trust .trust-scan__rotulo--izquierda {
+  text-align: right;
+  transform: translate(calc(-100% - 3.6cqw), -50%);
+}
+#trust .trust-scan__rotulo--arriba {
+  text-align: center;
+  transform: translate(-50%, calc(-100% - 3.2cqw));
+}
+#trust .trust-scan__rotulo--abajo {
+  text-align: center;
+  transform: translate(-50%, 3.2cqw);
+}
+
+/*
+  EN HUECO ESTRECHO, LOS CUATRO LATERALES SUBEN O BAJAN.
+
+  Medido en el layout real: la columna de texto acaba en x=879 y el pilar
+  izquierdo esta en x=899. Veinte pixeles. Un rotulo al lado no cabe — y no es
+  culpa del rotulo: el hueco del visual arranca en 763, asi que las dos columnas
+  YA se solapan 116 px antes de que aqui se dibuje nada.
+
+  Colocarlos arriba y abajo elimina el choque sin encoger la figura ni recortar
+  ningun nombre. La mitad del anillo decide hacia donde va cada uno.
+*/
+@container (max-width: 700px) {
+  #trust .trust-scan__rotulo--derecha,
+  #trust .trust-scan__rotulo--izquierda {
+    text-align: center;
+    width: clamp(90px, 26cqw, 150px);
+  }
+  #trust .trust-scan__rotulo--derecha[data-mitad='alta'],
+  #trust .trust-scan__rotulo--izquierda[data-mitad='alta'] {
+    transform: translate(-50%, calc(-100% - 3.2cqw));
+  }
+  #trust .trust-scan__rotulo--derecha[data-mitad='baja'],
+  #trust .trust-scan__rotulo--izquierda[data-mitad='baja'] {
+    transform: translate(-50%, 3.2cqw);
+  }
+}
+
+/*
+  En hueco estrecho la descripcion se va y queda solo el nombre.
+
+  Doce lineas de texto pequeno alrededor de una figura no se leen en 400 px de
+  ancho: se amontonan. El nombre del pilar si cabe y es lo que la seccion
+  necesita decir — el detalle sigue en el `aria-label` para quien lo pida.
+*/
+@container (max-width: 620px) {
+  #trust .trust-scan__rotulo span { display: none; }
+  #trust .trust-scan__rotulo { width: clamp(84px, 22cqw, 130px); }
+}
+
+/*
+  Sin movimiento, NO hay mascara y NO hay fantasma.
+
+  El escaneo es el adorno; la informacion no puede depender de el. Quien pide
+  menos movimiento ve el campo entero y encendido desde el primer cuadro.
+*/
+@media (prefers-reduced-motion: reduce) {
+  #trust .trust-scan__capa--viva { -webkit-mask-image: none; mask-image: none; }
+  #trust .trust-scan__capa--fantasma { display: none; }
+  #trust .trust-scan__linterna { display: none; }
 }

@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import {
   COMMUNITY_GROWTH_CYCLE_S,
   COMMUNITY_NODE_COUNT,
@@ -54,16 +56,16 @@ export default function CommunityNodes() {
               cy={y}
               r={r}
               className="community-node__dot"
-              fill={isLeader ? '#FF00C8' : i % 3 === 0 ? '#00F5FF' : i % 3 === 1 ? '#9D4DFF' : '#FF00C8'}
+              fill={isLeader ? EMISSION.magenta : i % 3 === 0 ? EMISSION.cyan : i % 3 === 1 ? EMISSION.violetHi : EMISSION.magenta}
               filter="url(#community-node-glow)"
               opacity={isLeader ? 0.92 : 0.72}
             />
             {!isLeader && (
-              <circle cx={x} cy={y} r={r * 0.6} className="community-node__spark" fill="#00F5FF" opacity="0">
+              <circle cx={x} cy={y} r={r * 0.6} className="community-node__spark" fill={EMISSION.cyan} opacity="0">
                 <animate
                   attributeName="opacity"
                   values="0;0;0.55;0;0"
-                  dur={`${COMMUNITY_GROWTH_CYCLE_S * 3.6}s`}
+                  dur={`${COMMUNITY_GROWTH_CYCLE_S}s`}
                   begin={`${growthDelay + 0.8}s`}
                   repeatCount="indefinite"
                 />

@@ -2,8 +2,10 @@
  * Phase 11.0 — G-Oracle Quantum Brain layout (viewBox 0–100).
  */
 
-export const ORACLE_INFERENCE_PULSE_S = 5
-export const ORACLE_BRAIN_FORM_S = 1.2
+import { pulsoDe, llegadaDe } from '@/lib/design/motion'
+
+export const ORACLE_INFERENCE_PULSE_S = pulsoDe('goracle')
+export const ORACLE_BRAIN_FORM_S = llegadaDe('goracle')
 export const ORACLE_NEURAL_NODE_COUNT = 72
 export const ORACLE_BRAIN_CENTER = { x: 50, y: 50 } as const
 
@@ -16,13 +18,43 @@ export interface OracleSatelliteDef {
   pulseOffset: number
 }
 
-export const ORACLE_ECOSYSTEM_SATELLITES: readonly OracleSatelliteDef[] = [
-  { id: 'trust', x: 16, y: 24, pulseOffset: 0.05 },
-  { id: 'mining', x: 10, y: 52, pulseOffset: 0.18 },
-  { id: 'booster', x: 50, y: 10, pulseOffset: 0.32 },
-  { id: 'staking', x: 90, y: 52, pulseOffset: 0.48 },
-  { id: 'gpulse', x: 50, y: 90, pulseOffset: 0.62 },
-] as const
+/**
+ * LOS CINCO SATELITES, en anillo y en el orden en que los conociste.
+ *
+ * Estaban en (16,24) · (10,52) · (50,10) · (90,52) · (50,90): una dispersion
+ * irregular que no dice nada. Dos de ellos casi a la misma altura por la
+ * izquierda, uno arriba, uno abajo y uno lejisimos a la derecha — y ese ultimo
+ * se salia literalmente de la pantalla (medido: x=1757 con un viewport de 1723).
+ *
+ * El gesto de esta seccion es CONVERGER: muchos independientes que se reconocen
+ * como uno. Para que eso se lea, los cinco tienen que ser PARES — misma
+ * distancia al centro y mismo reparto angular. Cualquier otra disposicion
+ * insinua una jerarquia que la seccion no afirma.
+ *
+ * El orden va en el sentido del reloj desde arriba y NO es alfabetico ni
+ * arbitrario: es el orden en que el visitante se encontro cada seccion bajando
+ * por el portal. El anillo es su recorrido, y el cerebro en el centro es lo que
+ * lo interpreta.
+ */
+const SATELITES_EN_ORDEN = ['trust', 'mining', 'booster', 'staking', 'gpulse'] as const
+
+/**
+ * Radio del anillo. 38 deja fuera los ~6 de radio que ocupa cada icono, asi que
+ * el conjunto cabe entero en el lienzo 0–100 con margen.
+ */
+const ANILLO_R = 38
+
+export const ORACLE_ECOSYSTEM_SATELLITES: readonly OracleSatelliteDef[] =
+  SATELITES_EN_ORDEN.map((id, i) => {
+    // desde arriba (-90°) y en el sentido del reloj
+    const ang = (-90 + (360 / SATELITES_EN_ORDEN.length) * i) * (Math.PI / 180)
+    return {
+      id,
+      x: ORACLE_BRAIN_CENTER.x + Math.cos(ang) * ANILLO_R,
+      y: ORACLE_BRAIN_CENTER.y + Math.sin(ang) * ANILLO_R,
+      pulseOffset: i / SATELITES_EN_ORDEN.length,
+    }
+  })
 
 export interface OracleNeuralLayerDef {
   id: 'layer1' | 'layer2' | 'layer3'

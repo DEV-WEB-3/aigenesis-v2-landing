@@ -1,5 +1,6 @@
 'use client'
 
+import { INK } from '@/lib/design/tokens'
 import { tokenNodeSlotSize } from '@/lib/token/tokenOrbitalValueLayout'
 import type { TokenValueNodeDef } from '@/lib/token/tokenOrbitalValueLayout'
 import { TokenValueIconGlyph } from '@/components/token/TokenValueIcon'
@@ -33,7 +34,7 @@ export default function TokenAtomicNodeMark({ node, nodeIndex, glowFilterId }: T
       <g
         className="token-atomic-node-mark__icon"
         transform={`translate(${-12 * iconScale}, ${-12 * iconScale}) scale(${iconScale})`}
-        color="#E8F4FF"
+        color={INK.base}
         opacity={0.9}
       >
         <TokenValueIconGlyph id={node.id} />

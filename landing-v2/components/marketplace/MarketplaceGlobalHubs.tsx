@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import {
   COMMERCE_GLOBAL_HUBS,
   COMMERCE_PULSE_S,
@@ -46,7 +48,7 @@ export default function MarketplaceGlobalHubs() {
             >
               <circle cx={x} cy={y} r="5.5" fill="url(#marketplace-hub-aura)" className="marketplace-global-hub__aura" />
               <circle cx={x} cy={y} r="3.2" className="marketplace-global-hub__ring" fill="none" stroke="rgba(157, 77, 255, 0.35)" strokeWidth="0.35" />
-              <circle cx={x} cy={y} r="1.35" className="marketplace-global-hub__core" fill="#9D4DFF" filter="url(#marketplace-hub-glow)" />
+              <circle cx={x} cy={y} r="1.35" className="marketplace-global-hub__core" fill={EMISSION.violetHi} filter="url(#marketplace-hub-glow)" />
 
               {Array.from({ length: SATELLITES_PER_HUB }, (_, si) => {
                 const sat = globalHubSatellitePosition(hub.index, si, SATELLITES_PER_HUB)
@@ -57,7 +59,7 @@ export default function MarketplaceGlobalHubs() {
                     cy={sat.y}
                     r="0.38"
                     className="marketplace-global-hub__satellite"
-                    fill={si % 3 === 0 ? '#00F5FF' : si % 3 === 1 ? '#FF00C8' : '#9D4DFF'}
+                    fill={si % 3 === 0 ? EMISSION.cyan : si % 3 === 1 ? EMISSION.magenta : EMISSION.violetHi}
                     style={{ animationDelay: `${delay + si * 0.12}s` } as React.CSSProperties}
                   />
                 )

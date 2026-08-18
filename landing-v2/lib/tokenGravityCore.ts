@@ -8,6 +8,7 @@ import {
   fillTokenCoreAI,
   tokenAiNeonColor,
 } from '@/lib/token/tokenCoreAI'
+import { pulsoDe } from '@/lib/design/motion'
 
 type Rgb = readonly [number, number, number]
 type Vec3 = readonly [number, number, number]
@@ -34,7 +35,7 @@ export const TOKEN_VISUAL_SCALE = 1.28
 
 export const TOKEN_POINT_SIZE_MULT = 1.94
 
-export const TOKEN_QUANTUM_PULSE_S = 4.2
+export const TOKEN_QUANTUM_PULSE_S = pulsoDe('token')
 
 const SHELL_R = [0.98, 1.48, 2.18] as const
 

@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { GenesisHeadline, slideLeft } from '@/components/ui/SceneShared'
+import { Heading } from './Heading'
 
 export type HighlightTone = 'strong' | 'brand' | 'signature' | 'intelligence'
 
@@ -24,6 +25,15 @@ function cn(...classes: (string | false | undefined)[]) {
 }
 
 /**
+ * SIN `gap-genesis-4`: el hueco lo pone `.scene-section-header` desde la hoja de
+ * estilos, con la variable de ritmo.
+ *
+ * La utilidad de Tailwind ganaba a la variable —es una clase, no un selector
+ * descendente— y dejaba la cabecera en 13.6 px mientras los bloques de la pila
+ * iban a 8.8. Al reves de lo que pide la jerarquia: una cabecera es UN bloque
+ * (rotulo, titular y descripcion se leen juntos) y debe ir mas apretada por
+ * dentro que la distancia entre bloques distintos.
+ *
  * Canonical section header — label + GenesisHeadline + description.
  * Use inside SceneWrapper motion stacks for consistent stagger animation.
  */
@@ -41,7 +51,7 @@ export function SectionHeader({
   const alignClass = align === 'center' ? 'items-center text-center' : 'items-start text-left'
 
   return (
-    <header className={cn('scene-section-header flex flex-col gap-genesis-4 max-w-prose', alignClass, className)}>
+        <header className={cn('scene-section-header flex flex-col max-w-prose', alignClass, className)}>
       {eyebrow ? (
         <motion.span variants={slideLeft} className="text-caption text-genesis-ghost uppercase tracking-widest">
           {eyebrow}
@@ -55,12 +65,11 @@ export function SectionHeader({
       {highlight ? (
         <GenesisHeadline lead={String(title)} highlight={highlight} />
       ) : (
-        <motion.h2
-          variants={slideLeft}
-          className="font-display text-display text-genesis-text leading-tight"
-        >
-          {title}
-        </motion.h2>
+        <motion.div variants={slideLeft}>
+          <Heading className="font-display text-display text-genesis-text leading-tight">
+            {title}
+          </Heading>
+        </motion.div>
       )}
       {description ? (
         <motion.p variants={slideLeft} className="text-body-lg text-genesis-mist leading-relaxed">

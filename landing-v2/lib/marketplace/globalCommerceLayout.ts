@@ -1,10 +1,12 @@
+import { EMISSION } from '@/lib/design/tokens'
+import { pulsoDe, llegadaDe } from '@/lib/design/motion'
 /**
  * Phase 12.0+ — Genesis Global Commerce Network (viewBox 0–100).
  * Abstract connectivity mesh — no flat map, no realistic continents.
  */
 
-export const COMMERCE_PULSE_S = 3.6
-export const COMMERCE_FORM_S = 1.2
+export const COMMERCE_PULSE_S = pulsoDe('marketplace')
+export const COMMERCE_FORM_S = llegadaDe('marketplace')
 export const COMMERCE_GLOBE_CENTER = { x: 50, y: 50 } as const
 export const COMMERCE_GLOBAL_HUB_COUNT = 6
 
@@ -129,9 +131,9 @@ export function hubExchangePath(fromIndex: number, toIndex: number): string {
 }
 
 export const COMMERCE_PACKET_COLORS: Record<CommercePacketKind, string> = {
-  product: '#00F5FF',
-  payment: '#FF00C8',
-  info: '#9D4DFF',
+  product: EMISSION.cyan,
+  payment: EMISSION.magenta,
+  info: EMISSION.violetHi,
 }
 
 /** @deprecated — use globalHubSatellitePosition */

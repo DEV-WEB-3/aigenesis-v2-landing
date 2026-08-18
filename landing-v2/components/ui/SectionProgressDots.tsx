@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import {
@@ -289,7 +291,7 @@ function MobileScrollProgress({
           className="h-full rounded-full transition-all duration-300 ease-out"
           style={{
             width: `${progress}%`,
-            background: 'linear-gradient(90deg, #ff00c8 0%, #00f5ff 100%)',
+            background: `linear-gradient(90deg, ${EMISSION.magenta} 0%, ${EMISSION.cyan} 100%)`,
           }}
         />
       </div>

@@ -1,44 +1,122 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { SceneProvider, useScene } from '@/context/SceneContext'
 import { useSnapScroll } from '@/hooks/useSnapScroll'
 import { useScrollMode } from '@/hooks/useScrollMode'
 import { SNAP_SCROLL } from '@/lib/scroll/snapScrollConfig'
-import { TOTAL_SECTIONS, resolveNavigationTarget } from '@/lib/routes'
+import { SECTIONS, TOTAL_SECTIONS, resolveNavigationTarget } from '@/lib/routes'
+import { SCENE_BY_SECTION } from '@/components/sceneRegistry'
 import Navbar from '@/components/layout/Navbar'
-import HeroSection from '@/components/sections/HeroSection'
-import Scene01_Trust from '@/components/scenes/Scene01_Trust'
-import EcosystemSection from '@/components/sections/EcosystemSection'
-import Scene02_AigToken from '@/components/scenes/Scene02_AigToken'
-import Scene03_Mining from '@/components/scenes/Scene03_Mining'
-import Scene04_Booster from '@/components/scenes/Scene04_Booster'
-import Scene05_Staking from '@/components/scenes/Scene05_Staking'
-import Scene03_GPulse from '@/components/scenes/Scene03_GPulse'
-import Scene08_GOracle from '@/components/scenes/Scene08_GOracle'
-import Scene04_GevyShop from '@/components/scenes/Scene04_GevyShop'
-import Scene05_Community from '@/components/scenes/Scene05_Community'
-import Scene06_Technology from '@/components/scenes/Scene06_Technology'
-import Scene07_Roadmap from '@/components/scenes/Scene07_Roadmap'
-import Scene08_CTA from '@/components/scenes/Scene08_CTA'
 import SectionProgressDots from '@/components/ui/SectionProgressDots'
+import { WebGLBoundary, soportaWebGL } from '@/components/webgl/WebGLBoundary'
+import StaticWorldFallback from '@/components/webgl/StaticWorldFallback'
 
+/**
+ * El canvas se carga sólo en cliente. Antes esto pasaba por un
+ * `components/webgl/WorldCanvas.tsx` que no hacía más que volver a envolver el
+ * mismo `dynamic(ssr:false)` y reenviar trece props — se ha eliminado.
+ */
 const WorldCanvas = dynamic(
-  () => import('@/components/webgl/WorldCanvas'),
+  () => import('@/components/webgl/WorldCanvasInner'),
   { ssr: false, loading: () => null }
 )
+
+/**
+ * El canvas, con red debajo.
+ *
+ * DOS DEFENSAS, porque hay dos formas distintas de fallar:
+ *
+ *  1. El dispositivo no puede crear un contexto WebGL. Se pregunta ANTES de
+ *     montar nada, así no se paga el coste de intentarlo ni se ensucia la
+ *     consola.
+ *  2. El contexto se crea pero algo revienta después —un shader que el driver
+ *     rechaza, memoria agotada, el contexto perdido—. Eso sólo lo caza una
+ *     barrera de error.
+ *
+ * Comprobar sólo lo primero deja fuera todo el segundo grupo, que es el que da
+ * los fallos raros de los que nadie informa.
+ *
+ * El respaldo NO va dentro de la barrera: si el propio respaldo fallara, la
+ * barrera no tendría a qué caer.
+ */
+function MundoVisual({ sectionIndex }: { sectionIndex: number }) {
+  /*
+   * LA DECISION SE TOMA DESPUES DE MONTAR, no durante el render.
+   *
+   * La primera version usaba `useState(soportaWebGL)`, que parece razonable y
+   * rompe la hidratacion: el servidor no tiene `window`, asi que devuelve
+   * `false` y renderiza el respaldo; el cliente devuelve `true` en su PRIMER
+   * render y pinta el canvas. Dos arboles distintos, y React descarta el HTML
+   * del servidor entero (errores #418 y #423 en produccion).
+   *
+   * Es el mismo fallo que ya arreglamos en `useScrollMode`, cometido otra vez a
+   * las pocas horas. Se ve razonable justo porque parece defensivo.
+   *
+   * `null` = todavia no se sabe. Se pinta el respaldo, que es lo que emite el
+   * servidor: primer render identico en ambos lados. En cuanto el efecto
+   * resuelve, se cambia al canvas — y eso ya es una actualizacion de estado
+   * normal, que React si aplica.
+   */
+  const [hayWebGL, setHayWebGL] = useState<boolean | null>(null)
+
+  /*
+   * SE ESPERA A QUE EL HILO PRINCIPAL ESTE OCIOSO.
+   *
+   * Montar aqui dispara la importacion dinamica del canvas, que arrastra 578 KB
+   * de Three.js. Medido sobre el build de produccion a 390 px con 4x de freno de
+   * CPU y Slow 4G:
+   *
+   *   primer pintado con contenido  1268 ms
+   *   LCP (el parrafo del hero)     3504 ms
+   *
+   * La animacion de entrada del hero esta pensada para revelar ese parrafo unas
+   * 0,82 s despues de la hidratacion —a los ~1970 ms— asi que sobraba 1,5 s. Ese
+   * sobrante es Three.js analizandose y compitiendo por el hilo justo mientras
+   * la animacion deberia estar corriendo.
+   *
+   * `requestIdleCallback` cede el turno al pintado del hero sin retrasar nada
+   * mas: el `timeout` garantiza que el mundo entra igual aunque el navegador
+   * nunca declare un hueco ocioso, y el respaldo estatico —que ya es lo que se
+   * pintaba en este intervalo— cubre la espera.
+   *
+   * NO cambia lo que se ve: cambia CUANDO empieza a competir.
+   */
+  useEffect(() => {
+    const arranca = () => setHayWebGL(soportaWebGL())
+    if (typeof window.requestIdleCallback === 'function') {
+      const id = window.requestIdleCallback(arranca, { timeout: 2500 })
+      return () => window.cancelIdleCallback(id)
+    }
+    // Safari no lo trae: un turno suelto basta para no pelear con el pintado
+    const id = window.setTimeout(arranca, 200)
+    return () => window.clearTimeout(id)
+  }, [])
+
+  if (hayWebGL !== true) return <StaticWorldFallback />
+
+  return (
+    <WebGLBoundary fallback={<StaticWorldFallback />}>
+      <WorldCanvas sectionIndex={sectionIndex} />
+    </WebGLBoundary>
+  )
+}
 
 function PageContent() {
   const { sectionIndexRef, scrollProgressRef, scrollToSectionRef } = useScene()
   const scrollMode = useScrollMode()
-  const { sectionIndex, registerSection, scrollToSection } = useSnapScroll(TOTAL_SECTIONS, scrollMode)
+  /**
+   * El hook escribe DIRECTAMENTE en los refs del contexto. Antes mantenía copias
+   * propias y aquí se sincronizaban a mano poniendo el progreso a 0 en cada
+   * cambio de sección — que era la única escritura que recibía en toda la app.
+   */
+  const { sectionIndex, registerSection, scrollToSection } = useSnapScroll(
+    TOTAL_SECTIONS,
+    scrollMode,
+    { sectionIndexRef, scrollProgressRef }
+  )
   const legalScrollTimeoutRef = useRef<number | null>(null)
-
-  useEffect(() => {
-    sectionIndexRef.current = sectionIndex
-    scrollProgressRef.current = 0
-  }, [sectionIndex, sectionIndexRef, scrollProgressRef])
 
   useEffect(() => {
     scrollToSectionRef.current = scrollToSection
@@ -104,21 +182,7 @@ function PageContent() {
 
   return (
     <div className="home-snap-root fixed inset-0 h-screen w-screen overflow-hidden">
-      <WorldCanvas
-        heroActive={sectionIndex === 0}
-        trustActive={sectionIndex === 1}
-        tokenActive={sectionIndex === 3}
-        miningActive={sectionIndex === 4}
-        boosterActive={sectionIndex === 5}
-        stakingActive={sectionIndex === 6}
-        gpulseActive={sectionIndex === 7}
-        goracleActive={sectionIndex === 8}
-        marketplaceActive={sectionIndex === 9}
-        communityActive={sectionIndex === 10}
-        technologyActive={sectionIndex === 11}
-        roadmapActive={sectionIndex === 12}
-        ctaActive={sectionIndex === 13}
-      />
+      <MundoVisual sectionIndex={sectionIndex} />
       <Navbar />
       <SectionProgressDots total={TOTAL_SECTIONS} current={sectionIndex} onDotClick={scrollToSection} />
 
@@ -130,20 +194,16 @@ function PageContent() {
           position: 'fixed', inset: 0, zIndex: 2,
         }}
       >
-        <HeroSection        ref={registerSection(0)}  isActive={sectionIndex === 0} />
-        <Scene01_Trust      ref={registerSection(1)}  isActive={sectionIndex === 1} />
-        <EcosystemSection   ref={registerSection(2)}  isActive={sectionIndex === 2} />
-        <Scene02_AigToken   ref={registerSection(3)}  isActive={sectionIndex === 3} />
-        <Scene03_Mining     ref={registerSection(4)}  isActive={sectionIndex === 4} />
-        <Scene04_Booster    ref={registerSection(5)}  isActive={sectionIndex === 5} />
-        <Scene05_Staking    ref={registerSection(6)}  isActive={sectionIndex === 6} />
-        <Scene03_GPulse     ref={registerSection(7)}  isActive={sectionIndex === 7} />
-        <Scene08_GOracle    ref={registerSection(8)}  isActive={sectionIndex === 8} />
-        <Scene04_GevyShop   ref={registerSection(9)}  isActive={sectionIndex === 9} />
-        <Scene05_Community  ref={registerSection(10)} isActive={sectionIndex === 10} />
-        <Scene06_Technology ref={registerSection(11)} isActive={sectionIndex === 11} />
-        <Scene07_Roadmap    ref={registerSection(12)} isActive={sectionIndex === 12} />
-        <Scene08_CTA        ref={registerSection(13)} isActive={sectionIndex === 13} />
+        {SECTIONS.map((section) => {
+          const Scene = SCENE_BY_SECTION[section.id]
+          return (
+            <Scene
+              key={section.id}
+              ref={registerSection(section.index)}
+              isActive={sectionIndex === section.index}
+            />
+          )
+        })}
       </main>
     </div>
   )

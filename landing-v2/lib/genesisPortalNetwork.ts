@@ -2,11 +2,12 @@
  * Phase 16.0 — Genesis Final Portal (WebGL, sección 13).
  */
 import { PORTAL_ABSORB_S, PORTAL_CORE_PULSE_S } from '@/lib/portal/genesisPortalLayout'
+import { llegadaDe } from '@/lib/design/motion'
 
 type Rgb = readonly [number, number, number]
 
 export const CTA_SECTION_INDEX = 13
-export const PORTAL_FORM_DURATION = 1.1
+export const PORTAL_FORM_DURATION = llegadaDe('cta')
 export const PORTAL_LOOP_DURATION = PORTAL_ABSORB_S
 
 export const PORTAL_ROLE = {

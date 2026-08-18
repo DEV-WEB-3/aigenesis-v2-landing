@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import {
   MINING_CONSTELLATION_NODES,
   MINING_CONSTELLATION_PULSE_S,
@@ -20,10 +22,10 @@ export default function MiningConstellationStreams({ visibleIndices }: MiningCon
     >
       <defs>
         <linearGradient id="mining-stream-grad" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="88" y2="50">
-          <stop offset="0%" stopColor="#FF00C8" stopOpacity="0.85" />
-          <stop offset="35%" stopColor="#9D4DFF" stopOpacity="0.7" />
-          <stop offset="70%" stopColor="#2962FF" stopOpacity="0.6" />
-          <stop offset="100%" stopColor="#00F5FF" stopOpacity="0.55" />
+          <stop offset="0%" stopColor={EMISSION.magenta} stopOpacity="0.85" />
+          <stop offset="35%" stopColor={EMISSION.violetHi} stopOpacity="0.7" />
+          <stop offset="70%" stopColor={EMISSION.blue} stopOpacity="0.6" />
+          <stop offset="100%" stopColor={EMISSION.cyan} stopOpacity="0.55" />
         </linearGradient>
         <filter id="mining-stream-glow" x="-60%" y="-60%" width="220%" height="220%">
           <feGaussianBlur stdDeviation="0.85" result="blur" />
@@ -79,7 +81,7 @@ export default function MiningConstellationStreams({ visibleIndices }: MiningCon
             <circle r="0.9" className="mining-constellation-stream__particle" fill={node.color}>
               <animateMotion dur={flowDur} repeatCount="indefinite" path={d} />
             </circle>
-            <circle r="0.55" className="mining-constellation-stream__particle mining-constellation-stream__particle--trail" fill="#00F5FF">
+            <circle r="0.55" className="mining-constellation-stream__particle mining-constellation-stream__particle--trail" fill={EMISSION.cyan}>
               <animateMotion dur={trailDur} repeatCount="indefinite" path={d} begin="0.5s" />
             </circle>
           </g>

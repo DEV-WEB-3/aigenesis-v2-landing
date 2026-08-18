@@ -1,5 +1,7 @@
 'use client'
 
+import { EMISSION } from '@/lib/design/tokens'
+
 import {
   TOKEN_ATOMIC_ORBIT_COUNT,
   TOKEN_ORBIT_MAX_POINTS,
@@ -7,7 +9,7 @@ import {
   type OrbitEditorOrbitState,
 } from '@/lib/token/tokenOrbitalValueLayout'
 
-const HANDLE_COLORS = ['#FF00C8', '#00F5FF', '#9D4DFF', '#FF4DDB', '#2962FF'] as const
+const HANDLE_COLORS = [EMISSION.magenta, EMISSION.cyan, EMISSION.violetHi, EMISSION.magentaHi, EMISSION.blue] as const
 
 interface TokenOrbitEditorHudProps {
   orbits: readonly OrbitEditorOrbitState[]
