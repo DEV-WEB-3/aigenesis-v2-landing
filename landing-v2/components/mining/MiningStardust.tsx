@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
+import { PARALAJE } from '@/lib/design/motion'
 
 interface MiningStardustProps {
   count?: number
@@ -28,7 +29,9 @@ function buildDust(count: number, seed: number): DustSpec[] {
       y: 8 + f(r2) * 84,
       size: 1 + f(r3) * 1.8,
       delay: f(r1 * 0.7) * 6,
-      dur: 5 + f(r2) * 4,
+      // el polvo deriva al escalon de fondo del paralaje; la separacion
+      // la sigue dando `delay`, que es aleatorio por semilla y no va en rejilla
+      dur: PARALAJE.frente,
       hue: hues[i % hues.length]!,
     }
   })

@@ -1,6 +1,7 @@
 'use client'
 
 import { EMISSION } from '@/lib/design/tokens'
+import { desfase } from '@/lib/design/motion'
 
 import {
   stakingLockStreamPath,
@@ -47,12 +48,18 @@ export default function StakingLockStreams() {
 
       {streams.map((i) => {
         const d = stakingLockStreamPath(i)
-        const dur = `${5.5 + i * 0.6}s`
+        const dur = `${STAKING_VAULT_PULSE_S}s`
         return (
           <g key={`in-${i}`}>
             <path d={d} className="staking-lock-stream staking-lock-stream--in" fill="none" stroke="url(#staking-stream-grad)" />
             <circle r="0.65" className="staking-lock-stream__particle" fill={EMISSION.cyan}>
-              <animateMotion dur={dur} repeatCount="indefinite" path={d} />
+              {/* misma duracion, distinto arranque: es lo que separa sin salir de la rejilla */}
+              <animateMotion
+                dur={dur}
+                repeatCount="indefinite"
+                path={d}
+                begin={`${desfase(i, streams.length, STAKING_VAULT_PULSE_S)}s`}
+              />
             </circle>
           </g>
         )
@@ -60,12 +67,12 @@ export default function StakingLockStreams() {
 
       {outflows.map((i) => {
         const d = stakingOutflowPath(i)
-        const dur = `${7 + i * 0.8}s`
+        const dur = `${STAKING_VAULT_PULSE_S}s`
         return (
           <g key={`out-${i}`}>
             <path d={d} className="staking-lock-stream staking-lock-stream--out" fill="none" stroke="url(#staking-stream-grad)" />
             <circle r="0.45" className="staking-lock-stream__particle staking-lock-stream__particle--out" fill={EMISSION.blue}>
-              <animateMotion dur={dur} repeatCount="indefinite" path={d} begin={`${i * 0.4}s`} />
+              <animateMotion dur={dur} repeatCount="indefinite" path={d} begin={`${desfase(i, outflows.length, STAKING_VAULT_PULSE_S)}s`} />
             </circle>
           </g>
         )

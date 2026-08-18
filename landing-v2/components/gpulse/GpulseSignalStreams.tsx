@@ -1,6 +1,10 @@
 'use client'
 
 import { EMISSION } from '@/lib/design/tokens'
+import { desfase } from '@/lib/design/motion'
+
+/** Los flujos recorren en dos pulsos de la seccion. Dentro de la rejilla. */
+const FLUJO_S = 4
 
 import {
   GPULSE_NODE_COUNT,
@@ -41,8 +45,8 @@ export default function GpulseSignalStreams() {
 
       {Array.from({ length: GPULSE_NODE_COUNT }, (_, i) => {
         const d = gpulseStreamPath(i)
-        const dur = `${3.2 + (i % 5) * 0.35}s`
-        const begin = `${(i / GPULSE_NODE_COUNT) * 2.4}s`
+        const dur = `${FLUJO_S}s`
+        const begin = `${desfase(i, GPULSE_NODE_COUNT, FLUJO_S)}s`
         return (
           <g key={`in-${i}`}>
             <path
@@ -61,7 +65,7 @@ export default function GpulseSignalStreams() {
 
       {outflows.map((i) => {
         const d = gpulseOutflowPath(i)
-        const dur = `${4.5 + i * 0.5}s`
+        const dur = `${FLUJO_S}s`
         return (
           <g key={`out-${i}`}>
             <path
@@ -72,7 +76,7 @@ export default function GpulseSignalStreams() {
               opacity="0.22"
             />
             <circle r="0.42" className="gpulse-signal-stream__particle gpulse-signal-stream__particle--out" fill={EMISSION.magenta}>
-              <animateMotion dur={dur} repeatCount="indefinite" path={d} begin={`${i * 0.55 + 1.2}s`} />
+              <animateMotion dur={dur} repeatCount="indefinite" path={d} begin={`${desfase(i, outflows.length, FLUJO_S)}s`} />
             </circle>
           </g>
         )

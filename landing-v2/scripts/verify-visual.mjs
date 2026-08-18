@@ -25,6 +25,7 @@
  *  8. Duraciones de animacion fuera de la rejilla de `lib/design/motion.ts`
  *  9. Capas DOM en % desalineadas con el cuadrado de su SVG hermano
  * 10. Duraciones sueltas en globals.css — se ve sin abrir el navegador
+ * 11. Duraciones sueltas en las animaciones SVG — el punto ciego de la 8 y la 10
  *
  * QUE NO COMPRUEBA, Y POR QUE
  * ---------------------------
@@ -48,7 +49,7 @@
  * vacío significa que pasa.
  */
 
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 
 export const ANCHOS = [390, 820, 1440]
 
@@ -368,6 +369,128 @@ export function verificarTempoEnFuente() {
   return fallos
 }
 
+/* ═════════════════════════════════════════════════════════════════════════
+   11. DURACIONES SUELTAS EN LAS ANIMACIONES SVG
+
+   EL PUNTO CIEGO. La 8 lee `animationDuration` computado y la 10 lee
+   `globals.css`. Las dos miran CSS. Pero medio portal no anima con CSS: anima
+   con `<animateMotion dur="...">`, y ese atributo no aparece en ninguna de las
+   dos. Durante todo el trabajo de unificacion, `npm run verify:tempo` dijo
+   «ninguna duracion fuera de la rejilla» y era cierto — del camino que la
+   guarda alcanzaba.
+
+   Lo que habia detras, medido en el navegador seccion por seccion:
+
+     marketplace 16 · goracle 12 · gpulse 11 · token 10 · comunidad 9
+     staking 8 · mining 7 · booster 7 · ecosistema 4 · technology 4
+
+   88 valores distintos fuera de la rejilla en 10 de las 14 secciones. Es
+   exactamente el fallo que la unificacion existia para eliminar, sobreviviendo
+   en la capa que nadie comprobaba.
+
+   COMO SE COMPRUEBA SIN NAVEGADOR. Los numeros no se escriben en el atributo:
+   llegan de constantes de layout. Asi que se miran los dos extremos del camino:
+
+     A. cualquier literal numerico dentro de una expresion `dur=` en un .tsx
+     B. cualquier propiedad `dur` / `duration` / `durationS` con literal en lib/
+
+   No es un analisis de flujo —no lo pretende—, pero cubre los dos sitios donde
+   este portal escribe duraciones, y falla en el momento de teclear el valor.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * QUE ENTRA Y QUE NO, y por que la frontera esta donde esta.
+ *
+ * ENTRA el tempo de ESCENA: lo que hace que una seccion respire, orbite o
+ * circule. Vive en dos sitios y solo en dos — el atributo `dur` de una
+ * animacion SVG, y la constante del layout de la que ese atributo sale.
+ *
+ * NO ENTRAN las transiciones de interfaz de framer-motion ni las de gsap
+ * —`transition: { duration: 0.2 }` al abrir un desplegable, 0,25 s de una
+ * salida—. Son otro sistema: respuesta a un gesto del usuario, no el pulso de
+ * la seccion. Meterlas aqui llenaria la salida de avisos que nadie va a
+ * atender, y una guarda ruidosa se acaba ignorando entera, incluidos los avisos
+ * buenos. Es preferible una guarda estrecha que muerda a una amplia que no.
+ *
+ * Queda anotado un hallazgo que SI merece revisarse aparte: las llegadas de
+ * seccion de `SceneShared` valen 0,65 · 0,7 · 0,75 y la rejilla de llegadas es
+ * 0,8 · 1,2 · 1,6. Eso si es tempo de escena, pero se arregla en el sistema de
+ * framer, no aqui.
+ *
+ * Un RETARDO nunca entra: separar por retardo es justo lo que `desfase()`
+ * existe para dar, igual que en la 10.
+ */
+const CLAVE_DUR_SVG = /(?<![\w-])(dur)\s*:\s*([0-9]*\.?[0-9]+)(?![\w.])/g
+const CLAVE_DUR_LAYOUT = /(?<![\w-])(durationS|duration|dur)\s*:\s*([0-9]*\.?[0-9]+)(?![\w.])/g
+
+function literalesDeExpresion(texto) {
+  return [...texto.matchAll(/(?<![\w.$])([0-9]*\.?[0-9]+)(?![\w.])/g)].map((m) => Number(m[1]))
+}
+
+export function verificarTempoSvgEnFuente() {
+  const fallos = []
+  const raiz = new URL('../', import.meta.url)
+
+  const recorrer = (dir) => {
+    for (const ent of readdirSync(new URL(dir, raiz), { withFileTypes: true })) {
+      if (ent.name === 'node_modules' || ent.name.startsWith('.')) continue
+      const rel = `${dir}${ent.name}`
+      if (ent.isDirectory()) recorrer(`${rel}/`)
+      else if (/\.tsx?$/.test(ent.name)) revisar(rel)
+    }
+  }
+
+  const revisar = (rel) => {
+    const texto = readFileSync(new URL(rel, raiz), 'utf8')
+    const lineas = texto.split('\n')
+    // en `lib/` una `duration` ES tempo de escena; en un componente puede ser
+    // una transicion de framer, asi que alli solo cuenta la clave `dur`
+    const clave = rel.startsWith('lib/') ? CLAVE_DUR_LAYOUT : CLAVE_DUR_SVG
+
+    lineas.forEach((linea, i) => {
+      const anota = (valor, motivo) => {
+        if (!Number.isFinite(valor) || valor <= 0) return
+        if (REJILLA.includes(valor)) return
+        fallos.push({ tipo: 'tempo-suelto-en-svg', archivo: rel, linea: i + 1, valor, motivo,
+                      texto: linea.trim().slice(0, 90) })
+      }
+
+      // A. la expresion del atributo `dur` de una animacion SVG
+      const attr = linea.match(/\bdur=(?:"([^"]*)"|\{([^}]*(?:\}[^}]*)?)\})/)
+      if (attr) {
+        for (const v of literalesDeExpresion(attr[1] ?? attr[2] ?? '')) anota(v, 'dur=')
+      }
+
+      // B. la constante de la que sale
+      for (const m of linea.matchAll(clave)) anota(Number(m[2]), `${m[1]}:`)
+
+      /*
+       * C. la variable local que se calcula y luego se pasa como `dur={x}`.
+       *
+       * Es el patron que usan los cinco componentes de flujos —staking,
+       * goracle, gpulse, booster y mining— y ninguna de las otras dos reglas
+       * lo veia: no es un atributo con literales ni una clave de objeto, es
+       *
+       *   const dur = `${5.5 + i * 0.6}s`
+       *
+       * Sin esta regla la guarda decia 21 fallos en 7 archivos cuando el
+       * navegador media 88 valores en 10 secciones. Se noto comparando las dos
+       * listas: cuatro secciones que el navegador señalaba no aparecian aqui.
+       * Una guarda que cubre siete decimos de un problema y no lo dice es peor
+       * que ninguna, porque el verde se lee como completo.
+       */
+      const local = linea.match(/const\s+\w*[Dd]ur\w*\s*=\s*`([^`]*)`/)
+      if (local) {
+        for (const v of literalesDeExpresion(local[1])) anota(v, 'const dur')
+      }
+    })
+  }
+
+  recorrer('components/')
+  recorrer('lib/')
+  return fallos
+}
+
 /**
  * Ejecutable directo: `node scripts/verify-visual.mjs`
  *
@@ -385,13 +508,32 @@ export function verificarTempoEnFuente() {
 const esEntrada = (process.argv[1] || '').endsWith('verify-visual.mjs')
 
 if (esEntrada) {
-  const fallos = verificarTempoEnFuente()
   console.log(`rejilla leida de motion.ts: ${REJILLA.join(' · ')}`)
-  if (fallos.length === 0) {
+
+  const cssFallos = verificarTempoEnFuente()
+  if (cssFallos.length === 0) {
     console.log('globals.css: ninguna duracion fuera de la rejilla')
   } else {
-    console.log(`globals.css: ${fallos.length} duraciones sueltas`)
-    for (const f of fallos) console.log(`  L${f.linea}  ${f.valor}s  ${f.texto}`)
-    process.exitCode = 1
+    console.log(`globals.css: ${cssFallos.length} duraciones sueltas`)
+    for (const f of cssFallos) console.log(`  L${f.linea}  ${f.valor}s  ${f.texto}`)
   }
+
+  const svgFallos = verificarTempoSvgEnFuente()
+  if (svgFallos.length === 0) {
+    console.log('animaciones SVG: ninguna duracion fuera de la rejilla')
+  } else {
+    // Agrupado por archivo: 88 lineas sueltas no se leen, 10 grupos si.
+    const porArchivo = new Map()
+    for (const f of svgFallos) {
+      if (!porArchivo.has(f.archivo)) porArchivo.set(f.archivo, [])
+      porArchivo.get(f.archivo).push(f)
+    }
+    console.log(`animaciones SVG: ${svgFallos.length} duraciones sueltas en ${porArchivo.size} archivos`)
+    for (const [archivo, fs] of [...porArchivo].sort((a, b) => b[1].length - a[1].length)) {
+      console.log(`  ${archivo}  (${fs.length})`)
+      for (const f of fs) console.log(`    L${f.linea}  ${f.valor}s  ${f.motivo}  ${f.texto}`)
+    }
+  }
+
+  if (cssFallos.length || svgFallos.length) process.exitCode = 1
 }

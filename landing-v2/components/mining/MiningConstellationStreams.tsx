@@ -1,6 +1,10 @@
 'use client'
 
 import { EMISSION } from '@/lib/design/tokens'
+import { desfase } from '@/lib/design/motion'
+
+const FLUJO_S = 4
+const ESTELA_S = 8
 
 import {
   MINING_CONSTELLATION_NODES,
@@ -47,8 +51,9 @@ export default function MiningConstellationStreams({ visibleIndices }: MiningCon
         const node = MINING_CONSTELLATION_NODES[nodeIndex]
         if (!node) return null
         const d = constellationStreamPath(nodeIndex)
-        const flowDur = `${3.6 + (nodeIndex % 4) * 0.45}s`
-        const trailDur = `${4.4 + (nodeIndex % 3) * 0.5}s`
+        const flowDur = `${FLUJO_S}s`
+        // un escalon mas lenta, para que la estela se lea como eco
+        const trailDur = `${ESTELA_S}s`
 
         return (
           <g key={node.id} className="mining-constellation-stream-group">
@@ -79,10 +84,15 @@ export default function MiningConstellationStreams({ visibleIndices }: MiningCon
               }
             />
             <circle r="0.9" className="mining-constellation-stream__particle" fill={node.color}>
-              <animateMotion dur={flowDur} repeatCount="indefinite" path={d} />
+              <animateMotion
+                dur={flowDur}
+                repeatCount="indefinite"
+                path={d}
+                begin={`${desfase(nodeIndex, visibleIndices.length, FLUJO_S)}s`}
+              />
             </circle>
             <circle r="0.55" className="mining-constellation-stream__particle mining-constellation-stream__particle--trail" fill={EMISSION.cyan}>
-              <animateMotion dur={trailDur} repeatCount="indefinite" path={d} begin="0.5s" />
+              <animateMotion dur={trailDur} repeatCount="indefinite" path={d} begin={`${desfase(nodeIndex, visibleIndices.length, ESTELA_S)}s`} />
             </circle>
           </g>
         )

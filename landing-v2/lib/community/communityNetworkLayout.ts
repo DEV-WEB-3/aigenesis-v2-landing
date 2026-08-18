@@ -50,6 +50,16 @@ function clamp(v: number, min: number, max: number): number {
 }
 
 /** Six leader nodes — ring around core, asymmetric organic spacing. */
+/**
+ * Lo que tarda un pulso en recorrer un enlace.
+ *
+ * Eran 2,8 · 3,2 · 3,6 con incrementos por indice — tres valores parecidos
+ * que derivaban unos de otros sin volver a coincidir. La separacion la da
+ * el `delay` de cada pulso, que ya existia y NO va en la rejilla: para eso
+ * esta. La duracion es la mitad del pulso de la seccion.
+ */
+const PULSO_ENLACE_S = 4
+
 export function leaderNodePosition(leaderIndex: number): { x: number; y: number } {
   const i = ((leaderIndex % COMMUNITY_LEADER_COUNT) + COMMUNITY_LEADER_COUNT) % COMMUNITY_LEADER_COUNT
   const angle = -Math.PI / 2 + (i / COMMUNITY_LEADER_COUNT) * Math.PI * 2 + Math.sin(i * 1.7) * 0.18
@@ -147,7 +157,7 @@ function buildPoolPulses(): CommunityPoolPulseDef[] {
       id: `pool-core-${l}`,
       from: l,
       to: -1,
-      duration: 2.8 + l * 0.15,
+      duration: PULSO_ENLACE_S,
       delay: l * 0.55,
     })
     const member = COMMUNITY_LEADER_COUNT + l * 7 + 2
@@ -156,7 +166,7 @@ function buildPoolPulses(): CommunityPoolPulseDef[] {
         id: `pool-member-${l}`,
         from: l,
         to: member,
-        duration: 3.2 + (l % 3) * 0.2,
+        duration: PULSO_ENLACE_S,
         delay: 0.8 + l * 0.42,
       })
     }
@@ -167,7 +177,7 @@ function buildPoolPulses(): CommunityPoolPulseDef[] {
       id: `pool-peer-${l}-${peer}`,
       from: l,
       to: peer,
-      duration: 3.6,
+      duration: PULSO_ENLACE_S,
       delay: 1.2 + l * 0.35,
     })
   }

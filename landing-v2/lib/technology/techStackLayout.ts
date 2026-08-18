@@ -114,7 +114,7 @@ function buildFlows(): TechStackFlowDef[] {
       id: `flow-${i}-${i + 1}`,
       fromLayer: i,
       toLayer: i + 1,
-      duration: 2.4 + i * 0.18,
+      duration: TECH_STACK_PULSE_S,
       delay: i * 0.35,
     })
   }

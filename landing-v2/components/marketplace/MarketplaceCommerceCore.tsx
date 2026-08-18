@@ -7,9 +7,12 @@ import { EMISSION } from '@/lib/design/tokens'
 import { COMMERCE_GLOBE_CENTER, COMMERCE_PULSE_S } from '@/lib/marketplace/globalCommerceLayout'
 
 const ACTIVITY_BANDS = [
-  { id: 'settlement', rx: 38, ry: 14, particles: 5, dur: 3.2 },
-  { id: 'clearing', rx: 28, ry: 10, particles: 4, dur: 2.6 },
-  { id: 'exchange', rx: 18, ry: 7, particles: 3, dur: 2.1 },
+  // 8 · 4 · 2: la de fuera liquida despacio y la de dentro intercambia rapido.
+  // Antes eran 3,2 · 2,6 · 2,1 — el mismo orden, pero tan juntos que no se
+  // distinguian. Los escalones de la rejilla lo hacen legible.
+  { id: 'settlement', rx: 38, ry: 14, particles: 5, dur: 8 },
+  { id: 'clearing', rx: 28, ry: 10, particles: 4, dur: 4 },
+  { id: 'exchange', rx: 18, ry: 7, particles: 3, dur: 2 },
 ] as const
 
 export default function MarketplaceCommerceCore() {

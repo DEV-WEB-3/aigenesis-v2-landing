@@ -84,7 +84,7 @@ function buildTradeRoutes(): CommerceTradeRouteDef[] {
       id: `core-${i}`,
       from: center,
       to: globalHubPosition(i),
-      duration: 2.2 + i * 0.12,
+      duration: COMMERCE_PULSE_S,
       delay: i * 0.22,
     })
   }
@@ -94,7 +94,7 @@ function buildTradeRoutes(): CommerceTradeRouteDef[] {
       id: `ring-${i}`,
       from: globalHubPosition(i),
       to: globalHubPosition((i + 1) % COMMERCE_GLOBAL_HUB_COUNT),
-      duration: 3.1,
+      duration: COMMERCE_PULSE_S,
       delay: 0.35 + i * 0.38,
     })
   }
@@ -116,7 +116,7 @@ function buildTradeRoutes(): CommerceTradeRouteDef[] {
       id: `mesh-${a}-${b}`,
       from: globalHubPosition(a),
       to: globalHubPosition(b),
-      duration: 3.4 + (idx % 3) * 0.2,
+      duration: COMMERCE_PULSE_S,
       delay: 0.5 + idx * 0.28,
     })
   })

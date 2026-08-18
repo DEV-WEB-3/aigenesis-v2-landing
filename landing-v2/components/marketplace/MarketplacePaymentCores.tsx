@@ -23,7 +23,7 @@ export default function MarketplacePaymentCores() {
 
         {COMMERCE_PAYMENT_CORES.map((core) => {
           const d = paymentStreamPath(core.id)
-          const dur = `${2.4 + core.pulseOffset * 1.5}s`
+          const dur = `${COMMERCE_PULSE_S}s`
           return (
             <g key={core.id}>
               <path d={d} className="marketplace-payment-stream" fill="none" stroke="url(#marketplace-payment-grad)" />

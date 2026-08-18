@@ -1,6 +1,7 @@
 'use client'
 
 import { EMISSION } from '@/lib/design/tokens'
+import { desfase } from '@/lib/design/motion'
 
 import {
   ORACLE_ECOSYSTEM_SATELLITES,
@@ -34,7 +35,7 @@ export default function GoracleDataStreams() {
 
       {ORACLE_ECOSYSTEM_SATELLITES.map((sat) => {
         const d = satelliteStreamPath(sat.id)
-        const dur = `${4.8 + sat.pulseOffset * 3}s`
+        const dur = `${ORACLE_INFERENCE_PULSE_S}s`
         const begin = `${sat.pulseOffset * ORACLE_INFERENCE_PULSE_S}s`
         return (
           <g key={`in-${sat.id}`}>
@@ -48,12 +49,12 @@ export default function GoracleDataStreams() {
 
       {outflows.map((i) => {
         const d = oracleOutflowPath(i)
-        const dur = `${6 + i * 0.55}s`
+        const dur = `${ORACLE_INFERENCE_PULSE_S}s`
         return (
           <g key={`out-${i}`}>
             <path d={d} className="goracle-data-stream goracle-data-stream--out" fill="none" stroke="url(#goracle-stream-out-grad)" />
             <circle r="0.38" className="goracle-data-stream__particle goracle-data-stream__particle--out" fill={EMISSION.magenta}>
-              <animateMotion dur={dur} repeatCount="indefinite" path={d} begin={`${1.5 + i * 0.45}s`} />
+              <animateMotion dur={dur} repeatCount="indefinite" path={d} begin={`${desfase(i, outflows.length, ORACLE_INFERENCE_PULSE_S)}s`} />
             </circle>
           </g>
         )

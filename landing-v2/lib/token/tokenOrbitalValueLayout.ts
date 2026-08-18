@@ -1,5 +1,5 @@
 import { EMISSION } from '@/lib/design/tokens'
-import { pulsoDe } from '@/lib/design/motion'
+import { pulsoDe, PARALAJE } from '@/lib/design/motion'
 /**
  * Phase 23.0 — Free-form orbit paths (control points) centered on Genesis nucleus.
  */
@@ -82,12 +82,38 @@ export const ATOMIC_ENERGY_COLORS: readonly AtomicEnergyColor[] = [
 const ORBIT_RX = 44
 const ORBIT_RY = 24
 
+/**
+ * LA VUELTA DE UNA ORBITA.
+ *
+ * Valia entre 136 y 152 s, y de ahi salian dos valores derivados: los puntos de
+ * energia a `x1,2` (163-182 s) y los NODOS DE VALOR a `x2,1` — entre 285 y 319
+ * segundos. Mas de cinco minutos por vuelta.
+ *
+ * Nadie ve eso. Alguien pasa diez o veinte segundos en la seccion; en quince
+ * segundos un nodo recorre un 5 % de su orbita. En pantalla parece congelado.
+ *
+ * Y el gesto declarado de esta seccion es ORBITAR: «alrededor, sin acercarse ni
+ * alejarse. Valor que circula». La seccion cuyo significado entero es la
+ * circulacion era la unica donde no circulaba nada. No era una eleccion de
+ * ritmo: era un numero que nunca se comprobo contra lo que se ve.
+ *
+ * `PARALAJE.fondo` son 32 s y esta descrito como «el fondo lejano, casi
+ * imperceptible». Es exactamente el registro que se buscaba, dentro de la
+ * rejilla y perceptible.
+ *
+ * Las cinco compartian duracion parecida pero distinta —152 · 144 · 148 · 140 ·
+ * 136—, con lo que derivaban unas de otras sin volver a coincidir jamas. Ahora
+ * comparten duracion y se distinguen por inclinacion y sentido, que es lo que
+ * de verdad distingue dos orbitas.
+ */
+const ORBITA_S = PARALAJE.fondo
+
 export const TOKEN_ATOMIC_ORBITS: readonly AtomicOrbitDef[] = [
-  { rx: ORBIT_RX, ry: ORBIT_RY, rotationDeg: 15.6, durationS: 152, warp: 0, reverse: false, tier: 'main', planeSpinS: 0 },
-  { rx: ORBIT_RX, ry: ORBIT_RY, rotationDeg: 51.6, durationS: 144, warp: 0, reverse: true, tier: 'main', planeSpinS: 0 },
-  { rx: ORBIT_RX, ry: ORBIT_RY, rotationDeg: 90, durationS: 148, warp: 0, reverse: false, tier: 'main', planeSpinS: 0 },
-  { rx: ORBIT_RX, ry: ORBIT_RY, rotationDeg: 128.4, durationS: 140, warp: 0, reverse: true, tier: 'main', planeSpinS: 0 },
-  { rx: ORBIT_RX, ry: ORBIT_RY, rotationDeg: 165.6, durationS: 136, warp: 0, reverse: false, tier: 'main', planeSpinS: 0 },
+  { rx: ORBIT_RX, ry: ORBIT_RY, rotationDeg: 15.6, durationS: ORBITA_S, warp: 0, reverse: false, tier: 'main', planeSpinS: 0 },
+  { rx: ORBIT_RX, ry: ORBIT_RY, rotationDeg: 51.6, durationS: ORBITA_S, warp: 0, reverse: true, tier: 'main', planeSpinS: 0 },
+  { rx: ORBIT_RX, ry: ORBIT_RY, rotationDeg: 90, durationS: ORBITA_S, warp: 0, reverse: false, tier: 'main', planeSpinS: 0 },
+  { rx: ORBIT_RX, ry: ORBIT_RY, rotationDeg: 128.4, durationS: ORBITA_S, warp: 0, reverse: true, tier: 'main', planeSpinS: 0 },
+  { rx: ORBIT_RX, ry: ORBIT_RY, rotationDeg: 165.6, durationS: ORBITA_S, warp: 0, reverse: false, tier: 'main', planeSpinS: 0 },
 ] as const
 
 export const TOKEN_ATOMIC_ORBIT_POINTS: OrbitControlPoint[][] = TOKEN_ATOMIC_ORBITS.map((o) =>
@@ -228,7 +254,7 @@ export function atomicOrbitPathFromDims(rx: number, ry: number, steps = 96): str
 }
 
 export function atomicOrbitDuration(orbitIndex: number): number {
-  return TOKEN_ATOMIC_ORBITS[orbitIndex]?.durationS ?? 140
+  return TOKEN_ATOMIC_ORBITS[orbitIndex]?.durationS ?? ORBITA_S
 }
 
 export function atomicOrbitReverse(orbitIndex: number): boolean {
@@ -255,8 +281,19 @@ export function tokenValueMobileIndices(): number[] {
   return TOKEN_VALUE_NODES.map((n, i) => (n.mobilePrimary ? i : -1)).filter((i) => i >= 0)
 }
 
+/**
+ * Lo que tarda un NODO DE VALOR en dar la vuelta a su orbita.
+ *
+ * Era `duracion * 2,1`. Con las duraciones antiguas eso daban entre 285 y 319
+ * segundos: mas de cinco minutos, es decir, quieto para cualquiera que mire la
+ * seccion. El factor tampoco caia en la rejilla ni podia caer, porque 2,1 no es
+ * multiplo de nada.
+ *
+ * El nodo recorre la orbita, asi que su vuelta ES la vuelta de la orbita. No
+ * hace falta un factor.
+ */
 export function atomicNodeTravelDuration(nodeIndex: number): number {
   const node = TOKEN_VALUE_NODES[nodeIndex]
-  if (!node) return 140
-  return atomicOrbitDuration(node.orbitIndex) * 2.1
+  if (!node) return ORBITA_S
+  return atomicOrbitDuration(node.orbitIndex)
 }

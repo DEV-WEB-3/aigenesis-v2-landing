@@ -4,6 +4,10 @@ import { EMISSION } from '@/lib/design/tokens'
 
 import { useEffect, useRef } from 'react'
 import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
+import { desfase } from '@/lib/design/motion'
+
+const FLUJO_S = 4
+const ESTELA_S = 8
 
 /** SVG energy links — mirrors DOM map topology (viewBox 0 0 100 100). */
 const LINKS: { id: string; d: string; primary?: boolean }[] = [
@@ -82,7 +86,7 @@ export default function EcosystemEnergyLinks({ isActive }: EcosystemEnergyLinksP
       <circle cx="50" cy="10" r="6" className="eco-token-pulse-ring" />
       <circle cx="50" cy="10" r="3.2" className="eco-token-core-glow" />
 
-      {LINKS.map(({ id, d, primary }) => (
+      {LINKS.map(({ id, d, primary }, i) => (
         <g key={id}>
           <path
             d={d}
@@ -93,15 +97,20 @@ export default function EcosystemEnergyLinks({ isActive }: EcosystemEnergyLinksP
             filter="url(#eco-link-glow)"
           />
           <circle r="1.1" className="eco-energy-particle" fill={EMISSION.cyan}>
-            <animateMotion dur={`${3.2 + (id.length % 3) * 0.4}s`} repeatCount="indefinite" path={d} />
+            <animateMotion
+              dur={`${FLUJO_S}s`}
+              repeatCount="indefinite"
+              path={d}
+              begin={`${desfase(i, LINKS.length, FLUJO_S)}s`}
+            />
           </circle>
           {primary ? (
             <circle r="0.75" className="eco-energy-particle eco-energy-particle--trail" fill={EMISSION.magenta}>
               <animateMotion
-                dur={`${3.8 + (id.length % 4) * 0.35}s`}
+                dur={`${ESTELA_S}s`}
                 repeatCount="indefinite"
                 path={d}
-                begin="0.6s"
+                begin={`${desfase(i, LINKS.length, ESTELA_S)}s`}
               />
             </circle>
           ) : null}

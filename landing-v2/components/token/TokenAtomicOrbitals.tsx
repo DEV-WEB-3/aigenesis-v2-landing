@@ -29,6 +29,7 @@ import {
 } from '@/lib/token/tokenOrbitalValueLayout'
 import TokenAtomicNodeMark from '@/components/token/TokenAtomicNodeMark'
 import TokenOrbitEditorHud from '@/components/token/TokenOrbitEditorHud'
+import { PARALAJE } from '@/lib/design/motion'
 
 const ORBIT_DRAFT_KEY = 'aigenesis-token-orbit-draft'
 const HANDLE_COLORS = [EMISSION.magenta, EMISSION.cyan, EMISSION.violetHi, EMISSION.magentaHi, EMISSION.blue] as const
@@ -449,7 +450,9 @@ export default function TokenAtomicOrbitals({
                   return (
                     <circle key={`dot-${orbitIndex}-${di}`} r={0.22} className="token-atomic-energy-dot" fill={dotColor}>
                       <animateMotion
-                        dur={`${dur * 1.2}s`}
+                        /* un escalon mas rapidos que los nodos: son chispas,
+                           no valor viajando. Antes iban a `dur * 1,2` = 163-182 s */
+                        dur={`${PARALAJE.medio}s`}
                         repeatCount="indefinite"
                         path={path}
                         keyPoints={reverse ? '1;0' : '0;1'}

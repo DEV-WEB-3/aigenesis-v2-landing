@@ -1,6 +1,10 @@
 'use client'
 
 import { EMISSION } from '@/lib/design/tokens'
+import { desfase } from '@/lib/design/motion'
+
+const FLUJO_S = 4
+const ESTELA_S = 8
 
 import {
   BOOSTER_ACCELERATOR_PULSE_S,
@@ -41,8 +45,9 @@ export default function BoosterAcceleratorStreams() {
 
       {Array.from({ length: BOOSTER_STREAM_COUNT }, (_, strand) => {
         const d = boosterHelixStreamPath(strand)
-        const flowDur = `${3.2 + (strand % 3) * 0.55}s`
-        const trailDur = `${4.8 + (strand % 4) * 0.4}s`
+        const flowDur = `${FLUJO_S}s`
+        // la estela va un escalon mas lenta: se lee como eco, no como copia
+        const trailDur = `${ESTELA_S}s`
 
         return (
           <g key={strand} className="booster-accelerator-stream-group">
@@ -61,10 +66,15 @@ export default function BoosterAcceleratorStreams() {
               filter="url(#booster-stream-glow)"
             />
             <circle r="0.75" className="booster-accelerator-stream__particle" fill={EMISSION.magenta}>
-              <animateMotion dur={flowDur} repeatCount="indefinite" path={d} />
+              <animateMotion
+                dur={flowDur}
+                repeatCount="indefinite"
+                path={d}
+                begin={`${desfase(strand, BOOSTER_STREAM_COUNT, FLUJO_S)}s`}
+              />
             </circle>
             <circle r="0.45" className="booster-accelerator-stream__particle booster-accelerator-stream__particle--trail" fill={EMISSION.cyan}>
-              <animateMotion dur={trailDur} repeatCount="indefinite" path={d} begin={`${strand * 0.35}s`} />
+              <animateMotion dur={trailDur} repeatCount="indefinite" path={d} begin={`${desfase(strand, BOOSTER_STREAM_COUNT, ESTELA_S)}s`} />
             </circle>
           </g>
         )
