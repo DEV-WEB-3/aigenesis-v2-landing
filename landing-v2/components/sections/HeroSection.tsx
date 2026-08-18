@@ -87,7 +87,18 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
           sobraba 95 px. Ahora lleva `home-section-fit` como las otras trece y
           la altura sale de un solo sitio.
         */
-        className="home-section-fit relative flex w-full flex-col items-center justify-center px-4 sm:px-6 pt-20 sm:pt-24 text-center"
+        /*
+          SIN `pt-20 sm:pt-24`: el mismo doble conteo que tenia trust.
+
+          Ese relleno existia para despejar la barra fija, pero
+          `.home-section-fit` ya resta `--enganche-alto` del alto disponible, asi
+          que la barra se contaba dos veces. Medido: contenido 574 px, relleno
+          superior 96, seccion 680 contra un hueco de 607 — el contenido cabia y
+          la seccion no.
+
+          El relleno comun de las catorce lo pone `--section-fit-pad-y`.
+        */
+        className="home-section-fit relative flex w-full flex-col items-center justify-center px-4 sm:px-6 text-center"
         style={{
           pointerEvents: 'auto',
           overflow: 'hidden',

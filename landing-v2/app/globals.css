@@ -2209,6 +2209,23 @@ body {
     --fit-card-pad: clamp(0.8rem, calc(var(--alto-util) * 0.019), 1.5rem);
 
     --section-fit-pad-y: var(--fit-pad-y);
+
+    /*
+     * TECHO DEL HUECO DEL VISUAL.
+     *
+     * Los `min-height` de los huecos estaban en `vh` sin tope, y a ventanas
+     * medianas superaban la banda disponible: medido, el hueco de goracle
+     * declaraba 615 px de minimo con una banda de 607, y eso inflaba su marco a
+     * 656 y obligaba al ajuste automatico a bajar al SUELO (0,82). La seccion
+     * cabia, si, pero encogida un 18 % por un minimo que nadie habia acotado.
+     *
+     * `min-height` NO se puede limitar con `max-height`: el minimo se aplica
+     * despues y gana. Por eso la cota va DENTRO del propio `min()`.
+     *
+     * Se descuentan la barra y un margen libre, que es exactamente el sitio del
+     * que el visual dispone.
+     */
+    --alto-hueco: calc(100dvh - var(--enganche-alto) - 48px);
   }
 
   /*
@@ -2585,14 +2602,27 @@ body {
   }
 }
 
-/* Trust — clearance bajo navbar + centrado vertical seguro del stack izquierdo */
+/*
+  Trust — centrado vertical del stack izquierdo.
+  ---------------------------------------------
+  YA NO SUMA `--nav-offset`, y ese era todo el problema.
+
+  `.home-section-fit` fija `min-height: calc(100dvh - var(--enganche-alto))`: la
+  barra YA esta descontada del alto disponible. Sumarla otra vez aqui la contaba
+  DOS VECES, y el resultado medido era un `padding-top` de 144 px con un marco de
+  contenido de 513: el contenido cabia de sobra y la seccion no. El ajuste
+  automatico tenia que bajar al SUELO —0,82— solo para compensar un relleno
+  duplicado.
+
+  El despeje propio de trust se conserva; lo que se quita es la barra repetida.
+*/
 #trust.home-section-fit {
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  padding-top: calc(var(--nav-offset) + var(--trust-content-pad-top));
+  padding-top: var(--trust-content-pad-top);
   padding-bottom: clamp(1rem, 2.5vh, 1.75rem);
   align-items: stretch;
   justify-content: flex-start;
@@ -2787,7 +2817,7 @@ body {
     align-items: center;
     justify-content: center;
     min-width: min(48vw, 580px);
-    min-height: min(70vh, 640px);
+    min-height: min(70vh, 640px, var(--alto-hueco));
     pointer-events: none;
     transform: translateX(-18%);
   }
@@ -3118,7 +3148,7 @@ body {
     align-self: center;
     justify-self: end;
     min-width: min(54vw, 760px);
-    min-height: min(76vh, 780px);
+    min-height: min(76vh, 780px, var(--alto-hueco));
     margin-right: -2%;
     pointer-events: none;
   }
@@ -3131,7 +3161,7 @@ body {
 
   #mining.mining-section-layout .scene-particle-gutter--featured {
     min-width: min(56vw, 820px);
-    min-height: min(78vh, 840px);
+    min-height: min(78vh, 840px, var(--alto-hueco));
   }
 }
 
@@ -3170,7 +3200,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: min(72vh, 680px);
+  min-height: min(72vh, 680px, var(--alto-hueco));
   max-height: min(82vh, 820px);
   aspect-ratio: 1;
   overflow: visible;
@@ -3639,7 +3669,7 @@ body {
   }
 
   #goracle .goracle-quantum-brain {
-    min-height: min(48vh, 380px);
+    min-height: min(48vh, 380px, var(--alto-hueco));
   }
 
   #goracle.goracle-section-layout .scene-particle-gutter--featured {
@@ -3727,7 +3757,7 @@ body {
     width: min(62vw, 1140px);
     max-width: 100%;
     min-width: 0;
-    min-height: min(92vh, 1140px);
+    min-height: min(92vh, 1140px, var(--alto-hueco));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4431,7 +4461,7 @@ body {
   justify-content: center;
   pointer-events: none;
   width: 100%;
-  min-height: min(70vh, 680px);
+  min-height: min(70vh, 680px, var(--alto-hueco));
 }
 
 #token .token-orbital-value-network {
@@ -5237,7 +5267,7 @@ body {
     align-self: center;
     justify-self: center;
     width: min(68vw, 880px);
-    min-height: min(72vh, 820px);
+    min-height: min(72vh, 820px, var(--alto-hueco));
     pointer-events: none;
     transform: translateX(3%);
   }
@@ -5489,6 +5519,32 @@ body {
   position: relative;
 }
 
+/*
+  LAS TRES CAPAS, EN PARALELO.
+
+  Iban en `flex flex-col` y median 456 px de los 728 de la seccion: eran, con
+  diferencia, la razon de que booster no cupiera en ninguna ventana y de que
+  tocara el suelo del ajuste automatico.
+
+  En rejilla de tres ocupan un tercio del alto, y ademas se leen bien: son tres
+  capas PARALELAS del mismo acelerador, no tres pasos sucesivos. Una columna
+  vertical las contaba como una secuencia.
+
+  Una sola columna por debajo de `md`: tres tarjetas de texto en fila no caben en
+  un movil sin partir palabras.
+*/
+#booster .booster-layers-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--fit-gap-stack, 0.6rem);
+}
+
+@media (min-width: 768px) {
+  #booster .booster-layers-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 #booster .booster-section-backdrop {
   position: absolute;
   inset: 0;
@@ -5557,7 +5613,7 @@ body {
     align-self: center;
     justify-self: end;
     min-width: min(52vw, 720px);
-    min-height: min(76vh, 780px);
+    min-height: min(76vh, 780px, var(--alto-hueco));
     margin-right: -1%;
     pointer-events: none;
   }
@@ -5573,7 +5629,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: min(72vh, 680px);
+  min-height: min(72vh, 680px, var(--alto-hueco));
   max-height: min(82vh, 820px);
   aspect-ratio: 0.72;
   overflow: visible;
@@ -5988,7 +6044,7 @@ body {
     width: min(62vw, 1140px);
     max-width: 100%;
     min-width: min(62vw, 1140px);
-    min-height: min(92vh, 1140px);
+    min-height: min(92vh, 1140px, var(--alto-hueco));
     margin-left: auto;
     margin-right: auto;
     transform: translateX(-9%);
@@ -6008,7 +6064,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: min(88vh, 980px);
+  min-height: min(88vh, 980px, var(--alto-hueco));
   max-height: min(96vh, 1180px);
   max-width: 100%;
   margin: 0 auto;
@@ -6701,7 +6757,7 @@ body {
         width: min(54vw, 920px);
     max-width: 100%;
     min-width: min(54vw, 920px);
-    min-height: min(88vh, 920px);
+    min-height: min(88vh, 920px, var(--alto-hueco));
     margin-left: auto;
     margin-right: auto;
     pointer-events: none;
@@ -6721,7 +6777,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: min(82vh, 880px);
+  min-height: min(82vh, 880px, var(--alto-hueco));
   max-height: min(94vh, 1040px);
   max-width: 100%;
   margin: 0 auto;
@@ -7203,6 +7259,26 @@ body {
   position: relative;
 }
 
+/*
+  Los tres pilares, en paralelo — misma correccion que las capas de booster.
+
+  Apilados en columna eran lo que dejaba a goracle como la ultima seccion que
+  necesitaba el SUELO del ajuste automatico: cabia a 0,82, es decir apretada.
+  Una columna vertical ademas los lee como pasos sucesivos, y son tres pilares
+  paralelos del mismo motor.
+*/
+#goracle .goracle-pillars-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--fit-gap-stack, 0.6rem);
+}
+
+@media (min-width: 768px) {
+  #goracle .goracle-pillars-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 #goracle .goracle-section-backdrop {
   position: absolute;
   inset: 0;
@@ -7262,7 +7338,7 @@ body {
         width: min(58vw, 980px);
     max-width: 100%;
     min-width: min(58vw, 980px);
-    min-height: min(90vh, 980px);
+    min-height: min(90vh, 980px, var(--alto-hueco));
     margin-left: auto;
     margin-right: auto;
     pointer-events: none;
@@ -7282,7 +7358,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: min(86vh, 920px);
+  min-height: min(86vh, 920px, var(--alto-hueco));
   max-height: min(96vh, 1080px);
   max-width: 100%;
   margin: 0 auto;
@@ -7860,7 +7936,7 @@ body {
     width: min(56vw, 960px);
     max-width: 100%;
     min-width: min(56vw, 960px);
-    min-height: min(88vh, 960px);
+    min-height: min(88vh, 960px, var(--alto-hueco));
     margin-left: auto;
     margin-right: auto;
     transform: translateX(-10%);
@@ -7880,7 +7956,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: min(84vh, 900px);
+  min-height: min(84vh, 900px, var(--alto-hueco));
   max-height: min(94vh, 1040px);
   max-width: 100%;
   margin: 0 auto;
@@ -8507,7 +8583,7 @@ body {
     width: min(56vw, 960px);
     max-width: 100%;
     min-width: min(56vw, 960px);
-    min-height: min(88vh, 960px);
+    min-height: min(88vh, 960px, var(--alto-hueco));
     margin-left: auto;
     margin-right: auto;
     transform: translateX(-10%);
@@ -8527,7 +8603,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: min(84vh, 900px);
+  min-height: min(84vh, 900px, var(--alto-hueco));
   max-height: min(94vh, 1040px);
   max-width: 100%;
   margin: 0 auto;
@@ -8975,7 +9051,7 @@ body {
     width: min(52vw, 880px);
     max-width: 100%;
     min-width: min(52vw, 880px);
-    min-height: min(86vh, 900px);
+    min-height: min(86vh, 900px, var(--alto-hueco));
     margin-left: auto;
     margin-right: auto;
     transform: translateX(-10%);
@@ -8995,7 +9071,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: min(82vh, 860px);
+  min-height: min(82vh, 860px, var(--alto-hueco));
   max-height: min(92vh, 980px);
   max-width: 100%;
   margin: 0 auto;
@@ -9282,7 +9358,7 @@ body {
     width: min(54vw, 920px, calc(50vw - 28px));
     max-width: 100%;
     min-width: min(54vw, 920px, calc(50vw - 28px));
-    min-height: min(84vh, 880px);
+    min-height: min(84vh, 880px, var(--alto-hueco));
     margin-left: auto;
     margin-right: auto;
     /*
@@ -9306,7 +9382,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: min(80vh, 840px);
+  min-height: min(80vh, 840px, var(--alto-hueco));
   max-height: min(90vh, 960px);
   max-width: 100%;
   margin: 0 auto;

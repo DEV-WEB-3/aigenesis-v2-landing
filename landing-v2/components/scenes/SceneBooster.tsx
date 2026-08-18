@@ -12,10 +12,29 @@ interface Props {
   isActive?: boolean
 }
 
+/**
+ * LAS TRES CAPAS — en paralelo, no una debajo de otra.
+ *
+ * DISPOSICION. Iban apiladas en una columna y median 456 px de los 728 de la
+ * seccion, que es lo que la dejaba sin caber en ninguna ventana. Pero es que
+ * ademas apilarlas las cuenta mal: son tres capas PARALELAS del mismo
+ * acelerador, no tres pasos sucesivos, y una columna vertical se lee como una
+ * secuencia. En rejilla de tres se leen como lo que son y ocupan un tercio.
+ *
+ * COPIA. Las descripciones anteriores describian el mecanismo en abstracto
+ * —«punto de entrada al acelerador con requisitos de protocolo definidos»— y
+ * costaban dos lineas cada una sin decir nada que el titulo no dijera ya. Ahora
+ * cada una afirma UNA cosa concreta y verificable, en la misma forma verbal, de
+ * modo que las tres se leen de un vistazo y se comparan entre si.
+ *
+ * Lo que NO se toca es la negacion: «progresion, no captacion». Es la afirmacion
+ * mas delicada de la seccion y la que la separa de un esquema piramidal;
+ * acortar por ahi seria ahorrar palabras en el unico sitio donde no se debe.
+ */
 const BOOSTER_LAYERS = [
-  { label: 'Capa I', title: 'Activación', description: 'Punto de entrada al acelerador con requisitos de protocolo definidos.' },
-  { label: 'Capa II', title: 'Multiplicador', description: 'Factores de amplificación progresivos según participación sostenida.' },
-  { label: 'Capa III', title: 'Progresión', description: 'Avance por niveles con transparencia en condiciones y umbrales.' },
+  { label: 'Capa I', title: 'Activación', description: 'Entras cumpliendo requisitos publicados.' },
+  { label: 'Capa II', title: 'Multiplicador', description: 'El factor sube con la participación sostenida.' },
+  { label: 'Capa III', title: 'Progresión', description: 'Niveles con umbrales y condiciones a la vista.' },
 ]
 
 const SceneBooster = forwardRef<HTMLElement, Props>(function SceneBooster(
@@ -38,10 +57,10 @@ const SceneBooster = forwardRef<HTMLElement, Props>(function SceneBooster(
         label="Booster"
         title="Acelerador de crecimiento"
         highlight="del ecosistema."
-        description="Booster amplifica la participación dentro del protocolo mediante capas y multiplicadores estructurados. Diseñado para progresión — no para esquemas de captación."
+        description="Capas y multiplicadores definidos que amplifican la participación en el protocolo. Progresión por permanencia — no un esquema de captación."
       />
 
-      <motion.div variants={containerV} className="flex flex-col gap-genesis-3">
+      <motion.div variants={containerV} className="booster-layers-grid">
         {BOOSTER_LAYERS.map((layer) => (
           <motion.div key={layer.title} variants={slideLeft}>
             <Card
@@ -54,7 +73,7 @@ const SceneBooster = forwardRef<HTMLElement, Props>(function SceneBooster(
         ))}
       </motion.div>
 
-        <motion.div variants={slideLeft} className="flex flex-wrap gap-8">
+        <motion.div variants={slideLeft} className="flex flex-wrap gap-x-8 gap-y-2">
         <GenesisStatBlock value="3" label="Capas activas" mono />
         <GenesisStatBlock value="Progresivo" label="Modelo" />
         <GenesisStatBlock value="Protocolo" label="Gobernanza" />

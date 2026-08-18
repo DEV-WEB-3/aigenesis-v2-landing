@@ -12,18 +12,32 @@ interface Props {
   isActive?: boolean
 }
 
+/**
+ * LOS TRES PILARES — en paralelo, y dichos en una linea.
+ *
+ * DISPOSICION. Iban apilados en columna, igual que las capas de booster, y esta
+ * seccion era la ultima que seguia necesitando el SUELO del ajuste automatico
+ * (0,82): cabia, pero apretada. Son tres pilares paralelos del mismo motor, no
+ * tres pasos, asi que la rejilla ademas los cuenta bien.
+ *
+ * COPIA. Cada descripcion decia en dos lineas lo que cabe en una, repitiendo el
+ * sujeto que el titulo ya nombra. Se conserva lo unico que no es descripcion
+ * sino DISTINCION: que G-BRIDGE no es lo mismo que las senales de GPulse. Eso es
+ * lo que un visitante confunde, y acortarlo por ahi seria ahorrar en el sitio
+ * equivocado.
+ */
 const ORACLE_PILLARS = [
   {
     title: 'Inteligencia central',
-    description: 'G-Oracle procesa, correlaciona y sintetiza datos del ecosistema como núcleo de decisión.',
+    description: 'Procesa y correlaciona los datos del ecosistema.',
   },
   {
     title: 'Motor G-BRIDGE',
-    description: 'Capa de IA propietaria que alimenta análisis profundo — distinto del flujo de señales de GPulse.',
+    description: 'IA propietaria para análisis profundo — no es el flujo de señales de GPulse.',
   },
   {
     title: 'Centro neurálgico',
-    description: 'Orquesta información entre productos, protocolos y capas de participación del universo Genesis.',
+    description: 'Orquesta la información entre productos y protocolos.',
   },
 ]
 
@@ -66,7 +80,7 @@ const SceneGOracle = forwardRef<HTMLElement, Props>(function SceneGOracle(
         Medido: de 178 px de ancho se pasa a 554, y de 351 de alto a ~110 por
         tarjeta. Mismo contenido, sin recortar una palabra.
       */}
-      <motion.div variants={containerV} className="flex flex-col gap-genesis-3">
+      <motion.div variants={containerV} className="goracle-pillars-grid">
         {ORACLE_PILLARS.map((pillar) => (
           <motion.div key={pillar.title} variants={slideLeft}>
             {/*
