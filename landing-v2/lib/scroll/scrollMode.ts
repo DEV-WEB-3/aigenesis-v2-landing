@@ -51,6 +51,26 @@ export const SCROLL_BREAKPOINTS = VIEWPORT
  *
  * El orden fue el que importaba: primero que quepa, después el enganche. Al
  * revés, el enganche vuelve a esconder lo que no cabe.
+ *
+ * ─────────────────────────────────────────────────────────────────────────
+ * CORRECCIÓN, medida después: la segunda mitad de eso era falsa.
+ *
+ * «Ya no hay nada inalcanzable» es cierto. «Y el enganche deja de tener coste»
+ * no lo es. Dejar que la sección CREZCA resolvió el recorte y creó otro
+ * problema: una sección que crece es, por definición, más alta que el hueco
+ * visible — y `scroll-snap-type: mandatory` con un área más alta que el hueco
+ * no tiene ningún punto de descanso intermedio, así que el navegador expulsa
+ * al usuario a la sección anterior o siguiente. Se veía como brincos al
+ * deslizar.
+ *
+ *   hueco visible                     539 px
+ *   secciones más altas que el hueco  12 de 14
+ *
+ * El modo se queda en `snap` porque lo que gobierna es el gesto de rueda de
+ * `useSnapScroll` —un gesto, una sección—, que sigue siendo lo correcto. Lo
+ * que cambió es el CSS: `proximity` en vez de `mandatory`, para que el
+ * navegador acompañe en vez de atrapar. Está explicado en `globals.css`.
+ * ─────────────────────────────────────────────────────────────────────────
  */
 export function resolveScrollMode(width: number): ScrollMode {
   if (width >= VIEWPORT.DESKTOP_MIN) return 'snap'

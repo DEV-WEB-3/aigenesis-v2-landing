@@ -128,9 +128,25 @@ export function useSnapScroll(
   }, [])
 
   const animateToSection = useCallback(
-    (index: number, reason: string) => {
+    /**
+     * `desde` — de donde se parte DE VERDAD, cuando quien llama lo sabe.
+     *
+     * La guarda de abajo cancelaba el movimiento comparando con
+     * `sectionIndexRef.current`, que es el mismo indice recordado que causaba
+     * el brinco: si el lector pasivo de scroll ya consideraba activa la
+     * seccion siguiente —cosa que pasa estando al final de una seccion alta—,
+     * la rueda pedia ir justo ahi y la guarda lo cancelaba por «ya estas».
+     *
+     * El resultado era una rueda que no hacia nada. Medido: dos de tres saltos
+     * desde el borde inferior de una seccion alta no se movian.
+     *
+     * Quien lee la posicion real de la pantalla la pasa por aqui; quien no,
+     * sigue usando el recordado como antes.
+     */
+    (index: number, reason: string, desde?: number) => {
       const clamped = Math.max(0, Math.min(totalSections - 1, index))
-      if (clamped === sectionIndexRef.current && !scrollAnimatingRef.current) return
+      const origen = desde ?? sectionIndexRef.current
+      if (clamped === origen && !scrollAnimatingRef.current) return
 
       const root = document.querySelector('main') as HTMLElement | null
       const el = sectionEls.current[clamped]
@@ -353,34 +369,99 @@ export function useSnapScroll(
       }, SNAP_SCROLL.TRACKPAD_ACCUM_WINDOW_MS)
     }
 
+    /**
+     * DE QUE SECCION SE PARTE — leido de la PANTALLA, no recordado.
+     *
+     * Aqui estaba el brinco. El codigo anterior partia de
+     * `animTargetRef.current ?? sectionIndexRef.current`, o sea de un indice
+     * GUARDADO. Ese indice se actualiza cuando termina una animacion de salto,
+     * pero el usuario tiene otras formas de moverse —teclado, barra de scroll,
+     * un ancla, el propio enganche del navegador— y ninguna lo actualiza.
+     *
+     * Con el indice desincronizado, un solo giro de rueda te lleva a
+     * `guardado + 1`. Si quedo en 1, apareces en la SECCION 2 vengas de donde
+     * vengas. Eso es exactamente el sintoma: «brinca a la pagina 2».
+     *
+     * Leyendo la posicion real, el gesto es siempre relativo a lo que hay
+     * delante y el fallo no puede reaparecer: no queda ningun estado que
+     * desincronizar.
+     */
+    const indiceVisible = (): number => {
+      // La seccion cuyo borde superior esta mas cerca de donde acaba la barra:
+      // ese es el punto donde el enganche deja cada seccion al llegar.
+      let mejor = 0
+      let mejorD = Number.POSITIVE_INFINITY
+      for (let i = 0; i < sectionEls.current.length; i++) {
+        const el = sectionEls.current[i]
+        if (!el) continue
+        const d = Math.abs(el.getBoundingClientRect().top - SNAP_SCROLL.ENGANCHE_ALTO)
+        if (d < mejorD) {
+          mejorD = d
+          mejor = i
+        }
+      }
+      return mejor
+    }
+
     const onWheel = (e: WheelEvent) => {
       if (scrollAnimatingRef.current || Date.now() < wheelLockedUntilRef.current) {
         e.preventDefault()
         return
       }
 
-      e.preventDefault()
-
       const delta =
         Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX
 
       if (Math.abs(delta) < 0.5) return
+
+      const direccion = delta > 0 ? 1 : -1
+      const actual = indiceVisible()
+
+      /**
+       * SI LA SECCION NO CABE, LA RUEDA LA RECORRE ANTES DE SALTAR.
+       *
+       * El codigo anterior hacia `preventDefault()` en TODOS los eventos de
+       * rueda, sin excepcion. Consecuencia: la rueda no desplazaba nunca de
+       * forma nativa y lo unico que podia hacer era saltar de seccion entera.
+       *
+       * En una seccion mas alta que el hueco visible —booster mide 791 px con
+       * 539 visibles— eso deja el resto del contenido INALCANZABLE con la
+       * rueda. Es un fallo que no se ve midiendo con `scrollTop` desde codigo,
+       * porque ese camino no pasa por aqui.
+       *
+       * Ahora, si queda contenido en la direccion del gesto, el evento se deja
+       * pasar y el navegador desplaza como siempre. Solo cuando se llega al
+       * borde de la seccion se toma el control y se salta a la siguiente.
+       */
+      const el = sectionEls.current[actual]
+      if (el) {
+        const r = el.getBoundingClientRect()
+        const tope = SNAP_SCROLL.ENGANCHE_ALTO
+        const hueco = root.clientHeight - tope
+        const noCabe = r.height > hueco + 2
+        if (noCabe) {
+          const quedaAbajo = r.bottom > root.clientHeight + 2
+          const quedaArriba = r.top < tope - 2
+          if ((direccion > 0 && quedaAbajo) || (direccion < 0 && quedaArriba)) {
+            resetWheelAccum()
+            return
+          }
+        }
+      }
+
+      e.preventDefault()
 
       wheelAccumRef.current += delta
       scheduleWheelAccumDecay()
 
       if (Math.abs(wheelAccumRef.current) < SNAP_SCROLL.SCROLL_THRESHOLD) return
 
-      const direction = wheelAccumRef.current > 0 ? 1 : -1
       resetWheelAccum()
 
-      const baseIndex =
-        animTargetRef.current ?? sectionIndexRef.current
-      const next = baseIndex + direction * SNAP_SCROLL.MAX_STEP
+      const next = actual + direccion * SNAP_SCROLL.MAX_STEP
       if (next < 0 || next >= totalSections) return
-      if (next === sectionIndexRef.current) return
 
-      animateToSection(next, 'wheel')
+      animateToSection(next, 'wheel', actual)
     }
 
     root.addEventListener('wheel', onWheel, { passive: false })

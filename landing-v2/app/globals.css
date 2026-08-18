@@ -2037,15 +2037,50 @@ body {
 }
 
 @media (min-width: 1024px) {
+  /*
+   * `proximity`, NO `mandatory`. Y el motivo es una trampa del propio CSS.
+   *
+   * SINTOMA: deslizando, la pagina daba brincos a otra seccion sola.
+   *
+   * CAUSA, medida: con `mandatory` el navegador NO PUEDE dejarte descansar
+   * fuera de un punto de enganche — cada gesto tiene que aterrizar en uno. Si
+   * la seccion es MAS ALTA que el hueco visible, no existe ningun punto valido
+   * a media seccion, asi que el navegador te manda al anterior o al siguiente.
+   * Eso es el brinco.
+   *
+   *   hueco visible                        539 px
+   *   secciones mas altas que el hueco     12 de 14
+   *   la peor, booster                     791 px
+   *
+   * Y esto no venia de fuera: lo creamos al arreglar otra cosa. La nota de
+   * `lib/scroll/scrollMode.ts` decia que con `min-height` —dejando crecer la
+   * seccion en vez de recortarla— «ya no hay nada inalcanzable y el enganche
+   * deja de tener coste». La primera mitad es cierta; la segunda no. Crecer
+   * resolvio el RECORTE y creo el atrapamiento: una seccion que crece es, por
+   * definicion, mas alta que el hueco.
+   *
+   * `proximity` conserva la sensacion de capitulo —al soltar cerca de una
+   * seccion, el navegador la acomoda— y deja descansar en cualquier punto
+   * intermedio, que es lo que hace falta para poder leer una seccion alta.
+   *
+   * El salto deliberado de seccion en seccion NO se pierde: lo hace el gesto de
+   * rueda en `useSnapScroll`, que mueve a proposito y con animacion propia. El
+   * CSS deja de pelearse con el.
+   */
   .home-snap-main[data-scroll-mode='snap'] {
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
   }
 
   .home-snap-main[data-scroll-mode='snap'] .home-section-fit,
   .home-snap-main[data-scroll-mode='snap'] #hero,
   .home-snap-main[data-scroll-mode='snap'] .cta-final-section {
     scroll-snap-align: start;
-    scroll-snap-stop: always;
+    /*
+     * `normal`, no `always`. `always` PROHIBE pasar de largo un punto de
+     * enganche, asi que cada gesto con inercia se frena en seco en el siguiente
+     * — y sobre `mandatory` multiplicaba la sensacion de tiron.
+     */
+    scroll-snap-stop: normal;
   }
 
   /*

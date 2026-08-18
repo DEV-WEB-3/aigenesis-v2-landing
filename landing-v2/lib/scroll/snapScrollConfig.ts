@@ -11,6 +11,15 @@ export const SNAP_SCROLL = {
   TRACKPAD_ACCUM_WINDOW_MS: 140,
   /** Max sections per gesture */
   MAX_STEP: 1,
+  /**
+   * Lo que tapa la barra fija, en pixeles.
+   *
+   * Tiene que coincidir con `--enganche-alto` de `globals.css`. Se repite aqui
+   * porque JavaScript no lee variables CSS sin un `getComputedStyle` por evento
+   * de rueda, y eso es un reflujo forzado en el peor sitio posible. Si se mueve
+   * una, hay que mover la otra — por eso el nombre es el mismo.
+   */
+  ENGANCHE_ALTO: 76,
 } as const
 
 export function easeInOutCubic(t: number): number {
