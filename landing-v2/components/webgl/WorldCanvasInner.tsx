@@ -14,6 +14,45 @@ import { heroDebug } from '@/lib/hero-debug'
 import { getSectionId } from '@/lib/routes'
 import { isMobileWidth } from '@/lib/viewport'
 
+/**
+ * LA NUBE DE PARTICULAS NO SE PINTA.
+ *
+ * Decision del owner, y con un motivo que se ve en cuanto te lo senalan: sobre
+ * las figuras de cada seccion quedaba un punado de puntos sueltos, grisaceos y
+ * sin relacion con nada — ni con el nucleo, ni con las orbitas, ni con los
+ * rotulos. No leen como polvo estelar: leen como suciedad en la pantalla.
+ *
+ * DONDE APARECIAN, y el dato confirma la observacion del owner («del booster
+ * para abajo»). Contando particulas APARCADAS —las que el sistema esconde
+ * mandandolas a (-120,-120,0)— en cada transicion:
+ *
+ *   ecosistema · token · mining    600 de 600 aparcadas -> invisibles
+ *   booster                        216 aparcadas -> 384 A LA VISTA
+ *   staking, gpulse, goracle...    visibles
+ *
+ * Exactamente desde booster. Las tres secciones anteriores dibujan su visual
+ * con SVG y por eso alli no se notaba nada.
+ *
+ * QUE SE APAGA CON ESTO, dicho sin adornar, porque es bastante:
+ *
+ *   el linaje entre secciones — que la materia de cada seccion descendiera de
+ *   la anterior en vez de aparecer de la nada
+ *   el relevo del hero — la caida del logo en cuatro tiempos
+ *   el material aditivo y el bloom — que las particulas fueran luz y no pintura
+ *
+ * Todo eso sigue en el codigo, correcto y medido; simplemente deja de verse. Si
+ * la nube no convence, la maquinaria elegante que hay detras no la salva — y
+ * apagarla es una decision de diseno legitima, no una perdida.
+ *
+ * Se apaga el LIENZO ENTERO, no solo los puntos: sin particulas, el canvas
+ * renderiza tres luces sobre nada y mantiene vivo un contexto WebGL y una
+ * pasada de post-proceso con bloom en cada cuadro. Las auras de seccion NO se
+ * tocan: viven fuera del canvas, en DOM.
+ *
+ * La reversa es esta constante.
+ */
+const PINTAR_PARTICULAS = false
+
 interface WorldCanvasInnerProps {
   /** Índice de la sección activa. Única entrada: lo demás se deriva de aquí. */
   sectionIndex: number
@@ -80,6 +119,7 @@ export default function WorldCanvasInner({ sectionIndex }: WorldCanvasInnerProps
       {AURA_ENTRIES.map(([id, Aura]) => (
         <Aura key={id} visible={activeSection === id} />
       ))}
+      {PINTAR_PARTICULAS ? (
       <Canvas
         frameloop={heroActive ? 'never' : 'always'}
         camera={{ position: [0, 0, 5], fov: 75 }}
@@ -100,6 +140,7 @@ export default function WorldCanvasInner({ sectionIndex }: WorldCanvasInnerProps
           <PostEffects heroActive={heroActive} />
         </Suspense>
       </Canvas>
+      ) : null}
       {showDevPanel ? <GenesisParticleControlPanel /> : null}
     </div>
   )
