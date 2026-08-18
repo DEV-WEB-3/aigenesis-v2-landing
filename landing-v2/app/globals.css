@@ -9147,6 +9147,27 @@ body {
 }
 
 @media (min-width: 1024px) {
+  /*
+   * LA COLUMNA DE TEXTO SE ENCOGIA SOLA, y roadmap era la unica de las catorce.
+   *
+   * Medido contra las demas secciones alineadas —trust, token, gpulse,
+   * marketplace, comunidad, technology— la columna de texto mide 432 px y
+   * empieza en x = 196. Roadmap media 292 px empezando en 336: la mas estrecha y
+   * la mas desplazada del portal.
+   *
+   * La causa no era el hueco. `.scene-content-stack` lleva `max-width: 432px` y
+   * `justify-self: end`, y con eso su ancho lo manda EL HIJO MAS ANCHO. En las
+   * otras secciones algun hijo pide 428 px y llega al tope; aqui el mas ancho
+   * pedia 288 —la tarjeta de la lista se ajusta a su contenido— y arrastraba a
+   * toda la columna.
+   *
+   * `width: 100%` la lleva al tope que ya tenia declarado. No se toca el
+   * `max-width`: la medida comun sigue viniendo de la regla compartida.
+   */
+  #roadmap .scene-content-stack {
+    width: 100%;
+  }
+
   #roadmap.roadmap-section-layout .scene-particle-gutter--featured {
     position: relative;
     align-self: center;
@@ -9157,7 +9178,11 @@ body {
     min-height: min(84vh, 880px);
     margin-left: auto;
     margin-right: auto;
-    transform: translateX(-10%);
+    /*
+     * Sin `translateX`. Lo llevaba a -10% y ninguna otra seccion alineada
+     * desplaza su hueco: metia el visual 92 px sobre la columna de texto, que
+     * ya era la mas estrecha. La senda se centra sola en su lienzo.
+     */
     pointer-events: none;
   }
 }
@@ -9323,9 +9348,16 @@ body {
   fill: rgba(6, 8, 20, 0.6);
 }
 
+/*
+  EL ANIO NO PUEDE COMPETIR CON EL TITULAR DE LA SECCION.
+
+  A 5,4 unidades se pintaba a 31 px y el titular «Nuestro horizonte» mide 30: dos
+  piezas del mismo peso tipografico peleando por ser lo primero que se lee. A 4,8
+  baja a 27 px, queda por debajo del titular y encima del titulo del hito.
+*/
 #roadmap .roadmap-hito__anio {
   font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 5.4px;
+  font-size: 4.8px;
   font-weight: 700;
   letter-spacing: -0.02em;
   dominant-baseline: middle;
@@ -9502,8 +9534,8 @@ body {
 }
 
 @keyframes roadmap-hito-plataforma {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.6; }
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.72; }
 }
 
 @keyframes roadmap-hito-anillo {

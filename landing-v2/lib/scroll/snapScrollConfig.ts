@@ -48,12 +48,22 @@ export const SNAP_SCROLL = {
   /**
    * Hueco minimo entre eventos de rueda para considerarlo un GESTO NUEVO.
    *
-   * La cola de una pasada de trackpad es un chorro continuo —eventos cada ~16 ms
-   * que decrecen—; un giro deliberado llega suelto y con hueco delante. 120 ms
-   * deja fuera la inercia sin llegar a descartar un ritmo de giro normal, que
-   * ronda los 150-400 ms.
+   * Solo lo que supera este hueco se ENCOLA mientras el portal se esta moviendo.
+   * Separa dos cosas que hay que tratar distinto: la cola de inercia de un
+   * trackpad —un chorro continuo cada ~16 ms— y un segundo gesto deliberado.
+   *
+   * Estuvo en 120 ms y era DEMASIADO PERMISIVO. Un giro rapido de rueda tiene
+   * las muescas a unos 140 ms, asi que cada muesca del MISMO gesto contaba como
+   * un gesto nuevo y se encolaba: medido, tres muescas seguidas producian DOS
+   * saltos de seccion. Desde fuera se lee como un scroll hipersensible que
+   * «brinca mas de la cuenta».
+   *
+   * 320 ms es la frontera util: por debajo esta el ritmo de una misma vuelta de
+   * rueda, y por encima esta la pausa que separa dos intenciones. Un segundo
+   * giro deliberado llega a los 400-600 ms y sigue encolandose, que es lo que
+   * este mecanismo vino a resolver.
    */
-  GESTO_NUEVO_MS: 120,
+  GESTO_NUEVO_MS: 320,
   /** Max sections per gesture */
   MAX_STEP: 1,
   /**

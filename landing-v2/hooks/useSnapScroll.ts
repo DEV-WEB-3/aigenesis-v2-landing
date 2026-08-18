@@ -125,6 +125,24 @@ export function useSnapScroll(
   const pendienteDrenajeRef = useRef<number | null>(null)
   /** Marca de tiempo del ultimo evento de rueda, para medir el hueco entre gestos. */
   const ultimoWheelRef = useRef(0)
+  /**
+   * TOPE DURO DEL ENCADENAMIENTO.
+   *
+   * La cola evita perder un segundo gesto deliberado, pero por si sola no tiene
+   * limite: cada salto encolado, al terminar, puede encolar otro, y una rafaga
+   * larga recorre medio portal. El owner lo reporto como «se brinca mas de la
+   * cuenta al subir o al bajar».
+   *
+   * Afinar el umbral de tiempo NO era verificable aqui: con la pagina ocupada
+   * por la animacion, ni `setTimeout` ni `requestAnimationFrame` producen los
+   * huecos que se les piden —medido, 257 y 339 ms cuando se pedian 140—, asi que
+   * no se puede reproducir un giro rapido de raton desde este entorno.
+   *
+   * Un tope de conteo si es demostrable y no depende del reloj: mientras se
+   * sirve un salto ENCOLADO no se admite otro. Una rafaga avanza como mucho dos
+   * secciones, venga como venga.
+   */
+  const encadenandoRef = useRef(false)
   /*
    * `animateToSection` necesita poder llamarse a si misma al terminar, para
    * ejecutar el salto encolado. No puede hacerlo directamente dentro de su
@@ -189,6 +207,7 @@ export function useSnapScroll(
       }
 
       cancelScrollRef.current?.()
+      encadenandoRef.current = reason === 'wheel-encolado'
       scrollAnimatingRef.current = true
       animInicioRef.current = Date.now()
       animTargetRef.current = clamped
@@ -244,7 +263,10 @@ export function useSnapScroll(
             const pendiente = pendienteRef.current
             pendienteRef.current = 0
             if (target === null) return
-            if (Math.abs(pendiente) < SNAP_SCROLL.SCROLL_THRESHOLD) return
+            if (Math.abs(pendiente) < SNAP_SCROLL.SCROLL_THRESHOLD) {
+              encadenandoRef.current = false
+              return
+            }
             const siguiente = target + (pendiente > 0 ? 1 : -1)
             if (siguiente < 0 || siguiente >= totalSections) return
             wheelLockedUntilRef.current = 0
@@ -510,7 +532,7 @@ export function useSnapScroll(
         const ahora = Date.now()
         const hueco = ahora - ultimoWheelRef.current
         ultimoWheelRef.current = ahora
-        if (hueco > SNAP_SCROLL.GESTO_NUEVO_MS && Math.abs(delta) >= 0.5) {
+        if (!encadenandoRef.current && hueco > SNAP_SCROLL.GESTO_NUEVO_MS && Math.abs(delta) >= 0.5) {
           if (pendienteRef.current !== 0 && Math.sign(pendienteRef.current) !== Math.sign(delta)) {
             pendienteRef.current = 0
           }

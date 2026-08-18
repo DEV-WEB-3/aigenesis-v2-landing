@@ -20,10 +20,26 @@ import {
   milestoneDelay,
 } from '@/lib/roadmap/evolutionPathLayout'
 
-/** Radio del nodo, en unidades del lienzo. */
-const NODO_R = 4.3
-/** Los tres anillos orbitales que cada hito deja debajo. */
-const PLATAFORMA = [1.55, 2.25, 3.0] as const
+/**
+ * Radio del nodo, en unidades del lienzo.
+ *
+ * Medido contra la referencia: alli el nodo mide unas DOS VECES el alto de la
+ * cifra del anio. Con 4,3 el nodo salia a 50 px y el anio a 31 —relacion 1,6— y
+ * el conjunto se leia como texto con un adorno al lado en vez de un hito con su
+ * etiqueta. 5,2 lo pone en 60 px.
+ */
+const NODO_R = 5.2
+
+/**
+ * Los tres anillos de la plataforma, en multiplos del radio del nodo.
+ *
+ * Son RADIOS, no diametros — que es donde me equivoque al calcularlo. A 2,6 la
+ * plataforma media 155 px de ancho con los nodos separados 98, asi que las
+ * contiguas se pisaban entre 61 y 88 px y el suelo se leia como una sola mancha.
+ * A 2,05 quedan en 123 px: se solapan unos 25, que es el roce natural que tienen
+ * en la referencia, y cada hito conserva su propio suelo.
+ */
+const PLATAFORMA = [1.2, 1.62, 2.05] as const
 
 export default function RoadmapEvolutionMilestones() {
   /*
