@@ -6024,67 +6024,93 @@ body {
   inset: 0;
 }
 
+/*
+  UN PLANO FIJO, INCLINADO, CENTRADO EN EL CANDADO.
+
+  Los tres anillos estaban APILADOS —y 68 / 50 / 32— y cada uno giraba sobre su
+  propio centro. Medido contra el nucleo: +90 px, -12 px y -114 px. Una orbita
+  gira alrededor de lo que orbita; estas giraban alrededor de tres puntos
+  distintos, ninguno el candado, y por eso se leian como elipses sueltas.
+
+  Ahora los tres comparten centro y lo que los distingue es la INCLINACION, que
+  es lo que distingue de verdad a dos orbitas. El plano no se mueve: lo que se
+  mueve es el satelite que lo recorre.
+
+  La altura sale de `aspect-ratio`, no de un `%` propio, para que la proporcion
+  pintada sea la declarada. Con `height: %` la altura se resolvia contra la
+  altura del escenario y la anchura contra su anchura: decian 0,378 y median
+  0,213, y con esa discrepancia es imposible colocar nada sobre la elipse.
+*/
 #staking .staking-time-ring {
   position: absolute;
   left: 50%;
   top: var(--ring-y);
   width: calc(var(--ring-rx) * 2);
-  height: calc(var(--ring-ry) * 2);
-  transform: translate(-50%, -50%);
-  animation: staking-ring-precesion var(--ring-precesion-s, 16s) ease-in-out infinite;
-  /* el retardo llega del componente, repartido con `desfase` */
+  aspect-ratio: var(--ring-aspecto, 3);
+  transform: translate(-50%, -50%) rotate(var(--ring-tilt, 0deg));
 }
 
 /*
-  EL BORDE NO ES UNIFORME, Y ESE ES TODO EL ARREGLO.
+  EL TRAZO VUELVE A SER UNIFORME.
 
-  SINTOMA: «las orbitas se sienten estaticas».
+  Lo habia dejado con los cuatro lados a distinta opacidad —88 / 46 / 12— para
+  hacer visible un giro que si existia pero no se percibia. Funcionaba a medias
+  y traia un artefacto propio: `border-radius: 50%` no dibuja una elipse
+  continua, sino CUATRO tramos que se encuentran en las diagonales. Con
+  opacidades muy distintas esas cuatro juntas se ven como cortes secos de
+  brillo, y sobre una elipse muy aplanada caen cerca de los extremos, donde mas
+  cantan. Ampliado x2,6 se veian sin dudar.
 
-  MEDIDO: no lo estaban. Los tres `track` giraban —`playState: running`, 32 · 16
-  · 8 s— y el `transform` computado cambiaba entre dos lecturas separadas 2 s.
-  Se estaba animando algo que no se podia ver.
-
-  CAUSA: el borde valia `0.48` en los cuatro lados. Una elipse de borde uniforme
-  no tiene ningun punto de referencia, asi que girarla no produce ningun cambio
-  perceptible salvo el lento cambio de silueta. Sin un rasgo que seguir, el ojo
-  no tiene con que medir el giro.
-
-  ARREGLO: se aclara arriba y se apaga abajo. El giro que YA existia se convierte
-  en luz recorriendo el anillo, que es lo que hace una orbita real vista de
-  canto: el tramo que se acerca brilla y el que se aleja se apaga.
-
-  No se anade ni un elemento ni una animacion, y lo unico que se mueve sigue
-  siendo `transform`, que el compositor resuelve sin repintar.
+  Ya no hace falta: el movimiento ahora lo lleva el satelite, que es lo que de
+  verdad se lee como orbita. Un trazo tenue y continuo es mejor fondo para el.
 */
 #staking .staking-time-ring__track {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 1px solid transparent;
-  border-top-color: color-mix(in srgb, var(--ring-color) 88%, transparent);
-  border-right-color: color-mix(in srgb, var(--ring-color) 46%, transparent);
-  border-bottom-color: color-mix(in srgb, var(--ring-color) 12%, transparent);
-  border-left-color: color-mix(in srgb, var(--ring-color) 46%, transparent);
-  box-shadow: 0 0 14px color-mix(in srgb, var(--ring-color) 22%, transparent);
-  animation: staking-ring-spin 32s linear infinite;
+  border: 1px solid color-mix(in srgb, var(--ring-color) 26%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--ring-color) 14%, transparent);
 }
 
-/*
-  Un plano por anillo, no dos.
-
-  Con `nth-child(even)` solo el segundo cambiaba, asi que el primero y el
-  TERCERO acababan identicos —32 s los dos— y volviamos a tener tres capas
-  donde solo se distinguen dos. La escalera 32 · 16 · 8 da a cada anillo su
-  distancia, y el sentido invertido del de en medio impide que los tres se lean
-  como un solo cuerpo girando.
-*/
-#staking .staking-time-ring:nth-child(2) .staking-time-ring__track {
-  animation-direction: reverse;
-  animation-duration: 16s;
+/* ── El satelite que recorre el plano ────────────────────────────────
+   Cuatro capas, las mismas que el cabezal del registro y por las mismas
+   razones medidas. El detalle critico es el contragiro: sin el, el satelite se
+   pinta como una raya de 15 x 3 px en vez de un punto, porque la correccion de
+   forma caeria antes de rotar y solo acertaria en los extremos del eje mayor. */
+#staking .staking-time-ring__orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) scaleY(var(--ring-aplanado, 0.33));
 }
 
-#staking .staking-time-ring:nth-child(3) .staking-time-ring__track {
-  animation-duration: 8s;
+#staking .staking-time-ring__spin {
+  position: absolute;
+  inset: 0;
+  animation: staking-ledger-lap var(--ring-orbita-s, 16s) linear infinite;
+}
+
+#staking .staking-time-ring__anchor {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  animation: staking-ledger-lap var(--ring-orbita-s, 16s) linear infinite reverse;
+}
+
+#staking .staking-time-ring__sat {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ring-color);
+  box-shadow: 0 0 8px var(--ring-color);
+  transform: scaleY(calc(1 / var(--ring-aplanado, 0.33))) translate(-50%, -50%);
 }
 
 #staking .staking-time-ring__glow {
@@ -6340,27 +6366,14 @@ body {
   50% { opacity: 0.52; transform: scale(1.04); }
 }
 
-@keyframes staking-ring-spin {
-  to { transform: rotate(360deg); }
-}
-
 /*
-  PRECESION — el plano del anillo se inclina despacio.
-
-  Segundo de los dos gestos que sacan a las orbitas de su aspecto congelado. El
-  borde no uniforme hace VISIBLE el giro que ya habia; esto anade lo que un giro
-  plano nunca puede dar: que el anillo tenga un plano en el espacio y ese plano
-  no este clavado.
-
-  El `translate` se repite en los dos fotogramas a proposito. `transform` es una
-  sola propiedad: un fotograma que declare solo `scaleY` BORRA el centrado del
-  elemento y el anillo salta media caja al arrancar la animacion.
+  Aqui vivian `staking-ring-spin` y `staking-ring-precesion`. Los dos hacian
+  girar o inclinar el PLANO del anillo, y los dos se han quitado por lo mismo:
+  un plano que da vueltas sobre si mismo no se lee como una orbita, se lee como
+  una forma suelta. Lo que se lee como orbita es algo RECORRIENDO el plano, y de
+  eso se encarga ahora `staking-ledger-lap`, compartido con el anillo de
+  registro para que los cuatro se muevan con el mismo gesto.
 */
-@keyframes staking-ring-precesion {
-  0%, 100% { transform: translate(-50%, -50%) scaleY(1); }
-  50% { transform: translate(-50%, -50%) scaleY(0.86); }
-}
-
 @keyframes staking-ledger-lap {
   from { transform: rotate(-90deg); }
   to { transform: rotate(270deg); }
@@ -6446,8 +6459,8 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   #staking .staking-time-vault__layer,
-  #staking .staking-time-ring,
-  #staking .staking-time-ring__track,
+  #staking .staking-time-ring__spin,
+  #staking .staking-time-ring__anchor,
   #staking .staking-ledger__spin,
   #staking .staking-ledger__anchor,
   #staking .staking-vault-core__orbit-particle,

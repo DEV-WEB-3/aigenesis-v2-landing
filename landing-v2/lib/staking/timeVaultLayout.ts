@@ -11,22 +11,52 @@ export const STAKING_VAULT_CENTER = { x: 50, y: 52 } as const
 /**
  * Los tres anillos de tiempo de la boveda.
  *
- * La geometria ya era correcta: suben (y 68 -> 50 -> 32, repartidos parejo) y
- * crecen (rx 18 -> 21 -> 24), que es lo que dice la seccion — a mas permanencia,
- * mas alcance. No se toca.
+ * ANTES ESTABAN APILADOS Y ERA EL DEFECTO PRINCIPAL DE LA IMAGEN.
  *
- * Lo unico que sobraba era el `pulseOffset`: 0,12 / 0,28 / 0,44, tres numeros
- * sin relacion entre si para algo cuyo unico trabajo es que los tres no laten
- * a la vez. Se deriva del indice, igual que en las demas secciones.
+ * La version anterior los ponia a y 68 / 50 / 32 —subiendo— con la idea de que
+ * «a mas permanencia, mas alcance». La intencion era buena y el resultado no
+ * funcionaba, por dos motivos que solo se ven midiendo:
+ *
+ *   1. Ninguno compartia centro con el candado. Medido contra el nucleo:
+ *      +90 px, -12 px y -114 px. Tres centros repartidos en 204 pixeles.
+ *   2. Cada uno GIRABA SOBRE SU PROPIO CENTRO. Una orbita gira alrededor de lo
+ *      que orbita; estas giraban alrededor de tres puntos distintos, ninguno de
+ *      ellos el candado. De ahi que se leyeran como elipses sueltas.
+ *
+ * Y la escalera que justificaba el apilado no comunicaba nada: las etiquetas
+ * —6+, On-chain, Deflacionario— viven en un atributo `data-kpi` que ningun
+ * estilo pinta. Se perdia legibilidad a cambio de una semantica invisible.
+ *
+ * AHORA: los tres son CONCENTRICOS con el nucleo, cada uno con su propia
+ * inclinacion fija. Tres planos alrededor del candado en vez de tres formas
+ * dando vueltas cada una por su lado. Lo que se mueve es un satelite que
+ * recorre cada anillo — el mismo gesto del anillo de registro, que es el que
+ * funciona.
+ *
+ * El periodo crece con el radio, como en cualquier sistema real: el de dentro
+ * da la vuelta en 8 s y el de fuera en 32.
  */
 const ANILLOS = [
-  { id: 'period-6', y: 68, rx: 18, ry: 6.8, label: '6+' },
-  { id: 'permanence', y: 50, rx: 21, ry: 7.6, label: 'On-chain' },
-  { id: 'stability', y: 32, rx: 24, ry: 8.4, label: 'Deflacionario' },
+  { id: 'period-6', rx: 18, ry: 5.4, tilt: -22, orbita: 8, label: '6+' },
+  { id: 'permanence', rx: 21, ry: 8.4, tilt: 34, orbita: 16, label: 'On-chain' },
+  { id: 'stability', rx: 24, ry: 6.2, tilt: -68, orbita: 32, label: 'Deflacionario' },
 ] as const
 
 export const STAKING_TIME_RINGS = ANILLOS.map((a, i) => ({
   ...a,
+  /** Todos en el centro del nucleo. Es lo que los convierte en orbitas. */
+  y: STAKING_VAULT_CENTER.y,
+  /**
+   * `width / height`, para `aspect-ratio`.
+   *
+   * Sin esto la altura salia de un `%` de la altura del escenario mientras la
+   * anchura salia de un `%` de su anchura, asi que la proporcion PINTADA no era
+   * la declarada: estos anillos decian ry/rx = 0,378 y en pantalla median
+   * 0,213. Mientras eso siga siendo cierto, ningun calculo de CSS puede colocar
+   * nada sobre su elipse — y colocar el satelite es justo lo que hace falta.
+   */
+  aspecto: a.rx / a.ry,
+  aplanado: a.ry / a.rx,
   color: EMISSION.violetHi,
   pulseOffset: i / ANILLOS.length,
 }))
