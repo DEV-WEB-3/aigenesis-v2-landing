@@ -85,7 +85,7 @@ export default function RoadmapEvolutionMilestones() {
       }
     >
       <defs>
-        <linearGradient id={ID.grad} gradientUnits="userSpaceOnUse" x1="16" y1="84" x2="118" y2="11">
+        <linearGradient id={ID.grad} gradientUnits="userSpaceOnUse" x1="24" y1="84" x2="126" y2="11">
           <stop offset="0%" stopColor={EMISSION.violetHi} stopOpacity="0.85" />
           <stop offset="46%" stopColor={EMISSION.magenta} stopOpacity="0.9" />
           <stop offset="100%" stopColor={EMISSION.cyan} stopOpacity="0.95" />

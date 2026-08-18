@@ -75,13 +75,13 @@ export interface RoadmapMilestoneDef {
  * se le ponen trimestres a los dos como se hace con 2026.
  */
 export const ROADMAP_MILESTONES: readonly RoadmapMilestoneDef[] = [
-  { id: 'launch',      year: '2023',            title: ['Lanzamiento AiGenesis'],       index: 0, x: 16,  y: 84, status: 'completed', escala: 1.00 },
-  { id: 'community',   year: '2024',            title: ['G11 Community + NFT'],         index: 1, x: 33,  y: 71, status: 'completed', escala: 1.04 },
-  { id: 'oracle',      year: '2025',            title: ['Oracle V1 + GPulse'],          index: 2, x: 51,  y: 58, status: 'completed', escala: 1.10 },
-  { id: 'cinema',      year: '2026', quarter: 'Q1', title: ['Cinema Runtime', '+ G-BRIDGE'], index: 3, x: 69, y: 45, status: 'completed', escala: 1.06 },
-  { id: 'marketplace', year: '2026', quarter: 'Q2', title: ['Gevy Shop', 'Marketplace'],     index: 4, x: 86, y: 33, status: 'active',    escala: 1.12 },
-  { id: 'aicard',      year: '2026', quarter: 'Q3', title: ['AiCard + Exchange'],            index: 5, x: 102, y: 22, status: 'upcoming',  escala: 1.02 },
-  { id: 'metaverse',   year: '2027',            title: ['Genesis', 'Metaverse'],        index: 6, x: 118, y: 11, status: 'upcoming',  escala: 1.30 },
+  { id: 'launch',      year: '2023',            title: ['Lanzamiento AiGenesis'],       index: 0, x: 24,  y: 84, status: 'completed', escala: 1.00 },
+  { id: 'community',   year: '2024',            title: ['G11 Community + NFT'],         index: 1, x: 41,  y: 71, status: 'completed', escala: 1.04 },
+  { id: 'oracle',      year: '2025',            title: ['Oracle V1 + GPulse'],          index: 2, x: 59,  y: 58, status: 'completed', escala: 1.10 },
+  { id: 'cinema',      year: '2026', quarter: 'Q1', title: ['Cinema Runtime', '+ G-BRIDGE'], index: 3, x: 77, y: 45, status: 'completed', escala: 1.06 },
+  { id: 'marketplace', year: '2026', quarter: 'Q2', title: ['Gevy Shop', 'Marketplace'],     index: 4, x: 94, y: 33, status: 'active',    escala: 1.12 },
+  { id: 'aicard',      year: '2026', quarter: 'Q3', title: ['AiCard + Exchange'],            index: 5, x: 110, y: 22, status: 'upcoming',  escala: 1.02 },
+  { id: 'metaverse',   year: '2027',            title: ['Genesis', 'Metaverse'],        index: 6, x: 126, y: 11, status: 'upcoming',  escala: 1.30 },
 ] as const
 
 export const ROADMAP_MILESTONE_COUNT = ROADMAP_MILESTONES.length
@@ -221,6 +221,20 @@ export function evolutionPathPoint(t: number): { x: number; y: number } {
  */
 const ESTRELLAS = 78
 
+/**
+ * Unidades del lienzo que se dejan vacias por la izquierda.
+ *
+ * El hueco del visual empieza EXACTAMENTE donde termina la columna de texto, asi
+ * que lo que se dibuje en x = 0 queda pegado a la tarjeta. Los siete hitos se
+ * corren por lo mismo: el primero estaba en x = 16 y su plataforma llegaba hasta
+ * 5,3, o sea a 30 px del borde.
+ *
+ * No se encoge el dibujo para conseguirlo —eso costaria tamano en los nodos, que
+ * es justo lo que se acaba de calibrar—: se corre la composicion dentro del
+ * lienzo, y la escala no cambia.
+ */
+const BANDA_LIBRE = 14
+
 function seeded(i: number, sal: number): number {
   const x = Math.sin(i * 127.1 + sal * 311.7) * 43758.5453
   return x - Math.floor(x)
@@ -240,7 +254,10 @@ export const ROADMAP_STARS: readonly RoadmapStar[] = Array.from(
   (_, i) => {
     const t = seeded(i, 1)
     return {
-      x: seeded(i, 2) * ROADMAP_VIEWBOX.w,
+      // La banda izquierda se deja LIBRE. Ahi es donde termina la columna de
+      // texto, y una estrella —dura y brillante— pegada a la tarjeta se lee como
+      // suciedad, no como cielo. Medido: quedaban a 20 px del texto.
+      x: BANDA_LIBRE + seeded(i, 2) * (ROADMAP_VIEWBOX.w - BANDA_LIBRE),
       y: seeded(i, 3) * ROADMAP_VIEWBOX.h,
       r: 0.18 + seeded(i, 4) * 0.34,
       color: t < 0.5 ? EMISSION.violetHi : t < 0.82 ? EMISSION.cyan : EMISSION.magentaHi,
@@ -255,7 +272,7 @@ export const ROADMAP_STARS: readonly RoadmapStar[] = Array.from(
  * Una malla de verdad son cientos de nodos y aqui es un elemento de ambiente:
  * cinco elipses de distinta apertura leen como esfera y cuestan cinco trazos.
  */
-export const ROADMAP_GLOBE = { cx: 62, cy: 40, r: 15 } as const
+export const ROADMAP_GLOBE = { cx: 70, cy: 40, r: 15 } as const
 
 export function globeLatitudes(): readonly { rx: number; ry: number; y: number }[] {
   const filas = 7
