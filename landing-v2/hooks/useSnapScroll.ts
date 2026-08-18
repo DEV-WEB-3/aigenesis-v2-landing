@@ -647,19 +647,44 @@ export function useSnapScroll(
 
     const observer = new IntersectionObserver(
       (entries) => {
+        const map = ratioMapRef.current
+
+        /*
+         * EL MAPA SE ACTUALIZA SIEMPRE. SOLO LA DECISION SE APLAZA.
+         *
+         * Aqui estaba el punto fucsia de la barra marcando la seccion 1 estando
+         * en la 7. Reproducido y medido en produccion: la barra senalaba el punto
+         * 0 en gpulse, comunidad y technology.
+         *
+         * El `return` por bloqueo estaba ANTES de escribir el mapa, asi que
+         * durante la animacion y su cola —mas de un segundo— las entradas del
+         * observador se DESCARTABAN. Y los cruces de umbral del hero al salir de
+         * pantalla caen justo en esa ventana: `map.get(0)` se quedaba congelado
+         * en un valor alto y, una vez fuera de vista, el observador ya no vuelve
+         * a informar de el nunca, porque no cruza mas umbrales.
+         *
+         * Con ese valor rancio, cualquier evaluacion posterior entraba por
+         *
+         *   heroRatio >= heroReturnRatio && heroRatio >= bestRatio - 0.06
+         *
+         * y aplicaba `return-hero`. De ahi que apareciera «de booster para
+         * abajo»: hacen falta varios saltos para que a la ventana de bloqueo le
+         * toque tragarse la ultima actualizacion del hero.
+         *
+         * Medir el ratio y DECIDIR con el son dos cosas distintas. Aplazar la
+         * medicion no aplaza nada: la pierde.
+         */
+        for (const entry of entries) {
+          const idx = sectionEls.current.indexOf(entry.target as HTMLElement)
+          if (idx === -1) continue
+          map.set(idx, entry.isIntersecting ? entry.intersectionRatio : 0)
+        }
+
         if (
           snapWheelEnabled &&
           (scrollAnimatingRef.current || Date.now() < wheelLockedUntilRef.current)
         ) {
           return
-        }
-
-        const map = ratioMapRef.current
-
-        for (const entry of entries) {
-          const idx = sectionEls.current.indexOf(entry.target as HTMLElement)
-          if (idx === -1) continue
-          map.set(idx, entry.isIntersecting ? entry.intersectionRatio : 0)
         }
 
         let bestIdx = 0
