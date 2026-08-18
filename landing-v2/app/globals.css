@@ -4170,10 +4170,10 @@ body {
   0%,
   92%,
   100% {
-    filter: blur(110px);
+    transform: scale(1);
   }
   4% {
-    filter: blur(102px);
+    transform: scale(0.9273);
   }
 }
 
@@ -5345,15 +5345,15 @@ body {
 
 @keyframes genesis-mining-aura-pulse {
   0% {
-    filter: blur(88px);
+    transform: scale(0.9167);
     opacity: calc(var(--mining-aura-opacity-max, 0.98) * 0.88);
   }
   12% {
-    filter: blur(72px);
+    transform: scale(0.75);
     opacity: var(--mining-aura-opacity-max, 0.98);
   }
   100% {
-    filter: blur(96px);
+    transform: scale(1);
     opacity: var(--mining-aura-opacity-min, 0.78);
   }
 }
@@ -5782,9 +5782,9 @@ body {
 }
 
 @keyframes genesis-booster-aura-pulse {
-  0% { filter: blur(72px); }
-  10% { filter: blur(58px); }
-  100% { filter: blur(80px); }
+  0% { transform: scale(0.9); }
+  10% { transform: scale(0.725); }
+  100% { transform: scale(1); }
 }
 
 @media (max-width: 767px) {
@@ -6219,9 +6219,9 @@ body {
 }
 
 @keyframes genesis-staking-aura-pulse {
-  0% { filter: blur(68px); }
-  10% { filter: blur(54px); }
-  100% { filter: blur(72px); }
+  0% { transform: scale(0.9444); }
+  10% { transform: scale(0.75); }
+  100% { transform: scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -6778,9 +6778,9 @@ body {
 }
 
 @keyframes genesis-gpulse-aura-pulse {
-  0% { filter: blur(72px); }
-  12% { filter: blur(58px); }
-  100% { filter: blur(72px); }
+  0% { transform: scale(1); }
+  12% { transform: scale(0.8056); }
+  100% { transform: scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -7375,9 +7375,9 @@ body {
 }
 
 @keyframes genesis-goracle-aura-pulse {
-  0% { filter: blur(78px); }
-  14% { filter: blur(62px); }
-  100% { filter: blur(78px); }
+  0% { transform: scale(1); }
+  14% { transform: scale(0.7949); }
+  100% { transform: scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -8033,9 +8033,9 @@ body {
 }
 
 @keyframes genesis-marketplace-aura-pulse {
-  0% { filter: blur(76px); }
-  14% { filter: blur(62px); }
-  100% { filter: blur(76px); }
+  0% { transform: scale(1); }
+  14% { transform: scale(0.8158); }
+  100% { transform: scale(1); }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -8499,9 +8499,9 @@ body {
 }
 
 @keyframes genesis-community-aura-pulse {
-  0% { filter: blur(76px); }
-  14% { filter: blur(62px); }
-  100% { filter: blur(76px); }
+  0% { transform: scale(1); }
+  14% { transform: scale(0.8158); }
+  100% { transform: scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -8772,9 +8772,9 @@ body {
 }
 
 @keyframes genesis-technology-aura-pulse {
-  0% { filter: blur(76px); }
-  14% { filter: blur(64px); }
-  100% { filter: blur(76px); }
+  0% { transform: scale(1); }
+  14% { transform: scale(0.8421); }
+  100% { transform: scale(1); }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -8987,9 +8987,9 @@ body {
 }
 
 @keyframes genesis-roadmap-aura-pulse {
-  0% { filter: blur(76px); }
-  14% { filter: blur(62px); }
-  100% { filter: blur(76px); }
+  0% { transform: scale(1); }
+  14% { transform: scale(0.8158); }
+  100% { transform: scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -9356,8 +9356,8 @@ body {
 
 @keyframes genesis-portal-aura-pulse {
   0%,
-  100% { filter: blur(76px); }
-  14% { filter: blur(58px); }
+  100% { transform: scale(1); }
+  14% { transform: scale(0.7632); }
 }
 
 @media (prefers-reduced-motion: reduce) {
