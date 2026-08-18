@@ -57,7 +57,7 @@ const SceneMining = forwardRef<HTMLElement, Props>(function SceneMining(
       wideStack
       particleColumn
       className="mining-section-layout"
-      sectionOverlay={<MiningSectionBackdrop visible={isActive} />}
+      sectionOverlay={<MiningSectionBackdrop />}
       particleSlot={<MiningConstellation isActive={isActive} variant="full" />}
     >
       <SectionHeader

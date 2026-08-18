@@ -24,7 +24,7 @@ const SceneMarketplace = forwardRef<HTMLElement, Props>(
         wideStack
         particleColumn
         className="marketplace-section-layout"
-        sectionOverlay={<MarketplaceSectionBackdrop visible={isActive} />}
+        sectionOverlay={<MarketplaceSectionBackdrop />}
         particleSlot={<MarketplaceGlobalCommerce isActive={isActive} />}
       >
 

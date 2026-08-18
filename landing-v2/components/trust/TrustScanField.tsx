@@ -13,6 +13,7 @@ import {
 } from '@/lib/trust/scanFieldLayout'
 import { llegadaDe, pulsoDe, respiracionDe } from '@/lib/design/motion'
 import TrustPillarIcon from '@/components/trust/TrustPillarIcon'
+import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 /**
  * EL ESCANEO — la estructura de Confianza se revela al alumbrarla.
@@ -108,7 +109,11 @@ export default function TrustScanField({ isActive }: { isActive: boolean }) {
     [alumbrar],
   )
 
-  if (!isActive) return null
+  // Gate PEGAJOSO, no `isActive` a secas. El motivo, medido, esta en
+  // `useSectionVisualActive`: con el prop crudo el visual desaparecia
+  // mientras la seccion estaba a la vista.
+  const visible = useSectionVisualActive(isActive)
+  if (!visible) return null
 
   const vb = `0 0 ${CAMPO.ancho} ${CAMPO.alto}`
 

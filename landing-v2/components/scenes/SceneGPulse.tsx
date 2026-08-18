@@ -24,7 +24,7 @@ const SceneGPulse = forwardRef<HTMLElement, Props>(
         sectionId="gpulse"
         particleColumn
         className="gpulse-section-layout"
-        sectionOverlay={<GpulseSectionBackdrop visible={isActive} />}
+        sectionOverlay={<GpulseSectionBackdrop />}
         particleSlot={<GpulseSignalNetwork isActive={isActive} />}
       >
 

@@ -31,7 +31,7 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
         sectionId="technology"
         particleColumn
         className="technology-section-layout"
-        sectionOverlay={<TechnologySectionBackdrop visible={isActive} />}
+        sectionOverlay={<TechnologySectionBackdrop />}
         particleSlot={<TechnologyGenesisStack isActive={isActive} />}
       >
 

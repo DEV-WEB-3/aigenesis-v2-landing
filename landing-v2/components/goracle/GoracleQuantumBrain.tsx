@@ -6,13 +6,18 @@ import GoracleNeuralLayers from '@/components/goracle/GoracleNeuralLayers'
 import GoracleNeuralNetwork from '@/components/goracle/GoracleNeuralNetwork'
 import GoracleDataStreams from '@/components/goracle/GoracleDataStreams'
 import GoracleEcosystemSatellites from '@/components/goracle/GoracleEcosystemSatellites'
+import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 interface GoracleQuantumBrainProps {
   isActive: boolean
 }
 
 export default function GoracleQuantumBrain({ isActive }: GoracleQuantumBrainProps) {
-  if (!isActive) return null
+  // Gate PEGAJOSO, no `isActive` a secas. El motivo, medido, esta en
+  // `useSectionVisualActive`: con el prop crudo el visual desaparecia
+  // mientras la seccion estaba a la vista.
+  const visible = useSectionVisualActive(isActive)
+  if (!visible) return null
 
   return (
     <div

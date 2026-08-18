@@ -24,7 +24,7 @@ const SceneCommunity = forwardRef<HTMLElement, Props>(
         sectionId="comunidad"
         particleColumn
         className="community-section-layout"
-        sectionOverlay={<CommunitySectionBackdrop visible={isActive} />}
+        sectionOverlay={<CommunitySectionBackdrop />}
         particleSlot={<CommunityGenesisNetwork isActive={isActive} />}
       >
 

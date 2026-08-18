@@ -27,7 +27,7 @@ const SceneToken = forwardRef<HTMLElement, Props>(
         sectionId="token"
         particleColumn
         className={`token-section-layout${editorMode ? ' token-section-layout--editor' : ''}`}
-        sectionOverlay={<TokenSectionBackdrop visible={isActive} />}
+        sectionOverlay={<TokenSectionBackdrop />}
         particleSlot={<TokenOrbitalValueNetwork isActive={isActive} variant="full" />}
       >
         <SectionHeader

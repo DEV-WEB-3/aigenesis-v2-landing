@@ -61,7 +61,7 @@ const SceneRoadmap = forwardRef<HTMLElement, Props>(
         sectionId="roadmap"
         particleColumn
         className="roadmap-section-layout"
-        sectionOverlay={<RoadmapSectionBackdrop visible={isActive} />}
+        sectionOverlay={<RoadmapSectionBackdrop />}
         particleSlot={<RoadmapEvolutionPath isActive={isActive} />}
       >
 

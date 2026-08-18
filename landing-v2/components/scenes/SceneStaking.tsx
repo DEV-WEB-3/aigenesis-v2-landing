@@ -31,7 +31,7 @@ const SceneStaking = forwardRef<HTMLElement, Props>(function SceneStaking(
       wideStack
       particleColumn
       className="staking-section-layout"
-      sectionOverlay={<StakingSectionBackdrop visible={isActive} />}
+      sectionOverlay={<StakingSectionBackdrop />}
       particleSlot={<StakingTimeVault isActive={isActive} />}
     >
       <SectionHeader

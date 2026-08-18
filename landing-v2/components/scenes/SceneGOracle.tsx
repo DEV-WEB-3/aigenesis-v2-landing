@@ -40,7 +40,7 @@ const SceneGOracle = forwardRef<HTMLElement, Props>(function SceneGOracle(
       wideStack
       particleColumn
       className="goracle-section-layout"
-      sectionOverlay={<GoracleSectionBackdrop visible={isActive} />}
+      sectionOverlay={<GoracleSectionBackdrop />}
       particleSlot={<GoracleQuantumBrain isActive={isActive} />}
     >
       <SectionHeader

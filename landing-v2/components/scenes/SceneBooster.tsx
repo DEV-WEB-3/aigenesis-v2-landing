@@ -31,7 +31,7 @@ const SceneBooster = forwardRef<HTMLElement, Props>(function SceneBooster(
       wideStack
       particleColumn
       className="booster-section-layout"
-      sectionOverlay={<BoosterSectionBackdrop visible={isActive} />}
+      sectionOverlay={<BoosterSectionBackdrop />}
       particleSlot={<BoosterQuantumAccelerator isActive={isActive} />}
     >
       <SectionHeader

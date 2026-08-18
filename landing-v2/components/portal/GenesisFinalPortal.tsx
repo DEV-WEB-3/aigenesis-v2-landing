@@ -9,13 +9,18 @@ import GenesisFutureField from '@/components/portal/GenesisFutureField'
 import GenesisPortalRings from '@/components/portal/GenesisPortalRings'
 import GenesisPortalCore from '@/components/portal/GenesisPortalCore'
 import GenesisPortalStreams from '@/components/portal/GenesisPortalStreams'
+import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 interface GenesisFinalPortalProps {
   isActive: boolean
 }
 
 export default function GenesisFinalPortal({ isActive }: GenesisFinalPortalProps) {
-  if (!isActive) return null
+  // Gate PEGAJOSO, no `isActive` a secas. El motivo, medido, esta en
+  // `useSectionVisualActive`: con el prop crudo el visual desaparecia
+  // mientras la seccion estaba a la vista.
+  const visible = useSectionVisualActive(isActive)
+  if (!visible) return null
 
   return (
     <div
