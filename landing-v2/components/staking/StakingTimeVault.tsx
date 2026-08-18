@@ -4,6 +4,7 @@ import { STAKING_VAULT_PULSE_S, STAKING_VAULT_FORM_S } from '@/lib/staking/timeV
 import StakingVaultCore from '@/components/staking/StakingVaultCore'
 import StakingTimeRings from '@/components/staking/StakingTimeRings'
 import StakingLockStreams from '@/components/staking/StakingLockStreams'
+import StakingLedgerRing from '@/components/staking/StakingLedgerRing'
 import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 interface StakingTimeVaultProps {
@@ -37,6 +38,9 @@ export default function StakingTimeVault({ isActive }: StakingTimeVaultProps) {
 
       <div className="staking-time-vault__layer staking-time-vault__layer--front">
         <div className="staking-time-vault__stage">
+          {/* El registro va por fuera de los anillos de tiempo y por debajo de
+              ellos: es el sustrato donde queda constancia, no una capa mas. */}
+          <StakingLedgerRing />
           <StakingTimeRings />
           <StakingVaultCore />
         </div>
