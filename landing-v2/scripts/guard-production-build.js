@@ -22,9 +22,15 @@ const {
  * detalle de entorno en un build rojo que no dice nada útil.
  *
  * GitHub Actions define `CI=true` por su cuenta; no hay que configurarlo.
+ *
+ * `VERCEL` va ademas de `CI` a proposito, aunque Vercel define las dos. Este
+ * guard rastrea procesos con utilidades de WINDOWS, y la maquina de build de
+ * Vercel es Linux: si por lo que sea `CI` no llegara, el prebuild fallaria con
+ * un error de comando no encontrado y el despliegue moriria antes de compilar
+ * una sola linea. Dos llaves para una puerta que no se puede quedar cerrada.
  */
-if (process.env.CI) {
-  log.ok('guard-production-build: CI detectado — sin stack dev que detener')
+if (process.env.CI || process.env.VERCEL) {
+  log.ok('guard-production-build: CI o Vercel detectado — sin stack dev que detener')
   process.exit(0)
 }
 
