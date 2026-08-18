@@ -54,9 +54,53 @@ ajustada no avisa, rompe el sitio en silencio y el fallo aparece en el navegador
 de un visitante, no en el build. Cuando el panel de informes esté limpio unos
 días, se cambia la clave a `Content-Security-Policy` en `next.config.js`.
 
-**Redirigir `aigtoken.io`.** Estaba pendiente de que existiera un destino: el
-ancla `#token` no existe en el WordPress actual. Con la landing desplegada ya lo
-hay.
+### Redirigir `aigtoken.io`
+
+**Sólo después de que la landing esté sirviendo.** Redirigir hacia un destino que
+todavía no existe deja el dominio peor que como está.
+
+Estado comprobado el 17-ago-2026:
+
+| | |
+|---|---|
+| `aigtoken.io` | vivo, HTTP 200 — WordPress sobre PHP 8.1 en Hostinger (`Server: hcdn`) |
+| dependencias de la landing | **cero**. Las ocho menciones en el código son comentarios; ni un `href` ni un `fetch` |
+| whitepaper PDF | **a salvo**, verificado por SHA-256 contra el original vivo |
+
+```
+vivo   1535729 bytes   sha256 1cf87f66e2774e6c…
+repo   1535729 bytes   sha256 1cf87f66e2774e6c…
+```
+
+Contenido real del WordPress: portada, `/es/inicio/`, `/whitepaper/` y el PDF.
+Todo lo demás son rutas de infraestructura de WordPress (`/feed/`, `/wp-json/`,
+`xmlrpc.php`).
+
+**Mapa de redirección**, con 301 permanente:
+
+| origen en aigtoken.io | destino |
+|---|---|
+| `/` | `/` |
+| `/es/inicio/` | `/` |
+| `/whitepaper/` | `/whitepaper` |
+| `/wp-content/uploads/2024/02/AiGenesis_Token_OFFICIAL_WHITE_PAPER_V1.1.pdf` | `/docs/aigenesis-whitepaper-v1.1.pdf` |
+| cualquier otra | `/` |
+
+La cuarta fila no es un detalle: esa URL del PDF puede estar enlazada desde
+fuera —foros, mensajes, correos— y una redirección genérica a la portada
+convierte una descarga en un aterrizaje que no explica nada.
+
+**Qué se pierde a propósito.** Las veintiuna fases técnicas con porcentaje de
+avance que publica ese WordPress dejan de ser públicas. Es deliberado y está
+razonado en `SceneRoadmap.tsx`: colgaban de un whitepaper de febrero de 2024 y
+contradecían la hoja de ruta oficial de seis hitos. Dos planes distintos del
+mismo proyecto, a la vez, es lo que un visitante lee como descoordinación.
+
+**Cómo se hace.** No desde este repositorio: es una operación en el panel de
+Hostinger (o en el DNS del registrador), no en el código. En hPanel, el camino
+corto es un `.htaccess` en la raíz del WordPress con las cuatro reglas de
+arriba; el largo es apuntar el dominio a la landing y dejar que Vercel resuelva
+las rutas.
 
 ## Comprobar antes de desplegar
 
