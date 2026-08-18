@@ -6031,13 +6031,40 @@ body {
   width: calc(var(--ring-rx) * 2);
   height: calc(var(--ring-ry) * 2);
   transform: translate(-50%, -50%);
+  animation: staking-ring-precesion var(--ring-precesion-s, 16s) ease-in-out infinite;
+  /* el retardo llega del componente, repartido con `desfase` */
 }
 
+/*
+  EL BORDE NO ES UNIFORME, Y ESE ES TODO EL ARREGLO.
+
+  SINTOMA: «las orbitas se sienten estaticas».
+
+  MEDIDO: no lo estaban. Los tres `track` giraban —`playState: running`, 32 · 16
+  · 8 s— y el `transform` computado cambiaba entre dos lecturas separadas 2 s.
+  Se estaba animando algo que no se podia ver.
+
+  CAUSA: el borde valia `0.48` en los cuatro lados. Una elipse de borde uniforme
+  no tiene ningun punto de referencia, asi que girarla no produce ningun cambio
+  perceptible salvo el lento cambio de silueta. Sin un rasgo que seguir, el ojo
+  no tiene con que medir el giro.
+
+  ARREGLO: se aclara arriba y se apaga abajo. El giro que YA existia se convierte
+  en luz recorriendo el anillo, que es lo que hace una orbita real vista de
+  canto: el tramo que se acerca brilla y el que se aleja se apaga.
+
+  No se anade ni un elemento ni una animacion, y lo unico que se mueve sigue
+  siendo `transform`, que el compositor resuelve sin repintar.
+*/
 #staking .staking-time-ring__track {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--ring-color) 48%, transparent);
+  border: 1px solid transparent;
+  border-top-color: color-mix(in srgb, var(--ring-color) 88%, transparent);
+  border-right-color: color-mix(in srgb, var(--ring-color) 46%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--ring-color) 12%, transparent);
+  border-left-color: color-mix(in srgb, var(--ring-color) 46%, transparent);
   box-shadow: 0 0 14px color-mix(in srgb, var(--ring-color) 22%, transparent);
   animation: staking-ring-spin 32s linear infinite;
 }
@@ -6076,6 +6103,136 @@ body {
   opacity: 0;
   animation: staking-kpi-pulse var(--vault-pulse-s, 8s) ease-out infinite;
   animation-delay: calc(var(--ring-pulse-offset, 0) * var(--vault-pulse-s, 8s));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ANILLO DE REGISTRO — la trazabilidad on-chain, dibujada
+   ═══════════════════════════════════════════════════════════
+
+   Cada evento del ciclo graba un punto que ya no se quita. Se llena en una
+   vuelta (32 s) y se queda lleno: no hay reinicio, porque un registro que se
+   vacia no registra. El cabezal que lo recorre es ademas lo que da a la boveda
+   la sensacion de que algo orbita de verdad, en vez de figuras girando planas.
+
+   Todo lo que se mueve es `opacity` y `transform`. Ni un repintado por cuadro.
+*/
+#staking .staking-ledger {
+  position: absolute;
+  left: 50%;
+  top: var(--ledger-y, 52%);
+  width: calc(var(--ledger-rx, 30%) * 2);
+  /*
+    La altura sale de la ANCHURA, no de un `%` propio. Un `height` en `%` se
+    resuelve contra la altura del escenario mientras el `width` lo hace contra
+    su anchura, asi que la proporcion pintada dependeria del tamano de la
+    ventana. Los anillos de tiempo tienen hoy justo ese desfase —declaran
+    ry/rx = 0,378 y en pantalla miden 0,213—, y es lo que impide colocar nada
+    sobre su elipse desde CSS. Aqui la proporcion pintada ES la declarada.
+  */
+  aspect-ratio: var(--ledger-aspecto, 2.857);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+#staking .staking-ledger__track {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--g-violet-hi) 15%, transparent);
+}
+
+/*
+  EL CABEZAL. Tres capas porque cada una lleva una transformacion que no se
+  puede mezclar: `transform` es UNA sola propiedad, y declarar el giro en el
+  mismo elemento que la escala haria que la animacion sustituyera a la escala.
+  El cabezal recorreria entonces una circunferencia en vez de la elipse — el
+  mismo fallo por el que rotar un hijo nunca sirve para seguir un anillo
+  aplanado.
+*/
+#staking .staking-ledger__orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  /* cuadrado del ancho del anillo: sobre el, girar SI traza la elipse al aplanarlo */
+  width: 100%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) scaleY(var(--ledger-aplanado, 0.35));
+}
+
+#staking .staking-ledger__spin {
+  position: absolute;
+  inset: 0;
+  /* arranca arriba, donde esta la primera marca, para que grabe justo al pasar */
+  animation: staking-ledger-lap var(--ledger-lap-s, 32s) linear infinite;
+}
+
+/*
+  EL CONTRAGIRO, y por que hace falta.
+
+  Sin esta capa el cabezal se pintaba como una raya. Medido: 15,0 x 2,9 px donde
+  debian ser 5 x 5.
+
+  La causa es el ORDEN de las transformaciones. La contraescala que devuelve la
+  forma al punto se aplicaba dentro del elemento que gira, es decir ANTES de
+  rotar; el aplanado del padre se aplica DESPUES. Con esa cadena la correccion
+  solo cae en el eje correcto en los extremos del eje mayor, y en el resto de la
+  vuelta el punto se estira hasta triplicar su anchura.
+
+  Contragirando aqui, la contraescala del hijo queda despues del giro y siempre
+  en el eje bueno. `reverse` de la misma animacion: la suma de ambos giros es
+  una constante de 180 grados —invisible en un punto simetrico— y al compartir
+  duracion no pueden desincronizarse.
+
+  La caja mide 0 x 0 a proposito: asi girar sobre su origen no la mueve del
+  punto de la elipse donde la dejo el padre.
+*/
+#staking .staking-ledger__anchor {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  animation: staking-ledger-lap var(--ledger-lap-s, 32s) linear infinite reverse;
+}
+
+#staking .staking-ledger__head {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--g-cyan);
+  box-shadow: 0 0 10px var(--g-cyan), 0 0 20px color-mix(in srgb, var(--g-cyan) 45%, transparent);
+  /*
+    El `translate` va el ultimo de la lista —o sea, se aplica el primero— para
+    que el centrado se escale igual que el punto y acabe centrado de verdad.
+  */
+  transform: scaleY(calc(1 / var(--ledger-aplanado, 0.35))) translate(-50%, -50%);
+}
+
+#staking .staking-ledger__mark {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--mark-color);
+  box-shadow: 0 0 6px var(--mark-color);
+  opacity: 0;
+  /* centrado en su punto de la elipse; los fotogramas lo repiten para no borrarlo */
+  transform: translate(-50%, -50%);
+  /*
+    `both` es lo que convierte esto en un registro. Antes de su turno la marca
+    toma el primer fotograma —invisible—; despues del suyo se queda en el
+    ultimo, grabada. Sin `both` reaparecerian todas al empezar y se borrarian al
+    terminar, que es exactamente lo contrario de lo que la seccion afirma.
+  */
+  animation: staking-ledger-engrave 0.8s ease-out both;
+}
+
+#staking .staking-ledger__mark--liberacion {
+  width: 5px;
+  height: 5px;
 }
 
 /* Vault core */
@@ -6187,6 +6344,34 @@ body {
   to { transform: rotate(360deg); }
 }
 
+/*
+  PRECESION — el plano del anillo se inclina despacio.
+
+  Segundo de los dos gestos que sacan a las orbitas de su aspecto congelado. El
+  borde no uniforme hace VISIBLE el giro que ya habia; esto anade lo que un giro
+  plano nunca puede dar: que el anillo tenga un plano en el espacio y ese plano
+  no este clavado.
+
+  El `translate` se repite en los dos fotogramas a proposito. `transform` es una
+  sola propiedad: un fotograma que declare solo `scaleY` BORRA el centrado del
+  elemento y el anillo salta media caja al arrancar la animacion.
+*/
+@keyframes staking-ring-precesion {
+  0%, 100% { transform: translate(-50%, -50%) scaleY(1); }
+  50% { transform: translate(-50%, -50%) scaleY(0.86); }
+}
+
+@keyframes staking-ledger-lap {
+  from { transform: rotate(-90deg); }
+  to { transform: rotate(270deg); }
+}
+
+@keyframes staking-ledger-engrave {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+  40% { opacity: 1; transform: translate(-50%, -50%) scale(1.9); }
+  100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+}
+
 @keyframes staking-shield-breathe {
   0%, 100% { opacity: 0.18; }
   50% { opacity: 0.28; }
@@ -6261,10 +6446,25 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   #staking .staking-time-vault__layer,
+  #staking .staking-time-ring,
   #staking .staking-time-ring__track,
+  #staking .staking-ledger__spin,
+  #staking .staking-ledger__anchor,
   #staking .staking-vault-core__orbit-particle,
   .genesis-staking-aura__vault-glow {
     animation: none !important;
+  }
+
+  /*
+    Las marcas se quedan GRABADAS, no desaparecen. Apagarles la animacion sin
+    mas las dejaria en su primer fotograma —opacidad 0— y el registro entero se
+    volveria invisible justo para quien pidio menos movimiento. El anillo se
+    presenta completo desde el principio, que es lo correcto: el registro es un
+    hecho, no una animacion.
+  */
+  #staking .staking-ledger__mark {
+    animation: none !important;
+    opacity: 0.8;
   }
 }
 
