@@ -7827,9 +7827,28 @@ body {
   24% { opacity: 0.52; }
 }
 
+/*
+  EL ICONO NO LLEVA `translate(-50%, -50%)`, y ahi estaba el descentrado.
+
+  Reportado: «los iconos de los 5 centros estan desalineados y descentrados».
+  Medido: el satelite, su halo y su anillo coinciden los tres en radio 204 con
+  angulos limpios separados 72 grados —correcto para cinco—, pero el icono caia
+  en 213 y en 199, y con el angulo desviado un par de grados.
+
+  La causa: este fotograma llevaba `translate(-50%, -50%)` copiado de la regla
+  del SATELITE, donde si hace falta porque esta posicionado en absoluto. El
+  icono, en cambio, ya lo centra el `flex` de su contenedor, asi que esa
+  traslacion lo corria 8,5 px —la mitad de sus 17— arriba y a la izquierda.
+
+  Y por eso parecian descolocados AL AZAR en vez de todos igual: un
+  desplazamiento constante en pixeles de pantalla se proyecta distinto sobre cada
+  radio segun el angulo del satelite. Mismo error, cinco lecturas distintas.
+
+  El pulso solo tiene que escalar.
+*/
 @keyframes goracle-satellite-pulse {
-  0%, 82%, 100% { transform: translate(-50%, -50%) scale(1); }
-  14% { transform: translate(-50%, -50%) scale(1.08); }
+  0%, 82%, 100% { transform: scale(1); }
+  14% { transform: scale(1.08); }
 }
 
 @keyframes goracle-satellite-halo {
