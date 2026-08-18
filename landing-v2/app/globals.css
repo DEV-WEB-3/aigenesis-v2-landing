@@ -2212,6 +2212,36 @@ body {
   }
 
   /*
+   * SEGUNDO ESCALON DE DENSIDAD — ventanas cortas.
+   *
+   * La escala de arriba llega a su SUELO antes de que el contenido quepa. Medido
+   * en una ventana de 559 px —banda util 483— `--fit-card-pad` daba 12,8 px, que
+   * es su minimo, y aun asi las catorce secciones sobraban: de +44 en roadmap a
+   * +308 en booster, con mining en +235. Un `clamp` que ya esta en el suelo no
+   * comprime mas por mucho que baje el viewport.
+   *
+   * Este bloque baja los suelos cuando la ventana es corta. No cambia nada por
+   * encima de 780 px de alto, que es donde la escala principal todavia tiene
+   * recorrido.
+   *
+   * QUE NO ARREGLA, dicho claro: a 483 px de banda el contenido de mining y
+   * booster no cabe ni comprimiendo al limite —harian falta un 30-37 % menos, y
+   * eso ya es tamano de letra, no relleno—. Ahi la seccion crece y se recorre
+   * con la rueda, que es el comportamiento previsto. Lo que este escalon si
+   * resuelve son las ventanas intermedias, donde el exceso es de decenas de
+   * pixeles y antes obligaba a crecer sin necesidad.
+   */
+  @media (max-height: 780px) {
+    .home-section-fit {
+      --fit-gap-apretado: clamp(0.12rem, calc(var(--alto-util) * 0.004), 0.3rem);
+      --fit-gap-stack: clamp(0.25rem, calc(var(--alto-util) * 0.008), 0.6rem);
+      --fit-gap-amplio: clamp(0.4rem, calc(var(--alto-util) * 0.012), 0.9rem);
+      --fit-headline: clamp(1.25rem, calc(var(--alto-util) * 0.028), 1.85rem);
+      --fit-card-pad: clamp(0.5rem, calc(var(--alto-util) * 0.013), 1rem);
+    }
+  }
+
+  /*
    * LA SECCION CRECE SI HACE FALTA. `min-height`, no `height` fijo.
    *
    * Con `height` + `max-height` a `100dvh` y `overflow: hidden`, una seccion
@@ -2463,8 +2493,38 @@ body {
    * al reves de lo que pide la jerarquia, porque una cabecera es UN bloque y
    * debe ir mas apretada por dentro que los bloques entre si.
    */
+  /*
+   * EL FACTOR LO PUBLICA `useFitToBand`, que mide el alto REAL del contenido
+   * contra el hueco disponible. Es responsive de verdad: no adivina por tramos
+   * de pantalla, mide lo que ocupa cada seccion, que es el dato que decide si
+   * cabe. Dos secciones a la misma altura de ventana necesitan factores
+   * distintos porque tienen contenidos distintos.
+   *
+   * `zoom` y NO `transform: scale`, y la diferencia es todo el arreglo: `zoom`
+   * participa en el reflujo, asi que encoger REDUCE el alto ocupado. `transform`
+   * solo encogeria el dibujo dejando la caja igual de alta, y la seccion
+   * seguiria sin caber — se veria mas pequena y seguiria desbordando.
+   *
+   * El respaldo `1` importa: sin JavaScript, o antes de la primera medida, la
+   * pila se pinta a su tamano natural en vez de desaparecer.
+   *
+   * Esta regla esta DUPLICADA mas arriba en el archivo, con el mismo selector y
+   * el mismo `gap`. Se toca esta porque es la posterior y es la que gana; la de
+   * arriba queda como estaba para no cambiar dos cosas de golpe.
+   */
   .home-section-fit .scene-content-stack {
     gap: var(--fit-gap-stack);
+  }
+
+  /*
+   * El factor se aplica al MARCO, no a la pila de texto: en la mitad de las
+   * secciones quien fija la altura es el visual y no el texto —en gpulse el
+   * texto mide 374 y el hueco del visual 526—, asi que escalar solo el texto
+   * daba factor 1,00 y no arreglaba nada. Escalando el marco se adaptan las dos
+   * columnas a la vez.
+   */
+  .home-section-fit .scene-content-frame {
+    zoom: var(--fit-escala, 1);
   }
 
   .home-section-fit .scene-content-stack article h3 {
@@ -2875,8 +2935,10 @@ body {
 #mining .mining-flow-card {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  padding: 0.85rem 0.95rem;
+  /* dentro del sistema de densidad: antes iban a fuego y no respondian
+     al alto de ventana, que es justo lo que hacia crecer la seccion */
+  gap: var(--fit-gap-apretado, 0.35rem);
+  padding: var(--fit-card-pad, 0.85rem);
   border-radius: 0.85rem;
   border: 1px solid rgba(255, 46, 219, 0.1);
   background: linear-gradient(
@@ -6636,14 +6698,15 @@ body {
     position: relative;
     align-self: center;
     justify-self: center;
-    width: min(54vw, 920px);
+        width: min(54vw, 920px);
     max-width: 100%;
     min-width: min(54vw, 920px);
     min-height: min(88vh, 920px);
     margin-left: auto;
     margin-right: auto;
     pointer-events: none;
-  }
+  
+}
 }
 
 #gpulse .scene-particle-gutter--featured {
@@ -7196,14 +7259,15 @@ body {
     position: relative;
     align-self: center;
     justify-self: center;
-    width: min(58vw, 980px);
+        width: min(58vw, 980px);
     max-width: 100%;
     min-width: min(58vw, 980px);
     min-height: min(90vh, 980px);
     margin-left: auto;
     margin-right: auto;
     pointer-events: none;
-  }
+  
+}
 }
 
 #goracle .scene-particle-gutter--featured {
@@ -9190,9 +9254,34 @@ body {
     position: relative;
     align-self: center;
     justify-self: center;
-    width: min(54vw, 920px);
+        /*
+     * COTA PARA QUE EL VISUAL NO SE SALGA DE LA PANTALLA.
+     *
+     * Reportado: «que toda la imagen quede dentro de la pantalla; en alguna
+     * queda fuera». Medido a 1566 px de ancho, la tinta se salia por la derecha
+     * en gpulse (+89 px), roadmap (+46) y goracle (+33). La seccion lleva
+     * `lg:overflow-hidden`, asi que el corte es limpio y visible: un borde recto
+     * donde el dibujo se acaba.
+     *
+     * NO producia desborde de pagina, y por eso todas mis comprobaciones
+     * anteriores lo daban por bueno. El `overflow: hidden` esconde justo el
+     * sintoma que yo estaba midiendo: un cero en «desborde horizontal»
+     * significaba lo contrario de lo que asumi.
+     *
+     * ES RESPONSIVE, tambien medido: marketplace (-24) y comunidad (-17) estan a
+     * menos de 25 px de cruzar la linea, asi que al estrechar la ventana cruzan.
+     *
+     * LA COTA SE DESPEJA DE LA GEOMETRIA, no se elige a ojo. El hueco arranca en
+     * `marco_izq + 620` con `marco_izq = (100vw - 1216) / 2`, asi que su borde
+     * derecho vale `(100vw - 1216)/2 + 620 + ancho`. Exigiendo que no pase de
+     * `100vw - 16`:  ancho <= 50vw - 28px.
+     *
+     * Va DENTRO del `min()` y tambien en `min-width`. Puesta como `max-width`
+     * quedaba inerte: en CSS `min-width` se aplica despues y gana.
+     */
+    width: min(54vw, 920px, calc(50vw - 28px));
     max-width: 100%;
-    min-width: min(54vw, 920px);
+    min-width: min(54vw, 920px, calc(50vw - 28px));
     min-height: min(84vh, 880px);
     margin-left: auto;
     margin-right: auto;

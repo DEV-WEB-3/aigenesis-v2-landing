@@ -6,6 +6,7 @@ import gsap from 'gsap'
 import { Button } from '@/components/ui/genesis'
 import { useSectionEnterAnimation } from '@/hooks/useSectionEnterAnimation'
 import { SectionVisualProvider } from '@/hooks/useSectionVisualActive'
+import { useFitToBand } from '@/hooks/useFitToBand'
 import GenesisOrbSignature, { type GenesisOrbPlacement } from '@/components/brand/GenesisOrbSignature'
 import { HeadingLevel } from '@/components/ui/genesis/Heading'
 import { LLEGADA_CONTENIDO_S, LLEGADA_CIFRA_S } from '@/lib/design/motion'
@@ -294,6 +295,24 @@ export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { classN
         <HeadingLevel>{children}</HeadingLevel>
       </motion.div>
     )
+
+    /*
+     * El ajuste automatico solo tiene sentido donde el hueco manda: en el modo
+     * de paginas. En scroll natural la pagina fluye y encoger no aporta nada.
+     */
+    /*
+     * `shouldMountContent` va en la condicion, y no es un detalle.
+     *
+     * La pila de contenido NO existe hasta que la seccion entra en pantalla. Si
+     * el gancho arranca antes, `querySelector('.scene-content-stack')` devuelve
+     * null, sale, y NO VUELVE A INTENTARLO porque sus dependencias no han
+     * cambiado. Medido: cero secciones con factor aplicado, con el gancho
+     * conectado y `zoom` soportado.
+     *
+     * Pasandolo aqui, el efecto se vuelve a ejecutar en cuanto el contenido
+     * aparece, que es cuando hay algo que medir.
+     */
+    useFitToBand(sectionRef, !isNaturalScroll && shouldMountContent)
 
     return (
       <SectionVisualProvider visualActive={shouldAnimate}>

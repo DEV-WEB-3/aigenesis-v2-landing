@@ -92,7 +92,18 @@ const SceneCTA = forwardRef<HTMLElement, Props>(function SceneCTA(
       <section
         ref={setSectionRef}
         id="cta"
-        className="home-section-fit cta-final-section relative w-full flex flex-col items-center justify-center text-center overflow-hidden lg:h-screen"
+        /*
+          SIN `lg:h-screen`. La utilidad fija `height: 100dvh` y GANA a
+          `.home-section-fit`, que declara `min-height: calc(100dvh - 76px)`:
+          Tailwind vive en una capa posterior, asi que se le gana quitandola, no
+          peleando con la especificidad. Es la misma correccion que ya llevan las
+          otras doce y que `SceneShared` documenta.
+
+          Medido: esta seccion sobraba exactamente 76 px —el alto de la barra—
+          en cualquier ventana. Un exceso constante e igual al enganche es la
+          firma de un fallo estructural, no de contenido.
+        */
+        className="home-section-fit cta-final-section relative w-full flex flex-col items-center justify-center text-center overflow-hidden"
         style={{ pointerEvents: 'auto' }}
       >
         <GenesisFinalPortal isActive={isActive} />

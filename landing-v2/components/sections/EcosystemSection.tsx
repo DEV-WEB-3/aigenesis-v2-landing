@@ -143,7 +143,18 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
       <section
         ref={setSectionRef}
         id="ecosistema"
-        className="home-section-fit relative flex w-full items-stretch justify-start px-6 md:px-12 lg:items-center lg:h-screen"
+        /*
+          SIN `lg:h-screen`. La utilidad fija `height: 100dvh` y GANA a
+          `.home-section-fit`, que declara `min-height: calc(100dvh - 76px)`:
+          Tailwind vive en una capa posterior, asi que se le gana quitandola, no
+          peleando con la especificidad. Es la misma correccion que ya llevan las
+          otras doce y que `SceneShared` documenta.
+
+          Medido: esta seccion sobraba exactamente 76 px —el alto de la barra—
+          en cualquier ventana. Un exceso constante e igual al enganche es la
+          firma de un fallo estructural, no de contenido.
+        */
+        className="home-section-fit relative flex w-full items-stretch justify-start px-6 md:px-12 lg:items-center"
         style={{ pointerEvents: 'auto' }}
       >
         {/*
