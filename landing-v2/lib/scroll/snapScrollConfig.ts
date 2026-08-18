@@ -3,12 +3,57 @@
 export const SNAP_SCROLL = {
   /** Wheel / trackpad delta to trigger one section (~40% lower vs ~90 baseline) */
   SCROLL_THRESHOLD: 55,
-  /** Post-navigation wheel lock */
+  /** Bloqueo al ARRANCAR el salto. Lo cubre casi entero `scrollAnimatingRef`. */
   WHEEL_LOCK_MS: 750,
+  /**
+   * COLA DE BLOQUEO al terminar el salto.
+   *
+   * Antes se re-armaban aqui los mismos 750 ms, que se sumaban a los 950 del
+   * desplazamiento: 1700 ms en los que cada tick se descartaba EN SILENCIO. Un
+   * segundo tick deliberado —lo normal es a los 300-600 ms— no hacia nada y el
+   * usuario volvia a girar la rueda.
+   *
+   * 250 ms bastan para lo unico que este bloqueo tiene que atrapar: la cola de
+   * una pasada de trackpad, que sigue emitiendo eventos decrecientes despues de
+   * levantar los dedos. Un gesto nuevo nunca llega tan pegado al anterior.
+   */
+  WHEEL_LOCK_TAIL_MS: 250,
   /** Premium slide duration */
   SCROLL_DURATION_MS: 950,
-  /** Trackpad delta accumulation window */
-  TRACKPAD_ACCUM_WINDOW_MS: 140,
+  /**
+   * Ventana de acumulacion.
+   *
+   * Eran 140 ms. Con una rueda cuyo tope emite menos que el umbral —las de alta
+   * resolucion mandan 16-40 por muesca— hacian falta DOS muescas en menos de
+   * 140 ms, que no es un gesto natural: girando a ritmo normal el acumulador se
+   * vaciaba entre una y otra y no se llegaba nunca. 400 ms cubre el ritmo real
+   * de una rueda y sigue siendo demasiado corto para que una deriva lenta de
+   * trackpad acumule sin querer.
+   */
+  TRACKPAD_ACCUM_WINDOW_MS: 400,
+  /**
+   * Cuanto puede sobrar una seccion antes de considerarla «alta».
+   *
+   * Era 2 px, y con eso LAS CATORCE secciones se consideraban altas: el hueco
+   * visible son 539 px y todas lo exceden, de +39 en roadmap a +252 en booster.
+   * Con las catorce en esa rama, la rueda cedia SIEMPRE al scroll nativo y no
+   * saltaba nunca al primer tick.
+   *
+   * 48 px es lo que puede sobrar sin que haya nada que leer ahi —relleno,
+   * redondeos, el margen del enganche—. Por debajo de eso la seccion salta
+   * directamente; por encima, se recorre primero, que es lo correcto cuando de
+   * verdad hay contenido debajo.
+   */
+  HOLGURA_ALTO: 48,
+  /**
+   * Hueco minimo entre eventos de rueda para considerarlo un GESTO NUEVO.
+   *
+   * La cola de una pasada de trackpad es un chorro continuo —eventos cada ~16 ms
+   * que decrecen—; un giro deliberado llega suelto y con hueco delante. 120 ms
+   * deja fuera la inercia sin llegar a descartar un ritmo de giro normal, que
+   * ronda los 150-400 ms.
+   */
+  GESTO_NUEVO_MS: 120,
   /** Max sections per gesture */
   MAX_STEP: 1,
   /**

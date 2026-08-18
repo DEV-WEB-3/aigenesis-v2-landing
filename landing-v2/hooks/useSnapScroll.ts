@@ -104,6 +104,36 @@ export function useSnapScroll(
   const wheelLockedUntilRef = useRef(0)
   const wheelAccumRef = useRef(0)
   const wheelAccumTimerRef = useRef<number | null>(null)
+  /**
+   * LA INTENCION QUE LLEGA MIENTRAS SE ESTA MOVIENDO NO SE TIRA, SE ENCOLA.
+   *
+   * Un salto dura 950 ms y despues queda una cola de bloqueo. En toda esa
+   * ventana los eventos de rueda se descartaban EN SILENCIO. Medido tras
+   * recortar la cola de 750 a 250 ms, seguian perdiendose los ticks a los 500 y
+   * a los 800 ms — que es justo cuando alguien da el segundo giro.
+   *
+   * Descartar era la decision correcta para la COLA DE UNA PASADA de trackpad,
+   * que sigue emitiendo eventos decrecientes despues de levantar los dedos. Pero
+   * no distingue esa cola de un gesto nuevo y deliberado.
+   *
+   * Los separa el momento: la inercia llega pegada al gesto, y un giro nuevo
+   * llega mas tarde. Solo se encola lo que aparece pasada la mitad del
+   * desplazamiento, y solo un paso.
+   */
+  const pendienteRef = useRef(0)
+  const animInicioRef = useRef(0)
+  const pendienteDrenajeRef = useRef<number | null>(null)
+  /** Marca de tiempo del ultimo evento de rueda, para medir el hueco entre gestos. */
+  const ultimoWheelRef = useRef(0)
+  /*
+   * `animateToSection` necesita poder llamarse a si misma al terminar, para
+   * ejecutar el salto encolado. No puede hacerlo directamente dentro de su
+   * propio `useCallback` —todavia no existe cuando se define—, asi que se
+   * guarda en un ref que se mantiene al dia justo despues.
+   */
+  const animateToSectionRef = useRef<
+    ((index: number, reason: string, desde?: number) => void) | null
+  >(null)
   const cancelScrollRef = useRef<(() => void) | void>(undefined)
   const snapWheelEnabled = isSnapScrollMode(scrollMode)
 
@@ -160,6 +190,7 @@ export function useSnapScroll(
 
       cancelScrollRef.current?.()
       scrollAnimatingRef.current = true
+      animInicioRef.current = Date.now()
       animTargetRef.current = clamped
       wheelLockedUntilRef.current = Date.now() + SNAP_SCROLL.WHEEL_LOCK_MS
       wheelAccumRef.current = 0
@@ -181,7 +212,53 @@ export function useSnapScroll(
 
           root.classList.remove('home-snap-main--animating')
           scrollAnimatingRef.current = false
-          wheelLockedUntilRef.current = Date.now() + SNAP_SCROLL.WHEEL_LOCK_MS
+          /*
+           * BLOQUEO CORTO al TERMINAR, no otro de 750 ms.
+           *
+           * Durante la animacion ya bloquea `scrollAnimatingRef`, asi que este
+           * se sumaba entero a los 950 ms del desplazamiento: 1700 ms en los
+           * que cada tick se descartaba EN SILENCIO. Un segundo tick deliberado
+           * —lo normal a los 300-600 ms— desaparecia, y el usuario volvia a
+           * girar la rueda. De ahi «a veces hace falta rodar dos veces».
+           *
+           * Sigue haciendo falta algo: una pasada larga de trackpad emite
+           * eventos durante un segundo largo y encadenaria varias secciones.
+           * Pero eso lo corta la COLA de la inercia, no un gesto nuevo.
+           */
+          wheelLockedUntilRef.current = Date.now() + SNAP_SCROLL.WHEEL_LOCK_TAIL_MS
+
+          /*
+           * Lo que el usuario pidio mientras esto se movia se ejecuta ahora, en
+           * vez de haberse perdido. Un solo paso: encadenar varios convertiria
+           * un gesto largo en un viaje de cinco secciones.
+           *
+           * Se drena DOS veces, y la segunda no es redundante. Un tick que llega
+           * cuando la animacion ya termino pero sigue corriendo la cola de
+           * bloqueo se encolaba sin que quedara nadie para ejecutarlo: la
+           * intencion se guardaba y moria ahi. Medido, era una franja estrecha
+           * pero real —fallaba a los 900 ms y funcionaba a los 700 y a los
+           * 1200—, y desde fuera se ve como «esta vez ha hecho falta girar otra
+           * vez», que es justo lo que se venia a arreglar.
+           */
+          const drenar = () => {
+            const pendiente = pendienteRef.current
+            pendienteRef.current = 0
+            if (target === null) return
+            if (Math.abs(pendiente) < SNAP_SCROLL.SCROLL_THRESHOLD) return
+            const siguiente = target + (pendiente > 0 ? 1 : -1)
+            if (siguiente < 0 || siguiente >= totalSections) return
+            wheelLockedUntilRef.current = 0
+            animateToSectionRef.current?.(siguiente, 'wheel-encolado', target)
+          }
+
+          drenar()
+          if (pendienteDrenajeRef.current !== null) {
+            window.clearTimeout(pendienteDrenajeRef.current)
+          }
+          pendienteDrenajeRef.current = window.setTimeout(() => {
+            pendienteDrenajeRef.current = null
+            if (!scrollAnimatingRef.current) drenar()
+          }, SNAP_SCROLL.WHEEL_LOCK_TAIL_MS + 20)
         }
       )
 
@@ -193,6 +270,8 @@ export function useSnapScroll(
     },
     [applySectionIndex, snapWheelEnabled, totalSections]
   )
+
+  animateToSectionRef.current = animateToSection
 
   const scrollToSection = useCallback(
     (index: number) => {
@@ -210,6 +289,11 @@ export function useSnapScroll(
       if (wheelAccumTimerRef.current !== null) {
         window.clearTimeout(wheelAccumTimerRef.current)
       }
+      if (pendienteDrenajeRef.current !== null) {
+        window.clearTimeout(pendienteDrenajeRef.current)
+        pendienteDrenajeRef.current = null
+      }
+      pendienteRef.current = 0
       document.querySelector('main')?.classList.remove('home-snap-main--animating')
     }
   }, [])
@@ -404,18 +488,84 @@ export function useSnapScroll(
     }
 
     const onWheel = (e: WheelEvent) => {
+      const delta =
+        Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX
+
       if (scrollAnimatingRef.current || Date.now() < wheelLockedUntilRef.current) {
         e.preventDefault()
+        /*
+         * QUE SEPARA UN GIRO NUEVO DE LA INERCIA: EL HUECO, NO EL MOMENTO.
+         *
+         * El primer intento uso «pasada la mitad del recorrido». Medido, tiraba
+         * el segundo tick a los 400 ms —un ritmo de giro completamente normal—
+         * mientras lo aceptaba a los 600. El corte por reloj no distingue lo que
+         * tiene que distinguir.
+         *
+         * La cola de una pasada de trackpad es un chorro CONTINUO: eventos cada
+         * ~16 ms que van decreciendo. Un giro deliberado de rueda es un evento
+         * suelto con un hueco delante. Mirar el hueco separa las dos cosas por
+         * lo que de verdad las diferencia, y no depende de cuanto dure la
+         * animacion.
+         */
+        const ahora = Date.now()
+        const hueco = ahora - ultimoWheelRef.current
+        ultimoWheelRef.current = ahora
+        if (hueco > SNAP_SCROLL.GESTO_NUEVO_MS && Math.abs(delta) >= 0.5) {
+          if (pendienteRef.current !== 0 && Math.sign(pendienteRef.current) !== Math.sign(delta)) {
+            pendienteRef.current = 0
+          }
+          pendienteRef.current += delta
+        }
         return
       }
 
-      const delta =
-        Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX
+      ultimoWheelRef.current = Date.now()
 
       if (Math.abs(delta) < 0.5) return
 
       const direccion = delta > 0 ? 1 : -1
       const actual = indiceVisible()
+
+      /**
+       * CAMBIAR DE SENTIDO EMPIEZA EL GESTO DE CERO.
+       *
+       * El acumulador SUMABA sin mirar el signo. Bajando por una seccion alta
+       * llegaba a valer varios cientos; al querer subir, el primer tick restaba
+       * —digamos -100 sobre +200— y quedaba en +100: por encima del umbral pero
+       * con el signo contrario, asi que no saltaba. Hacian falta tres o cuatro
+       * ticks solo para cruzar el cero.
+       *
+       * Es el caso que reporto el owner: «al llegar al fondo, queriendo subir,
+       * hay que hacer dos acciones». Cuanto mas hubieras bajado, mas ticks
+       * costaba volver.
+       *
+       * Un cambio de sentido es un gesto NUEVO. Lo acumulado antes describe una
+       * intencion que ya no existe.
+       */
+      if (wheelAccumRef.current !== 0 && Math.sign(wheelAccumRef.current) !== direccion) {
+        wheelAccumRef.current = 0
+      }
+
+      /**
+       * EL ACUMULADOR SE ALIMENTA SIEMPRE, tambien mientras el navegador
+       * desplaza por dentro de una seccion alta.
+       *
+       * Antes se hacia `resetWheelAccum()` al ceder el evento al scroll nativo,
+       * y eso convertia en DOS gestos lo que el usuario hace como uno: el tick
+       * que termina de recorrer la seccion dejaba el acumulador a cero, asi que
+       * el salto necesitaba otro tick entero desde el principio.
+       *
+       * Con las medidas de este portal el efecto era permanente, no ocasional:
+       * el hueco visible son 539 px y LAS CATORCE secciones lo exceden —de +39
+       * en roadmap a +252 en booster—, asi que esta rama se tomaba siempre y el
+       * minimo estructural eran dos ticks por seccion.
+       *
+       * Alimentandolo aqui, recorrer la seccion y saltar a la siguiente son el
+       * mismo gesto continuo. Si el usuario se para, el decaimiento lo vacia
+       * solo y el siguiente gesto vuelve a empezar de cero.
+       */
+      wheelAccumRef.current += delta
+      scheduleWheelAccumDecay()
 
       /**
        * SI LA SECCION NO CABE, LA RUEDA LA RECORRE ANTES DE SALTAR.
@@ -438,21 +588,36 @@ export function useSnapScroll(
         const r = el.getBoundingClientRect()
         const tope = SNAP_SCROLL.ENGANCHE_ALTO
         const hueco = root.clientHeight - tope
-        const noCabe = r.height > hueco + 2
+        const noCabe = r.height > hueco + SNAP_SCROLL.HOLGURA_ALTO
         if (noCabe) {
-          const quedaAbajo = r.bottom > root.clientHeight + 2
-          const quedaArriba = r.top < tope - 2
-          if ((direccion > 0 && quedaAbajo) || (direccion < 0 && quedaArriba)) {
-            resetWheelAccum()
+          /*
+           * NO ES «QUEDA ALGO», ES «QUEDA MAS DE LO QUE ESTE TICK RECORRE».
+           *
+           * La condicion anterior era booleana —queda algo, aunque sea 1 px— y
+           * eso producia el fallo del final de la pagina. Al llegar al fondo,
+           * `cta` no puede alinearse con el enganche porque el scroller ya esta
+           * en su maximo: su borde superior vale 0 y nunca 76. Con la condicion
+           * booleana `quedaArriba` era CIERTA para siempre, asi que la rueda
+           * cedia al scroll nativo indefinidamente y no saltaba jamas. Habia que
+           * subir a mano esos 76 px antes de que un tick sirviera de algo — el
+           * «al llegar al fondo, para subir hacen falta dos acciones».
+           *
+           * Comparar contra `Math.abs(delta)` se calibra solo: si lo que queda
+           * cabe en el propio tick, ese tick se lo comeria entero de todas
+           * formas, asi que mas vale saltar. Y no hace falta saber cuanto mide
+           * una muesca en el raton de cada cual, que cambia por dispositivo y
+           * por sistema.
+           */
+          const resta = direccion > 0 ? r.bottom - root.clientHeight : tope - r.top
+          const merecePasada = Math.max(SNAP_SCROLL.HOLGURA_ALTO, Math.abs(delta))
+          if (resta > merecePasada) {
+            // sin reset: lo recorrido cuenta para el salto que viene despues
             return
           }
         }
       }
 
       e.preventDefault()
-
-      wheelAccumRef.current += delta
-      scheduleWheelAccumDecay()
 
       if (Math.abs(wheelAccumRef.current) < SNAP_SCROLL.SCROLL_THRESHOLD) return
 
