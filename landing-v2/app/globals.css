@@ -5152,6 +5152,24 @@ body {
 }
 
 @media (min-width: 1024px) {
+  /*
+   * EL VISUAL SE METIA SOBRE EL TEXTO, y es el mismo patron que en roadmap.
+   *
+   * Llevaba `translateX(-4%)` —35 px a la IZQUIERDA— y roadmap llevaba -10%.
+   * Auditando la clase en las once secciones de dos columnas, token era la unica
+   * que seguia violando el invariante: un `token-atomic-energy-dot` de 3 px al
+   * 72 % de alfa efectiva llegaba a x = 593 mientras el texto real —«El valor
+   * interno es la refer…»— termina en 615. Cruzaba 22 px POR DENTRO de texto
+   * legible.
+   *
+   * Costo verlo porque el punto ORBITA: en una medicion instantanea unas veces
+   * esta dentro y otras fuera, y eso se lee como «intermitente» cuando en
+   * realidad es deterministico — la orbita cruza el borde de la columna en cada
+   * vuelta. Hubo que muestrear a lo largo del tiempo para cazarlo.
+   *
+   * `+3%` en vez de `-4%`: los 35 px que perdia mas 26 de holgura. Con eso el
+   * punto pasa a 654 y quedan 39 px de margen contra el texto.
+   */
   #token .scene-particle-gutter--featured {
     position: relative;
     align-self: center;
@@ -5159,7 +5177,7 @@ body {
     width: min(68vw, 880px);
     min-height: min(72vh, 820px);
     pointer-events: none;
-    transform: translateX(-4%);
+    transform: translateX(3%);
   }
 }
 
