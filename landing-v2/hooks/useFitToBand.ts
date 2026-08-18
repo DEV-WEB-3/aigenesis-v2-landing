@@ -104,11 +104,25 @@ export function useFitToBand(
       const relleno =
         (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0)
 
-      const hueco =
-        (seccion.ownerDocument.defaultView?.innerHeight ?? 0) -
-        SNAP_SCROLL.ENGANCHE_ALTO -
-        MARGEN_LIBRE * 2 -
-        relleno
+      /*
+       * EL HUECO SALE DEL `min-height` DE LA PROPIA SECCION, no de una resta
+       * fija contra la ventana.
+       *
+       * No todas las secciones disponen del mismo alto: las trece que se
+       * enganchan miden `100dvh - enganche` porque arrancan bajo la barra, y el
+       * HERO mide `100dvh` porque arranca en y = 0. Restando siempre el enganche
+       * se le quitaban al hero 76 px que si tiene, y el factor salia mas pequeno
+       * de lo necesario.
+       *
+       * Leyendo su `min-height` la cuenta es exacta para cada una y no hay que
+       * saber cual es cual.
+       */
+      const declarado = parseFloat(cs.minHeight)
+      const disponible = Number.isFinite(declarado) && declarado > 0
+        ? declarado
+        : (seccion.ownerDocument.defaultView?.innerHeight ?? 0) - SNAP_SCROLL.ENGANCHE_ALTO
+
+      const hueco = disponible - MARGEN_LIBRE * 2 - relleno
 
       if (natural <= 0 || hueco <= 0) return
 

@@ -2552,7 +2552,40 @@ body {
    * `pt-24` —96 px— y ahora usa los 76 que la barra tapa de verdad.
    */
   .hero-fit {
+    /*
+     * EL HERO MIDE LA VENTANA ENTERA. Es la asimetria de ser el primero.
+     *
+     * `.home-section-fit` da `100dvh - enganche`, que es correcto para las trece
+     * que se enganchan: arrancan en y = 76 y con esa altura llenan la pantalla.
+     * El hero NO se engancha — esta arriba del todo y arranca en y = 0—, asi que
+     * con esa misma altura termina 76 px antes del borde y por ese hueco ASOMA
+     * la seccion siguiente. Reportado: «el borde de la pagina siguiente se ve en
+     * la primera».
+     *
+     * El despeje de la barra lo hace el relleno, no la altura.
+     */
+    min-height: 100dvh;
     padding-top: calc(var(--enganche-alto) + var(--section-fit-pad-y));
+
+    /*
+     * SE RESERVA LA FRANJA DEL INDICADOR DE DESLIZAMIENTO.
+     *
+     * El indicador es `absolute bottom-8 sm:bottom-10`, es decir esta FUERA del
+     * flujo, mientras el contenido va centrado en la seccion. Cuando el
+     * contenido crece lo suficiente, lo alcanza y se montan — reportado por el
+     * owner: «el icono de deslizar queda montado arriba de otro boton».
+     *
+     * Ya se le habia quitado la capacidad de robar clics (`z-[1]` y
+     * `pointer-events-none`), pero eso resuelve el clic y no el solape VISUAL.
+     *
+     * Reservar su banda como relleno inferior lo resuelve por construccion: el
+     * contenido centrado ya no puede ocupar ese espacio. Y `useFitToBand`
+     * descuenta el relleno al calcular el hueco, asi que el ajuste automatico se
+     * entera solo y encoge lo justo.
+     *
+     * 74 px = 40 de separacion inferior + 34 del propio indicador.
+     */
+    padding-bottom: calc(var(--section-fit-pad-y) + 74px);
   }
 
   /* El hero no tiene `.scene-content-frame`: el factor va a su envoltura. */
