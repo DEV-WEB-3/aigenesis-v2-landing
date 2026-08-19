@@ -9469,7 +9469,13 @@ body {
   top: calc(100% + 0.55rem);
   inset-inline-end: 0;
   z-index: 60;
-  width: max(16rem, 100%);
+  /*
+   * 17,5rem y no 16: con 16 el nombre mas largo —«Português»— se quedaba a 5 px
+   * de caber y salia «Portug…». Un nombre nativo cortado no cumple lo unico que
+   * tiene que cumplir, que es que lo reconozca quien lo busca en su lengua.
+   * El ancho se fija por el nombre mas largo, no por el que se probo primero.
+   */
+  width: max(17.5rem, 100%);
   padding: 0.7rem;
   border-radius: 0.9rem;
   border: 1px solid rgba(157, 77, 255, 0.3);
