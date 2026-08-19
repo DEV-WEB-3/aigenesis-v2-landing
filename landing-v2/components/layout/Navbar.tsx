@@ -20,7 +20,18 @@ import {
 
 const DRAWER_ID = 'mobile-nav-drawer'
 
-/** Rótulo de una sección, para pintar los hijos de cada cabeza. */
+/**
+ * Rótulo de una sección, para pintar los hijos de cada cabeza.
+ *
+ * DEVUELVE ESPAÑOL: quien lo pinta lo pasa por `t()`. No traduce aqui dentro
+ * porque es una funcion de modulo y `useT` es un hook — y sobre todo porque
+ * dejar la traduccion en el sitio de pintado es lo que hace que se vea si
+ * falta. La primera version de esta pantalla tenia el `t()` en `{r.label}` y no
+ * en `{rotulo(hijo)}`: el desplegable se quedo en español en los once idiomas y
+ * no lo delato ningun aviso, porque la cadena SI estaba traducida —solo que
+ * nadie la pedia—. Un hueco asi no lo encuentra el diccionario: lo encuentra
+ * mirar la pantalla en otro idioma.
+ */
 function rotulo(id: SectionId): string {
   return SECTIONS.find((s) => s.id === id)?.navLabel ?? id
 }
@@ -209,7 +220,7 @@ export default function Navbar() {
                           className="nav-desplegable__enlace focus-ring-genesis"
                           onClick={(e) => { e.preventDefault(); navigateToSection(hijo) }}
                         >
-                          {rotulo(hijo)}
+                          {t(rotulo(hijo))}
                         </a>
                       </li>
                     ))}
@@ -347,7 +358,7 @@ export default function Navbar() {
                               className="block py-2.5 pl-3 text-base font-display text-genesis-mist hover:text-genesis-text no-underline border-b border-hairline focus-ring-genesis rounded-sm"
                               onClick={(e) => { e.preventDefault(); navigateToSection(hijo) }}
                             >
-                              {rotulo(hijo)}
+                              {t(rotulo(hijo))}
                             </a>
                           </li>
                         ))}

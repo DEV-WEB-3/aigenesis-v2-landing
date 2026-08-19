@@ -70,11 +70,11 @@ const SceneMining = forwardRef<HTMLElement, Props>(function SceneMining(
       />
 
       <motion.div variants={slideLeft} className="mining-story-track" aria-hidden="true">
-        <span className="mining-story-track__node">Emisión</span>
+        <span className="mining-story-track__node">{t('Emisión')}</span>
         <span className="mining-story-track__arrow" />
-        <span className="mining-story-track__node">Participación</span>
+        <span className="mining-story-track__node">{t('Participación')}</span>
         <span className="mining-story-track__arrow" />
-        <span className="mining-story-track__node">Distribución</span>
+        <span className="mining-story-track__node">{t('Distribución')}</span>
       </motion.div>
 
       <motion.div variants={containerV} className="mining-flow-grid">

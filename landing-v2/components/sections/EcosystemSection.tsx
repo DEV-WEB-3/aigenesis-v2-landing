@@ -107,8 +107,9 @@ function AnimatedCounter({
     }
   }, [isActive, suffix])
 
+  /* `dir="ltr"`: en arabe y urdu el «+» de «15+» se reordena y sale «+15». */
   return (
-    <span ref={ref} className={className}>
+    <span dir="ltr" ref={ref} className={className}>
       0{suffix}
     </span>
   )
@@ -178,14 +179,15 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                 className="scene-content-stack ecosystem-content-stack flex flex-col gap-4 max-w-lg lg:max-w-[27rem] lg:justify-self-end lg:pr-1"
               >
                 <motion.span variants={slideInLeft} className="label-section text-genesis-fuchsia">
-                  Ecosistema
+                  {t('Ecosistema')}
                 </motion.span>
 
                 <GenesisHeadline lead="El stack" highlight="Genesis" />
 
                 <motion.p variants={slideInLeft} className="text-body-lg text-genesis-mist leading-relaxed">
-                  Un universo de productos interconectados sobre Binance Smart Chain.
-                  Cada capítulo amplifica al siguiente en una arquitectura modular e institucional.
+                  {t(
+                    'Un universo de productos interconectados sobre Binance Smart Chain. Cada capítulo amplifica al siguiente en una arquitectura modular e institucional.'
+                  )}
                 </motion.p>
 
                 <motion.div variants={slideInLeft} className="flex gap-8 mt-1">
@@ -199,8 +201,8 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                     <span className="text-caption text-genesis-ghost uppercase tracking-wider">{t('Pilares')}</span>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className={statGradientClass}>2023</span>
-                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">Fundado</span>
+                    <span dir="ltr" className={statGradientClass}>2023</span>
+                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">{t('Fundado')}</span>
                   </div>
                   <div className="flex flex-col gap-1">
                     <AnimatedCounter
@@ -209,7 +211,7 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                       isActive={isActive}
                       className={statGradientClass}
                     />
-                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">Comunidad</span>
+                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">{t('Comunidad')}</span>
                   </div>
                 </motion.div>
 
@@ -230,14 +232,15 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                   className="scene-content-stack ecosystem-content-stack flex flex-col gap-4 max-w-lg lg:max-w-[27rem] lg:justify-self-end lg:pr-1"
                 >
                 <motion.span variants={slideInLeft} className="label-section text-genesis-fuchsia">
-                  Ecosistema
+                  {t('Ecosistema')}
                 </motion.span>
 
                 <GenesisHeadline lead="El stack" highlight="Genesis" />
 
                 <motion.p variants={slideInLeft} className="text-body-lg text-genesis-mist leading-relaxed">
-                  Un universo de productos interconectados sobre Binance Smart Chain.
-                  Cada capítulo amplifica al siguiente en una arquitectura modular e institucional.
+                  {t(
+                    'Un universo de productos interconectados sobre Binance Smart Chain. Cada capítulo amplifica al siguiente en una arquitectura modular e institucional.'
+                  )}
                 </motion.p>
 
                 <motion.div variants={slideInLeft} className="flex gap-8 mt-1">
@@ -251,8 +254,8 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                     <span className="text-caption text-genesis-ghost uppercase tracking-wider">{t('Pilares')}</span>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className={statGradientClass}>2023</span>
-                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">Fundado</span>
+                    <span dir="ltr" className={statGradientClass}>2023</span>
+                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">{t('Fundado')}</span>
                   </div>
                   <div className="flex flex-col gap-1">
                     <AnimatedCounter
@@ -261,7 +264,7 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                       isActive={isActive}
                       className={statGradientClass}
                     />
-                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">Comunidad</span>
+                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">{t('Comunidad')}</span>
                   </div>
                 </motion.div>
 
@@ -282,7 +285,7 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                 animate={shouldAnimate ? 'visible' : 'hidden'}
                 exit="exit"
                 className="ecosystem-map-column flex w-full max-w-md flex-col pointer-events-auto lg:max-w-md lg:justify-self-start"
-                aria-label="Mapa del ecosistema"
+                aria-label={t('Mapa del ecosistema')}
               >
                 <div className="ecosystem-map-visual relative">
                   <EcosystemEnergyLinks isActive={isActive} />

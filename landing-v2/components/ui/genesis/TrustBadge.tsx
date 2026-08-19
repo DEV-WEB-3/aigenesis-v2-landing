@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { Heading, HeadingLevel } from './Heading'
 
 export type TrustStatus = 'verified' | 'live' | 'audited' | 'pending'
@@ -71,6 +72,7 @@ export function TrustBadge({
   href,
   className,
 }: TrustBadgeProps) {
+  const t = useT()
   const config = statusConfig[status]
 
   const inner = (
@@ -86,7 +88,7 @@ export function TrustBadge({
           aria-hidden="true"
         />
         <span className={cn('text-caption uppercase tracking-wider', config.textClass)}>
-          {config.label}
+          {t(config.label)}
         </span>
       </div>
       {/*
@@ -98,7 +100,7 @@ export function TrustBadge({
         tarjeta a 207 px de ancho. El tamano lo fija ahora el sistema de tarjeta
         en un solo sitio; aqui solo se declara la familia y el peso.
       */}
-      <Heading className="font-display font-semibold text-genesis-text">{title}</Heading>
+      <Heading className="font-display font-semibold text-genesis-text">{t(title)}</Heading>
       {/*
         Era `text-sm` (14px) mientras `Card` usa `text-body-lg` (17px) para lo
         mismo: la descripción de una tarjeta. Dos tamaños para un mismo papel

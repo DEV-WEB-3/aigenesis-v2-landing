@@ -1332,4 +1332,62 @@ export const DICCIONARIO: Record<string, Fila> = {
     sr: 'Пропорционална расподела по правилима протокола, без обећања фиксног приноса.',
     ur: 'پروٹوکول کے قواعد پر مبنی متناسب تقسیم، مقررہ منافع کے وعدے کے بغیر۔',
   },
+
+  /* ── confianza: insignias y metricas institucionales ───────────── */
+  'Saltar al contenido principal': {
+    en: 'Skip to main content', pt: 'Ir para o conteúdo principal',
+    fr: 'Aller au contenu principal', ru: 'Перейти к основному содержанию',
+    sv: 'Hoppa till huvudinnehållet', hr: 'Prijeđi na glavni sadržaj',
+    ar: 'تخطَّ إلى المحتوى الرئيسي', de: 'Zum Hauptinhalt springen',
+    sr: 'Пређи на главни садржај', ur: 'مرکزی مواد پر جائیں',
+  },
+  'Países': {
+    en: 'Countries', pt: 'Países', fr: 'Pays', ru: 'Страны',
+    sv: 'Länder', hr: 'Zemlje', ar: 'الدول', de: 'Länder',
+    sr: 'Земље', ur: 'ممالک',
+  },
+  Fundado: {
+    en: 'Founded', pt: 'Fundada', fr: 'Fondée', ru: 'Основана',
+    sv: 'Grundat', hr: 'Osnovano', ar: 'تأسّست', de: 'Gegründet',
+    sr: 'Основано', ur: 'قیام',
+  },
+  Uptime: {
+    en: 'Uptime', pt: 'Disponibilidade', fr: 'Disponibilité', ru: 'Аптайм',
+    sv: 'Drifttid', hr: 'Dostupnost', ar: 'زمن التشغيل', de: 'Verfügbarkeit',
+    sr: 'Доступност', ur: 'اپ ٹائم',
+  },
+  Verificado: {
+    en: 'Verified', pt: 'Verificado', fr: 'Vérifié', ru: 'Проверено',
+    sv: 'Verifierad', hr: 'Provjereno', ar: 'موثّق', de: 'Verifiziert',
+    sr: 'Проверено', ur: 'تصدیق شدہ',
+  },
+  Auditado: {
+    en: 'Audited', pt: 'Auditado', fr: 'Audité', ru: 'Проверено аудитом',
+    sv: 'Granskad', hr: 'Revidirano', ar: 'مُدقَّق', de: 'Geprüft',
+    sr: 'Ревидирано', ur: 'آڈٹ شدہ',
+  },
+  'En vivo': {
+    en: 'Live', pt: 'Ao vivo', fr: 'En direct', ru: 'В эфире',
+    sv: 'Direkt', hr: 'Uživo', ar: 'مباشر', de: 'Live',
+    sr: 'Уживо', ur: 'براہِ راست',
+  },
+  'Ecosistema en BSC': {
+    en: 'Ecosystem on BSC', pt: 'Ecossistema na BSC', fr: 'Écosystème sur BSC',
+    ru: 'Экосистема в BSC', sv: 'Ekosystem på BSC', hr: 'Ekosustav na BSC-u',
+    ar: 'المنظومة على BSC', de: 'Ökosystem auf BSC', sr: 'Екосистем на BSC-у',
+    ur: 'BSC پر ایکو سسٹم',
+  },
+  'Comunidad Global': {
+    en: 'Global Community', pt: 'Comunidade Global', fr: 'Communauté mondiale',
+    ru: 'Глобальное сообщество', sv: 'Global gemenskap', hr: 'Globalna zajednica',
+    ar: 'مجتمع عالمي', de: 'Globale Community', sr: 'Глобална заједница',
+    ur: 'عالمی کمیونٹی',
+  },
+  'Transparencia Operativa': {
+    en: 'Operational Transparency', pt: 'Transparência Operacional',
+    fr: 'Transparence opérationnelle', ru: 'Операционная прозрачность',
+    sv: 'Operativ transparens', hr: 'Operativna transparentnost',
+    ar: 'الشفافية التشغيلية', de: 'Operative Transparenz',
+    sr: 'Оперативна транспарентност', ur: 'عملی شفافیت',
+  },
 }

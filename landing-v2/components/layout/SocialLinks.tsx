@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { EXTERNAL_LINKS } from '@/lib/routes'
 
 const SOCIAL_ITEMS = [
@@ -15,9 +16,10 @@ interface SocialLinksProps {
 }
 
 export default function SocialLinks({ className = '' }: SocialLinksProps) {
+  const t = useT()
   return (
     <nav
-      aria-label="Redes sociales AiGenesis"
+      aria-label={t('Redes sociales AiGenesis')}
       className={`institutional-footer__social ${className}`.trim()}
     >
       {SOCIAL_ITEMS.map((item) => (

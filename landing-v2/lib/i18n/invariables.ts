@@ -61,5 +61,16 @@ export const INVARIABLES: ReadonlySet<string> = new Set([
    * once lenguas, y traducir un sufijo rompe la alineacion de la columna de
    * cifras sin ganar nada.
    */
-  'K+', 'M', 'M USDT', 'USDT', '24h', '24/7', '6+', '12+',
+  'K+', 'M', 'M USDT', 'USDT', '24h', '24/7', '6+', '12+', '0M USDT',
+
+  /*
+   * ── vocabulario de marca del hero ───────────────────────────
+   * «AI · BLOCKCHAIN · MARKETPLACE · INTELLIGENCE NETWORK» es la firma de la
+   * marca y se publica en ingles en las once versiones, igual que el logotipo.
+   * «LIVE» y «GENESIS» son parte de la misma firma. No se traducen por la misma
+   * razon por la que no se traduce un logotipo.
+   */
+  'LIVE', 'Blockchain', 'Intelligence Network', 'GENESIS', 'Genesis Token.',
+  'AiGenesis.', 'Cinema Runtime + G-BRIDGE', 'Gevy Shop Marketplace',
+  'Genesis Metaverse', 'Ctrl+Shift+G — Genesis Particle Control',
 ])

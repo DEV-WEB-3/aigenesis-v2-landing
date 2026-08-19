@@ -32,12 +32,26 @@ const SceneMarketplace = forwardRef<HTMLElement, Props>(
 
         <SectionLabel>Marketplace</SectionLabel>
 
+        {/*
+          ESTE TITULAR ESTA ESCRITO A MANO en vez de usar `GenesisHeadline`, que
+          es lo que hacen las otras trece secciones. Se traduce aqui porque no
+          pasa por el componente compartido — y esa es justamente la unica razon
+          por la que se le olvido: el barrido de idiomas lo encontro comparando
+          la pantalla en ruso contra la pantalla en español, no leyendo el
+          codigo.
+
+          No se unifica ahora a proposito: `GenesisHeadline` añade la clase
+          `scene-headline`, que trae reglas propias de tamaño, y cambiar el
+          titular de una seccion cuyo encaje esta medido es una decision aparte
+          de traducir. Queda anotado como lo que es: una duplicacion que este
+          cambio no crea pero si revela.
+        */}
         <motion.h2
           className="text-5xl font-bold leading-tight"
           style={{ fontFamily: 'var(--font-space-grotesk)', textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}
         >
           <motion.span variants={wordV} className="block text-genesis-text">
-            Marketplace Global
+            {t('Marketplace Global')}
           </motion.span>
           <GradientText tone="signature">AiGenesis.</GradientText>
         </motion.h2>

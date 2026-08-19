@@ -142,7 +142,6 @@ export default function RootLayout({
         )}
       </head>
       <body className="font-body bg-genesis-base text-genesis-text antialiased min-h-screen">
-        <SkipLink />
         {/*
           EL PROVEEDOR ENVUELVE TODO EL CUERPO, no solo la landing.
 
@@ -153,7 +152,21 @@ export default function RootLayout({
           pie: si el proveedor solo cubriera la portada, el idioma se perderia
           al navegar a cualquiera de ellas.
         */}
-        <IdiomaProvider>{children}</IdiomaProvider>
+        <IdiomaProvider>
+          {/*
+            `SkipLink` VA DENTRO, y estuvo fuera.
+
+            Es lo primero del cuerpo, asi que era natural ponerlo antes del
+            proveedor — y quedo en español en los once idiomas sin que nada lo
+            dijera. `useT` fuera del proveedor devuelve el español a proposito,
+            para que un componente compartido funcione en cualquier pagina; el
+            precio de esa comodidad es exactamente este: colocar algo fuera no
+            rompe nada, solo deja de traducir. Y quien mas necesita ese enlace es
+            quien navega con teclado o lector de pantalla.
+          */}
+          <SkipLink />
+          {children}
+        </IdiomaProvider>
         <SiteAnalytics />
       </body>
     </html>
