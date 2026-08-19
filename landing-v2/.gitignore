@@ -38,3 +38,17 @@ Thumbs.db
 *.log
 npm-debug.log*
 pnpm-debug.log*
+
+# ── Exportación estática para hosting clásico ────────────────────────────
+# La produce `npm run exportar`. Es un artefacto: se regenera del código y no
+# debe versionarse — versionarla crea una segunda copia del sitio que envejece
+# sin que nadie la mire.
+/out/
+
+# ── Credenciales ─────────────────────────────────────────────────────────
+# Las de despliegue viven FUERA del proyecto (`~/.hostinger/credenciales.json`).
+# Esta regla está por si algún día alguien las copia aquí «un momento»: ese
+# momento es como acaban las claves en un repositorio.
+credenciales.json
+*.credenciales.json
+.hostinger/

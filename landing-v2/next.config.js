@@ -128,10 +128,34 @@ const CABECERAS = [
   },
 ]
 
+/**
+ * EXPORTACION ESTATICA — OPCIONAL Y APAGADA POR DEFECTO.
+ *
+ * Vercel sirve este sitio con servidor de Next, y de ahi salen dos cosas que
+ * una exportacion estatica NO tiene: las cabeceras de seguridad de `headers()`
+ * y el optimizador de imagenes. Poner `output: 'export'` fijo en este archivo
+ * apagaria las dos EN PRODUCCION, en silencio y sin que ningun test lo note.
+ *
+ * Por eso se enciende con una variable de entorno y solo para la copia que va a
+ * un hosting clasico: `EXPORTAR_ESTATICO=1 npm run build` deja el sitio en
+ * `out/`. Sin la variable, Vercel construye exactamente lo de siempre.
+ *
+ * Lo que se pierde en esa copia hay que reponerlo en el servidor de destino
+ * —las cabeceras van en `.htaccess`— y esta escrito en `scripts/exportar.md`.
+ * Un despliegue que pierde su CSP y no lo dice es peor que no desplegar.
+ */
+const EXPORTACION = process.env.EXPORTAR_ESTATICO === '1'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  ...(EXPORTACION ? { output: 'export', trailingSlash: true } : {}),
   images: {
+    /*
+     * En exportacion no hay optimizador: es un proceso de servidor. Sin
+     * `unoptimized` el build falla, y con el las imagenes se sirven tal cual.
+     */
+    ...(EXPORTACION ? { unoptimized: true } : {}),
     /*
      * Por defecto Next solo negocia WebP. Anadir AVIF delante hace que los
      * navegadores que lo soportan reciban el formato mas pequeno, y los que no
@@ -145,6 +169,13 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei', '@react-three/postprocessing'],
+  /*
+   * `headers()` NO se aplica en exportacion estatica —Next lo avisa y sigue—,
+   * asi que en esa copia las cabeceras las tiene que poner el servidor de
+   * destino. Se deja declarado igualmente: es la fuente de la que sale el
+   * `.htaccess`, y tenerlas en dos sitios escritas a mano seria garantizar que
+   * un dia digan cosas distintas.
+   */
   async headers() {
     return [{ source: '/:path*', headers: CABECERAS }]
   },

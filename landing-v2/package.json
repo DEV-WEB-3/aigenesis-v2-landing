@@ -15,7 +15,10 @@
     "gen:logo-mask": "python scripts/sample-logo-mask.py public/brand/genesis-symbol-512.png lib/trust/genesisLogoMaskPool.generated.ts GENESIS_LOGO 6000",
     "gen:brand-masks": "npm run gen:logo-mask && python scripts/sample-logo-mask.py public/brand/gpulse-512.png lib/brand/gpulseMaskPool.generated.ts GPULSE 6000 && python scripts/sample-logo-mask.py public/brand/gevy-alt-512.png lib/brand/gevyMaskPool.generated.ts GEVY 6000",
     "verify:tempo": "node scripts/verify-visual.mjs",
-    "verify:i18n": "node scripts/verify-i18n.mjs"
+    "verify:i18n": "node scripts/verify-i18n.mjs",
+    "exportar": "node scripts/exportar.mjs",
+    "desplegar:hosting": "node scripts/desplegar-hosting.mjs",
+    "desplegar:probar": "node scripts/desplegar-hosting.mjs --probar"
   },
   "dependencies": {
     "@react-three/fiber": "8.18.0",
