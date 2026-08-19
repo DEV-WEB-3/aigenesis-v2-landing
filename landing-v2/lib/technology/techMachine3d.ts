@@ -59,21 +59,55 @@ export interface Capa3D {
 /**
  * PROPORCIONES DEL TUBO, leidas de la referencia.
  *
- * El hueco interior es grande —el 62 % del radio exterior— y eso NO es un
- * detalle: es lo que convierte cada pieza en un anillo por el que se ve pasar la
- * columna, en vez de en una plataforma maciza. Medido sobre la referencia, el
- * borde de la corona ocupa poco mas de un tercio del radio.
+ * El hueco interior es el 56 % del radio exterior. Empece en 0,63 y la
+ * comparacion EN GRISES —sin color, que es como se juzga el volumen— lo dejo
+ * claro: la referencia tiene una corona superior ANCHA y luminosa, y con un
+ * hueco de 0,63 esa corona se quedaba en un filo. El agujero sigue existiendo
+ * —por el se ve pasar la columna— pero deja de comerse la superficie util.
  */
-export const TUBO_HUECO = 0.63
-/** Altura del tubo respecto a su radio exterior. */
-export const TUBO_ALTO = 0.3
+export const TUBO_HUECO = 0.56
+/**
+ * Altura del tubo respecto a su radio exterior.
+ *
+ * 0,19, MEDIDO SOBRE UN RECORTE AMPLIADO del anillo de BLOCKCHAIN: la pared
+ * frontal ocupa 30 px para un radio de 180. Antes puse 0,30, luego 0,44
+ * mirando la comparacion a tamano pequeno, y las dos veces me equivoque en la
+ * misma direccion.
+ *
+ * EL ERROR DE FONDO: a tamano pequeno confundi el ALTO DEL ANILLO con el alto
+ * de su ELIPSE SUPERIOR. Lo que hace que el anillo de la referencia parezca
+ * grueso no es la pared —que es fina— sino la elipse, que ocupa 62 px de los
+ * 92 que mide el conjunto. O sea que el grosor lo da el ANGULO DE CAMARA, no la
+ * geometria. Subir la pared para conseguirlo era corregir la pieza equivocada.
+ */
+export const TUBO_ALTO = 0.19
 
 /**
  * LOS CINCO ESTRATOS.
  *
- * El radio decrece hacia arriba —el cono escalonado de la referencia— y la
- * separacion vertical es constante. `re` esta en unidades de escena; la camara
- * se encarga de que quepa.
+ * EL ESCALONADO NO ES LINEAL, y este fue el ultimo error que quedaba.
+ *
+ * Medidos los cinco diametros de la referencia sobre las filas centradas en el
+ * eje —descartando las que cruzan las guias de las lecturas—, la proporcion
+ * respecto al mayor es:
+ *
+ *     aplicaciones 0,82 · blockchain 0,82 · ia 0,92 · infra 0,96 · backend 1,00
+ *
+ * Es decir: las dos de arriba son practicamente IGUALES y luego hay un salto
+ * fuerte al bajar a IA. Yo tenia un degradado uniforme —0,91 · 0,93 · 0,95 ·
+ * 0,98 · 1,00— y eso produce otra lectura: cinco piezas escalando parejo se ven
+ * como un cono; dos iguales arriba mas un escalon marcado se ven como una
+ * CABEZA sobre un cuerpo, que es la silueta de la referencia.
+ *
+ * (Antes de esto tenia 0,63 de estrechamiento, que era una torre. El error fue
+ * corregir de un extremo al otro en vez de medir cada nivel.)
+ *
+ * LA SEPARACION es 2,08 y no 1,80. Salio de 0,286 del diametro mayor, que es lo
+ * medido en la referencia, pero ese numero se calculo con el canto a 0,30 del
+ * radio. Al subirlo a 0,44 —que es el correcto— los anillos crecieron hacia
+ * arriba y hacia abajo y se comieron el aire entre ellos: cada capa tiene que
+ * poder leerse como una plataforma independiente, y pegadas dejan de poder.
+ * El paso se ajusta al canto nuevo, no al viejo.
  */
 export const CAPAS_3D: readonly Capa3D[] = [
   {
@@ -89,7 +123,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     label: 'INFRAESTRUCTURA',
     lectura: 'Infraestructura distribuida',
     detalle: ['Escalable, redundante y preparada', 'para millones de interacciones.'],
-    orden: 1, y: 1.62, re: 2.86,
+    orden: 1, y: 1.86, re: 3.02,
     color: EMISSION.blueHi, colorAlt: EMISSION.blue, latido: 7.2, lado: 'izq',
   },
   {
@@ -97,7 +131,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     label: 'IA',
     lectura: 'Inteligencia artificial',
     detalle: ['Motor propietario que aprende,', 'predice y optimiza en tiempo real.'],
-    orden: 2, y: 3.24, re: 2.57,
+    orden: 2, y: 3.72, re: 2.90,
     color: EMISSION.magenta, colorAlt: EMISSION.magentaHi, latido: 4.8, lado: 'der',
   },
   {
@@ -105,7 +139,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     label: 'BLOCKCHAIN',
     lectura: 'Inmutable y descentralizado',
     detalle: ['Transacciones verificables, registros', 'transparentes y sin puntos de falla.'],
-    orden: 3, y: 4.86, re: 2.28,
+    orden: 3, y: 5.58, re: 2.60,
     color: EMISSION.violetHi, colorAlt: EMISSION.magenta, latido: 6.4, lado: 'izq',
   },
   {
@@ -113,7 +147,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     label: 'APLICACIONES',
     lectura: 'Aplicaciones inteligentes',
     detalle: ['Interfaces descentralizadas,', 'experiencias fluidas y seguras.'],
-    orden: 4, y: 6.48, re: 1.99,
+    orden: 4, y: 7.44, re: 2.56,
     color: EMISSION.cyan, colorAlt: EMISSION.blueHi, latido: 8, lado: 'der',
   },
 ] as const
@@ -121,10 +155,19 @@ export const CAPAS_3D: readonly Capa3D[] = [
 export const CAPA_BASE = CAPAS_3D[0]!
 export const CAPA_CIMA = CAPAS_3D[CAPAS_3D.length - 1]!
 
-/** Altura del Genesis Core. */
-export const NUCLEO_Y = 9.35
-/** Semiancho del recinto hexagonal. */
-export const NUCLEO_R = 1.5
+/**
+ * Altura del Genesis Core.
+ * Medido: en la referencia el centro del nucleo esta 135 px sobre el centro del
+ * anillo de aplicaciones, para 418 px de diametro mayor — 0,32 del diametro.
+ */
+export const NUCLEO_Y = 9.5
+/**
+ * Semiancho del recinto hexagonal.
+ * Medido: el hexagono ocupa 135 px de ancho contra los 358 del anillo que tiene
+ * debajo — el 37,7 %. Con un anillo de radio 2,70 eso da 1,02. Tenia 1,5, que
+ * es la mitad del anillo: por eso el nucleo pesaba mas que la cima de la pila.
+ */
+export const NUCLEO_R = 1.06
 /** Altura de la placa base. */
 export const SUELO_Y = -1.15
 
@@ -144,10 +187,22 @@ export const SUELO_Y = -1.15
  */
 export const CAMARA = {
   fov: 30,
-  distancia: 27,
-  elevacion: 17.5 * (Math.PI / 180),
+  distancia: 25.5,
+  /*
+   * 10°, NO 17,5°.
+   *
+   * El seno de la elevacion ES la relacion entre el eje menor y el mayor de las
+   * elipses. Medido sobre el anillo de IA de la referencia —el mas legible—:
+   * 67 px de alto para 390 de ancho, o sea 0,172, que es sen(9,9°).
+   *
+   * Yo tenia 0,30 = 17,5°, y esos 7,6 grados de mas son la diferencia entre ver
+   * la maquina DE CANTO —con la pared frontal ancha y el interior visible por el
+   * hueco, que es lo que la hace parecer hardware— y verla DESDE ARRIBA, donde
+   * cada anillo se convierte en un disco y el conjunto en un diagrama.
+   */
+  elevacion: 10 * (Math.PI / 180),
   /** A que altura mira. Ni al centro geometrico ni al nucleo: al peso visual. */
-  objetivoY: 3.9,
+  objetivoY: 4.3,
 } as const
 
 export function posicionCamara(): [number, number, number] {
@@ -215,10 +270,10 @@ export function texturaPared(sal: number, color: string): HTMLCanvasElement | nu
 
     // ventanillas: tres filas, y solo una de cada tres encendida — un canto con
     // TODAS las luces puestas se lee como guirnalda, no como sistema
-    for (let f = 0; f < 3; f++) {
-      const filas = 3
-      const alto = H * 0.16
-      const y0 = H * 0.16 + f * ((H * 0.62) / filas)
+    for (let f = 0; f < 4; f++) {
+      const filas = 4
+      const alto = H * 0.12
+      const y0 = H * 0.13 + f * ((H * 0.7) / filas)
       const n = 2 + Math.floor(semilla(i * 7 + f, sal) * 2)
       for (let k = 0; k < n; k++) {
         const w = anchoMod * (0.16 + semilla(i * 13 + f * 3 + k, sal) * 0.2)
@@ -276,7 +331,7 @@ export function texturaCorona(sal: number, color: string): HTMLCanvasElement | n
     g.arc(cx, cx, R * 0.66, a1, a0, true)
     g.closePath()
     g.fillStyle = viva ? color : 'rgba(80,100,150,0.5)'
-    g.globalAlpha = viva ? 0.5 : 0.16
+    g.globalAlpha = viva ? 0.72 : 0.3
     g.fill()
   }
   g.globalAlpha = 1

@@ -100,7 +100,7 @@ export default function TechColumnFloor({ activo }: { activo: boolean }) {
       </mesh>
       {/* cuerpo: el color */}
       <mesh position={[0, centroY, 0]}>
-        <cylinderGeometry args={[0.13, 0.13, alto, 16, 1, true]} />
+        <cylinderGeometry args={[0.1, 0.1, alto, 16, 1, true]} />
         <meshBasicMaterial
           map={columna ?? undefined}
           toneMapped={false}
@@ -112,12 +112,12 @@ export default function TechColumnFloor({ activo }: { activo: boolean }) {
       </mesh>
       {/* aura: el aire iluminado alrededor */}
       <mesh position={[0, centroY, 0]}>
-        <cylinderGeometry args={[0.42, 0.42, alto, 16, 1, true]} />
+        <cylinderGeometry args={[0.26, 0.26, alto, 16, 1, true]} />
         <meshBasicMaterial
           map={columna ?? undefined}
           toneMapped={false}
           transparent
-          opacity={0.1}
+          opacity={0.07}
           blending={THREE.AdditiveBlending}
           depthWrite={false}
           side={THREE.DoubleSide}
@@ -135,9 +135,13 @@ export default function TechColumnFloor({ activo }: { activo: boolean }) {
         <meshBasicMaterial color={INK.base} toneMapped={false} />
       </instancedMesh>
 
-      {/* la placa base */}
+      {/*
+        LA PLACA BASE. Radio 6,6 y no 10,5: medida sobre la referencia, la placa
+        llega a 1,48 veces el ancho del anillo de backend. Con 10,5 se comia el
+        encuadre y la maquina parecia pequena encima de una alfombra.
+      */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, SUELO_Y, 0]}>
-        <circleGeometry args={[10.5, 96]} />
+        <circleGeometry args={[6.6, 96]} />
         <meshBasicMaterial
           map={suelo ?? undefined}
           transparent

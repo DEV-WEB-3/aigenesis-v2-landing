@@ -8,6 +8,7 @@ import { EMISSION } from '@/lib/design/tokens'
 import TechRings from './TechRings'
 import TechCore from './TechCore'
 import TechColumnFloor from './TechColumnFloor'
+import EntornoGenesis from './EntornoGenesis'
 import {
   CAPAS_3D,
   CAMARA,
@@ -162,14 +163,40 @@ export default function TechMachineCanvas({
         antialias: calidad === 'alta',
         alpha: true,
         powerPreference: calidad === 'alta' ? 'high-performance' : 'low-power',
+        /*
+         * ACES filmico y no lineal. Con luces de intensidad alta sobre
+         * materiales metalicos, el mapeo lineal satura a blanco puro y se pierde
+         * el color de marca justo en los reflejos, que es donde mas se nota.
+         */
+        toneMapping: THREE.ACESFilmicToneMapping,
+        toneMappingExposure: 1.05,
       }}
       style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }}
     >
-      <ambientLight intensity={0.42} color={EMISSION.violet} />
-      <directionalLight position={[-7, 12, 9]} intensity={2.1} color={EMISSION.cyan} />
-      <pointLight position={[7, 4, 6]} intensity={26} distance={26} decay={2} color={EMISSION.magenta} />
-      <pointLight position={[-7, 1.5, 5]} intensity={16} distance={24} decay={2} color={EMISSION.blueHi} />
-      <pointLight position={[0, NUCLEO_Y - 4, -7]} intensity={14} distance={26} decay={2} color={EMISSION.violetHi} />
+      {/*
+        EL ENTORNO VA PRIMERO. Sin el, los materiales con `transmission` y
+        `clearcoat` no tienen nada que reflejar y devuelven negro: el cristal
+        sale plano y la tentacion es taparlo con mas bloom, que es exactamente
+        lo contrario de lo que hace falta.
+      */}
+      <EntornoGenesis />
+
+      {/*
+        ILUMINACION LOCALIZADA, no uniforme. Cada luz tiene un trabajo y un
+        sitio; iluminar toda la escena por igual aplana las superficies curvas y
+        es justo lo que hace que una pieza 3D parezca un dibujo.
+      */}
+      <ambientLight intensity={0.22} color={EMISSION.violet} />
+      {/* clave cian, desde arriba-izquierda: define el labio de cada anillo */}
+      <directionalLight position={[-6, 13, 8]} intensity={1.5} color={EMISSION.cyan} />
+      {/* magenta a la altura de IA — la capa que le da nombre al color */}
+      <pointLight position={[5.5, CAPAS_3D[2]!.y, 5]} intensity={22} distance={16} decay={2} color={EMISSION.magenta} />
+      {/* violeta abajo, entre blockchain y backend */}
+      <pointLight position={[-5.5, CAPAS_3D[1]!.y, 4.5]} intensity={17} distance={16} decay={2} color={EMISSION.violetHi} />
+      {/* azul de contra, por detras: separa la maquina del fondo de la seccion */}
+      <pointLight position={[0, CAPAS_3D[3]!.y, -8]} intensity={16} distance={22} decay={2} color={EMISSION.blueHi} />
+      {/* la columna ilumina de verdad lo que tiene alrededor */}
+      <pointLight position={[0, CAPAS_3D[2]!.y, 0]} intensity={9} distance={9} decay={2} color={EMISSION.cyan} />
 
       <TechColumnFloor activo={activo} />
       <TechRings activo={activo} />
@@ -184,12 +211,21 @@ export default function TechMachineCanvas({
         DOM, donde cuestan cero.
       */}
       <EffectComposer multisampling={calidad === 'alta' ? 4 : 0}>
+        {/*
+          BLOOM CONTENIDO. El umbral sube de 0,16 a 0,42 para que solo florezcan
+          los EMISORES —labios, columna, nucleo, marca— y no las superficies
+          iluminadas.
+          La prueba es apagarlo: si sin bloom la maquina deja de verse premium,
+          el problema esta en los materiales y taparlo con resplandor solo
+          convierte la pieza en un contorno de neon. Con la corona en metal
+          reflejando el entorno y la pared en cristal, la forma se sostiene sola.
+        */}
         <Bloom
           mipmapBlur
-          intensity={calidad === 'alta' ? 1.15 : 0.85}
-          luminanceThreshold={0.16}
-          luminanceSmoothing={0.42}
-          radius={0.72}
+          intensity={calidad === 'alta' ? 0.62 : 0.48}
+          luminanceThreshold={0.42}
+          luminanceSmoothing={0.3}
+          radius={0.62}
         />
       </EffectComposer>
     </Canvas>

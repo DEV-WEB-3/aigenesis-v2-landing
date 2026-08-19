@@ -2,8 +2,9 @@
 
 import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
-import { VOID } from '@/lib/design/tokens'
 import { useFrame } from '@react-three/fiber'
+import { VOID } from '@/lib/design/tokens'
+import TechRingInterior from './TechRingInterior'
 import {
   CAPAS_3D,
   TUBO_HUECO,
@@ -14,139 +15,157 @@ import {
 } from '@/lib/technology/techMachine3d'
 
 /**
- * LOS CINCO ANILLOS.
+ * LOS CINCO ANILLOS — plataformas, no aros.
  *
- * CADA UNO ES UN TUBO, no un disco. Cinco mallas por anillo, y ninguna sobra:
+ * MAPA DE MATERIALES, y cada uno esta donde esta por un motivo:
  *
- *   pared exterior   el canto lleno de ventanillas — la densidad
- *   pared interior   se ve A TRAVES del hueco — el volumen
- *   corona           la cara superior, con sus sectores
- *   labio superior   toro emisivo: el borde encendido de la referencia
- *   labio interior   el mismo tratamiento en el borde del hueco
+ *   corona superior   METAL LIQUIDO. `metalness` casi 1 y `roughness` baja, con
+ *                     el entorno de marca reflejandose encima. Es la unica
+ *                     superficie de la pieza que mira hacia la luz, asi que es
+ *                     la unica donde un reflejo se ve de verdad — ponerlo en la
+ *                     pared lateral seria gastarlo donde no se aprecia.
+ *   pared exterior    CRISTAL TINTADO. Translucida a proposito: es lo que deja
+ *                     ver la maquinaria de dentro, y sin eso la transparencia
+ *                     no significaria nada.
+ *   pared interior    metal oscuro. Se ve por el hueco y es lo que da la
+ *                     sensacion de TUBO en vez de silueta recortada.
+ *   labios            NEON PURO (`MeshBasicMaterial`). Luz sin sombreado: es lo
+ *                     que el bloom recoge, y lo que hace que el borde se vea
+ *                     encendido en lugar de iluminado.
+ *   maquinaria        metal mate con acento emisivo. Si brillara como la corona
+ *                     competiria con ella y el interior se leeria como una
+ *                     mancha.
  *
- * La pared interior es la pieza que mas trabaja y la que menos se nota que
- * esta: sin ella el agujero es un vacio negro y el anillo vuelve a leerse como
- * una silueta recortada. Va con `side: BackSide` porque se mira desde dentro —
- * la cara que da al eje es la de detras del cilindro.
- *
- * LA DENSIDAD VA EN TEXTURA, NO EN GEOMETRIA. La referencia tiene decenas de
- * ventanillas por anillo; como mallas serian miles de nodos y otros tantos
- * draw calls. Como mapa emisivo son cero nodos, un material y una textura que
- * ademas escala sola con la distancia.
- *
- * Los labios son `MeshBasicMaterial`: luz pura, sin sombreado. Es lo que hace
- * que el bloom los recoja y que el borde se vea ENCENDIDO en vez de iluminado.
+ * EL ORDEN DE PINTADO IMPORTA. La pared exterior es transparente y va con
+ * `depthWrite: false`: si escribiera profundidad, taparia la maquinaria que
+ * tiene detras y todo el trabajo de dejar ver el interior no serviria de nada.
+ * Por eso interior (0) → pared interior (1) → corona (2) → pared exterior (3).
  */
 
 function Anillo({ capa, activo }: { capa: Capa3D; activo: boolean }) {
   const ri = capa.re * TUBO_HUECO
   const alto = capa.re * TUBO_ALTO
-
-  const grupo = useRef<THREE.Group>(null)
   const coronaRef = useRef<THREE.Mesh>(null)
 
   const { pared, corona } = useMemo(() => {
-    const mk = (c: HTMLCanvasElement | null, repetir?: [number, number]) => {
+    const mk = (c: HTMLCanvasElement | null, envolver = false) => {
       if (!c) return null
       const t = new THREE.CanvasTexture(c)
       t.colorSpace = THREE.SRGBColorSpace
-      if (repetir) {
+      if (envolver) {
         t.wrapS = THREE.RepeatWrapping
         t.wrapT = THREE.ClampToEdgeWrapping
-        t.repeat.set(repetir[0], repetir[1])
       }
       t.anisotropy = 4
       return t
     }
     return {
-      pared: mk(texturaPared(capa.orden, capa.color), [1, 1]),
+      pared: mk(texturaPared(capa.orden, capa.color), true),
       corona: mk(texturaCorona(capa.orden, capa.color)),
     }
   }, [capa.orden, capa.color])
 
   /*
-   * LA DERIVA DE LA CORONA. Muy lenta y solo en la cara superior: la
-   * infraestructura no corre. Si girara el anillo entero, las ventanillas del
-   * canto se moverian con el y la pieza pareceria suelta sobre su eje en vez de
-   * montada; girando solo la corona se lee como un disco operando DENTRO de un
-   * bastidor fijo.
+   * Solo gira la CORONA, y muy despacio. Si girara el anillo entero, las
+   * ventanillas del canto se moverian con el y la pieza pareceria suelta sobre
+   * su eje; girando solo la cara superior se lee como un disco operando dentro
+   * de un bastidor fijo. La infraestructura no corre.
    */
   useFrame((_, dt) => {
     if (!activo || !coronaRef.current) return
-    coronaRef.current.rotation.z += dt * (capa.orden % 2 === 0 ? 0.014 : -0.011)
+    coronaRef.current.rotation.z += dt * (capa.orden % 2 === 0 ? 0.012 : -0.009)
   })
 
   return (
-    <group ref={grupo} position={[0, capa.y, 0]} name={`capa-${capa.id}`}>
-      {/* pared exterior — la densidad */}
-      <mesh>
-        <cylinderGeometry args={[capa.re, capa.re, alto, 96, 1, true]} />
-        <meshStandardMaterial
-          color={VOID.base}
-          roughness={0.34}
-          metalness={0.75}
-          emissive={capa.color}
-          emissiveMap={pared ?? undefined}
-          emissiveIntensity={1.55}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
+    <group position={[0, capa.y, 0]} name={`capa-${capa.id}`}>
+      {/* ── la maquinaria: lo primero, para que quede DETRAS del cristal ── */}
+      <group renderOrder={0}>
+        <TechRingInterior capa={capa} activo={activo} />
+      </group>
 
       {/* pared interior — el volumen. Se ve por el hueco. */}
-      <mesh>
+      <mesh renderOrder={1}>
         <cylinderGeometry args={[ri, ri, alto, 96, 1, true]} />
         <meshStandardMaterial
           color={VOID.black}
-          roughness={0.5}
-          metalness={0.6}
+          roughness={0.42}
+          metalness={0.75}
           emissive={capa.colorAlt}
           emissiveMap={pared ?? undefined}
-          emissiveIntensity={0.8}
+          emissiveIntensity={0.62}
+          envMapIntensity={0.7}
           side={THREE.BackSide}
         />
       </mesh>
 
-      {/* corona superior */}
-      <mesh ref={coronaRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, alto / 2, 0]}>
+      {/* corona: METAL LIQUIDO, la cara que recoge el entorno */}
+      <mesh ref={coronaRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, alto / 2, 0]} renderOrder={2}>
         <ringGeometry args={[ri, capa.re, 96, 1]} />
-        <meshStandardMaterial
-          color={VOID.base}
-          roughness={0.28}
-          metalness={0.85}
+        {/*
+          La corona es la superficie que mira a la luz, asi que es la que decide
+          si el anillo pesa. En grises, con `metalness` 0,96 salia casi negra:
+          un metal puro sin nada brillante enfrente no tiene difuso que mostrar,
+          solo reflejo — y el reflejo de un entorno oscuro es oscuro. Bajando a
+          0,78 recupera componente difusa y la banda superior se ve, que es
+          exactamente lo que la referencia tiene y a mi me faltaba.
+        */}
+        <meshPhysicalMaterial
+          color={VOID.raised}
+          roughness={0.16}
+          metalness={0.78}
+          clearcoat={1}
+          clearcoatRoughness={0.08}
+          envMapIntensity={1.9}
           emissive={capa.color}
           emissiveMap={corona ?? undefined}
-          emissiveIntensity={1.25}
+          emissiveIntensity={1.7}
           side={THREE.DoubleSide}
-          transparent
         />
       </mesh>
 
-      {/* suelo del anillo: se ve poco, pero sin el el tubo es translucido */}
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, -alto / 2, 0]}>
+      {/* suelo del anillo: se ve poco, pero sin el el tubo es hueco por abajo */}
+      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, -alto / 2, 0]} renderOrder={1}>
         <ringGeometry args={[ri, capa.re, 64, 1]} />
-        <meshStandardMaterial color={VOID.black} roughness={0.9} metalness={0.2} side={THREE.DoubleSide} />
+        <meshStandardMaterial color={VOID.black} roughness={0.85} metalness={0.35} side={THREE.DoubleSide} />
+      </mesh>
+
+      {/* pared exterior — CRISTAL. Va la ultima y sin escribir profundidad. */}
+      <mesh renderOrder={3}>
+        <cylinderGeometry args={[capa.re, capa.re, alto, 96, 1, true]} />
+        <meshPhysicalMaterial
+          color={VOID.base}
+          transparent
+          /* 0,62 y no 0,46: con demasiada transparencia el anillo deja de
+             pesar y vuelve a leerse como un aro. El cristal tiene que dejar
+             INTUIR el interior, no mostrarlo entero. */
+          opacity={0.62}
+          roughness={0.1}
+          metalness={0.15}
+          clearcoat={1}
+          clearcoatRoughness={0.05}
+          envMapIntensity={1.5}
+          emissive={capa.color}
+          emissiveMap={pared ?? undefined}
+          emissiveIntensity={1.15}
+          side={THREE.DoubleSide}
+          depthWrite={false}
+        />
       </mesh>
 
       {/*
-        LOS LABIOS. Cuatro toros finos: el borde exterior y el del hueco, arriba
-        y abajo. Son luz pura —`MeshBasicMaterial`—, asi que el bloom los recoge
-        y el anillo se ve ENCENDIDO por el canto. Es el rasgo mas caracteristico
-        de la referencia y el mas barato de todos: cuatro mallas de 128 caras.
+        LOS LABIOS. Cuatro toros finos —borde exterior y borde del hueco, arriba
+        y abajo—, en luz pura. Es el rasgo mas caracteristico de la referencia y
+        el mas barato: cuatro mallas de 128 caras.
       */}
       {([
-        [capa.re, alto / 2, 0.028, 1],
-        [capa.re, -alto / 2, 0.022, 0.55],
-        [ri, alto / 2, 0.02, 0.75],
-        [ri, -alto / 2, 0.016, 0.4],
+        [capa.re, alto / 2, 0.026, 1],
+        [capa.re, -alto / 2, 0.02, 0.5],
+        [ri, alto / 2, 0.019, 0.8],
+        [ri, -alto / 2, 0.015, 0.38],
       ] as const).map(([r, y, grosor, intensidad], i) => (
-        <mesh key={i} position={[0, y, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <mesh key={i} position={[0, y, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={4}>
           <torusGeometry args={[r, grosor, 8, 128]} />
-          <meshBasicMaterial
-            color={capa.color}
-            toneMapped={false}
-            transparent
-            opacity={intensidad}
-          />
+          <meshBasicMaterial color={capa.color} toneMapped={false} transparent opacity={intensidad} />
         </mesh>
       ))}
     </group>
