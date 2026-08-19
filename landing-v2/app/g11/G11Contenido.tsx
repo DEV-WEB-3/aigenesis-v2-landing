@@ -35,24 +35,27 @@ function FichaPresentacion({ p, antigua = false }: { p: PresentacionG11; antigua
         target="_blank"
         rel="noopener noreferrer"
         /*
-         * `dir="rtl"` POR FICHA, y ahora conviven dos direcciones.
+         * SIN `dir` POR FICHA — el mismo motivo que en el selector de idioma.
          *
-         * Antes el documento entero era LTR y sólo estas fichas iban al revés.
-         * Ahora el documento puede ser RTL —si alguien lee la página en árabe—
-         * y entonces son las fichas LATINAS las que necesitan declararse: sin
-         * esto, «Deutsch» dentro de un documento árabe hereda RTL y el nombre
-         * queda alineado al lado que no lee quien lo busca.
+         * Lo llevaba, y rompía la rejilla: las fichas árabe y urdu alineaban su
+         * contenido al margen contrario que las otras nueve, y dentro de la
+         * propia ficha el nombre se iba a un lado y el «PDF · 2,41 MB» al otro.
+         * Once tarjetas iguales dejaban de parecer una rejilla.
          *
-         * Se declara la dirección de CADA ficha por su propio idioma, que es lo
-         * único que no depende de en qué idioma esté leyendo el visitante.
+         * `dir` es propiedad del párrafo: ordena las letras Y alinea el bloque.
+         * Aquí sólo hacía falta lo primero, y lo primero lo resuelve solo el
+         * algoritmo bidi por el alfabeto. El aislamiento se hace con
+         * `unicode-bidi: isolate` en el CSS y no con `<bdi>`: `<bdi>` trae
+         * `dir="auto"` y volvería a alinear la ficha a la derecha, que es justo
+         * lo que se viene a quitar. `lang` se queda porque elige voz y
+         * tipografía.
          */
-        dir={p.rtl ? 'rtl' : 'ltr'}
         lang={p.codigo}
         className={`surface-card card-genesis-hover focus-ring-genesis rounded-2xl px-genesis-4 py-genesis-4 flex flex-col gap-1 no-underline h-full ${
           antigua ? 'opacity-75' : ''
         }`}
       >
-        <span className="font-display text-body-lg text-genesis-text">{p.nativo}</span>
+        <span className="ficha-idioma__nativo font-display text-body-lg text-genesis-text">{p.nativo}</span>
         {/* El peso es cifra y unidad: se aísla para que «2,5 MB» no se reordene en RTL. */}
         <span
           dir="ltr"

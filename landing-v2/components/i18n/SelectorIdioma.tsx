@@ -12,12 +12,16 @@ import { IDIOMAS, buscarIdioma, type CodigoIdioma } from '@/lib/i18n/idiomas'
  * España, el árabe no es un solo país y el serbio no cabe en ninguna. Dos: no
  * dice nada de lo único que el visitante necesita saber ademas del nombre.
  *
- * Porque aquí el idioma no es solo la interfaz: detrás de cada uno hay una
- * PRESENTACIÓN OFICIAL descargable, y de los once, ocho la tienen en la v5.0 y
- * tres todavía en la anterior. Elegir idioma y saber qué material vas a poder
- * bajar es la misma decisión, así que se toma en el mismo sitio. La insignia
- * `v5.0` / `v1` no es un detalle administrativo: quien elige su lengua está a un
- * clic de descargar.
+ * LLEVÓ INSIGNIAS `v5.0` / `v1` Y SE QUITARON. Decisión del owner, y es la
+ * correcta: en un selector se está eligiendo IDIOMA, no versión de documento.
+ * Once filas con una etiqueta técnica al lado convierten un control de sistema
+ * en un catálogo, y el ruido se paga en todas las pantallas para informar de
+ * algo que sólo importa en el momento de descargar.
+ *
+ * La información no se pierde, se dice donde sirve: `/g11` separa la tanda v1
+ * en su propio bloque, y el botón de descarga avisa en ámbar —con el peso—
+ * cuando lo que entrega no es la v5.0. Ahí el dato llega justo cuando cambia
+ * una decisión; aquí sólo estorbaba.
  *
  * EL GLIFO ES UN ORBE DE MERIDIANOS, no un globo terráqueo con continentes. Es
  * la misma figura que sostiene el hero —una esfera con anillos— y por eso el
@@ -83,38 +87,44 @@ export default function SelectorIdioma({ compacto = false }: { compacto?: boolea
 
       {abierto ? (
         <div className="sel-idioma__panel" id={panelId} role="listbox" aria-label={t('Idioma')}>
-          <p className="sel-idioma__nota">
-            {t('La presentación oficial está disponible en cada idioma')}
-          </p>
           <ul className="sel-idioma__lista">
             {IDIOMAS.map((i) => (
               <li key={i.codigo}>
+                {/*
+                  SIN `dir` EN LA FILA, y con `<bdi>` alrededor del nombre.
+
+                  Cada fila llevaba `dir="rtl"` para el árabe y el urdu, y eso
+                  hacía dos cosas a la vez: ordenaba las letras —que hay que
+                  hacerlo— y alineaba el bloque al otro lado —que no—. El
+                  resultado era una lista con nueve nombres pegados a un margen
+                  y dos pegados al contrario: la columna dejaba de existir.
+
+                  `dir` es propiedad del PÁRRAFO, no de la palabra. Quitándolo,
+                  la fila hereda la dirección del panel y todos los nombres
+                  arrancan del mismo margen; el árabe se sigue leyendo de
+                  derecha a izquierda porque eso lo decide el algoritmo bidi por
+                  el propio alfabeto, no el atributo.
+
+                  El aislamiento se hace con `unicode-bidi: isolate` en el CSS
+                  y NO con `<bdi>`, aunque `<bdi>` es el elemento que parece
+                  hecho para esto. Motivo, comprobado en pantalla: `<bdi>` lleva
+                  `dir="auto"` de serie, deduce «rtl» de la primera letra árabe
+                  y vuelve a alinear la fila a la derecha — exactamente el
+                  problema que se venía a quitar. `isolate` da el aislamiento sin
+                  tocar la dirección.
+
+                  `lang` se queda: es lo que hace que un lector de pantalla
+                  cambie de voz y que el navegador elija la tipografía correcta.
+                */}
                 <button
                   type="button"
                   role="option"
                   aria-selected={i.codigo === idioma}
                   lang={i.codigo}
-                  dir={i.rtl ? 'rtl' : 'ltr'}
                   className={`sel-idioma__opcion${i.codigo === idioma ? ' es-actual' : ''}`}
                   onClick={() => elegir(i.codigo)}
                 >
                   <span className="sel-idioma__nativo">{i.nativo}</span>
-                  {/*
-                    La insignia dice qué versión de la presentación hay en ese
-                    idioma. `v1` va en ámbar y no en rojo: no es un error, es
-                    material anterior — y material viejo en tu lengua sirve más
-                    que material nuevo que no entiendes.
-                  */}
-                  <span
-                    className={`sel-idioma__version sel-idioma__version--${i.material}`}
-                    title={
-                      i.material === 'v5'
-                        ? t('Presentación oficial v5.0')
-                        : t('Presentación de la versión anterior')
-                    }
-                  >
-                    {i.material === 'v5' ? 'v5.0' : 'v1'}
-                  </span>
                 </button>
               </li>
             ))}

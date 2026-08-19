@@ -365,9 +365,31 @@ body {
       radial-gradient(ellipse 50% 40% at 50% 50%, rgba(110, 86, 207, 0.04) 0%, transparent 50%);
   }
 
+  /*
+   * LA CABECERA VA POR ENCIMA DEL CONTENIDO, y no lo estaba.
+   *
+   * Los tres —cabecera, cuerpo y pie— llevaban `z-index: 1` para quedar sobre
+   * la atmósfera del fondo. Con el mismo valor manda el orden del documento, y
+   * el cuerpo va después: pintaba encima de la cabecera. Mientras la cabecera
+   * sólo tuvo un logotipo y un enlace no se notó, porque nada suyo sobresalía.
+   *
+   * Al meterle el selector de idioma, sí. El desplegable se abría, se veía
+   * perfectamente —280 × 286 px, opacidad 1— y NO SE PODÍA PULSAR: el clic
+   * aterrizaba en `<main>`, que estaba delante. Medido con `elementFromPoint`
+   * sobre el centro del panel: devolvía MAIN, no el panel.
+   *
+   * Y el `z-index: 60` del panel no podía salvarlo. `position: relative` más
+   * `z-index: 1` en la cabecera CREA UN CONTEXTO DE APILAMIENTO: dentro de él,
+   * 60 ordena respecto a sus hermanos; fuera, todo el bloque sigue valiendo 1.
+   * Subir el número del panel no habría hecho absolutamente nada — es el tipo
+   * de arreglo que se prueba, no funciona, y se sube otra vez.
+   *
+   * Se arregla donde está la causa: la cabecera es lo que contiene algo que
+   * sobresale, así que la cabecera es la que tiene que ir delante.
+   */
   .static-page-header {
     position: relative;
-    z-index: 1;
+    z-index: 20;
     border-bottom: 1px solid var(--genesis-line);
     background: rgba(8, 10, 20, 0.85);
     backdrop-filter: blur(var(--g-blur-soft));
@@ -9479,11 +9501,40 @@ body {
   padding: 0.7rem;
   border-radius: 0.9rem;
   border: 1px solid rgba(157, 77, 255, 0.3);
+  /*
+   * CASI OPACO, Y ASÍ SE DESCUBRIÓ.
+   *
+   * Estaba a 0,92 y el texto de la página se leía a través: sobre
+   * `/whitepaper`, «…экосистемы AiGenesis.» cruzaba el panel y competía con los
+   * nombres de idioma.
+   *
+   * CÓMO SE COMPROBÓ, porque el primer método falló. Muestrear la luminancia de
+   * franjas dentro del panel daba máximos de 179 y yo los leía como «hay algo
+   * detrás» — 179 es EXACTAMENTE el color del texto del propio panel
+   * (`--g-ink-muted`), así que estaba midiendo el panel contra sí mismo y
+   * concluyendo lo que quería. Dos veces.
+   *
+   * Lo que sí decidió: forzar el fondo a `#000` opaco y volver a capturar. El
+   * fantasma desaparecía. Quitar la causa sospechada y ver si el síntoma se va
+   * es una prueba; muestrear píxeles que contienen otras cosas, no.
+   *
+   * POR QUÉ OPACO DEL TODO y no «casi». La aritmética no deja término medio:
+   * el panel es casi negro (luminancia ~10) y el texto de debajo es casi blanco
+   * (~235). Al 98 % de opacidad sigue pasando un 2 %, o sea unas 5 unidades —y
+   * cinco unidades sobre diez son un 50 % más de luz, que en penumbra el ojo ve
+   * perfectamente. Probado: a 0,92 el fantasma se lee, a 0,98 se lee menos, y
+   * sólo desaparece al llegar a 1.
+   *
+   * El cristal no se pierde por eso. Lo que hace que esta pastilla sea de esta
+   * marca es el borde tintado de violeta, el reflejo cenital de 1 px y la
+   * sombra profunda — y los tres siguen. Se retira `backdrop-filter` porque a
+   * opacidad 1 no pinta nada: era coste de GPU a cambio de un efecto invisible.
+   */
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 40%),
-    rgba(7, 10, 22, 0.92);
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    /* `--genesis-base` (#080a14) y no un color a mano: es el tono de superficie
+       de la marca, y era además lo que el panel ya aparentaba con su tinte. */
+    var(--genesis-base);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
     0 22px 56px rgba(2, 4, 10, 0.72);
@@ -9493,13 +9544,6 @@ body {
 @keyframes sel-idioma-entra {
   from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-.sel-idioma__nota {
-  margin: 0 0.25rem 0.55rem;
-  font-size: 0.63rem;
-  line-height: 1.4;
-  color: var(--g-ink-faint, #6B7A94);
 }
 
 .sel-idioma__lista {
@@ -9538,8 +9582,17 @@ body {
   color: var(--g-ink-base, #F8FAFC);
 }
 
-/* El nombre nativo manda: es lo que busca quien lo necesita, y por eso se lleva
-   todo el espacio que sobra. */
+/* El nombre nativo es lo unico que hay en la fila desde que se quitaron las
+   insignias de version. Se queda el `flex` y el recorte: un nombre nativo largo
+   —«Português»— tiene que caber o avisar, no desbordar la pastilla. */
+.sel-idioma__nativo,
+.ficha-idioma__nativo {
+  /* AISLAR SIN REDIRIGIR. `isolate` impide que un nombre árabe reordene lo que
+     tenga al lado, y a diferencia de `dir="auto"` no cambia el margen desde el
+     que arranca: los once nombres empiezan donde empieza la lista. */
+  unicode-bidi: isolate;
+}
+
 .sel-idioma__nativo {
   flex: 1 1 auto;
   min-width: 0;
@@ -9550,26 +9603,57 @@ body {
   white-space: nowrap;
 }
 
-/* La insignia dice QUE MATERIAL hay detras de ese idioma. `v1` en ambar, no en
-   rojo: no es un error, es la version anterior. */
-.sel-idioma__version {
-  flex: 0 0 auto;
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 0.56rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  padding: 0.1rem 0.3rem;
-  border-radius: 0.28rem;
-  border: 1px solid currentColor;
-  opacity: 0.85;
-}
+/* ── EN MÓVIL, EL PANEL SE ANCLA A LA BARRA, NO AL BOTÓN ──────────────
+   Medido a 286 px de ancho: el panel salía 13 px POR FUERA del borde
+   izquierdo. No es un ancho mal elegido, es la geometría del anclaje: el panel
+   cuelga del borde derecho del botón, y el botón está pegado a la derecha, así
+   que todo su ancho crece hacia la izquierda. En cuanto el panel es más ancho
+   que lo que queda a su izquierda, se sale — y no hay ancho fijo que lo
+   arregle, porque el hueco disponible depende de dónde caiga el botón.
 
-.sel-idioma__version--v5 { color: var(--g-emission-cyan, #00F5FF); }
-.sel-idioma__version--v1 { color: var(--g-state-warning, #E6B450); }
+   La solución es cambiar de QUÉ cuelga. Quitándole `position: relative` al
+   contenedor del selector, el bloque contenedor del panel pasa a ser el
+   ancestro posicionado que haya por encima: la barra de navegación en la
+   portada, la cabecera en las páginas propias. Las dos ocupan el ancho
+   completo, así que anclarlo a sus dos lados con un margen lo deja centrado y
+   sin poder salirse a ningún ancho de pantalla. Comprobado que no hay ningún
+   `transform` en esa cadena, que es lo único que lo rompería.
 
-@media (max-width: 420px) {
-  .sel-idioma__lista { grid-template-columns: 1fr; }
-  .sel-idioma__panel { width: min(15rem, 78vw); }
+   Una columna y 44 px de alto por fila: es un control que se pulsa con el
+   pulgar, y once idiomas en dos columnas estrechas se convierten en once
+   dianas pequeñas. */
+@media (max-width: 640px) {
+  .sel-idioma {
+    position: static;
+  }
+
+  .sel-idioma__panel {
+    inset-inline: 0.75rem;
+    width: auto;
+    top: calc(100% + 0.4rem);
+    max-height: min(70vh, 26rem);
+    overflow-y: auto;
+    /* El fondo lo hereda de la regla base: la opacidad se subió allí, para
+       todos los tamaños, no sólo aquí. Ver la nota en `.sel-idioma__panel`. */
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      0 26px 64px rgba(2, 4, 10, 0.86);
+  }
+
+  .sel-idioma__lista {
+    grid-template-columns: 1fr;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .sel-idioma__opcion {
+    min-height: 2.75rem;
+    padding-block: 0.55rem;
+  }
+
+  .sel-idioma__nativo {
+    font-size: 0.9rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
