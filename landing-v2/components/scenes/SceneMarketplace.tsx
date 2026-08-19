@@ -62,7 +62,21 @@ const SceneMarketplace = forwardRef<HTMLElement, Props>(
         </motion.p>
 
         <motion.div variants={containerV} className="grid grid-cols-2 gap-4">
-          <FeatureItem glass text="Catálogo CJ Global" />
+          {/*
+            NI EL NOMBRE DEL PROVEEDOR NI UNA REPETICION.
+
+            Decia «Catálogo CJ Global» y tenia dos problemas a la vez: nombraba
+            al suplidor —que no es informacion para el visitante y ata la marca a
+            un tercero— y repetia el «Catálogo global» del parrafo que tiene tres
+            lineas mas arriba. Una ficha que repite la frase de al lado ocupa
+            sitio sin decir nada nuevo.
+
+            «Verificado» no es adorno: el catalogo se filtra por cobertura real
+            de flete —la sonda propone y el catalogo decide—, asi que un producto
+            listado es un producto que se puede enviar. Es la afirmacion mas
+            fuerte que se puede hacer aqui y ademas es cierta.
+          */}
+          <FeatureItem glass text="Catálogo premium verificado" />
           <FeatureItem glass text="Seguimiento en vivo" />
         </motion.div>
 
