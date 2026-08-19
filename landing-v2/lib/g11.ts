@@ -16,6 +16,16 @@ import { PRESS_V5 } from './official-links'
 const DESCARGAS = 'https://aigenesis.io/downloads'
 
 export interface PresentacionG11 {
+  /**
+   * Codigo del idioma. Existe para poder poner `lang` y `dir` en la ficha.
+   *
+   * Hace falta desde que la pagina misma puede leerse en once idiomas: antes el
+   * documento era siempre LTR y solo las fichas arabe y urdu se declaraban al
+   * reves. Ahora el documento puede ser RTL, y entonces son las fichas LATINAS
+   * las que necesitan declararse. Cada ficha lleva la direccion de SU idioma,
+   * que es lo unico que no depende de en que idioma este leyendo el visitante.
+   */
+  codigo: string
   /** El idioma en su propia lengua: es como lo busca quien lo necesita. */
   nativo: string
   archivo: string
@@ -34,10 +44,15 @@ export interface PresentacionG11 {
  * 2,4-2,5 MB. Para alguien que la descarga con datos en el móvil para enseñarla,
  * eso es la diferencia entre poder y no poder.
  */
-export const PRESENTACIONES_G11: readonly PresentacionG11[] = [
-  PRESS_V5.es, PRESS_V5.en, PRESS_V5.pt, PRESS_V5.fr,
-  PRESS_V5.ru, PRESS_V5.sv, PRESS_V5.hr, PRESS_V5.ar,
-]
+const CODIGOS_V5 = ['es', 'en', 'pt', 'fr', 'ru', 'sv', 'hr', 'ar'] as const
+
+/* El codigo sale de la CLAVE de `PRESS_V5`, no se escribe otra vez al lado del
+   objeto: dos listas paralelas se desincronizan en cuanto alguien añade un
+   idioma a una y se olvida de la otra. */
+export const PRESENTACIONES_G11: readonly PresentacionG11[] = CODIGOS_V5.map((codigo) => ({
+  codigo,
+  ...PRESS_V5[codigo],
+}))
 
 /**
  * Los tres idiomas que la v5.0 NO tiene todavía.
@@ -60,9 +75,9 @@ export const PRESENTACIONES_G11: readonly PresentacionG11[] = [
  * hasta que exista su v5.0 se queda, avisado en ámbar.
  */
 export const PRESENTACIONES_G11_V1: readonly PresentacionG11[] = [
-  { nativo: 'Deutsch', archivo: `${DESCARGAS}/G%C3%89NESIS_CORPORATE_PRESENTATION_V-DEU.pdf`, mb: 9.2 },
-  { nativo: 'Српски', archivo: `${DESCARGAS}/GENESIS_CORPORATE_PRESENTATION_V-SRB.pdf`, mb: 227.3 },
-  { nativo: 'اردو', archivo: `${DESCARGAS}/GENESIS_CORPORATE_PRESENTATION_V-urdu.pdf`, mb: 5.2, rtl: true },
+  { codigo: 'de', nativo: 'Deutsch', archivo: `${DESCARGAS}/G%C3%89NESIS_CORPORATE_PRESENTATION_V-DEU.pdf`, mb: 9.2 },
+  { codigo: 'sr', nativo: 'Српски', archivo: `${DESCARGAS}/GENESIS_CORPORATE_PRESENTATION_V-SRB.pdf`, mb: 227.3 },
+  { codigo: 'ur', nativo: 'اردو', archivo: `${DESCARGAS}/GENESIS_CORPORATE_PRESENTATION_V-urdu.pdf`, mb: 5.2, rtl: true },
 ]
 
 /** Por encima de esto se avisa antes de que alguien lo pulse en el móvil. */

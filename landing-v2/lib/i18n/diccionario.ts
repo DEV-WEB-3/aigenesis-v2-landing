@@ -33,6 +33,27 @@ import type { CodigoIdioma } from '@/lib/i18n/idiomas'
 
 type Fila = Partial<Record<Exclude<CodigoIdioma, 'es'>, string>>
 
+/**
+ * SE PUEDEN AÑADIR BLOQUES, y por eso no es `const` cerrado.
+ *
+ * Motivo medido: al meter aqui el whitepaper entero —cincuenta entradas de
+ * parrafo largo por once lenguas— la PORTADA paso de 274 a 309 kB de primera
+ * carga. Treinta y cinco kilobytes de texto que la portada no usa, viajando a
+ * todo el que entra, porque un solo modulo compartido no se puede partir.
+ *
+ * Ahora cada pagina pesada trae su propio bloque y lo REGISTRA al importarse.
+ * Como el import vive dentro del componente de esa pagina, el empaquetador lo
+ * mete en el trozo de esa pagina y no en el comun: quien no entra a
+ * `/whitepaper` no descarga el whitepaper.
+ *
+ * El registro ocurre al evaluar el modulo, o sea ANTES de que su componente se
+ * pinte por primera vez. Por eso no hace falta avisar a React de nada: cuando
+ * el primer `t()` pregunta, las entradas ya estan.
+ */
+export function registrarEntradas(extra: Record<string, Partial<Record<Exclude<CodigoIdioma, 'es'>, string>>>) {
+  Object.assign(DICCIONARIO, extra)
+}
+
 export const DICCIONARIO: Record<string, Fila> = {
   /* ── NAVEGACION Y ACCESIBILIDAD ─────────────────────────────────── */
   'Navegación principal': {
@@ -1389,5 +1410,514 @@ export const DICCIONARIO: Record<string, Fila> = {
     sv: 'Operativ transparens', hr: 'Operativna transparentnost',
     ar: 'الشفافية التشغيلية', de: 'Operative Transparenz',
     sr: 'Оперативна транспарентност', ur: 'عملی شفافیت',
+  },
+
+  /* ═══ PAGINAS PROPIAS ═════════════════════════════════════════════
+     g11, legal, whitepaper y las dos pantallas de error. Se quedaron fuera
+     del primer barrido porque aquel recorrio las catorce secciones de `/`
+     y estas paginas no aparecen en ninguna: lo que no entra en la medicion
+     no existe para la medicion.
+     ═════════════════════════════════════════════════════════════════ */
+
+  /* ── armazon compartido ────────────────────────────────────────── */
+  'Volver al inicio': {
+    en: 'Back to home', pt: 'Voltar ao início', fr: "Retour à l'accueil",
+    ru: 'Вернуться на главную', sv: 'Tillbaka till startsidan', hr: 'Natrag na početnu',
+    ar: 'العودة إلى الرئيسية', de: 'Zurück zur Startseite', sr: 'Назад на почетну',
+    ur: 'ہوم پر واپس',
+  },
+  Inicio: {
+    en: 'Home', pt: 'Início', fr: 'Accueil', ru: 'Главная',
+    sv: 'Start', hr: 'Početna', ar: 'الرئيسية', de: 'Start',
+    sr: 'Почетна', ur: 'ہوم',
+  },
+  'Información legal': {
+    en: 'Legal information', pt: 'Informação legal', fr: 'Informations légales',
+    ru: 'Правовая информация', sv: 'Juridisk information', hr: 'Pravne informacije',
+    ar: 'معلومات قانونية', de: 'Rechtliche Hinweise', sr: 'Правне информације',
+    ur: 'قانونی معلومات',
+  },
+
+  /* ── g11 ───────────────────────────────────────────────────────── */
+  'El material con el que se crece: guías, presentaciones oficiales y los canales donde está la comunidad.': {
+    en: 'The material you grow with: guides, official presentations and the channels where the community lives.',
+    pt: 'O material com o qual se cresce: guias, apresentações oficiais e os canais onde está a comunidade.',
+    fr: "Le matériel avec lequel on progresse : guides, présentations officielles et les canaux où vit la communauté.",
+    ru: 'Материалы для роста: руководства, официальные презентации и каналы, где живёт сообщество.',
+    sv: 'Materialet du växer med: guider, officiella presentationer och kanalerna där gemenskapen finns.',
+    hr: 'Materijal s kojim se raste: vodiči, službene prezentacije i kanali na kojima je zajednica.',
+    ar: 'المواد التي تنمو بها: أدلّة وعروض رسمية والقنوات التي يوجد فيها المجتمع.',
+    de: 'Das Material, mit dem man wächst: Leitfäden, offizielle Präsentationen und die Kanäle, in denen die Community lebt.',
+    sr: 'Материјал с којим се расте: водичи, званичне презентације и канали на којима је заједница.',
+    ur: 'وہ مواد جس سے ترقی ہوتی ہے: گائیڈز، سرکاری پریزنٹیشنز اور وہ چینلز جہاں کمیونٹی ہے۔',
+  },
+  'Guías': {
+    en: 'Guides', pt: 'Guias', fr: 'Guides', ru: 'Руководства',
+    sv: 'Guider', hr: 'Vodiči', ar: 'الأدلّة', de: 'Leitfäden',
+    sr: 'Водичи', ur: 'گائیڈز',
+  },
+  'Los cuatro pasos, de la cuenta nueva a la oficina virtual.': {
+    en: 'The four steps, from a new account to the virtual office.',
+    pt: 'Os quatro passos, da conta nova ao escritório virtual.',
+    fr: "Les quatre étapes, du nouveau compte au bureau virtuel.",
+    ru: 'Четыре шага: от новой учётной записи до виртуального офиса.',
+    sv: 'De fyra stegen, från nytt konto till det virtuella kontoret.',
+    hr: 'Četiri koraka, od novog računa do virtualnog ureda.',
+    ar: 'الخطوات الأربع، من الحساب الجديد إلى المكتب الافتراضي.',
+    de: 'Die vier Schritte, vom neuen Konto bis zum virtuellen Büro.',
+    sr: 'Четири корака, од новог налога до виртуелне канцеларије.',
+    ur: 'چار مراحل، نئے اکاؤنٹ سے ورچوئل آفس تک۔',
+  },
+  'Cómo registrarte en Genesis': {
+    en: 'How to register on Genesis', pt: 'Como se registrar na Genesis',
+    fr: "Comment s'inscrire sur Genesis", ru: 'Как зарегистрироваться в Genesis',
+    sv: 'Så registrerar du dig på Genesis', hr: 'Kako se registrirati na Genesis',
+    ar: 'كيف تسجّل في Genesis', de: 'So registrierst du dich bei Genesis',
+    sr: 'Како се регистровати на Genesis', ur: 'Genesis پر رجسٹر کیسے کریں',
+  },
+  'Alta de cuenta con enlace de patrocinador y cartera Web3.': {
+    en: 'Account sign-up with a sponsor link and a Web3 wallet.',
+    pt: 'Abertura de conta com link de patrocinador e carteira Web3.',
+    fr: "Création de compte avec lien de parrainage et portefeuille Web3.",
+    ru: 'Регистрация с реферальной ссылкой и Web3-кошельком.',
+    sv: 'Kontoregistrering med sponsorlänk och Web3-plånbok.',
+    hr: 'Otvaranje računa uz sponzorsku poveznicu i Web3 novčanik.',
+    ar: 'فتح حساب برابط الراعي ومحفظة Web3.',
+    de: 'Kontoeröffnung mit Sponsorenlink und Web3-Wallet.',
+    sr: 'Отварање налога уз спонзорски линк и Web3 новчаник.',
+    ur: 'اسپانسر لنک اور Web3 والٹ کے ساتھ اکاؤنٹ کھولنا۔',
+  },
+  'Cómo comprar tu paquete de minería': {
+    en: 'How to buy your mining package', pt: 'Como comprar seu pacote de mineração',
+    fr: 'Comment acheter votre pack de minage', ru: 'Как купить майнинг-пакет',
+    sv: 'Så köper du ditt mining-paket', hr: 'Kako kupiti svoj rudarski paket',
+    ar: 'كيف تشتري باقة التعدين', de: 'So kaufst du dein Mining-Paket',
+    sr: 'Како купити свој рударски пакет', ur: 'اپنا مائننگ پیکج کیسے خریدیں',
+  },
+  'Pago del paquete y activación de la participación.': {
+    en: 'Paying for the package and activating participation.',
+    pt: 'Pagamento do pacote e ativação da participação.',
+    fr: 'Paiement du pack et activation de la participation.',
+    ru: 'Оплата пакета и активация участия.',
+    sv: 'Betalning av paketet och aktivering av deltagandet.',
+    hr: 'Plaćanje paketa i aktivacija sudjelovanja.',
+    ar: 'دفع الباقة وتفعيل المشاركة.',
+    de: 'Bezahlung des Pakets und Aktivierung der Teilnahme.',
+    sr: 'Плаћање пакета и активација учешћа.',
+    ur: 'پیکج کی ادائیگی اور شرکت کی فعالیت۔',
+  },
+  'Cómo referir y crecer tu comunidad': {
+    en: 'How to refer and grow your community', pt: 'Como indicar e crescer sua comunidade',
+    fr: 'Comment parrainer et faire grandir votre communauté', ru: 'Как приглашать и растить сообщество',
+    sv: 'Så värvar du och får din gemenskap att växa', hr: 'Kako preporučiti i razviti svoju zajednicu',
+    ar: 'كيف تُحيل وتنمّي مجتمعك', de: 'So wirbst du und lässt deine Community wachsen',
+    sr: 'Како препоручити и развити своју заједницу', ur: 'ریفر کیسے کریں اور کمیونٹی کیسے بڑھائیں',
+  },
+  'Tu enlace de referido y cómo se construye la red.': {
+    en: 'Your referral link and how the network is built.',
+    pt: 'Seu link de indicação e como a rede é construída.',
+    fr: 'Votre lien de parrainage et la construction du réseau.',
+    ru: 'Ваша реферальная ссылка и как строится сеть.',
+    sv: 'Din värvningslänk och hur nätverket byggs.',
+    hr: 'Vaša preporučna poveznica i kako se gradi mreža.',
+    ar: 'رابط الإحالة الخاص بك وكيف تُبنى الشبكة.',
+    de: 'Dein Empfehlungslink und wie das Netzwerk entsteht.',
+    sr: 'Ваш препоручни линк и како се гради мрежа.',
+    ur: 'آپ کا ریفرل لنک اور نیٹ ورک کیسے بنتا ہے۔',
+  },
+  'Cómo funciona tu oficina virtual': {
+    en: 'How your virtual office works', pt: 'Como funciona seu escritório virtual',
+    fr: 'Comment fonctionne votre bureau virtuel', ru: 'Как работает виртуальный офис',
+    sv: 'Så fungerar ditt virtuella kontor', hr: 'Kako radi vaš virtualni ured',
+    ar: 'كيف يعمل مكتبك الافتراضي', de: 'So funktioniert dein virtuelles Büro',
+    sr: 'Како ради ваша виртуелна канцеларија', ur: 'آپ کا ورچوئل آفس کیسے کام کرتا ہے',
+  },
+  'Panel de red, seguimiento y material para compartir.': {
+    en: 'Network dashboard, tracking and material to share.',
+    pt: 'Painel de rede, acompanhamento e material para compartilhar.',
+    fr: 'Tableau de bord réseau, suivi et supports à partager.',
+    ru: 'Панель сети, отслеживание и материалы для распространения.',
+    sv: 'Nätverkspanel, uppföljning och material att dela.',
+    hr: 'Nadzorna ploča mreže, praćenje i materijali za dijeljenje.',
+    ar: 'لوحة الشبكة والمتابعة ومواد للمشاركة.',
+    de: 'Netzwerk-Dashboard, Tracking und Material zum Teilen.',
+    sr: 'Контролна табла мреже, праћење и материјали за дељење.',
+    ur: 'نیٹ ورک ڈیش بورڈ، ٹریکنگ اور شیئر کرنے کا مواد۔',
+  },
+  'Disponible en el canal': {
+    en: 'Available on the channel', pt: 'Disponível no canal', fr: 'Disponible sur la chaîne',
+    ru: 'Доступно на канале', sv: 'Finns på kanalen', hr: 'Dostupno na kanalu',
+    ar: 'متاح على القناة', de: 'Auf dem Kanal verfügbar', sr: 'Доступно на каналу',
+    ur: 'چینل پر دستیاب',
+  },
+  'Ver las guías en YouTube': {
+    en: 'Watch the guides on YouTube', pt: 'Ver os guias no YouTube',
+    fr: 'Voir les guides sur YouTube', ru: 'Смотреть руководства на YouTube',
+    sv: 'Se guiderna på YouTube', hr: 'Pogledaj vodiče na YouTubeu',
+    ar: 'شاهد الأدلّة على YouTube', de: 'Die Leitfäden auf YouTube ansehen',
+    sr: 'Погледај водиче на YouTube-у', ur: 'گائیڈز YouTube پر دیکھیں',
+  },
+  'Presentaciones oficiales': {
+    en: 'Official presentations', pt: 'Apresentações oficiais', fr: 'Présentations officielles',
+    ru: 'Официальные презентации', sv: 'Officiella presentationer', hr: 'Službene prezentacije',
+    ar: 'العروض الرسمية', de: 'Offizielle Präsentationen', sr: 'Званичне презентације',
+    ur: 'سرکاری پریزنٹیشنز',
+  },
+  'Versión 5.0, en ocho idiomas. Cada ficha indica su peso: son unos 2,5 MB, pensadas para descargar y enseñar desde el móvil.': {
+    en: 'Version 5.0, in eight languages. Each card shows its size: around 2.5 MB, made to download and show from a phone.',
+    pt: 'Versão 5.0, em oito idiomas. Cada ficha indica o peso: cerca de 2,5 MB, pensadas para baixar e mostrar do celular.',
+    fr: "Version 5.0, en huit langues. Chaque fiche indique son poids : environ 2,5 Mo, conçues pour être téléchargées et montrées depuis un mobile.",
+    ru: 'Версия 5.0 на восьми языках. На каждой карточке указан размер: около 2,5 МБ — чтобы скачать и показывать с телефона.',
+    sv: 'Version 5.0, på åtta språk. Varje kort visar storleken: cirka 2,5 MB, gjorda för att laddas ner och visas från mobilen.',
+    hr: 'Verzija 5.0, na osam jezika. Svaka kartica pokazuje veličinu: oko 2,5 MB, namijenjene preuzimanju i prikazu s mobitela.',
+    ar: 'الإصدار 5.0 بثماني لغات. تُظهر كل بطاقة حجمها: نحو 2.5 ميغابايت، مُعدّة للتنزيل والعرض من الهاتف.',
+    de: 'Version 5.0, in acht Sprachen. Jede Karte zeigt ihre Größe: rund 2,5 MB, zum Herunterladen und Zeigen vom Handy.',
+    sr: 'Верзија 5.0, на осам језика. Свака картица показује величину: око 2,5 MB, намењене преузимању и приказу с мобилног.',
+    ur: 'ورژن 5.0، آٹھ زبانوں میں۔ ہر کارڈ اپنا حجم دکھاتا ہے: تقریباً 2.5 MB، موبائل سے ڈاؤن لوڈ اور دکھانے کے لیے۔',
+  },
+  'Sólo en versión anterior (v1)': {
+    en: 'Previous version only (v1)', pt: 'Somente na versão anterior (v1)',
+    fr: 'Uniquement en version précédente (v1)', ru: 'Только предыдущая версия (v1)',
+    sv: 'Endast i tidigare version (v1)', hr: 'Samo u prethodnoj verziji (v1)',
+    ar: 'بالإصدار السابق فقط (v1)', de: 'Nur in der Vorversion (v1)',
+    sr: 'Само у претходној верзији (v1)', ur: 'صرف پچھلے ورژن میں (v1)',
+  },
+  'Estos idiomas todavía no tienen la 5.0. Son archivos antiguos y más pesados.': {
+    en: 'These languages do not have 5.0 yet. They are older, heavier files.',
+    pt: 'Estes idiomas ainda não têm a 5.0. São arquivos antigos e mais pesados.',
+    fr: "Ces langues n'ont pas encore la 5.0. Ce sont des fichiers anciens et plus lourds.",
+    ru: 'Для этих языков версии 5.0 пока нет. Это старые и более тяжёлые файлы.',
+    sv: 'Dessa språk har ännu inte 5.0. Det är äldre och tyngre filer.',
+    hr: 'Ovi jezici još nemaju 5.0. Riječ je o starijim i težim datotekama.',
+    ar: 'هذه اللغات لا تملك الإصدار 5.0 بعد. ملفات أقدم وأثقل.',
+    de: 'Für diese Sprachen gibt es die 5.0 noch nicht. Es sind ältere, schwerere Dateien.',
+    sr: 'Ови језици још немају 5.0. Реч је о старијим и тежим датотекама.',
+    ur: 'ان زبانوں میں 5.0 ابھی نہیں ہے۔ یہ پرانی اور بھاری فائلیں ہیں۔',
+  },
+  'Canales oficiales': {
+    en: 'Official channels', pt: 'Canais oficiais', fr: 'Canaux officiels',
+    ru: 'Официальные каналы', sv: 'Officiella kanaler', hr: 'Službeni kanali',
+    ar: 'القنوات الرسمية', de: 'Offizielle Kanäle', sr: 'Званични канали',
+    ur: 'سرکاری چینلز',
+  },
+  'Los canales de la comunidad G11. Son distintos de los de AiGenesis.': {
+    en: 'The G11 community channels. They are separate from the AiGenesis ones.',
+    pt: 'Os canais da comunidade G11. São diferentes dos da AiGenesis.',
+    fr: "Les canaux de la communauté G11. Ils sont distincts de ceux d'AiGenesis.",
+    ru: 'Каналы сообщества G11. Они отличаются от каналов AiGenesis.',
+    sv: 'G11-gemenskapens kanaler. De är skilda från AiGenesis kanaler.',
+    hr: 'Kanali zajednice G11. Razlikuju se od AiGenesisovih.',
+    ar: 'قنوات مجتمع G11. وهي مختلفة عن قنوات AiGenesis.',
+    de: 'Die Kanäle der G11-Community. Sie sind getrennt von denen von AiGenesis.',
+    sr: 'Канали заједнице G11. Разликују се од AiGenesis-ових.',
+    ur: 'G11 کمیونٹی کے چینلز۔ یہ AiGenesis کے چینلز سے مختلف ہیں۔',
+  },
+  Empezar: {
+    en: 'Get started', pt: 'Começar', fr: 'Commencer', ru: 'Начать',
+    sv: 'Kom igång', hr: 'Započni', ar: 'ابدأ', de: 'Loslegen',
+    sr: 'Почни', ur: 'شروع کریں',
+  },
+  'El alta necesita el enlace de tu patrocinador y una cartera Web3. Si aún no tienes patrocinador, escribe por cualquiera de los canales de arriba.': {
+    en: 'Signing up needs your sponsor’s link and a Web3 wallet. If you do not have a sponsor yet, write to any of the channels above.',
+    pt: 'O cadastro precisa do link do seu patrocinador e de uma carteira Web3. Se ainda não tem patrocinador, escreva por qualquer um dos canais acima.',
+    fr: "L'inscription nécessite le lien de votre parrain et un portefeuille Web3. Si vous n'avez pas encore de parrain, écrivez sur l'un des canaux ci-dessus.",
+    ru: 'Для регистрации нужны ссылка вашего спонсора и Web3-кошелёк. Если спонсора пока нет, напишите в любой из каналов выше.',
+    sv: 'Registreringen kräver din sponsors länk och en Web3-plånbok. Har du ingen sponsor än, skriv i någon av kanalerna ovan.',
+    hr: 'Za prijavu trebate poveznicu svog sponzora i Web3 novčanik. Ako još nemate sponzora, javite se na bilo koji od gornjih kanala.',
+    ar: 'يتطلّب التسجيل رابط راعيك ومحفظة Web3. إن لم يكن لديك راعٍ بعد، راسلنا عبر أي من القنوات أعلاه.',
+    de: 'Für die Anmeldung brauchst du den Link deines Sponsors und eine Web3-Wallet. Hast du noch keinen Sponsor, schreib über einen der Kanäle oben.',
+    sr: 'За пријаву су потребни линк вашег спонзора и Web3 новчаник. Ако још немате спонзора, јавите се на било који од горњих канала.',
+    ur: 'رجسٹریشن کے لیے آپ کے اسپانسر کا لنک اور Web3 والٹ درکار ہے۔ اگر ابھی اسپانسر نہیں، تو اوپر کے کسی بھی چینل پر لکھیں۔',
+  },
+
+  /* ── legal ─────────────────────────────────────────────────────── */
+  Privacidad: {
+    en: 'Privacy', pt: 'Privacidade', fr: 'Confidentialité', ru: 'Конфиденциальность',
+    sv: 'Integritet', hr: 'Privatnost', ar: 'الخصوصية', de: 'Datenschutz',
+    sr: 'Приватност', ur: 'رازداری',
+  },
+  'AiGenesis trata los datos personales conforme a las prácticas descritas en esta documentación. Para consultas sobre privacidad, escríbenos a': {
+    en: 'AiGenesis handles personal data according to the practices described in this documentation. For privacy enquiries, write to us at',
+    pt: 'A AiGenesis trata os dados pessoais conforme as práticas descritas nesta documentação. Para consultas sobre privacidade, escreva para',
+    fr: "AiGenesis traite les données personnelles selon les pratiques décrites dans cette documentation. Pour toute question de confidentialité, écrivez-nous à",
+    ru: 'AiGenesis обрабатывает персональные данные в соответствии с практиками, описанными в этой документации. По вопросам конфиденциальности пишите на',
+    sv: 'AiGenesis behandlar personuppgifter enligt de rutiner som beskrivs i denna dokumentation. För frågor om integritet, skriv till oss på',
+    hr: 'AiGenesis obrađuje osobne podatke u skladu s praksama opisanima u ovoj dokumentaciji. Za upite o privatnosti pišite nam na',
+    ar: 'تعالج AiGenesis البيانات الشخصية وفق الممارسات الموصوفة في هذه الوثائق. للاستفسارات المتعلّقة بالخصوصية راسلنا على',
+    de: 'AiGenesis verarbeitet personenbezogene Daten gemäß den in dieser Dokumentation beschriebenen Verfahren. Bei Datenschutzfragen schreiben Sie an',
+    sr: 'AiGenesis обрађује личне податке у складу с праксама описаним у овој документацији. За упите о приватности пишите нам на',
+    ur: 'AiGenesis ذاتی ڈیٹا کو اس دستاویز میں بیان کردہ طریقوں کے مطابق سنبھالتی ہے۔ رازداری کے سوالات کے لیے ہمیں لکھیں',
+  },
+  'Política de privacidad completa pendiente de revisión legal.': {
+    en: 'Full privacy policy pending legal review.',
+    pt: 'Política de privacidade completa pendente de revisão jurídica.',
+    fr: 'Politique de confidentialité complète en attente de révision juridique.',
+    ru: 'Полная политика конфиденциальности ожидает юридической проверки.',
+    sv: 'Fullständig integritetspolicy inväntar juridisk granskning.',
+    hr: 'Potpuna politika privatnosti čeka pravnu reviziju.',
+    ar: 'سياسة الخصوصية الكاملة قيد المراجعة القانونية.',
+    de: 'Vollständige Datenschutzerklärung steht noch unter rechtlicher Prüfung.',
+    sr: 'Потпуна политика приватности чека правну ревизију.',
+    ur: 'مکمل رازداری پالیسی قانونی جائزے کی منتظر ہے۔',
+  },
+  Riesgos: {
+    en: 'Risks', pt: 'Riscos', fr: 'Risques', ru: 'Риски',
+    sv: 'Risker', hr: 'Rizici', ar: 'المخاطر', de: 'Risiken',
+    sr: 'Ризици', ur: 'خطرات',
+  },
+  'Los activos digitales pueden experimentar alta volatilidad. Los protocolos blockchain pueden contener vulnerabilidades tecnológicas. Los marcos regulatorios varían por jurisdicción y pueden cambiar sin previo aviso.': {
+    en: 'Digital assets can be highly volatile. Blockchain protocols may contain technological vulnerabilities. Regulatory frameworks vary by jurisdiction and can change without notice.',
+    pt: 'Os ativos digitais podem apresentar alta volatilidade. Os protocolos blockchain podem conter vulnerabilidades tecnológicas. Os marcos regulatórios variam por jurisdição e podem mudar sem aviso prévio.',
+    fr: "Les actifs numériques peuvent connaître une forte volatilité. Les protocoles blockchain peuvent comporter des vulnérabilités technologiques. Les cadres réglementaires varient selon la juridiction et peuvent changer sans préavis.",
+    ru: 'Цифровые активы могут отличаться высокой волатильностью. Блокчейн-протоколы могут содержать технологические уязвимости. Нормативные требования различаются по юрисдикциям и могут меняться без предупреждения.',
+    sv: 'Digitala tillgångar kan uppvisa hög volatilitet. Blockkedjeprotokoll kan innehålla tekniska sårbarheter. Regelverk varierar mellan jurisdiktioner och kan ändras utan förvarning.',
+    hr: 'Digitalna imovina može biti vrlo volatilna. Blockchain protokoli mogu sadržavati tehnološke ranjivosti. Regulatorni okviri razlikuju se po jurisdikcijama i mogu se promijeniti bez prethodne najave.',
+    ar: 'قد تشهد الأصول الرقمية تقلّبات عالية. وقد تحتوي بروتوكولات البلوكشين على ثغرات تقنية. وتختلف الأطر التنظيمية باختلاف الولاية القضائية وقد تتغيّر دون إشعار مسبق.',
+    de: 'Digitale Vermögenswerte können stark schwanken. Blockchain-Protokolle können technische Schwachstellen enthalten. Regulatorische Rahmen unterscheiden sich je nach Rechtsraum und können sich ohne Vorankündigung ändern.',
+    sr: 'Дигитална имовина може бити веома волатилна. Блокчејн протоколи могу садржати технолошке рањивости. Регулаторни оквири разликују се по јурисдикцијама и могу се променити без претходне најаве.',
+    ur: 'ڈیجیٹل اثاثے شدید اتار چڑھاؤ کا شکار ہو سکتے ہیں۔ بلاک چین پروٹوکولز میں تکنیکی کمزوریاں ہو سکتی ہیں۔ ضابطہ جاتی فریم ورک دائرۂ اختیار کے مطابق مختلف ہیں اور بغیر اطلاع بدل سکتے ہیں۔',
+  },
+  'AiGenesis no proporciona asesoramiento financiero, legal ni fiscal. Consulte profesionales calificados antes de participar.': {
+    en: 'AiGenesis does not provide financial, legal or tax advice. Consult qualified professionals before participating.',
+    pt: 'A AiGenesis não fornece assessoria financeira, jurídica ou fiscal. Consulte profissionais qualificados antes de participar.',
+    fr: "AiGenesis ne fournit aucun conseil financier, juridique ou fiscal. Consultez des professionnels qualifiés avant de participer.",
+    ru: 'AiGenesis не предоставляет финансовых, юридических или налоговых консультаций. Перед участием обратитесь к квалифицированным специалистам.',
+    sv: 'AiGenesis ger inte finansiell, juridisk eller skatterådgivning. Rådfråga kvalificerade yrkespersoner innan du deltar.',
+    hr: 'AiGenesis ne pruža financijske, pravne ni porezne savjete. Prije sudjelovanja posavjetujte se s kvalificiranim stručnjacima.',
+    ar: 'لا تقدّم AiGenesis مشورة مالية أو قانونية أو ضريبية. استشر مختصّين مؤهّلين قبل المشاركة.',
+    de: 'AiGenesis erteilt keine Finanz-, Rechts- oder Steuerberatung. Ziehen Sie vor einer Teilnahme qualifizierte Fachleute hinzu.',
+    sr: 'AiGenesis не пружа финансијске, правне ни пореске савете. Пре учешћа консултујте квалификоване стручњаке.',
+    ur: 'AiGenesis مالی، قانونی یا ٹیکس مشورہ فراہم نہیں کرتی۔ شرکت سے پہلے اہل ماہرین سے رجوع کریں۔',
+  },
+  Contacto: {
+    en: 'Contact', pt: 'Contato', fr: 'Contact', ru: 'Контакты',
+    sv: 'Kontakt', hr: 'Kontakt', ar: 'اتصل بنا', de: 'Kontakt',
+    sr: 'Контакт', ur: 'رابطہ',
+  },
+  'Consultas legales o de cumplimiento:': {
+    en: 'Legal or compliance enquiries:', pt: 'Consultas jurídicas ou de compliance:',
+    fr: 'Questions juridiques ou de conformité :', ru: 'Юридические вопросы и комплаенс:',
+    sv: 'Juridiska frågor eller efterlevnadsfrågor:', hr: 'Pravni upiti ili upiti o usklađenosti:',
+    ar: 'استفسارات قانونية أو تتعلّق بالامتثال:', de: 'Rechts- oder Compliance-Anfragen:',
+    sr: 'Правни упити или упити о усклађености:', ur: 'قانونی یا تعمیل سے متعلق سوالات:',
+  },
+  'Sitio institucional:': {
+    en: 'Institutional site:', pt: 'Site institucional:', fr: 'Site institutionnel :',
+    ru: 'Официальный сайт:', sv: 'Institutionell webbplats:', hr: 'Institucionalna stranica:',
+    ar: 'الموقع المؤسسي:', de: 'Institutionelle Website:', sr: 'Институционални сајт:',
+    ur: 'ادارہ جاتی سائٹ:',
+  },
+  'Documentación adicional en': {
+    en: 'Further documentation in', pt: 'Documentação adicional em',
+    fr: 'Documentation complémentaire dans', ru: 'Дополнительная документация в',
+    sv: 'Ytterligare dokumentation i', hr: 'Dodatna dokumentacija u',
+    ar: 'وثائق إضافية في', de: 'Weitere Dokumentation im',
+    sr: 'Додатна документација у', ur: 'مزید دستاویزات میں',
+  },
+  whitepaper: {
+    en: 'whitepaper', pt: 'whitepaper', fr: 'whitepaper', ru: 'вайтпейпере',
+    sv: 'whitepaper', hr: 'whitepaperu', ar: 'الورقة البيضاء', de: 'Whitepaper',
+    sr: 'вајтпејперу', ur: 'وائٹ پیپر',
+  },
+  'Borrador operativo — revisión legal pendiente antes de producción en dominio principal.': {
+    en: 'Working draft — legal review pending before production on the main domain.',
+    pt: 'Rascunho operacional — revisão jurídica pendente antes da produção no domínio principal.',
+    fr: "Version de travail — révision juridique en attente avant mise en production sur le domaine principal.",
+    ru: 'Рабочий черновик — юридическая проверка не завершена до запуска на основном домене.',
+    sv: 'Arbetsutkast — juridisk granskning återstår före produktion på huvuddomänen.',
+    hr: 'Radna verzija — pravna revizija u tijeku prije produkcije na glavnoj domeni.',
+    ar: 'مسودّة عمل — المراجعة القانونية معلّقة قبل الإطلاق على النطاق الرئيسي.',
+    de: 'Arbeitsentwurf — rechtliche Prüfung steht vor dem Produktivbetrieb auf der Hauptdomain noch aus.',
+    sr: 'Радна верзија — правна ревизија у току пре продукције на главном домену.',
+    ur: 'ورکنگ ڈرافٹ — مرکزی ڈومین پر اجرا سے پہلے قانونی جائزہ باقی ہے۔',
+  },
+
+  /* ── whitepaper ────────────────────────────────────────────────── */
+  'Documentación oficial del ecosistema AiGenesis.': {
+    en: 'Official documentation of the AiGenesis ecosystem.',
+    pt: 'Documentação oficial do ecossistema AiGenesis.',
+    fr: "Documentation officielle de l'écosystème AiGenesis.",
+    ru: 'Официальная документация экосистемы AiGenesis.',
+    sv: 'Officiell dokumentation för AiGenesis ekosystem.',
+    hr: 'Službena dokumentacija ekosustava AiGenesis.',
+    ar: 'الوثائق الرسمية لمنظومة AiGenesis.',
+    de: 'Offizielle Dokumentation des AiGenesis-Ökosystems.',
+    sr: 'Званична документација екосистема AiGenesis.',
+    ur: 'AiGenesis ایکو سسٹم کی سرکاری دستاویزات۔',
+  },
+  'El whitepaper AiG Token describe la arquitectura del protocolo, los tokenomics, los pilares del ecosistema y el marco de participación on-chain.': {
+    en: 'The AiG Token whitepaper describes the protocol architecture, the tokenomics, the ecosystem pillars and the on-chain participation framework.',
+    pt: 'O whitepaper AiG Token descreve a arquitetura do protocolo, os tokenomics, os pilares do ecossistema e o marco de participação on-chain.',
+    fr: "Le whitepaper AiG Token décrit l'architecture du protocole, la tokenomique, les piliers de l'écosystème et le cadre de participation on-chain.",
+    ru: 'Вайтпейпер AiG Token описывает архитектуру протокола, токеномику, опоры экосистемы и рамки участия on-chain.',
+    sv: 'AiG Token-whitepapret beskriver protokollets arkitektur, tokenomiken, ekosystemets pelare och ramverket för deltagande on-chain.',
+    hr: 'Whitepaper AiG Token opisuje arhitekturu protokola, tokenomiju, stupove ekosustava i okvir sudjelovanja on-chain.',
+    ar: 'تصف الورقة البيضاء لـ AiG Token بنية البروتوكول واقتصاد الرمز وركائز المنظومة وإطار المشاركة على السلسلة.',
+    de: 'Das AiG-Token-Whitepaper beschreibt die Protokollarchitektur, die Tokenomics, die Säulen des Ökosystems und den Rahmen der On-Chain-Teilnahme.',
+    sr: 'Whitepaper AiG Token описује архитектуру протокола, токеномију, стубове екосистема и оквир учешћа on-chain.',
+    ur: 'AiG Token وائٹ پیپر پروٹوکول کے فن تعمیر، ٹوکنومکس، ایکو سسٹم کے ستونوں اور آن چین شرکت کے ڈھانچے کو بیان کرتا ہے۔',
+  },
+  'Datos verificables en cadena': {
+    en: 'On-chain verifiable data', pt: 'Dados verificáveis em cadeia',
+    fr: 'Données vérifiables on-chain', ru: 'Проверяемые данные в цепочке',
+    sv: 'Verifierbara data on-chain', hr: 'Podaci provjerljivi na lancu',
+    ar: 'بيانات قابلة للتحقّق على السلسلة', de: 'On-Chain überprüfbare Daten',
+    sr: 'Подаци проверљиви на ланцу', ur: 'آن چین قابلِ تصدیق ڈیٹا',
+  },
+  'Verificable en cadena': {
+    en: 'Verifiable on-chain', pt: 'Verificável em cadeia', fr: 'Vérifiable on-chain',
+    ru: 'Проверяемо в цепочке', sv: 'Verifierbart on-chain', hr: 'Provjerljivo na lancu',
+    ar: 'قابل للتحقّق على السلسلة', de: 'On-Chain überprüfbar',
+    sr: 'Проверљиво на ланцу', ur: 'آن چین قابلِ تصدیق',
+  },
+  'Suministro total AIG': {
+    en: 'Total AIG supply', pt: 'Fornecimento total AIG', fr: 'Offre totale AIG',
+    ru: 'Общая эмиссия AIG', sv: 'Totalt AIG-utbud', hr: 'Ukupna ponuda AIG',
+    ar: 'المعروض الكلي لـ AIG', de: 'AIG-Gesamtmenge', sr: 'Укупна понуда AIG',
+    ur: 'AIG کی کل سپلائی',
+  },
+  'Holders en cadena': {
+    en: 'On-chain holders', pt: 'Detentores em cadeia', fr: 'Détenteurs on-chain',
+    ru: 'Держатели в цепочке', sv: 'Innehavare on-chain', hr: 'Imatelji na lancu',
+    ar: 'الحائزون على السلسلة', de: 'On-Chain-Inhaber', sr: 'Власници на ланцу',
+    ur: 'آن چین ہولڈرز',
+  },
+  'Código del contrato': {
+    en: 'Contract code', pt: 'Código do contrato', fr: 'Code du contrat',
+    ru: 'Код контракта', sv: 'Kontraktskod', hr: 'Kod ugovora',
+    ar: 'شيفرة العقد', de: 'Vertragscode', sr: 'Код уговора',
+    ur: 'کنٹریکٹ کوڈ',
+  },
+  'Contrato:': {
+    en: 'Contract:', pt: 'Contrato:', fr: 'Contrat :', ru: 'Контракт:',
+    sv: 'Kontrakt:', hr: 'Ugovor:', ar: 'العقد:', de: 'Vertrag:',
+    sr: 'Уговор:', ur: 'کنٹریکٹ:',
+  },
+  'Descargar Whitepaper (PDF)': {
+    en: 'Download whitepaper (PDF)', pt: 'Baixar whitepaper (PDF)',
+    fr: 'Télécharger le whitepaper (PDF)', ru: 'Скачать вайтпейпер (PDF)',
+    sv: 'Ladda ner whitepapret (PDF)', hr: 'Preuzmi whitepaper (PDF)',
+    ar: 'تنزيل الورقة البيضاء (PDF)', de: 'Whitepaper herunterladen (PDF)',
+    sr: 'Преузми whitepaper (PDF)', ur: 'وائٹ پیپر ڈاؤن لوڈ کریں (PDF)',
+  },
+  'Ver contrato en BSCScan': {
+    en: 'View contract on BSCScan', pt: 'Ver contrato na BSCScan',
+    fr: 'Voir le contrat sur BSCScan', ru: 'Смотреть контракт в BSCScan',
+    sv: 'Visa kontraktet på BSCScan', hr: 'Pogledaj ugovor na BSCScanu',
+    ar: 'عرض العقد على BSCScan', de: 'Vertrag auf BSCScan ansehen',
+    sr: 'Погледај уговор на BSCScan-у', ur: 'BSCScan پر کنٹریکٹ دیکھیں',
+  },
+  'Whitepaper AiG Token, documento PDF': {
+    en: 'AiG Token whitepaper, PDF document', pt: 'Whitepaper AiG Token, documento PDF',
+    fr: 'Whitepaper AiG Token, document PDF', ru: 'Вайтпейпер AiG Token, документ PDF',
+    sv: 'AiG Token-whitepaper, PDF-dokument', hr: 'Whitepaper AiG Token, PDF dokument',
+    ar: 'الورقة البيضاء لـ AiG Token، مستند PDF', de: 'AiG-Token-Whitepaper, PDF-Dokument',
+    sr: 'Whitepaper AiG Token, PDF документ', ur: 'AiG Token وائٹ پیپر، PDF دستاویز',
+  },
+  'Tu navegador no puede mostrar el PDF aquí.': {
+    en: 'Your browser cannot display the PDF here.',
+    pt: 'Seu navegador não consegue exibir o PDF aqui.',
+    fr: "Votre navigateur ne peut pas afficher le PDF ici.",
+    ru: 'Ваш браузер не может показать PDF здесь.',
+    sv: 'Din webbläsare kan inte visa PDF:en här.',
+    hr: 'Vaš preglednik ne može ovdje prikazati PDF.',
+    ar: 'لا يستطيع متصفّحك عرض ملف PDF هنا.',
+    de: 'Dein Browser kann das PDF hier nicht anzeigen.',
+    sr: 'Ваш прегледач не може овде приказати PDF.',
+    ur: 'آپ کا براؤزر یہاں PDF نہیں دکھا سکتا۔',
+  },
+  'Descárgalo para leerlo': {
+    en: 'Download it to read', pt: 'Baixe para ler', fr: 'Téléchargez-le pour le lire',
+    ru: 'Скачайте, чтобы прочитать', sv: 'Ladda ner för att läsa', hr: 'Preuzmi za čitanje',
+    ar: 'نزّله لقراءته', de: 'Zum Lesen herunterladen', sr: 'Преузми да прочиташ',
+    ur: 'پڑھنے کے لیے ڈاؤن لوڈ کریں',
+  },
+  'AiG Token · Whitepaper oficial v1.1 · Febrero 2024': {
+    en: 'AiG Token · Official whitepaper v1.1 · February 2024',
+    pt: 'AiG Token · Whitepaper oficial v1.1 · Fevereiro de 2024',
+    fr: 'AiG Token · Whitepaper officiel v1.1 · Février 2024',
+    ru: 'AiG Token · Официальный вайтпейпер v1.1 · Февраль 2024',
+    sv: 'AiG Token · Officiellt whitepaper v1.1 · Februari 2024',
+    hr: 'AiG Token · Službeni whitepaper v1.1 · Veljača 2024.',
+    ar: 'AiG Token · الورقة البيضاء الرسمية v1.1 · فبراير 2024',
+    de: 'AiG Token · Offizielles Whitepaper v1.1 · Februar 2024',
+    sr: 'AiG Token · Званични whitepaper v1.1 · Фебруар 2024.',
+    ur: 'AiG Token · سرکاری وائٹ پیپر v1.1 · فروری 2024',
+  },
+
+  /* ── pantallas de error ────────────────────────────────────────── */
+  Error: {
+    en: 'Error', pt: 'Erro', fr: 'Erreur', ru: 'Ошибка',
+    sv: 'Fel', hr: 'Greška', ar: 'خطأ', de: 'Fehler',
+    sr: 'Грешка', ur: 'خرابی',
+  },
+  'Algo se ha interrumpido': {
+    en: 'Something was interrupted', pt: 'Algo foi interrompido',
+    fr: "Quelque chose s'est interrompu", ru: 'Что-то прервалось',
+    sv: 'Något avbröts', hr: 'Nešto je prekinuto', ar: 'حدث انقطاع ما',
+    de: 'Etwas wurde unterbrochen', sr: 'Нешто је прекинуто', ur: 'کچھ رک گیا',
+  },
+  'No hemos podido cargar esta parte del sitio. Suele resolverse reintentando; si persiste, vuelve al inicio.': {
+    en: 'We could not load this part of the site. Retrying usually fixes it; if it persists, go back home.',
+    pt: 'Não conseguimos carregar esta parte do site. Tentar de novo costuma resolver; se persistir, volte ao início.',
+    fr: "Nous n'avons pas pu charger cette partie du site. Réessayer suffit en général ; si cela persiste, revenez à l'accueil.",
+    ru: 'Не удалось загрузить эту часть сайта. Обычно помогает повтор; если не проходит, вернитесь на главную.',
+    sv: 'Vi kunde inte ladda den här delen av webbplatsen. Att försöka igen brukar räcka; om det kvarstår, gå till startsidan.',
+    hr: 'Nismo mogli učitati ovaj dio stranice. Ponovni pokušaj obično pomaže; ako se nastavi, vratite se na početnu.',
+    ar: 'تعذّر تحميل هذا الجزء من الموقع. غالباً ما تحلّ إعادة المحاولة المشكلة؛ وإن استمرّت فعُد إلى الرئيسية.',
+    de: 'Dieser Teil der Seite konnte nicht geladen werden. Ein erneuter Versuch hilft meist; bleibt es bestehen, kehre zur Startseite zurück.',
+    sr: 'Нисмо могли да учитамо овај део сајта. Поновни покушај обично помаже; ако се настави, вратите се на почетну.',
+    ur: 'ہم سائٹ کا یہ حصہ لوڈ نہیں کر سکے۔ دوبارہ کوشش عموماً کافی ہوتی ہے؛ اگر برقرار رہے تو ہوم پر واپس جائیں۔',
+  },
+  Reintentar: {
+    en: 'Retry', pt: 'Tentar de novo', fr: 'Réessayer', ru: 'Повторить',
+    sv: 'Försök igen', hr: 'Pokušaj ponovno', ar: 'أعد المحاولة', de: 'Erneut versuchen',
+    sr: 'Покушај поново', ur: 'دوبارہ کوشش',
+  },
+  'Referencia:': {
+    en: 'Reference:', pt: 'Referência:', fr: 'Référence :', ru: 'Ссылка:',
+    sv: 'Referens:', hr: 'Referenca:', ar: 'المرجع:', de: 'Referenz:',
+    sr: 'Референца:', ur: 'حوالہ:',
+  },
+  'Esta dirección no existe': {
+    en: 'This address does not exist', pt: 'Este endereço não existe',
+    fr: "Cette adresse n'existe pas", ru: 'Такого адреса не существует',
+    sv: 'Den här adressen finns inte', hr: 'Ova adresa ne postoji',
+    ar: 'هذا العنوان غير موجود', de: 'Diese Adresse existiert nicht',
+    sr: 'Ова адреса не постоји', ur: 'یہ پتہ موجود نہیں',
+  },
+  'El enlace que has seguido apunta a un punto del universo que no está cartografiado. El ecosistema sigue donde lo dejaste.': {
+    en: 'The link you followed points to a part of the universe that is not mapped. The ecosystem is still where you left it.',
+    pt: 'O link que você seguiu aponta para um ponto do universo que não está mapeado. O ecossistema continua onde você o deixou.',
+    fr: "Le lien que vous avez suivi pointe vers un point de l'univers qui n'est pas cartographié. L'écosystème est resté là où vous l'avez laissé.",
+    ru: 'Ссылка, по которой вы перешли, ведёт в неотмеченную точку вселенной. Экосистема осталась там, где вы её оставили.',
+    sv: 'Länken du följde pekar mot en punkt i universum som inte är kartlagd. Ekosystemet finns kvar där du lämnade det.',
+    hr: 'Poveznica koju ste slijedili vodi na točku svemira koja nije kartirana. Ekosustav je i dalje ondje gdje ste ga ostavili.',
+    ar: 'يشير الرابط الذي اتّبعته إلى نقطة من الكون غير مرسومة على الخريطة. المنظومة ما زالت حيث تركتها.',
+    de: 'Der Link, dem du gefolgt bist, zeigt auf einen nicht kartierten Punkt des Universums. Das Ökosystem ist noch dort, wo du es verlassen hast.',
+    sr: 'Веза коју сте пратили води на тачку свемира која није мапирана. Екосистем је и даље тамо где сте га оставили.',
+    ur: 'آپ نے جو لنک کھولا وہ کائنات کے ایک غیر نقشہ بند مقام کی طرف جاتا ہے۔ ایکو سسٹم وہیں ہے جہاں آپ نے چھوڑا تھا۔',
+  },
+  'Ver el ecosistema': {
+    en: 'See the ecosystem', pt: 'Ver o ecossistema', fr: "Voir l'écosystème",
+    ru: 'Посмотреть экосистему', sv: 'Se ekosystemet', hr: 'Pogledaj ekosustav',
+    ar: 'استعرض المنظومة', de: 'Das Ökosystem ansehen', sr: 'Погледај екосистем',
+    ur: 'ایکو سسٹم دیکھیں',
+  },
+
+  /* ── descarga vinculada al idioma ──────────────────────────────── */
+  'Descargar la presentación': {
+    en: 'Download the presentation', pt: 'Baixar a apresentação',
+    fr: 'Télécharger la présentation', ru: 'Скачать презентацию',
+    sv: 'Ladda ner presentationen', hr: 'Preuzmi prezentaciju',
+    ar: 'تنزيل العرض التقديمي', de: 'Präsentation herunterladen',
+    sr: 'Преузми презентацију', ur: 'پریزنٹیشن ڈاؤن لوڈ کریں',
+  },
+  'Versión anterior (v1)': {
+    en: 'Previous version (v1)', pt: 'Versão anterior (v1)',
+    fr: 'Version précédente (v1)', ru: 'Предыдущая версия (v1)',
+    sv: 'Tidigare version (v1)', hr: 'Prethodna verzija (v1)',
+    ar: 'الإصدار السابق (v1)', de: 'Vorversion (v1)',
+    sr: 'Претходна верзија (v1)', ur: 'پچھلا ورژن (v1)',
   },
 }

@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import type { Metadata } from 'next'
+import NotFoundContenido from './NotFoundContenido'
 
 /**
  * 404 con marca.
@@ -23,20 +23,7 @@ export default function NotFound() {
     <main className="genesis-error-page">
       <div className="genesis-error-page__glow" aria-hidden="true" />
       <div className="genesis-error-page__content">
-        <p className="genesis-error-page__code">404</p>
-        <h1 className="genesis-error-page__title">Esta dirección no existe</h1>
-        <p className="genesis-error-page__text">
-          El enlace que has seguido apunta a un punto del universo que no está
-          cartografiado. El ecosistema sigue donde lo dejaste.
-        </p>
-        <div className="genesis-error-page__actions">
-          <Link href="/" className="genesis-error-page__btn genesis-error-page__btn--primary">
-            Volver al inicio
-          </Link>
-          <Link href="/#ecosistema" className="genesis-error-page__btn">
-            Ver el ecosistema
-          </Link>
-        </div>
+        <NotFoundContenido />
       </div>
     </main>
   )

@@ -19,15 +19,32 @@
  * valores que vienen de datos. Para eso esta el aviso de desarrollo, que informa
  * de lo que REALMENTE llega sin traducir mientras se navega.
  */
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
 const aqui = dirname(fileURLToPath(import.meta.url))
-const RUTA = resolve(aqui, '..', 'lib', 'i18n', 'diccionario.ts')
+const CARPETA = resolve(aqui, '..', 'lib', 'i18n')
 const IDIOMAS = ['en', 'pt', 'fr', 'ru', 'sv', 'hr', 'ar', 'de', 'sr', 'ur']
 
-const lineas = readFileSync(RUTA, 'utf8').split('\n')
+/*
+ * SE MIRAN TODOS LOS `diccionario*.ts`, NO SOLO UNO.
+ *
+ * El diccionario se partió para que el whitepaper —35 kB de párrafos— no
+ * viajara en el trozo de la portada. La partición sacó 49 entradas de esta
+ * guarda sin que nada avisara: el script seguía diciendo «261 entradas
+ * completas» y era verdad, y era exactamente la mitad del trabajo.
+ *
+ * Por eso la lista de archivos se DESCUBRE en vez de escribirse: un bloque
+ * nuevo entra en la comprobación por existir, no por acordarse de anotarlo.
+ * Una guarda que hay que actualizar a mano deja de cubrir en cuanto alguien
+ * olvida hacerlo, que es siempre.
+ */
+const ARCHIVOS = readdirSync(CARPETA)
+  .filter((f) => /^diccionario.*\.ts$/.test(f))
+  .sort()
+
+const lineas = ARCHIVOS.flatMap((f) => readFileSync(resolve(CARPETA, f), 'utf8').split('\n'))
 const problemas = []
 const vistas = new Map()
 let entradas = 0
@@ -60,8 +77,13 @@ for (let i = 0; i < lineas.length; i++) {
 }
 
 if (problemas.length) {
-  console.error(`diccionario: ${problemas.length} problema(s) en ${entradas} entradas`)
+  console.error(
+    `diccionario: ${problemas.length} problema(s) en ${entradas} entradas de ${ARCHIVOS.join(', ')}`
+  )
   for (const p of problemas) console.error('  ·', p)
   process.exit(1)
 }
-console.log(`diccionario: ${entradas} entradas completas en ${IDIOMAS.length + 1} idiomas`)
+console.log(
+  `diccionario: ${entradas} entradas completas en ${IDIOMAS.length + 1} idiomas` +
+    ` (${ARCHIVOS.length} archivo${ARCHIVOS.length === 1 ? '' : 's'}: ${ARCHIVOS.join(', ')})`
+)

@@ -15,6 +15,18 @@
  * Los colores van escritos aquí en vez de por token por la misma razón: las
  * variables CSS viven en la hoja que quizá no llegó. Es la única excepción
  * legítima a la regla de «ningún color a fuego», y por eso está documentada.
+ *
+ * NO SE TRADUCE, Y ES LA MISMA RAZÓN.
+ *
+ * Este componente SUSTITUYE al layout raíz, así que `IdiomaProvider` no existe
+ * cuando se pinta: `useT` devolvería el español igualmente. Se podría leer el
+ * idioma de `localStorage` y traer un diccionario mínimo, pero eso metería una
+ * dependencia —y un modo de fallo más— justo en la pantalla cuyo único trabajo
+ * es aparecer cuando todo lo demás ha fallado. Tres frases en español y un
+ * botón que funciona valen más que once idiomas que quizá no lleguen a
+ * dibujarse.
+ *
+ * Por eso `lang="es"` está bien puesto aquí: dice la verdad sobre lo que hay.
  */
 export default function GlobalError({
   error,

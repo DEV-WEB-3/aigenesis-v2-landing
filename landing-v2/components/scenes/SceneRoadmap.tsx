@@ -11,12 +11,25 @@ import {
   SceneWrapper,
   slideLeft,
 } from '@/components/ui/SceneShared'
-import { EXTERNAL_LINKS } from '@/lib/routes'
+import { useIdioma } from '@/context/IdiomaContext'
+import { presentacionParaIdioma } from '@/lib/i18n/presentacion'
 
 interface Props { isActive?: boolean }
 
 const SceneRoadmap = forwardRef<HTMLElement, Props>(
   function SceneRoadmap({ isActive = false }, ref) {
+    /*
+     * EL PDF SIGUE AL IDIOMA DE LA PAGINA.
+     *
+     * Antes este boton apuntaba siempre al archivo español. Con la landing en
+     * un solo idioma eso era correcto por definicion; con once deja de serlo
+     * sin que nada avise — se lee la seccion en aleman, se pulsa un boton en
+     * aleman y baja un PDF en español. El texto traducido y el enlace no es la
+     * peor mezcla, porque el visitante confia en lo que acaba de leer.
+     */
+    const { idioma, t } = useIdioma()
+    const pres = presentacionParaIdioma(idioma)
+
     return (
       <SceneWrapper
         ref={ref}
@@ -43,10 +56,23 @@ const SceneRoadmap = forwardRef<HTMLElement, Props>(
           <RoadmapEvolutionPath isActive={isActive} />
         </motion.div>
 
-        <motion.div variants={slideLeft}>
-          <OfficialDownloadButton href={EXTERNAL_LINKS.MARKETING_PLAN_ES}>
-            Descargar plan de marketing
+        <motion.div variants={slideLeft} className="flex flex-col items-start gap-2">
+          <OfficialDownloadButton href={pres.archivo}>
+            {`${t('Descargar plan de marketing')} · ${pres.nativo}`}
           </OfficialDownloadButton>
+          {/*
+            SE AVISA CUANDO LO QUE SE ENTREGA NO ES LA v5.0.
+
+            Aleman, serbio y urdu todavia van con la version anterior, y el
+            serbio pesa 227 MB. Quien pulsa merece saberlo ANTES, no
+            descubrirlo con datos moviles. El aviso aparece solo en esos tres:
+            en los otros ocho no hay nada que advertir y no se pinta nada.
+          */}
+          {pres.material === 'v1' ? (
+            <span className="text-caption text-state-warning" dir="ltr">
+              {t('Versión anterior (v1)')} · {pres.mb} MB
+            </span>
+          ) : null}
         </motion.div>
 
       </SceneWrapper>

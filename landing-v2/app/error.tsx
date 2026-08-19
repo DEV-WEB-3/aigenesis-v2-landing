@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { useT } from '@/context/IdiomaContext'
 
 /**
  * Pantalla de error de la aplicación.
@@ -29,6 +30,8 @@ export default function Error({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const t = useT()
+
   useEffect(() => {
     if (process.env.NODE_ENV !== 'production') {
       console.error('[error de ruta]', error)
@@ -39,11 +42,12 @@ export default function Error({
     <main className="genesis-error-page">
       <div className="genesis-error-page__glow" aria-hidden="true" />
       <div className="genesis-error-page__content">
-        <p className="genesis-error-page__code">Error</p>
-        <h1 className="genesis-error-page__title">Algo se ha interrumpido</h1>
+        <p className="genesis-error-page__code">{t('Error')}</p>
+        <h1 className="genesis-error-page__title">{t('Algo se ha interrumpido')}</h1>
         <p className="genesis-error-page__text">
-          No hemos podido cargar esta parte del sitio. Suele resolverse
-          reintentando; si persiste, vuelve al inicio.
+          {t(
+            'No hemos podido cargar esta parte del sitio. Suele resolverse reintentando; si persiste, vuelve al inicio.'
+          )}
         </p>
         <div className="genesis-error-page__actions">
           <button
@@ -51,15 +55,15 @@ export default function Error({
             onClick={reset}
             className="genesis-error-page__btn genesis-error-page__btn--primary"
           >
-            Reintentar
+            {t('Reintentar')}
           </button>
           <a href="/" className="genesis-error-page__btn">
-            Volver al inicio
+            {t('Volver al inicio')}
           </a>
         </div>
         {error.digest ? (
           <p className="genesis-error-page__digest">
-            Referencia: <code>{error.digest}</code>
+            {t('Referencia:')} <code dir="ltr">{error.digest}</code>
           </p>
         ) : null}
       </div>
