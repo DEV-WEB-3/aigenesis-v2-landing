@@ -5588,10 +5588,53 @@ body {
   gap: var(--fit-gap-stack, 0.6rem);
 }
 
-@media (min-width: 768px) {
-  #booster .booster-layers-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+/*
+  UNA COLUMNA, Y TARJETAS HORIZONTALES.
+
+  Estaban en tres columnas, y eso solo funciona si hay ancho que repartir. Aqui
+  no lo hay: la columna de texto mide 432 px, asi que cada tarjeta se quedaba en
+  128 px. Medido, el resultado era 129 x 239 — una torre estrecha donde el
+  titular a 32 px («Multiplicador») se partia en tres lineas de una silaba y el
+  cuerpo en seis. Tres columnas ahorraban alto sobre el papel y lo devolvian
+  multiplicado en cuanto el texto tenia que caber de verdad.
+
+  En horizontal cada capa ocupa una fila completa: la etiqueta a la izquierda
+  —que es lo que las ordena—, el titular y el texto a la derecha. Con 432 px de
+  ancho el titular entra en una linea y el cuerpo en una o dos. Y ademas sale
+  MAS BAJO que la version en columnas.
+
+  El titular baja de 32 px a 1,12 rem: 32 px es tamano de titular de bloque, y
+  aqui la tarjeta no encabeza nada — es un elemento de una lista de tres.
+*/
+#booster .booster-layers-grid {
+  grid-template-columns: 1fr;
+}
+
+#booster .booster-layers-grid article {
+  display: grid;
+  grid-template-columns: minmax(3.6rem, auto) 1fr;
+  align-items: center;
+  gap: 0.1rem 1rem;
+  padding: 0.8rem 1.05rem;
+}
+
+#booster .booster-layers-grid article > .label-section {
+  grid-row: 1 / span 2;
+  align-self: center;
+  white-space: nowrap;
+}
+
+#booster .booster-layers-grid article > :is(h2, h3, h4, h5) {
+  grid-column: 2;
+  font-size: 1.12rem;
+  line-height: 1.25;
+}
+
+#booster .booster-layers-grid article > p {
+  grid-column: 2;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  max-width: none;
 }
 
 #booster .booster-section-backdrop {
