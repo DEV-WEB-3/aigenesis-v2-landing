@@ -12,7 +12,7 @@ import EntornoGenesis from './EntornoGenesis'
 import {
   CAPAS_3D,
   CAMARA,
-  TUBO_ALTO,
+  TUBO_CANTO,
   NUCLEO_Y,
   posicionCamara,
 } from '@/lib/technology/techMachine3d'
@@ -115,7 +115,7 @@ function Anclas({ onAnclas }: { onAnclas: (a: Ancla[]) => void }) {
       CAPAS_3D.map((c) => ({
         id: c.id,
         // el frente del labio superior: donde en la referencia va la placa
-        frente: proy(0, c.y + (c.re * TUBO_ALTO) / 2, c.re),
+        frente: proy(0, c.y + TUBO_CANTO / 2, c.re),
         izq: proy(-c.re, c.y, 0),
         der: proy(c.re, c.y, 0),
       }))

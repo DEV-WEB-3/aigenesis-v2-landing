@@ -8,9 +8,10 @@ import TechRingInterior from './TechRingInterior'
 import {
   CAPAS_3D,
   TUBO_HUECO,
-  TUBO_ALTO,
+  TUBO_CANTO,
   texturaPared,
   texturaCorona,
+  texturaEspecular,
   type Capa3D,
 } from '@/lib/technology/techMachine3d'
 
@@ -44,10 +45,10 @@ import {
 
 function Anillo({ capa, activo }: { capa: Capa3D; activo: boolean }) {
   const ri = capa.re * TUBO_HUECO
-  const alto = capa.re * TUBO_ALTO
+  const alto = TUBO_CANTO
   const coronaRef = useRef<THREE.Mesh>(null)
 
-  const { pared, corona } = useMemo(() => {
+  const { pared, corona, especular } = useMemo(() => {
     const mk = (c: HTMLCanvasElement | null, envolver = false) => {
       if (!c) return null
       const t = new THREE.CanvasTexture(c)
@@ -62,6 +63,7 @@ function Anillo({ capa, activo }: { capa: Capa3D; activo: boolean }) {
     return {
       pared: mk(texturaPared(capa.orden, capa.color), true),
       corona: mk(texturaCorona(capa.orden, capa.color)),
+      especular: mk(texturaEspecular(), true),
     }
   }, [capa.orden, capa.color])
 
@@ -153,6 +155,28 @@ function Anillo({ capa, activo }: { capa: Capa3D; activo: boolean }) {
       </mesh>
 
       {/*
+        EL REALCE ESPECULAR — un anillo bajo, pegado al borde superior de la
+        pared, con la banda de luz que NO da la vuelta. Es aditivo y va delante
+        del cristal: es luz REFLEJADA sobre la superficie, no luz emitida por
+        ella, y por eso se suma a lo que ya hay en vez de sustituirlo.
+
+        Es el detalle que separa «cilindro de color» de «pieza metalica bajo un
+        foco», y cuesta una malla de 64 caras por anillo.
+      */}
+      <mesh position={[0, alto * 0.34, 0]} renderOrder={5}>
+        <cylinderGeometry args={[capa.re * 1.001, capa.re * 1.001, alto * 0.3, 64, 1, true]} />
+        <meshBasicMaterial
+          map={especular ?? undefined}
+          transparent
+          opacity={0.55}
+          toneMapped={false}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+
+      {/*
         LOS LABIOS. Cuatro toros finos —borde exterior y borde del hueco, arriba
         y abajo—, en luz pura. Es el rasgo mas caracteristico de la referencia y
         el mas barato: cuatro mallas de 128 caras.
@@ -163,7 +187,7 @@ function Anillo({ capa, activo }: { capa: Capa3D; activo: boolean }) {
         [ri, alto / 2, 0.019, 0.8],
         [ri, -alto / 2, 0.015, 0.38],
       ] as const).map(([r, y, grosor, intensidad], i) => (
-        <mesh key={i} position={[0, y, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={4}>
+        <mesh key={i} position={[0, y, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={6}>
           <torusGeometry args={[r, grosor, 8, 128]} />
           <meshBasicMaterial color={capa.color} toneMapped={false} transparent opacity={intensidad} />
         </mesh>

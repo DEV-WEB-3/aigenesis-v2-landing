@@ -4,7 +4,7 @@ import { useLayoutEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 import { INK } from '@/lib/design/tokens'
-import { TUBO_HUECO, TUBO_ALTO, type Capa3D } from '@/lib/technology/techMachine3d'
+import { TUBO_HUECO, TUBO_CANTO, type Capa3D } from '@/lib/technology/techMachine3d'
 
 /**
  * LA MAQUINARIA DENTRO DE CADA ANILLO.
@@ -53,7 +53,7 @@ export default function TechRingInterior({ capa, activo }: Props) {
   const ref = useRef<THREE.InstancedMesh>(null)
   const perfil = PERFIL[capa.id]!
   const ri = capa.re * TUBO_HUECO
-  const alto = capa.re * TUBO_ALTO
+  const alto = TUBO_CANTO
 
   const color = useMemo(() => new THREE.Color(capa.colorAlt), [capa.colorAlt])
   const claro = useMemo(() => new THREE.Color(INK.base), [])

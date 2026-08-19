@@ -67,42 +67,53 @@ export interface Capa3D {
  */
 export const TUBO_HUECO = 0.56
 /**
- * Altura del tubo respecto a su radio exterior.
+ * ALTURA DEL TUBO — ABSOLUTA, no proporcional al radio.
  *
- * 0,19, MEDIDO SOBRE UN RECORTE AMPLIADO del anillo de BLOCKCHAIN: la pared
- * frontal ocupa 30 px para un radio de 180. Antes puse 0,30, luego 0,44
- * mirando la comparacion a tamano pequeno, y las dos veces me equivoque en la
- * misma direccion.
+ * Este fue el error de modelo, no de valor. Lo tenia como una fraccion del radio
+ * (`0,19 * re`), y eso hace los anillos de arriba mas BAJOS que los de abajo.
+ * Medidos los cantos en recortes ampliados de la referencia:
  *
- * EL ERROR DE FONDO: a tamano pequeno confundi el ALTO DEL ANILLO con el alto
- * de su ELIPSE SUPERIOR. Lo que hace que el anillo de la referencia parezca
- * grueso no es la pared —que es fina— sino la elipse, que ocupa 62 px de los
- * 92 que mide el conjunto. O sea que el grosor lo da el ANGULO DE CAMARA, no la
- * geometria. Subir la pared para conseguirlo era corregir la pieza equivocada.
+ *     aplicaciones  54 px  (diametro 330)   canto/radio 0,327
+ *     blockchain    56 px  (diametro 367)   canto/radio 0,305
+ *     backend       60 px  (diametro 429)   canto/radio 0,280
+ *
+ * El canto en pixeles es practicamente CONSTANTE —54, 56, 60— y la pequena
+ * diferencia la explica la perspectiva: los de arriba estan mas lejos y se ven
+ * un 5 % menores. O sea que son cinco plataformas de la MISMA altura y distinto
+ * diametro, que es justo lo que uno esperaria de un sistema modular.
+ *
+ * Con la relacion proporcional que yo tenia, el de arriba salia un 19 % mas
+ * bajo que el de abajo y la pila se leia como un cono achatado en vez de como
+ * una pila de piezas iguales.
+ *
+ * 0,86 unidades de escena: con el backend en radio 3,15 da canto/radio 0,273
+ * frente al 0,280 medido, y en aplicaciones 0,336 frente a 0,327.
  */
-export const TUBO_ALTO = 0.19
+export const TUBO_CANTO = 0.86
 
 /**
  * LOS CINCO ESTRATOS.
  *
- * EL ESCALONADO NO ES LINEAL, y este fue el ultimo error que quedaba.
+ * DIAMETROS, medidos nivel por nivel en recortes ampliados de la referencia y
+ * con la perspectiva descontada (los anillos de arriba estan mas lejos y se ven
+ * ~5 % menores de lo que son):
  *
- * Medidos los cinco diametros de la referencia sobre las filas centradas en el
- * eje —descartando las que cruzan las guias de las lecturas—, la proporcion
- * respecto al mayor es:
+ *     aparente:  0,769 · 0,855 · 0,918 · 0,959 · 1,000   (apps -> backend)
+ *     en escena: 0,811 · 0,890 · 0,944 · 0,972 · 1,000
  *
- *     aplicaciones 0,82 · blockchain 0,82 · ia 0,92 · infra 0,96 · backend 1,00
+ * El salto grande esta entre APLICACIONES y BLOCKCHAIN; de IA hacia abajo el
+ * escalon es pequeno. Eso es lo que hace que la pila se lea como una piramide
+ * escalonada con una cabeza estrecha, y no como un cono uniforme.
  *
- * Es decir: las dos de arriba son practicamente IGUALES y luego hay un salto
- * fuerte al bajar a IA. Yo tenia un degradado uniforme —0,91 · 0,93 · 0,95 ·
- * 0,98 · 1,00— y eso produce otra lectura: cinco piezas escalando parejo se ven
- * como un cono; dos iguales arriba mas un escalon marcado se ven como una
- * CABEZA sobre un cuerpo, que es la silueta de la referencia.
+ * Historia de mis errores aqui, porque el patron importa: primero puse 0,63 de
+ * estrechamiento (una torre), luego 0,857 uniforme (un cilindro), y solo al
+ * medir CADA nivel por separado —en vez de los dos extremos— aparecio la forma
+ * real. Medir los extremos e interpolar no es medir.
  *
- * (Antes de esto tenia 0,63 de estrechamiento, que era una torre. El error fue
- * corregir de un extremo al otro en vez de medir cada nivel.)
+ * SEPARACION: 119,5 px entre centros para 429 de diametro mayor = 0,279. Con
+ * paso 1,76 y diametro 6,30 sale 0,279 exacto.
  *
- * LA SEPARACION es 2,08 y no 1,80. Salio de 0,286 del diametro mayor, que es lo
+ * (nota historica) LA SEPARACION fue 2,08 y no 1,80. Salio de 0,286 del diametro mayor, que es lo
  * medido en la referencia, pero ese numero se calculo con el canto a 0,30 del
  * radio. Al subirlo a 0,44 —que es el correcto— los anillos crecieron hacia
  * arriba y hacia abajo y se comieron el aire entre ellos: cada capa tiene que
@@ -123,7 +134,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     label: 'INFRAESTRUCTURA',
     lectura: 'Infraestructura distribuida',
     detalle: ['Escalable, redundante y preparada', 'para millones de interacciones.'],
-    orden: 1, y: 1.86, re: 3.02,
+    orden: 1, y: 1.76, re: 3.06,
     color: EMISSION.blueHi, colorAlt: EMISSION.blue, latido: 7.2, lado: 'izq',
   },
   {
@@ -131,7 +142,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     label: 'IA',
     lectura: 'Inteligencia artificial',
     detalle: ['Motor propietario que aprende,', 'predice y optimiza en tiempo real.'],
-    orden: 2, y: 3.72, re: 2.90,
+    orden: 2, y: 3.52, re: 2.97,
     color: EMISSION.magenta, colorAlt: EMISSION.magentaHi, latido: 4.8, lado: 'der',
   },
   {
@@ -139,7 +150,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     label: 'BLOCKCHAIN',
     lectura: 'Inmutable y descentralizado',
     detalle: ['Transacciones verificables, registros', 'transparentes y sin puntos de falla.'],
-    orden: 3, y: 5.58, re: 2.60,
+    orden: 3, y: 5.28, re: 2.80,
     color: EMISSION.violetHi, colorAlt: EMISSION.magenta, latido: 6.4, lado: 'izq',
   },
   {
@@ -147,7 +158,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     label: 'APLICACIONES',
     lectura: 'Aplicaciones inteligentes',
     detalle: ['Interfaces descentralizadas,', 'experiencias fluidas y seguras.'],
-    orden: 4, y: 7.44, re: 2.56,
+    orden: 4, y: 7.04, re: 2.56,
     color: EMISSION.cyan, colorAlt: EMISSION.blueHi, latido: 8, lado: 'der',
   },
 ] as const
@@ -160,7 +171,7 @@ export const CAPA_CIMA = CAPAS_3D[CAPAS_3D.length - 1]!
  * Medido: en la referencia el centro del nucleo esta 135 px sobre el centro del
  * anillo de aplicaciones, para 418 px de diametro mayor — 0,32 del diametro.
  */
-export const NUCLEO_Y = 9.5
+export const NUCLEO_Y = 9.1
 /**
  * Semiancho del recinto hexagonal.
  * Medido: el hexagono ocupa 135 px de ancho contra los 358 del anillo que tiene
@@ -202,7 +213,7 @@ export const CAMARA = {
    */
   elevacion: 10 * (Math.PI / 180),
   /** A que altura mira. Ni al centro geometrico ni al nucleo: al peso visual. */
-  objetivoY: 4.3,
+  objetivoY: 4.05,
 } as const
 
 export function posicionCamara(): [number, number, number] {
@@ -258,30 +269,61 @@ export function texturaPared(sal: number, color: string): HTMLCanvasElement | nu
   g.fillStyle = VOID.black
   g.fillRect(0, 0, W, H)
 
-  const MOD = 64
+  /*
+   * DENSIDAD. 96 modulos y 5 filas, no 64 y 3.
+   *
+   * En la referencia el canto esta LLENO: no quedan tramos de color liso entre
+   * pieza y pieza. Con 64 modulos de 3 filas el canto tenia mas hueco que
+   * hardware y a distancia se leia como una banda de color con puntitos. La
+   * textura es el sitio barato donde comprar densidad — son los mismos cero
+   * nodos de geometria— asi que aqui se gasta sin miedo.
+   *
+   * Cuatro TIPOS de pieza, no uno: ventanilla ancha, ranura fina, punto de
+   * conexion y barra de estado. Repetir un solo rectangulo 500 veces produce un
+   * patron; mezclar cuatro produce un equipo.
+   */
+  const MOD = 96
   const anchoMod = W / MOD
 
   for (let i = 0; i < MOD; i++) {
     const x0 = i * anchoMod
 
     // nervio estructural entre modulos: la linea vertical que da ritmo
-    g.fillStyle = 'rgba(120,140,190,0.30)'
+    g.fillStyle = 'rgba(120,140,190,0.34)'
     g.fillRect(x0, 0, 1.5, H)
+    // y un segundo nervio mas tenue a mitad de modulo
+    g.fillStyle = 'rgba(100,120,170,0.16)'
+    g.fillRect(x0 + anchoMod * 0.5, H * 0.14, 1, H * 0.72)
 
-    // ventanillas: tres filas, y solo una de cada tres encendida — un canto con
-    // TODAS las luces puestas se lee como guirnalda, no como sistema
-    for (let f = 0; f < 4; f++) {
-      const filas = 4
-      const alto = H * 0.12
-      const y0 = H * 0.13 + f * ((H * 0.7) / filas)
-      const n = 2 + Math.floor(semilla(i * 7 + f, sal) * 2)
+    for (let f = 0; f < 5; f++) {
+      const filas = 5
+      const alto = H * (f === 2 ? 0.07 : 0.1)
+      const y0 = H * 0.11 + f * ((H * 0.76) / filas)
+      const n = 2 + Math.floor(semilla(i * 7 + f, sal) * 3)
       for (let k = 0; k < n; k++) {
-        const w = anchoMod * (0.16 + semilla(i * 13 + f * 3 + k, sal) * 0.2)
-        const x = x0 + anchoMod * 0.14 + k * (anchoMod * 0.26)
-        const viva = semilla(i * 17 + f * 5 + k, sal + 9) > 0.62
-        g.fillStyle = viva ? color : 'rgba(90,110,160,0.35)'
-        g.globalAlpha = viva ? 0.95 : 0.4
-        g.fillRect(x, y0, w, alto)
+        const tipo = Math.floor(semilla(i * 23 + f * 7 + k, sal + 31) * 4)
+        const base = anchoMod * 0.12 + k * (anchoMod * 0.24)
+        const x = x0 + base
+        const viva = semilla(i * 17 + f * 5 + k, sal + 9) > 0.58
+        g.fillStyle = viva ? color : 'rgba(92,112,162,0.4)'
+        g.globalAlpha = viva ? 0.95 : 0.42
+        if (tipo === 0) {
+          // ventanilla ancha
+          g.fillRect(x, y0, anchoMod * (0.16 + semilla(i + k, sal) * 0.2), alto)
+        } else if (tipo === 1) {
+          // ranura fina
+          g.fillRect(x, y0 + alto * 0.3, anchoMod * 0.3, alto * 0.34)
+        } else if (tipo === 2) {
+          // punto de conexion
+          g.beginPath()
+          g.arc(x + anchoMod * 0.08, y0 + alto / 2, Math.max(1.4, alto * 0.24), 0, Math.PI * 2)
+          g.fill()
+        } else {
+          // barra de estado: tres marcas seguidas
+          for (let m = 0; m < 3; m++) {
+            g.fillRect(x + m * anchoMod * 0.07, y0 + alto * 0.2, anchoMod * 0.045, alto * 0.6)
+          }
+        }
       }
     }
     g.globalAlpha = 1
@@ -298,6 +340,46 @@ export function texturaPared(sal: number, color: string): HTMLCanvasElement | nu
   g.globalAlpha = 0.85
   g.fillRect(0, 0, W, H)
   g.globalAlpha = 1
+
+  return c
+}
+
+/**
+ * EL REALCE ESPECULAR del borde superior — una banda de luz que NO da la vuelta.
+ *
+ * Es el detalle que mas separa «cilindro de color» de «pieza metalica». Un
+ * reflejo especular no rodea el objeto: aparece donde la superficie devuelve la
+ * luz clave hacia la camara, o sea en un arco corto, y se apaga en el resto. Un
+ * borde brillante uniforme se lee como un tubo de neon; un arco brillante se lee
+ * como metal bajo un foco.
+ *
+ * La textura es una tira que se enrolla una vez alrededor del anillo: dos
+ * maximos —el principal hacia la luz clave de arriba-izquierda, y uno menor y
+ * mas frio del relleno magenta de la derecha— y negro en el resto.
+ */
+export function texturaEspecular(): HTMLCanvasElement | null {
+  const W = 1024
+  const H = 8
+  const c = lienzo(W, H)
+  if (!c) return null
+  const g = c.getContext('2d')!
+  g.fillStyle = VOID.black
+  g.fillRect(0, 0, W, H)
+
+  const brillo = (centro: number, ancho: number, fuerza: number, col: string) => {
+    const grad = g.createLinearGradient((centro - ancho) * W, 0, (centro + ancho) * W, 0)
+    grad.addColorStop(0, 'rgba(0,0,0,0)')
+    grad.addColorStop(0.5, col)
+    grad.addColorStop(1, 'rgba(0,0,0,0)')
+    g.globalAlpha = fuerza
+    g.fillStyle = grad
+    g.fillRect((centro - ancho) * W, 0, ancho * 2 * W, H)
+    g.globalAlpha = 1
+  }
+  // clave: arriba-izquierda de la escena cae en ~0,32 del giro de la textura
+  brillo(0.32, 0.1, 1, INK.base)
+  // relleno magenta de la derecha
+  brillo(0.78, 0.07, 0.55, EMISSION.magentaHi)
 
   return c
 }
