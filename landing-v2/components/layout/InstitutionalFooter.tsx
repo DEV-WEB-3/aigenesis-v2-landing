@@ -1,5 +1,6 @@
 'use client'
 
+import { rutaPublica } from '@/lib/rutaPublica'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import SocialLinks from '@/components/layout/SocialLinks'
@@ -31,7 +32,7 @@ export default function InstitutionalFooter({ className = '' }: InstitutionalFoo
     >
       <div className="institutional-footer__watermark" aria-hidden="true">
         <Image
-          src="/brand/genesis-symbol-512.png"
+          src={rutaPublica('/brand/genesis-symbol-512.png')}
           alt=""
           width={320}
           height={320}

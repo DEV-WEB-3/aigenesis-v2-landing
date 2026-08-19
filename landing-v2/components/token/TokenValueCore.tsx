@@ -1,12 +1,18 @@
 'use client'
 
+import { rutaPublica } from '@/lib/rutaPublica'
 import { TOKEN_VALUE_PULSE_S } from '@/lib/token/tokenOrbitalValueLayout'
 
 interface TokenValueCoreProps {
   compact?: boolean
 }
 
-const ASSET_BASE = '/assets/token-core'
+/* `rutaPublica`: sin esto, al colgar el sitio de una subcarpeta estas
+   imagenes apuntan a la raiz del dominio y dan 404. Pasó de verdad — tres
+   `.webp` rotos en `aigenesis.io/nueva/`, vistos en la consola del navegador y
+   no por mi barrido, porque yo habia buscado `/brand/` y `/docs/` en vez de la
+   clase entera: cualquier cadena literal que empiece por `/`. */
+const ASSET_BASE = rutaPublica('/assets/token-core')
 
 const NUCLEUS_IMAGE_LAYERS = [
   {

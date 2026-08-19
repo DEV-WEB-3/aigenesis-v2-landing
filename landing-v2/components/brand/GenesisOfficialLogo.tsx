@@ -1,5 +1,6 @@
 'use client'
 
+import { rutaPublica } from '@/lib/rutaPublica'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import GenesisBurstMark from './GenesisBurstMark'
@@ -62,7 +63,7 @@ export default function GenesisOfficialLogo({
         aria-label="GENESIS"
       >
         <Image
-          src="/brand/genesis-mark-512.png"
+          src={rutaPublica('/brand/genesis-mark-512.png')}
           alt=""
           width={width}
           height={height}

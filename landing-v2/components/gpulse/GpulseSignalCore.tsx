@@ -1,5 +1,6 @@
 'use client'
 
+import { rutaPublica } from '@/lib/rutaPublica'
 import Image from 'next/image'
 
 import { GPULSE_SIGNAL_CENTER, GPULSE_SIGNAL_PULSE_S } from '@/lib/gpulse/signalNetworkLayout'
@@ -69,7 +70,7 @@ export default function GpulseSignalCore() {
         */}
         <span className="gpulse-signal-core__glyph marca-halo marca-halo--gpulse" aria-hidden="true">
           <Image
-            src="/brand/gpulse-512.png"
+            src={rutaPublica('/brand/gpulse-512.png')}
             alt=""
             width={78}
             height={78}

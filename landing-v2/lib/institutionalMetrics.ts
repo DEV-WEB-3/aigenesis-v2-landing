@@ -153,9 +153,22 @@ export const MARKETPLACE_STATS = [
   // Contar lo que la frase de al lado ya enumera es decir dos veces lo mismo.
 ] as const
 
-/** Community — SceneCommunity */
+/**
+ * Community — SceneCommunity
+ *
+ * MIEMBROS ACTIVOS: 24K+, dato del owner el 19-ago-2026. Estaba en 5.000+ y no
+ * llevaba fuente ni fecha, que es como una cifra se queda vieja sin que nadie
+ * lo note: nada la contradice, nadie la revisa y sigue publicada años.
+ *
+ * `24` con sufijo `K+` y no `24000` con `+`: el contador anima hasta el número,
+ * y ver correr cinco dígitos hasta «24000+» se lee peor que «24K+». Es el mismo
+ * criterio que ya usa `MARKETPLACE_STATS` con los 500K de productos.
+ *
+ * Las otras dos cifras se dejan como estaban PORQUE NO LAS HE MEDIDO. Cambiar
+ * la que me dicen y ajustar «de paso» las de al lado sería inventar precisión.
+ */
 export const COMMUNITY_STATS = [
-  { to: 5000, suffix: '+', label: 'MIEMBROS ACTIVOS' },
+  { to: 24, suffix: 'K+', label: 'MIEMBROS ACTIVOS' },
   { to: 12, suffix: 'M USDT', label: 'DISTRIBUIDOS' },
   { to: 12, suffix: '+', label: 'PAÍSES' },
 ] as const

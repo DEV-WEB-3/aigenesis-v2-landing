@@ -146,10 +146,32 @@ const CABECERAS = [
  */
 const EXPORTACION = process.env.EXPORTAR_ESTATICO === '1'
 
+/**
+ * SUBCARPETA DE DESTINO — vacio = raiz del dominio.
+ *
+ * La copia estatica puede ir a la raiz de un subdominio (`app.aigenesis.io`) o
+ * colgando de una carpeta (`aigenesis.io/nueva/`). En el segundo caso TODAS las
+ * rutas absolutas que Next escribe —`/_next/...`, `/favicon.svg`, los enlaces
+ * internos— apuntarian a la raiz del dominio, donde no hay nada suyo: la pagina
+ * cargaria sin estilos ni JavaScript y pareceria rota sin ningun error claro.
+ *
+ * `basePath` los prefija todos. Se pasa por entorno porque el destino es una
+ * decision del despliegue, no del codigo:
+ *
+ *   BASE_PATH=/nueva npm run exportar     -> para aigenesis.io/nueva/
+ *   npm run exportar                      -> para la raiz de un (sub)dominio
+ *
+ * IMPORTANTE al migrar: si un dia esto pasa a la raiz de aigenesis.io, hay que
+ * volver a exportar SIN `BASE_PATH`. Mover los archivos no basta — el prefijo
+ * esta escrito dentro de cada HTML.
+ */
+const BASE_PATH = process.env.BASE_PATH ?? ''
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   ...(EXPORTACION ? { output: 'export', trailingSlash: true } : {}),
+  ...(EXPORTACION && BASE_PATH ? { basePath: BASE_PATH, assetPrefix: BASE_PATH } : {}),
   images: {
     /*
      * En exportacion no hay optimizador: es un proceso de servidor. Sin

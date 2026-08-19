@@ -17,6 +17,8 @@
     "verify:tempo": "node scripts/verify-visual.mjs",
     "verify:i18n": "node scripts/verify-i18n.mjs",
     "exportar": "node scripts/exportar.mjs",
+    "desplegar": "node scripts/desplegar-ssh.mjs",
+    "desplegar:simular": "node scripts/desplegar-ssh.mjs --simular",
     "desplegar:hosting": "node scripts/desplegar-hosting.mjs",
     "desplegar:probar": "node scripts/desplegar-hosting.mjs --probar"
   },

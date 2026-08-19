@@ -1,4 +1,5 @@
 import { VOID } from '@/lib/design/tokens'
+import { rutaPublica } from '@/lib/rutaPublica'
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, Inter, IBM_Plex_Mono } from 'next/font/google'
 import { SITE_URL } from '@/lib/routes'
@@ -109,8 +110,10 @@ export const metadata: Metadata = {
     // PLACEHOLDER: añadir creator/@aigenesis cuando esté confirmado
   },
   icons: {
-    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
-    apple: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+    /* `rutaPublica`: si el sitio cuelga de una subcarpeta, un favicon absoluto
+       a la raíz apunta al dominio equivocado. En la raíz no cambia nada. */
+    icon: [{ url: rutaPublica('/favicon.svg'), type: 'image/svg+xml' }],
+    apple: [{ url: rutaPublica('/favicon.svg'), type: 'image/svg+xml' }],
   },
   authors: [{ name: 'AiGenesis' }],
   category: 'technology',

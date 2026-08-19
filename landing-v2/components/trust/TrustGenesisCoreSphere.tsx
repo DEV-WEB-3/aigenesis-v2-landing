@@ -1,5 +1,6 @@
 'use client'
 
+import { rutaPublica } from '@/lib/rutaPublica'
 import { useCallback, useEffect, useRef } from 'react'
 import { TRUST_CORE_PULSE_S } from '@/lib/trust/trustGenesisCoreLayout'
 import {
@@ -11,7 +12,12 @@ import { useTrustCoreLogoEditorMode } from '@/lib/trust/useTrustCoreLogoEditorMo
 import { useTrustCoreLogoLayout } from '@/lib/trust/useTrustCoreLogoLayout'
 import TrustCoreLogoEditorHud from '@/components/trust/TrustCoreLogoEditorHud'
 
-const ASSET_BASE = '/assets/token-core'
+/* `rutaPublica`: sin esto, al colgar el sitio de una subcarpeta estas
+   imagenes apuntan a la raiz del dominio y dan 404. Pasó de verdad — tres
+   `.webp` rotos en `aigenesis.io/nueva/`, vistos en la consola del navegador y
+   no por mi barrido, porque yo habia buscado `/brand/` y `/docs/` en vez de la
+   clase entera: cualquier cadena literal que empiece por `/`. */
+const ASSET_BASE = rutaPublica('/assets/token-core')
 
 interface TrustGenesisCoreSphereProps {
   isActive?: boolean

@@ -1,5 +1,6 @@
 'use client'
 
+import { rutaPublica } from '@/lib/rutaPublica'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import type { LogoSize, LogoTone } from './types'
@@ -40,7 +41,7 @@ export default function GenesisBurstMark({
 
   return (
     <Image
-      src="/brand/genesis-symbol-512.png"
+      src={rutaPublica('/brand/genesis-symbol-512.png')}
       alt=""
       width={px}
       height={px}

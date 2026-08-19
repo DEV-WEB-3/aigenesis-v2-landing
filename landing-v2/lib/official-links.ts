@@ -2,6 +2,8 @@
  * URLs oficiales escaneadas de https://aigenesis.io/ (Jun 2026).
  * Fuente única para producción — sincronizar si el sitio legacy cambia.
  */
+
+import { rutaPublica } from '@/lib/rutaPublica'
 export const OFFICIAL_SITE = 'https://aigenesis.io' as const
 
 /** Portal de producto (Mining, Booster, Staking, GPulse, etc.) */
@@ -32,7 +34,9 @@ export const OFFICIAL_DOWNLOADS = {
    * febrero de 2024). Que la versión sea de 2024 es un hecho a resolver aparte:
    * la hoja de ruta de la landing llega a 2026 Q3.
    */
-  WHITEPAPER_PDF: '/docs/aigenesis-whitepaper-v1.1.pdf',
+  /* `rutaPublica` para que siga funcionando si el sitio cuelga de una
+     subcarpeta. En la raíz no cambia nada. Ver `lib/rutaPublica.ts`. */
+  WHITEPAPER_PDF: rutaPublica('/docs/aigenesis-whitepaper-v1.1.pdf'),
   // Compatibilidad: la escena Roadmap enlaza el plan de marketing por este
   // nombre. Es EL MISMO archivo que la presentación oficial en español — se
   // deriva de `PRESS_V5` para que no haya dos copias de la misma URL.

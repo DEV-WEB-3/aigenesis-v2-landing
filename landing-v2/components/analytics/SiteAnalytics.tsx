@@ -15,6 +15,33 @@ import Script from 'next/script'
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
 
+/*
+ * FUERA DE VERCEL, LOS DOS DE VERCEL NO SE MONTAN.
+ *
+ * `/_vercel/insights/script.js` y `/_vercel/speed-insights/script.js` los sirve
+ * la plataforma: en la copia estatica que va a Hostinger no existen. Medido en
+ * vivo sobre `aigenesis.io/nueva/`: dos 404 en CADA carga de pagina.
+ *
+ * No rompian nada —la pagina funciona igual— y por eso es justo el tipo de
+ * ruido que se queda para siempre: nadie lo mira porque nada falla. Ademas
+ * ensucia la consola donde un dia habra que buscar un fallo de verdad.
+ *
+ * TIENE QUE SER `NEXT_PUBLIC_`, y me costó una subida descubrirlo.
+ *
+ * Este es un componente de CLIENTE. En el paquete del navegador Next sólo
+ * sustituye las variables que empiezan por `NEXT_PUBLIC_`; las demás quedan
+ * como `undefined`. La primera versión usaba `process.env.EXPORTAR_ESTATICO`,
+ * que en el servidor vale '1' y en el navegador `undefined` — así que la
+ * condición SIEMPRE daba «estoy en Vercel» y los dos scripts se seguían
+ * montando.
+ *
+ * Y NO LO VIO EL `grep` DEL HTML. Busqué `_vercel` en los archivos exportados y
+ * dio cero, porque estos scripts no están en el HTML: los inyecta el JavaScript
+ * al arrancar. Lo delató medir los recursos REALES en el navegador. Un grep
+ * sobre lo que se sube no puede ver lo que se añade después de cargar.
+ */
+const EN_VERCEL = process.env.NEXT_PUBLIC_EXPORTACION_ESTATICA !== '1'
+
 /**
  * Vercel Analytics (prod/preview) + GA4 opcional cuando hay env.
  *
@@ -44,8 +71,12 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
 export default function SiteAnalytics() {
   return (
     <>
-      <Analytics />
-      <SpeedInsights />
+      {EN_VERCEL ? (
+        <>
+          <Analytics />
+          <SpeedInsights />
+        </>
+      ) : null}
       {GA_ID ? (
         <>
           <Script

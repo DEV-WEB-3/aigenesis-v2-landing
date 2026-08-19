@@ -1,5 +1,6 @@
 'use client'
 
+import { rutaPublica } from '@/lib/rutaPublica'
 import Image from 'next/image'
 
 import { EMISSION } from '@/lib/design/tokens'
@@ -95,7 +96,7 @@ export default function MarketplaceCommerceCore() {
         */}
         <span className="marketplace-commerce-core__glyph marca-halo marca-halo--gevy" aria-hidden="true">
           <Image
-            src="/brand/gevy-alt-512.png"
+            src={rutaPublica('/brand/gevy-alt-512.png')}
             alt=""
             width={90}
             height={90}
