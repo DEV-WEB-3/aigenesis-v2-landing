@@ -19,10 +19,19 @@ function cn(...classes: (string | false | undefined)[]) {
   return classes.filter(Boolean).join(' ')
 }
 
+/*
+ * UN SOLO RADIO PARA TODOS LOS CRISTALES.
+ *
+ * Habia dos —16 px en product/trust/community y 20 px en ecosystem/marketplace—
+ * sin ningun motivo detras: dos variantes se escribieron en momentos distintos y
+ * nadie las comparo. Cuatro pixeles de radio no se ven de uno en uno, pero
+ * puestas dos tarjetas cerca la discrepancia si se percibe, y no se sabe de
+ * donde viene. Un sistema de cristal con dos radios no es un sistema.
+ */
 const variantClasses: Record<CardVariant, string> = {
   product: 'surface-card rounded-2xl',
-  ecosystem: 'surface-card rounded-[20px]',
-  marketplace: 'surface-card rounded-[20px]',
+  ecosystem: 'surface-card rounded-2xl',
+  marketplace: 'surface-card rounded-2xl',
   trust: 'surface-card rounded-2xl',
   community: 'surface-card rounded-2xl',
 }
@@ -41,13 +50,26 @@ const variantClasses: Record<CardVariant, string> = {
  * El aire no era culpa de la caja. Era culpa de meter texto de titular en algo
  * que no es un titular.
  */
+/*
+ * EL TAMANO YA NO LO ELIGE LA VARIANTE.
+ *
+ * Habia dos clases —`text-heading` para cuatro variantes y `text-body-lg` para
+ * ecosystem— y ademas una regla global las pisaba con 1,625 rem. Resultado
+ * medido: el mismo tipo de tarjeta con 26 px en trust, staking y goracle, y con
+ * 17,9 en booster.
+ *
+ * El razonamiento que ya estaba escrito aqui para ecosystem —«un rotulo
+ * navegable no es un titular»— vale para TODAS: un titulo de tarjeta nombra un
+ * elemento de una lista, no encabeza un bloque. Asi que el tamano lo fija el
+ * sistema de tarjeta en un solo sitio (1,15 rem, en globals) y la variante ya no
+ * opina. La `font-family` y el peso si siguen siendo cosa de cada una.
+ */
 const variantTitleClass: Record<CardVariant, string> = {
-  product: 'text-heading',
-  trust: 'text-heading',
-  community: 'text-heading',
-  marketplace: 'text-heading',
-  /** Nodo de navegación: se lee, se pulsa, no encabeza nada. */
-  ecosystem: 'text-body-lg font-semibold',
+  product: 'font-semibold',
+  trust: 'font-semibold',
+  community: 'font-semibold',
+  marketplace: 'font-semibold',
+  ecosystem: 'font-semibold',
 }
 
 export function Card({

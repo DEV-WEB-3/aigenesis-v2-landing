@@ -746,7 +746,22 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    /*
+     * EL LOGO SE DIMENSIONA POR ANCHO **Y POR ALTO**.
+     *
+     * Estaba atado solo al ancho —`width: 90%`—, y como es cuadrado, su ALTURA
+     * la decidia una medida horizontal. En una ventana de 1600x1000 salia de
+     * 468 px sobre una banda util de 924: el 51 %. Todo lo demas —ticker,
+     * titular, botones— se repartia lo que quedaba, y la esfera, que se calcula
+     * a partir del logo, se salia por arriba y tapaba el ticker.
+     *
+     * El 44 % de la banda util es la proporcion que deja al logo dominar sin
+     * expulsar al resto. Y al ser un `min`, en pantallas anchas y bajas manda el
+     * alto —que es donde falta sitio— y en pantallas estrechas sigue mandando el
+     * ancho, como antes.
+     */
     width: 90%;
+    max-width: min(90%, calc((100dvh - var(--enganche-alto)) * 0.36));
     margin: 0;
     padding: 0;
     line-height: 1;
@@ -823,8 +838,26 @@ body {
      * `overflow: hidden` del hero le recortaba esos 6 px. El resplandor tiene
      * margen suficiente sin llegar al borde de la ventana.
      */
-    max-height: 92vh;
-    max-width: 92vh;
+    /*
+     * EL TECHO SALE DE LA BANDA UTIL, no de la ventana.
+     *
+     * `92vh` no descuenta la barra superior: a 1000 px de alto daba un lienzo de
+     * 920 que empezaba en y = -73, o sea 73 px POR ENCIMA del borde, con la
+     * barra ocupando los primeros 68 y el ticker justo debajo. Medido en
+     * captura: la esfera tapaba «EST. 2023 · GENESIS AI · …» y lo dejaba
+     * ilegible.
+     *
+     * `vh` mide la ventana entera; lo que hay que medir es lo que queda DESPUES
+     * de la barra.
+     *
+     * 0,68 y no 0,80. Con 0,80 la bola quedaba a 4 px del ticker: cabia sobre el
+     * papel y no en la pantalla, porque el resplandor se extiende mas alla del
+     * borde de la bola y esos 4 px se los comia. Una holgura que no cuenta el
+     * halo no es una holgura. Con 0,68 quedan ~45 px, que es donde el ticker
+     * vuelve a leerse.
+     */
+    max-height: min(92vh, calc((100dvh - var(--enganche-alto)) * 0.68));
+    max-width: min(92vh, calc((100dvh - var(--enganche-alto)) * 0.68));
     margin: auto;
     z-index: 2;
 
@@ -2313,6 +2346,24 @@ body {
     gap: var(--fit-gap-frame);
   }
 
+  /*
+    EL FACTOR DE AJUSTE SE APLICA SIEMPRE, no solo en pantallas bajas.
+    Estaba dentro de `@media (min-width: 1024px) and (max-height: 900px)`, asi
+    que por encima de 900 px de alto el gancho MEDIA, calculaba el factor, lo
+    publicaba en `--fit-escala` y en el atributo de la seccion... y nadie lo
+    aplicaba. Medido a 1600x1000: staking con factor 0,91 y goracle con 0,82,
+    los dos con `zoom` computado en 1 y la seccion pasandose 61 px.
+
+    Es el peor tipo de fallo: el sistema informaba de que estaba funcionando.
+    El dato decia 0,82 y el pixel decia 1, y solo se ve comparando los dos.
+
+    Aplicarlo siempre es seguro porque el gancho devuelve 1,00 cuando no hay
+    nada que comprimir — en las secciones que ya caben no cambia nada.
+  */
+  .home-section-fit .scene-content-frame {
+    zoom: var(--fit-escala, 1);
+  }
+
   .home-section-fit .scene-content-stack {
     gap: var(--fit-gap-stack);
   }
@@ -2374,7 +2425,56 @@ body {
   .home-section-fit .scene-content-stack .surface-card {
   }
 
-  .home-section-fit .scene-content-stack article h3,
+  /*
+    UN TITULO DE TARJETA NO ES UN TITULAR DE BLOQUE.
+
+    Esto ponia 1,625 rem —26 px— en el titulo de TODA tarjeta del portal, con
+    dos escalones mas por altura de ventana. Es tamano de titular de seccion, y
+    en una tarjeta no encabeza nada: nombra un elemento de una lista de tres o
+    cuatro, casi siempre de una o dos palabras.
+
+    Lo que producia, medido seccion por seccion:
+
+        trust     4 tarjetas de 207 px con titulo de 26  ->  124 px de alto
+        staking   3 tarjetas de 476 px con titulo de 26  ->  131 px
+        goracle   3 tarjetas de 178 px con titulo de 26  ->  262 px, torres
+        booster   3 tarjetas con titulo de 17,9          ->   72 px
+
+    Cuatro secciones con el mismo tipo de tarjeta y tres tamanos de letra
+    distintos. La discrepancia se ve sin medirla, que es lo que la delata.
+
+    1,15 rem para todas. Y sin escalones por altura: los escalones existian para
+    recuperar alto, y con la base correcta ya no hacen falta — un sistema que
+    necesita tres tamanos para el mismo elemento es que empezo con el tamano
+    equivocado.
+  */
+  /* Alcanza a TODA tarjeta de la seccion, no solo a las de la columna de texto:
+     ecosistema dibuja las suyas en un mapa, fuera de `.scene-content-stack`, y
+     se quedaban en 16 px mientras el resto iba a 18,4. */
+  .home-section-fit .surface-card :is(h2, h3, h4, h5) {
+    font-size: 1.15rem;
+    line-height: 1.25;
+  }
+
+  .home-section-fit .surface-card p {
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  /*
+    Ya NO alcanza a `article h3`, solo a `.text-heading`.
+
+    Al ampliar el ambito de la regla de tarjeta —para que llegara tambien a
+    ecosistema, que dibuja las suyas fuera de la columna de texto— perdio
+    especificidad: `.home-section-fit .surface-card :is(h3)` puntua (0,2,1) y
+    esta puntuaba (0,2,2), asi que ganaba y los titulos volvian a 26 px. Medido:
+    cuatro secciones revertidas y solo ecosistema con el tamano nuevo.
+
+    Se resuelve por donde toca —quitandole el selector que ya no le corresponde—
+    y no subiendo la especificidad de la otra. Con las tarjetas fuera del
+    sistema de titulares, `article h3` aqui dentro SIEMPRE es una tarjeta; lo que
+    queda de esta regla es `.text-heading`, que si es un titular de verdad.
+  */
   .home-section-fit .scene-content-stack .text-heading {
     font-size: 1.625rem;
     line-height: 1.12;
@@ -2540,9 +2640,8 @@ body {
    * daba factor 1,00 y no arreglaba nada. Escalando el marco se adaptan las dos
    * columnas a la vez.
    */
-  .home-section-fit .scene-content-frame {
-    zoom: var(--fit-escala, 1);
-  }
+  /* (el factor de ajuste ya no vive aqui: ver la nota junto a `--fit-escala`
+     en el bloque de `min-width: 1024px`) */
 
   /*
    * El hero despeja la barra con su ALTO EXACTO, no con un relleno inventado.
@@ -2593,9 +2692,7 @@ body {
     zoom: var(--fit-escala, 1);
   }
 
-  .home-section-fit .scene-content-stack article h3 {
-    font-size: 1.45rem;
-  }
+  /* (el titulo de tarjeta ya no escala por altura: ver la nota de 1,15 rem) */
 
   .home-section-fit .cta-final-headline {
     font-size: clamp(1.7rem, 3.4vw, 2.35rem);
@@ -2621,9 +2718,7 @@ body {
     font-size: 1.9rem;
   }
 
-  .home-section-fit .scene-content-stack article h3 {
-    font-size: 1.3rem;
-  }
+  /* (el titulo de tarjeta ya no escala por altura: ver la nota de 1,15 rem) */
 
   .home-section-fit .scene-content-stack article p,
   .home-section-fit .scene-content-stack .text-body-lg {
@@ -5624,16 +5719,18 @@ body {
   white-space: nowrap;
 }
 
+/*
+  Aqui SOLO se coloca, no se dimensiona. El tamano del titulo y del texto lo fija
+  el sistema de tarjeta en un unico sitio; poner 1,12 rem aqui daba 17,9 px
+  frente a los 18,4 del resto, y una diferencia de medio punto entre secciones
+  vecinas es exactamente el tipo de discrepancia que no se sabe de donde viene.
+*/
 #booster .booster-layers-grid article > :is(h2, h3, h4, h5) {
   grid-column: 2;
-  font-size: 1.12rem;
-  line-height: 1.25;
 }
 
 #booster .booster-layers-grid article > p {
   grid-column: 2;
-  font-size: 0.9rem;
-  line-height: 1.4;
   max-width: none;
 }
 

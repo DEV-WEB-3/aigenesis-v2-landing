@@ -89,7 +89,16 @@ export function TrustBadge({
           {config.label}
         </span>
       </div>
-      <Heading className="font-display text-heading text-genesis-text">{title}</Heading>
+      {/*
+        SIN `text-heading`: es una tarjeta, no un titular.
+
+        Es el mismo componente de cristal que el resto —lleva `surface-card`— y
+        llevaba a mano la clase de titular de bloque. Medido junto al resto:
+        26 px aqui contra 18,4 en booster, staking, goracle y ecosistema, con la
+        tarjeta a 207 px de ancho. El tamano lo fija ahora el sistema de tarjeta
+        en un solo sitio; aqui solo se declara la familia y el peso.
+      */}
+      <Heading className="font-display font-semibold text-genesis-text">{title}</Heading>
       {/*
         Era `text-sm` (14px) mientras `Card` usa `text-body-lg` (17px) para lo
         mismo: la descripción de una tarjeta. Dos tamaños para un mismo papel

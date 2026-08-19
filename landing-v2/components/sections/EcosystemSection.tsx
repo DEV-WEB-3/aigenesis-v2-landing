@@ -197,7 +197,7 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                     <span className="text-caption text-genesis-ghost uppercase tracking-wider">Pilares</span>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className={statGradientClass}>2019</span>
+                    <span className={statGradientClass}>2023</span>
                     <span className="text-caption text-genesis-ghost uppercase tracking-wider">Fundado</span>
                   </div>
                   <div className="flex flex-col gap-1">
@@ -249,7 +249,7 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                     <span className="text-caption text-genesis-ghost uppercase tracking-wider">Pilares</span>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className={statGradientClass}>2019</span>
+                    <span className={statGradientClass}>2023</span>
                     <span className="text-caption text-genesis-ghost uppercase tracking-wider">Fundado</span>
                   </div>
                   <div className="flex flex-col gap-1">

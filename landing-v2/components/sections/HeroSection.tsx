@@ -130,7 +130,9 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
         {/* UI siempre montado — evita desmontar logo/orb por flicker de isActive */}
         <div className="hero-content-shell relative z-[2] flex w-full flex-col items-center">
           <div className="hero-status-bar hero-entra" style={entra(0)}>
-            <span>EST. 2019</span>
+            {/* EST. 2023 — el mismo dato que la metrica «Fundado» de Trust y que
+                el origen del roadmap. Estaba en 2019 y contradecia a los otros dos. */}
+            <span>EST. 2023</span>
             <span className="text-genesis-core opacity-50">·</span>
             <span>GENESIS AI</span>
             <span className="text-genesis-core opacity-50">·</span>

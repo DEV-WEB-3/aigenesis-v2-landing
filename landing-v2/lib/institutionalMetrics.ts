@@ -62,7 +62,17 @@ export type InstitutionalMetric = CounterMetric | StaticMetric
 export const TRUST_INSTITUTIONAL_METRICS: readonly InstitutionalMetric[] = [
   { kind: 'counter', to: 100, suffix: 'K+', label: 'Comunidad' },
   { kind: 'counter', to: 12, suffix: '+', label: 'Países' },
-  { kind: 'static', value: '2019', label: 'Fundado' },
+  /*
+   * 2023, NO 2019. Correccion del owner (19-ago-2026): la empresa y la vision
+   * arrancan en 2023.
+   *
+   * El roadmap ya se habia corregido en su momento y este dato se quedo atras,
+   * asi que durante un tiempo la misma pagina afirmaba dos fundaciones
+   * distintas: la linea de tiempo abria en 2023 y la metrica decia 2019. Un dato
+   * institucional que se contradice consigo mismo cuesta mas credibilidad que no
+   * ponerlo.
+   */
+  { kind: 'static', value: '2023', label: 'Fundado' },
   { kind: 'counter', to: 99.9, suffix: '%', label: 'Uptime', decimals: 1 },
 ] as const
 
@@ -113,7 +123,7 @@ export const TOKEN_DISPLAY_METRICS: readonly TokenDisplayMetric[] = [
   { key: 'internal', label: 'VALOR INTERNO', static: '$23.50' },
   // `15` + `K+`, y no `15000`, porque el contador imprime con `toFixed()` y no
   // pone separador de millares: saldría «15000+». Poner un `toLocaleString`
-  // general no vale — convertiría el «2019» de Trust en «2.019».
+  // general no vale — convertiría el «2023» de Trust en «2.023».
   { key: 'holders', label: 'HOLDERS', to: 15, suffix: 'K+' },
   { key: 'supply', label: 'SUPPLY TOTAL', to: 111, suffix: 'M' },
   { key: 'network', label: 'RED', static: 'BSC' },
