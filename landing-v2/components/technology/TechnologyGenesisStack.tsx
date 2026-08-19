@@ -1,7 +1,7 @@
 'use client'
 
 import { TECH_STACK_FORM_S, TECH_STACK_PULSE_S } from '@/lib/technology/techStackLayout'
-import TechnologyArchitecture from '@/components/technology/TechnologyArchitecture'
+import TechnologyMachine from '@/components/technology/TechnologyMachine'
 import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
 
 interface TechnologyGenesisStackProps {
@@ -31,7 +31,7 @@ export default function TechnologyGenesisStack({ isActive }: TechnologyGenesisSt
       </div>
 
       <div className="technology-genesis-stack__layer technology-genesis-stack__layer--mid">
-        <TechnologyArchitecture />
+        <TechnologyMachine activo={visible} />
       </div>
     </div>
   )

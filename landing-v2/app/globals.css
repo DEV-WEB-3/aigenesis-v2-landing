@@ -9116,13 +9116,41 @@ body {
     position: relative;
     align-self: center;
     justify-self: center;
-    width: min(52vw, 880px);
+    /*
+      EL HUECO SE ENSANCHA de 880 a 980 y se corre menos a la izquierda.
+      La maquina tiene que DOMINAR el lado derecho, y con 52vw el lienzo se
+      quedaba en 696 px: los anillos ocupaban el 53 % de su caja pero la caja
+      ocupaba poco de la pagina. Ensanchar el hueco agranda la maquina sin
+      tocar el 3D, porque el lienzo llena su contenedor.
+
+      `-6%` en vez de `-10%`: con el hueco mas ancho, correrlo un 10 % metia su
+      borde izquierdo dentro de la columna de texto.
+    */
+    width: min(50vw, 900px);
     max-width: 100%;
-    min-width: min(52vw, 880px);
-    min-height: min(86vh, 900px, var(--alto-hueco));
+    min-width: min(50vw, 900px);
+    /*
+      80vh y no 86: el `min-height` esta en `vh`, y `vh` NO responde al `zoom`
+      con el que el gancho de ajuste comprime la seccion. O sea que este valor
+      es un SUELO que el ajuste no puede bajar — medido, la seccion se pasaba
+      21 px con el factor ya en 0,94 y no habia forma de recuperarlos.
+
+      De paso mejora la composicion: el lienzo pasa de 792x911 —mas alto que
+      ancho— a una proporcion cercana a 1, que es la que deja sitio a las
+      lecturas de los dos lados sin encoger la maquina.
+    */
+    /*
+      ALTURA EXPLICITA, no `min-height`.
+      Con `min-height` la fila del grid seguia estirando el hueco hasta 911 px
+      —el `min-height` era 792 y la caja medida 910,8—, y esos 119 px de mas se
+      convertian en 21 px de desborde de la seccion entera. Un minimo no impide
+      crecer; para que no crezca hay que decir cuanto mide.
+    */
+    height: min(80vh, 830px, var(--alto-hueco));
+    min-height: 0;
     margin-left: auto;
     margin-right: auto;
-    transform: translateX(-10%);
+    transform: translateX(-1.5%);
     pointer-events: none;
   }
 }
@@ -9830,6 +9858,326 @@ body {
   #technology .tech-cifras--revelada .tech-cifra {
     animation: none;
     clip-path: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LA MAQUINA GENESIS — capa de texto sobre el lienzo WebGL
+   ═══════════════════════════════════════════════════════════
+
+   El cuerpo de la maquina —anillos, nucleo, columna, placa base— se dibuja en
+   WebGL. Todo lo que tiene LETRAS vive aqui, en DOM, y por tres motivos que no
+   son de gusto: tipografia nitida a cualquier densidad de pantalla, presencia
+   en el arbol de accesibilidad, y traducible sin regenerar una textura.
+
+   Las posiciones NO estan calibradas a mano. Llegan proyectadas por la misma
+   camara que dibuja la escena, en porcentaje de la caja del lienzo, asi que
+   siguen a la geometria si manana cambia la camara o la proporcion del hueco.
+*/
+#technology .maq {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/*
+  EL LIENZO OCUPA SU HUECO, pase lo que pase. `!important` porque R3F reescribe
+  el estilo en linea del elemento en cada `setSize`, y con `zoom` en un ancestro
+  la medida que escribe esta escalada dos veces (ver `AjustarTamano`).
+*/
+#technology .maq canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+#technology .maq-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+#technology .maq-guias {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+#technology .maq-guia {
+  animation: maq-entra 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 1.3s;
+}
+
+/* ── LA PASTILLA DEL ROTULO ─────────────────────────────────
+   Va centrada sobre el frente del anillo. El fondo es casi opaco a proposito:
+   detras hay un canto lleno de ventanillas encendidas, y un rotulo translucido
+   sobre eso deja de leerse — que es exactamente lo que tiene que hacer bien. */
+#technology .maq-rotulo {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.42em 0.95em 0.42em 0.5em;
+  border-radius: 999px;
+  background: rgba(5, 7, 16, 0.9);
+  border: 1px solid color-mix(in srgb, var(--capa-color) 65%, transparent);
+  box-shadow:
+    0 0 0 1px rgba(5, 7, 16, 0.8),
+    0 0 18px color-mix(in srgb, var(--capa-color) 30%, transparent);
+  white-space: nowrap;
+  animation: maq-entra var(--arq-llegada-s, 1.2s) cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--capa-retardo, 0s);
+}
+
+#technology .maq-rotulo__icono {
+  display: grid;
+  place-items: center;
+  width: 1.55em;
+  height: 1.55em;
+  border-radius: 50%;
+  color: var(--capa-color);
+  background: color-mix(in srgb, var(--capa-color) 16%, transparent);
+}
+
+#technology .maq-rotulo__icono svg {
+  width: 68%;
+  height: 68%;
+}
+
+#technology .maq-rotulo__texto {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: clamp(9px, 0.86vw, 13px);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--g-ink-base, #F8FAFC);
+}
+
+#technology .maq-rotulo {
+  font-size: clamp(9px, 0.86vw, 13px);
+}
+
+/* ── LAS LECTURAS ───────────────────────────────────────────
+   Repartidas a los dos lados, como en la referencia. Es posible aqui y no lo
+   era en la version SVG por un motivo concreto: el lienzo ocupa el hueco
+   ENTERO en vez de quedar encajado en una caja con la proporcion del dibujo,
+   asi que a la izquierda del anillo hay margen real dentro del propio hueco. */
+#technology .maq-lectura {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+  animation: maq-entra var(--arq-llegada-s, 1.2s) cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--capa-retardo, 1.3s);
+}
+
+#technology .maq-lectura--der {
+  transform: translateY(-50%);
+}
+
+/* a la izquierda el bloque crece hacia atras: se ancla por su borde derecho */
+#technology .maq-lectura--izq {
+  transform: translateY(-50%);
+  text-align: right;
+  align-items: flex-end;
+}
+
+#technology .maq-lectura__titulo {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: clamp(9px, 0.8vw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--capa-color);
+  line-height: 1.35;
+}
+
+#technology .maq-lectura__linea {
+  font-size: clamp(8.5px, 0.74vw, 11.5px);
+  line-height: 1.45;
+  color: var(--g-ink-muted, #AAB4C8);
+}
+
+/* ── MODULOS FLOTANTES ──────────────────────────────────────
+   Cristal de verdad: `backdrop-filter` sobre el lienzo que tienen debajo. Es la
+   razon principal de que esten en DOM y no en la escena — un plano texturizado
+   puede imitar el borde, pero no puede DESENFOCAR lo que tiene detras. */
+#technology .maq-hud {
+  position: absolute;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 245, 255, 0.28);
+  background: linear-gradient(150deg, rgba(12, 18, 38, 0.72), rgba(6, 9, 20, 0.58));
+  backdrop-filter: blur(7px) saturate(1.2);
+  -webkit-backdrop-filter: blur(7px) saturate(1.2);
+  box-shadow:
+    0 0 0 1px rgba(0, 245, 255, 0.08),
+    0 14px 44px rgba(2, 4, 10, 0.66),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  color: var(--g-emission-cyan, #00F5FF);
+  overflow: hidden;
+  animation: maq-flota-entra var(--arq-llegada-s, 1.2s) cubic-bezier(0.22, 1, 0.36, 1) both,
+             maq-flota 7.2s ease-in-out infinite 1.4s;
+  animation-delay: 1.1s, 1.4s;
+}
+
+/* El panel grande va a la IZQUIERDA del anillo de aplicaciones y el movil a la
+   DERECHA, como en la referencia: es lo que equilibra la cima de la pila, que
+   sin ellos queda estrecha frente a la base. */
+#technology .maq-hud--panel {
+  left: 2%;
+  top: 7%;
+  width: 25%;
+  padding: 0.55rem 0.6rem;
+}
+
+#technology .maq-hud--movil {
+  right: 3%;
+  top: 5%;
+  width: 8.5%;
+  aspect-ratio: 1 / 2;
+  padding: 0.5rem 0.35rem;
+  border-radius: 12px;
+  animation-duration: var(--arq-llegada-s, 1.2s), 4.8s;
+}
+
+#technology .maq-hud__barra {
+  display: flex;
+  align-items: center;
+  gap: 0.32em;
+  padding-bottom: 0.4em;
+  margin-bottom: 0.45em;
+  border-bottom: 1px solid rgba(0, 245, 255, 0.18);
+}
+
+#technology .maq-hud__punto {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--g-emission-magenta, #FF00C8);
+}
+
+#technology .maq-hud__punto--dos {
+  background: var(--g-emission-cyan, #00F5FF);
+}
+
+#technology .maq-hud__titulo {
+  margin-left: auto;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: clamp(6px, 0.5vw, 8px);
+  letter-spacing: 0.14em;
+  opacity: 0.75;
+}
+
+#technology .maq-hud__grafica {
+  display: block;
+  width: 100%;
+  height: 2.9rem;
+}
+
+#technology .maq-hud__filas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28em;
+  margin-top: 0.45em;
+}
+
+#technology .maq-hud__fila {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 245, 255, 0.1);
+  overflow: hidden;
+}
+
+#technology .maq-hud__fila i {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--g-emission-violet-hi, #9D4DFF), var(--g-emission-cyan, #00F5FF));
+}
+
+#technology .maq-hud__muesca {
+  display: block;
+  width: 34%;
+  height: 3px;
+  margin: 0 auto 0.5em;
+  border-radius: 2px;
+  background: rgba(0, 245, 255, 0.35);
+}
+
+#technology .maq-hud__anillo {
+  width: 58%;
+  aspect-ratio: 1;
+  margin: 0.3em auto 0.5em;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 245, 255, 0.55);
+  box-shadow: inset 0 0 10px rgba(0, 245, 255, 0.28);
+}
+
+#technology .maq-hud__chip {
+  display: block;
+  width: 22%;
+  height: 0.9rem;
+  border-radius: 3px;
+  background: linear-gradient(140deg, rgba(157, 77, 255, 0.75), rgba(0, 245, 255, 0.35));
+  border: 1px solid rgba(157, 77, 255, 0.6);
+}
+
+@keyframes maq-entra {
+  from { opacity: 0; transform: translate(var(--maq-dx, 0), calc(var(--maq-dy, 0px) + 6px)); }
+}
+
+/*
+  La entrada de los rotulos y las lecturas NO puede usar `maq-entra` tal cual:
+  ya llevan un `transform` propio que los centra o los ancla por la derecha, y
+  una animacion de `transform` lo sobreescribiria y los descolocaria justo
+  mientras entran. Se anima solo la opacidad.
+*/
+#technology .maq-rotulo,
+#technology .maq-lectura,
+#technology .maq-guia {
+  animation-name: maq-aparece;
+}
+
+@keyframes maq-aparece {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes maq-flota-entra {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes maq-flota {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -6px; }
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────
+   Por debajo de 1024 px no hay lienzo: `TechnologyMachine` devuelve la version
+   SVG y nada de esto llega a existir. Lo que si cambia entre 1024 y 1440 es la
+   densidad de acompanamiento — con el hueco mas estrecho, tres modulos
+   flotantes dejan de ser contexto y pasan a ser estorbo. */
+@media (max-width: 1279px) {
+}
+
+@media (max-width: 1100px) {
+  #technology .maq-hud--movil { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #technology .maq-rotulo,
+  #technology .maq-lectura,
+  #technology .maq-guia,
+  #technology .maq-hud {
+    animation: none;
+    opacity: 1;
   }
 }
 
