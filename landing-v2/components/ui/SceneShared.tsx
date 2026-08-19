@@ -242,6 +242,19 @@ interface SceneWrapperProps {
   particleSlot?: React.ReactNode
   /** Capas de fondo a nivel sección (detrás del grid) */
   sectionOverlay?: React.ReactNode
+  /**
+   * Fila a TODO EL ANCHO bajo las dos columnas.
+   *
+   * Existe porque el marco es una rejilla de dos columnas y el contenido que
+   * tiene que cruzarlas —hoy solo los pilares de tecnología— no cabe en
+   * ninguna de las dos. Va como tercer hijo con `col-span-2` en vez de como un
+   * bloque absoluto: así sigue empujando la altura del marco, y el gancho de
+   * ajuste lo cuenta como lo que es. Un pie posicionado en absoluto no lo
+   * contaria, y la sección se pasaría de alto sin que nada lo detectara.
+   *
+   * Opcional: las otras trece secciones no lo pasan y no cambian en nada.
+   */
+  pieAncho?: React.ReactNode
   /** Genesis Orb reutilizado como firma visual de fondo */
   orbSignature?: GenesisOrbPlacement
 }
@@ -256,6 +269,7 @@ export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { classN
       particleColumn = false,
       particleSlot,
       sectionOverlay,
+      pieAncho,
       orbSignature,
       className = '',
     },
@@ -379,6 +393,9 @@ export const SceneWrapper = forwardRef<HTMLElement, SceneWrapperProps & { classN
             >
               {particleSlot}
             </div>
+            {pieAncho ? (
+              <div className="scene-pie-ancho lg:col-span-2">{pieAncho}</div>
+            ) : null}
           </div>
         </section>
       </SectionVisualProvider>

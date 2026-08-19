@@ -11,6 +11,7 @@ import { ROUTES, EXTERNAL_LINKS } from '@/lib/routes'
 import { TECHNOLOGY_STATS } from '@/lib/institutionalMetrics'
 import TechnologySectionBackdrop from '@/components/technology/TechnologySectionBackdrop'
 import TechnologyGenesisStack from '@/components/technology/TechnologyGenesisStack'
+import TechnologyPillars from '@/components/technology/TechnologyPillars'
 
 const TECH_STACK = [
   'BSC', 'Smart Contracts', 'Web3', 'MetaMask', 'Socket.IO',
@@ -62,6 +63,7 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
         className="technology-section-layout"
         sectionOverlay={<TechnologySectionBackdrop />}
         particleSlot={<TechnologyGenesisStack isActive={isActive} />}
+        pieAncho={<TechnologyPillars />}
       >
 
         <SectionHeader
