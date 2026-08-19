@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { GPULSE_SIGNAL_PULSE_S, GPULSE_SIGNAL_FORM_S } from '@/lib/gpulse/signalNetworkLayout'
 import GpulseSignalCore from '@/components/gpulse/GpulseSignalCore'
 import GpulseSignalRings from '@/components/gpulse/GpulseSignalRings'
@@ -13,13 +14,15 @@ interface GpulseSignalNetworkProps {
 }
 
 export default function GpulseSignalNetwork({ isActive }: GpulseSignalNetworkProps) {
+
+  const t = useT()
   const visible = useSectionVisualActive(isActive)
   if (!visible) return null
 
   return (
     <div
       className="gpulse-signal-network gpulse-signal-network--enter"
-      aria-label="Genesis Signal Core"
+      aria-label={t('Genesis Signal Core')}
       style={
         {
           '--gpulse-pulse-s': `${GPULSE_SIGNAL_PULSE_S}s`,

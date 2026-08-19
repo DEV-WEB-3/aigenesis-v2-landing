@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { BOOSTER_ACCELERATOR_PULSE_S } from '@/lib/booster/quantumAcceleratorLayout'
 import BoosterAcceleratorLayers from '@/components/booster/BoosterAcceleratorLayers'
 import BoosterAcceleratorStreams from '@/components/booster/BoosterAcceleratorStreams'
@@ -10,13 +11,15 @@ interface BoosterQuantumAcceleratorProps {
 }
 
 export default function BoosterQuantumAccelerator({ isActive }: BoosterQuantumAcceleratorProps) {
+
+  const t = useT()
   const visible = useSectionVisualActive(isActive)
   if (!visible) return null
 
   return (
     <div
       className="booster-quantum-accelerator"
-      aria-label="Acelerador cuántico Genesis Booster"
+      aria-label={t('Acelerador cuántico Genesis Booster')}
       style={{ '--booster-pulse-s': `${BOOSTER_ACCELERATOR_PULSE_S}s` } as React.CSSProperties}
     >
       <div className="booster-quantum-accelerator__layer booster-quantum-accelerator__layer--back">

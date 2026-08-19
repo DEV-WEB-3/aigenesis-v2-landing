@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { useEffect, useState, useCallback, useRef, forwardRef } from 'react'
 import type { CSSProperties } from 'react'
 import HeroGenesisOrb from '@/components/hero/HeroGenesisOrb'
@@ -48,6 +49,7 @@ interface HeroSectionProps {
 
 const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
   function HeroSection({ isActive: _isActive = true }, ref) {
+    const t = useT()
     const [tier, setTier] = useState<HeroPerfTier>('medium')
     const tierLockedRef = useRef(false)
 
@@ -134,7 +136,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
                 el origen del roadmap. Estaba en 2019 y contradecia a los otros dos. */}
             <span>EST. 2023</span>
             <span className="text-genesis-core opacity-50">·</span>
-            <span>GENESIS AI</span>
+            <span>{t('GENESIS AI')}</span>
             <span className="text-genesis-core opacity-50">·</span>
             <UtcClock />
             <span className="text-genesis-core opacity-50">·</span>
@@ -162,8 +164,8 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
               peso propios de h1— y sigue habiendo un solo h1 en la pagina.
             */}
             <h1 className="hero-subtitle font-body">
-              Donde la Inteligencia Artificial y el Blockchain crean{' '}
-              <span className="text-white font-medium">un universo en expansión</span>
+              {t('Donde la Inteligencia Artificial y el Blockchain crean')}{' '}
+              <span className="text-white font-medium">{t('un universo en expansión')}</span>
             </h1>
 
             {/*
@@ -191,13 +193,13 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
                 rel="noopener noreferrer"
                 className="cta-signature focus-ring-signature hero-cta inline-flex min-h-11 items-center justify-center rounded-full px-7 sm:px-8 py-3.5 text-sm sm:text-base font-semibold text-white no-underline font-display pointer-events-auto"
               >
-                Crear cuenta
+                {t('Crear cuenta')}
               </a>
               <a
                 href={sectionHref('trust')}
                 className="cta-secondary focus-ring-genesis hero-cta inline-flex min-h-11 items-center justify-center rounded-full px-7 sm:px-8 py-3.5 text-sm sm:text-base font-semibold no-underline font-display pointer-events-auto"
               >
-                Explora el Universo
+                {t('Explora el Universo')}
               </a>
             </div>
           </div>

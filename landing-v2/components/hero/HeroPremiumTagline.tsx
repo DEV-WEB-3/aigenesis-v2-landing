@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { EMISSION } from '@/lib/design/tokens'
 
 import type { CSSProperties } from 'react'
@@ -16,6 +17,8 @@ interface HeroPremiumTaglineProps {
 }
 
 export default function HeroPremiumTagline({ delay = 0.1 }: HeroPremiumTaglineProps) {
+
+  const t = useT()
   return (
     /*
       Era `motion.p`, que emite `opacity: 0` en el HTML del servidor y no se ve
@@ -33,7 +36,7 @@ export default function HeroPremiumTagline({ delay = 0.1 }: HeroPremiumTaglinePr
           '--hero-entra-desde': '10px',
         } as CSSProperties
       }
-      aria-label="AI, Blockchain, Marketplace, Intelligence Network"
+      aria-label={t('AI, Blockchain, Marketplace, Intelligence Network')}
     >
       {TAGLINE_ITEMS.map((item, index) => (
         <span key={item.label} className="hero-premium-tagline__segment">

@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { forwardRef, type ReactNode, type ButtonHTMLAttributes, type AnchorHTMLAttributes } from 'react'
 import { isExternalHref } from '@/lib/routes'
 
@@ -63,6 +64,8 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     },
     ref
   ) {
+    const t = useT()
+
     const classes = cn(
       variant !== 'primary' && variant !== 'secondary' && variant !== 'signature' && 'inline-flex',
       sizeClasses[size],
@@ -71,10 +74,11 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       className
     )
 
+    /* Solo el texto se traduce; un icono o un nodo compuesto pasan intactos. */
     const content = (
       <>
         {icon && iconPosition === 'left' ? icon : null}
-        {children}
+        {typeof children === 'string' ? t(children) : children}
         {icon && iconPosition === 'right' ? icon : null}
       </>
     )

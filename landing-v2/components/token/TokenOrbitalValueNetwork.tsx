@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import {
   TOKEN_VALUE_CENTER,
   TOKEN_VALUE_NODES,
@@ -20,6 +21,8 @@ export default function TokenOrbitalValueNetwork({
   isActive,
   variant = 'full',
 }: TokenOrbitalValueNetworkProps) {
+
+  const t = useT()
   const editorMode = useTokenOrbitEditorMode()
   const visible = useSectionVisualActive(isActive)
 
@@ -35,7 +38,7 @@ export default function TokenOrbitalValueNetwork({
   return (
     <div
       className={`token-orbital-value-network token-atomic-network${isCompact ? ' token-orbital-value-network--compact' : ''}${showEditor ? ' token-orbital-value-network--editor' : ''}`}
-      aria-label={showEditor ? 'Editor de órbitas Genesis Token' : 'Genesis Token Atomic Orbital'}
+      aria-label={showEditor ? t('Editor de órbitas Genesis Token') : t('Genesis Token Atomic Orbital')}
       style={{ '--token-value-pulse-s': `${TOKEN_VALUE_PULSE_S}s` } as React.CSSProperties}
     >
       <div className="token-orbital-value-network__layer token-orbital-value-network__layer--atomic">

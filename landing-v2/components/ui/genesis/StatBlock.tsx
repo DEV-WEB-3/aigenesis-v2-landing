@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import type { ReactNode } from 'react'
 
 export interface GenesisStatBlockProps {
@@ -12,6 +13,7 @@ export interface GenesisStatBlockProps {
 }
 
 function cn(...classes: (string | false | undefined)[]) {
+
   return classes.filter(Boolean).join(' ')
 }
 
@@ -26,21 +28,25 @@ export function StatBlock({
   mono = false,
   className,
 }: GenesisStatBlockProps) {
+  const t = useT()
   return (
     <div className={cn('flex flex-col gap-1', className)}>
+      {/* `dir="ltr"`: ver la nota de `SceneTechnology`. Un signo neutro en RTL
+          cambia de sentido, no solo de sitio. */}
       <span
+        dir="ltr"
         className={cn(
           'text-2xl font-bold text-genesis-text',
           mono ? 'font-mono text-mono' : 'font-display'
         )}
       >
-        {value}
+        {typeof value === 'string' ? t(value) : value}
       </span>
       <span className="text-caption text-genesis-ghost uppercase tracking-wider">
-        {label}
+        {t(label)}
       </span>
       {description ? (
-        <span className="text-sm text-genesis-mist">{description}</span>
+        <span className="text-sm text-genesis-mist">{t(description)}</span>
       ) : null}
     </div>
   )

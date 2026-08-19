@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
 import { SectionHeader } from '@/components/ui/genesis'
@@ -17,6 +18,7 @@ interface Props { isActive?: boolean }
 
 const SceneToken = forwardRef<HTMLElement, Props>(
   function SceneToken({ isActive = false }, ref) {
+    const t = useT()
     const editorMode = useTokenOrbitEditorMode()
 
     return (
@@ -37,20 +39,22 @@ const SceneToken = forwardRef<HTMLElement, Props>(
         />
 
         <motion.p variants={slideLeft} className="text-lg leading-relaxed max-w-lg text-genesis-mist">
-          Token BEP-20 deflacionario sobre BSC. El activo base que articula participación, utilidad y expansión del ecosistema Genesis.
+          {t(
+            'Token BEP-20 deflacionario sobre BSC. El activo base que articula participación, utilidad y expansión del ecosistema Genesis.'
+          )}
         </motion.p>
 
         <motion.div variants={slideLeft} className="grid grid-cols-2 gap-6">
           {TOKEN_DISPLAY_METRICS.map((metric) => (
             <div key={metric.label} className="flex flex-col gap-1">
-              <span className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
+              <span dir="ltr" className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
                 {'static' in metric ? (
                   metric.static
                 ) : (
                   <StatBlock to={metric.to} suffix={metric.suffix} label="" isActive={isActive} />
                 )}
               </span>
-              <span className="text-xs text-genesis-ghost uppercase tracking-wider">{metric.label}</span>
+              <span className="text-xs text-genesis-ghost uppercase tracking-wider">{t(metric.label)}</span>
             </div>
           ))}
         </motion.div>
@@ -74,9 +78,9 @@ const SceneToken = forwardRef<HTMLElement, Props>(
           variants={slideLeft}
           className="text-caption text-genesis-ghost leading-relaxed max-w-lg"
         >
-          El valor interno es la referencia de intercambio entre miembros y mineros para
-          productos y servicios. No es una cotización de mercado: AIG todavía no tiene un
-          pool público de liquidez.
+          {t(
+            'El valor interno es la referencia de intercambio entre miembros y mineros para productos y servicios. No es una cotización de mercado: AIG todavía no tiene un pool público de liquidez.'
+          )}
         </motion.p>
 
         <motion.div variants={slideLeft} className="token-orbital-value-network-mobile md:hidden" aria-hidden="true">

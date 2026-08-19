@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import SocialLinks from '@/components/layout/SocialLinks'
 import { EXTERNAL_LINKS, PAGES, ROUTES } from '@/lib/routes'
+import { useT } from '@/context/IdiomaContext'
 
 const FOOTER_LINKS = [
   { label: 'Legal', href: PAGES.LEGAL },
@@ -21,11 +22,12 @@ interface InstitutionalFooterProps {
 }
 
 export default function InstitutionalFooter({ className = '' }: InstitutionalFooterProps) {
+  const t = useT()
   return (
     <motion.footer
       id="legal"
       className={`institutional-footer ${className}`.trim()}
-      aria-label="Pie de página institucional"
+      aria-label={t('Pie de página institucional')}
     >
       <div className="institutional-footer__watermark" aria-hidden="true">
         <Image
@@ -42,13 +44,13 @@ export default function InstitutionalFooter({ className = '' }: InstitutionalFoo
         <div className="institutional-footer__brand">
           <p className="institutional-footer__name font-display">AiGenesis</p>
           <p className="institutional-footer__tagline">
-            Artificial Intelligence + Blockchain Infrastructure
+            {t('Artificial Intelligence + Blockchain Infrastructure')}
           </p>
         </div>
 
         <SocialLinks />
 
-        <nav aria-label="Enlaces institucionales" className="institutional-footer__nav">
+        <nav aria-label={t('Enlaces institucionales')} className="institutional-footer__nav">
           {FOOTER_LINKS.map((link) => (
             <a
               key={link.label}
@@ -58,16 +60,16 @@ export default function InstitutionalFooter({ className = '' }: InstitutionalFoo
                 ? { target: '_blank', rel: 'noopener noreferrer' }
                 : {})}
             >
-              {link.label}
+              {t(link.label)}
             </a>
           ))}
         </nav>
 
         <p className="institutional-footer__copyright">
-          © 2026 AiGenesis. All rights reserved.
+          {t('© 2026 AiGenesis. All rights reserved.')}
         </p>
 
-        <p className="institutional-footer__disclaimer">{LEGAL_DISCLAIMER}</p>
+        <p className="institutional-footer__disclaimer">{t(LEGAL_DISCLAIMER)}</p>
       </div>
     </motion.footer>
   )

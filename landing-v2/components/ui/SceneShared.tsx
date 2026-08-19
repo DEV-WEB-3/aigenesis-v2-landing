@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { useRef, useEffect, forwardRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
@@ -97,6 +98,10 @@ export function GenesisHeadline({
   highlight: string
   variant?: 'default' | 'cta'
 }) {
+  /* El titular se traduce AQUI y no en cada llamada: hay dos caminos hasta el
+     —`SectionHeader` y el uso directo del CTA— y cubrir solo uno deja el otro
+     en español sin que nada avise. */
+  const t = useT()
   return (
     <motion.h2
       className={
@@ -107,14 +112,26 @@ export function GenesisHeadline({
       style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}
     >
       <motion.span variants={wordV} className="block text-genesis-text">
-        {lead}
+        {t(lead)}
       </motion.span>
-      <GradientText tone="signature">{highlight}</GradientText>
+      <GradientText tone="signature">{t(highlight)}</GradientText>
     </motion.h2>
   )
 }
 
 // ─── GradientButton — delega al Button primario del Design System ─────────────
+/*
+ * TRADUCE EL COMPONENTE, NO CADA SECCION.
+ *
+ * Casi todo el texto visible del portal pasa por media docena de componentes
+ * compartidos —cabecera de seccion, ficha, tarjeta, boton—. Traduciendo AQUI se
+ * cubre esa mayoria con seis ediciones en vez de con catorce, y sobre todo: una
+ * seccion nueva queda traducida sola, sin que nadie tenga que acordarse de
+ * envolver sus textos. Lo que se olvida, no existe.
+ *
+ * `useT` fuera del proveedor devuelve el español tal cual, asi que estos
+ * componentes siguen funcionando en las paginas sueltas que no lo montan.
+ */
 export function GradientButton({
   children,
   className = '',
@@ -126,6 +143,9 @@ export function GradientButton({
 }) {
   return (
     <motion.div variants={slideLeft} className="w-fit">
+      {/* El texto lo traduce `Button`. Hacerlo aqui tambien lo traduciria dos
+          veces: la segunda busqueda saldria en vacio —la cadena ya no esta en
+          español— y avisaria de una traduccion que si existe. */}
       <Button variant="primary" size="md" className={className} href={href}>
         {children}
       </Button>
@@ -158,6 +178,7 @@ export function FeatureItem({
   text: string
   glass?: boolean
 }) {
+  const t = useT()
   return (
     <motion.div
       variants={slideLeft}
@@ -173,7 +194,7 @@ export function FeatureItem({
           aria-hidden="true"
         />
       )}
-      <span className="text-sm text-genesis-mist leading-tight pt-0.5">{text}</span>
+      <span className="text-sm text-genesis-mist leading-tight pt-0.5">{t(text)}</span>
     </motion.div>
   )
 }
@@ -218,12 +239,19 @@ export function AnimatedCounter({
 export function StatBlock({ to, suffix, label, isActive, decimals = 0 }: {
   to: number; suffix: string; label: string; isActive: boolean; decimals?: number
 }) {
+  const t = useT()
   return (
     <motion.div variants={slideLeft} className="flex flex-col gap-1">
-      <span className="font-display text-2xl font-bold text-genesis-text">
-        <AnimatedCounter to={to} suffix={suffix} isActive={isActive} decimals={decimals} />
+      {/*
+        `dir="ltr"` EN TODA CIFRA. Ver la nota larga en `SceneTechnology`: en
+        arabe y urdu los signos neutros —«<», «-», «/», «+»— se reordenan segun
+        el parrafo, y «< 200 ms» o «8-11 %» cambian de SENTIDO sin que nada lo
+        delate. Una cifra con su unidad se lee igual en las once lenguas.
+      */}
+      <span dir="ltr" className="font-display text-2xl font-bold text-genesis-text">
+        <AnimatedCounter to={to} suffix={t(suffix)} isActive={isActive} decimals={decimals} />
       </span>
-      <span className="text-caption text-genesis-ghost uppercase tracking-wider">{label}</span>
+      <span className="text-caption text-genesis-ghost uppercase tracking-wider">{t(label)}</span>
     </motion.div>
   )
 }

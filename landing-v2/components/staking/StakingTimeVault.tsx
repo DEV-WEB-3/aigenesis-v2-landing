@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import {
   STAKING_VAULT_PULSE_S,
   STAKING_VAULT_FORM_S,
@@ -16,13 +17,15 @@ interface StakingTimeVaultProps {
 }
 
 export default function StakingTimeVault({ isActive }: StakingTimeVaultProps) {
+
+  const t = useT()
   const visible = useSectionVisualActive(isActive)
   if (!visible) return null
 
   return (
     <div
       className="staking-time-vault staking-time-vault--enter"
-      aria-label="Genesis Time Vault"
+      aria-label={t('Genesis Time Vault')}
       style={{
         '--vault-pulse-s': `${STAKING_VAULT_PULSE_S}s`,
         // Era '1.4s' a mano, y STAKING_VAULT_FORM_S estaba exportado sin que

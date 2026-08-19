@@ -2,6 +2,7 @@ import { VOID } from '@/lib/design/tokens'
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, Inter, IBM_Plex_Mono } from 'next/font/google'
 import { SITE_URL } from '@/lib/routes'
+import { IdiomaProvider } from '@/context/IdiomaContext'
 import SkipLink from '@/components/layout/SkipLink'
 import { WALLET_EXTENSION_GUARD_SCRIPT } from '@/components/layout/WalletExtensionGuard'
 import SiteAnalytics from '@/components/analytics/SiteAnalytics'
@@ -142,7 +143,17 @@ export default function RootLayout({
       </head>
       <body className="font-body bg-genesis-base text-genesis-text antialiased min-h-screen">
         <SkipLink />
-        {children}
+        {/*
+          EL PROVEEDOR ENVUELVE TODO EL CUERPO, no solo la landing.
+
+          `dir="rtl"` invierte la maquetacion del documento entero —margenes
+          logicos, orden de flex, lado de las barras de desplazamiento—, asi que
+          quien lo decide tiene que estar por encima de todo lo que se maqueta.
+          Y las paginas sueltas —legal, whitepaper, g11— comparten cabecera y
+          pie: si el proveedor solo cubriera la portada, el idioma se perderia
+          al navegar a cualquiera de ellas.
+        */}
+        <IdiomaProvider>{children}</IdiomaProvider>
         <SiteAnalytics />
       </body>
     </html>

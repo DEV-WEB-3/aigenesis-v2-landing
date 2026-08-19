@@ -88,7 +88,8 @@ export interface ArqEstrato {
   /** Titulo de la lectura que aparece al posarse encima. */
   lectura: string
   /** Cuerpo de la lectura, en dos lineas cortas. */
-  detalle: readonly string[]
+  /** Una frase; el corte de linea lo decide quien pinta. Ver `techMachine3d`. */
+  detalle: string
   /** 0 = el de mas abajo. El arranque sigue este orden. */
   orden: number
   y: number
@@ -122,7 +123,7 @@ export const ARQ_ESTRATOS: readonly ArqEstrato[] = [
     id: 'backend',
     label: 'BACKEND',
     lectura: 'Servicios y APIs',
-    detalle: ['APIs robustas, eventos en', 'tiempo real y microservicios.'],
+    detalle: 'APIs robustas, eventos en tiempo real y microservicios.',
     orden: 0, y: 82, rx: 30,
     color: EMISSION.violet, colorAlt: EMISSION.violetHi, latido: 5.6,
   },
@@ -130,7 +131,7 @@ export const ARQ_ESTRATOS: readonly ArqEstrato[] = [
     id: 'infraestructura',
     label: 'INFRAESTRUCTURA',
     lectura: 'Infraestructura distribuida',
-    detalle: ['Escalable, redundante y lista', 'para millones de interacciones.'],
+    detalle: 'Escalable, redundante y lista para millones de interacciones.',
     orden: 1, y: 68, rx: 27,
     color: EMISSION.blueHi, colorAlt: EMISSION.blue, latido: 7.2,
   },
@@ -138,7 +139,7 @@ export const ARQ_ESTRATOS: readonly ArqEstrato[] = [
     id: 'ia',
     label: 'IA',
     lectura: 'Inteligencia artificial',
-    detalle: ['Motor propietario que aprende,', 'predice y optimiza en vivo.'],
+    detalle: 'Motor propietario que aprende, predice y optimiza en vivo.',
     orden: 2, y: 54, rx: 24,
     color: EMISSION.magenta, colorAlt: EMISSION.magentaHi, latido: 4.8,
   },
@@ -146,7 +147,7 @@ export const ARQ_ESTRATOS: readonly ArqEstrato[] = [
     id: 'blockchain',
     label: 'BLOCKCHAIN',
     lectura: 'Inmutable y descentralizado',
-    detalle: ['Transacciones verificables, sin', 'puntos unicos de falla.'],
+    detalle: 'Transacciones verificables, sin puntos unicos de falla.',
     orden: 3, y: 40, rx: 21,
     color: EMISSION.violetHi, colorAlt: EMISSION.violet, latido: 6.4,
   },
@@ -154,7 +155,7 @@ export const ARQ_ESTRATOS: readonly ArqEstrato[] = [
     id: 'aplicaciones',
     label: 'APLICACIONES',
     lectura: 'Aplicaciones inteligentes',
-    detalle: ['Interfaces descentralizadas,', 'experiencias fluidas y seguras.'],
+    detalle: 'Interfaces descentralizadas, experiencias fluidas y seguras.',
     orden: 4, y: 26, rx: 18,
     color: EMISSION.cyan, colorAlt: EMISSION.blueHi, latido: 8,
   },

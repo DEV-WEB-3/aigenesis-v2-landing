@@ -41,7 +41,21 @@ export interface Capa3D {
   id: TechStackLayerId
   label: string
   lectura: string
-  detalle: readonly string[]
+  /*
+   * UNA FRASE, NO DOS LINEAS.
+   *
+   * Antes eran dos cadenas con el corte puesto a mano para que la llamada
+   * quedara equilibrada. Un corte a mano es una decision tomada sobre el
+   * ESPAÑOL: en aleman la primera palabra ya no cabe y en arabe el corte cae
+   * del lado que no es. Al traducir, un salto de linea fijo deja de ser
+   * tipografia y pasa a ser un defecto.
+   *
+   * Ahora es una frase y el corte lo decide quien pinta: el rotulo del DOM
+   * envuelve solo dentro de su ancho maximo, y el respaldo en SVG —donde el
+   * texto no envuelve— la parte en dos mitades equilibradas en tiempo de
+   * pintado, en el idioma que toque.
+   */
+  detalle: string
   /** 0 = el de mas abajo. */
   orden: number
   /** Altura del centro del tubo, en unidades de escena. */
@@ -125,7 +139,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     id: 'backend',
     label: 'BACKEND',
     lectura: 'Servicios y APIs',
-    detalle: ['APIs robustas, eventos en tiempo', 'real y microservicios modulares.'],
+    detalle: 'APIs robustas, eventos en tiempo real y microservicios modulares.',
     orden: 0, y: 0, re: 3.15,
     color: EMISSION.violetHi, colorAlt: EMISSION.violet, latido: 5.6, lado: 'der',
   },
@@ -133,7 +147,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     id: 'infraestructura',
     label: 'INFRAESTRUCTURA',
     lectura: 'Infraestructura distribuida',
-    detalle: ['Escalable, redundante y preparada', 'para millones de interacciones.'],
+    detalle: 'Escalable, redundante y preparada para millones de interacciones.',
     orden: 1, y: 1.76, re: 3.06,
     color: EMISSION.blueHi, colorAlt: EMISSION.blue, latido: 7.2, lado: 'izq',
   },
@@ -141,7 +155,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     id: 'ia',
     label: 'IA',
     lectura: 'Inteligencia artificial',
-    detalle: ['Motor propietario que aprende,', 'predice y optimiza en tiempo real.'],
+    detalle: 'Motor propietario que aprende, predice y optimiza en tiempo real.',
     orden: 2, y: 3.52, re: 2.97,
     color: EMISSION.magenta, colorAlt: EMISSION.magentaHi, latido: 4.8, lado: 'der',
   },
@@ -149,7 +163,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     id: 'blockchain',
     label: 'BLOCKCHAIN',
     lectura: 'Inmutable y descentralizado',
-    detalle: ['Transacciones verificables, registros', 'transparentes y sin puntos de falla.'],
+    detalle: 'Transacciones verificables, registros transparentes y sin puntos de falla.',
     orden: 3, y: 5.28, re: 2.80,
     color: EMISSION.violetHi, colorAlt: EMISSION.magenta, latido: 6.4, lado: 'izq',
   },
@@ -157,7 +171,7 @@ export const CAPAS_3D: readonly Capa3D[] = [
     id: 'aplicaciones',
     label: 'APLICACIONES',
     lectura: 'Aplicaciones inteligentes',
-    detalle: ['Interfaces descentralizadas,', 'experiencias fluidas y seguras.'],
+    detalle: 'Interfaces descentralizadas, experiencias fluidas y seguras.',
     orden: 4, y: 7.04, re: 2.56,
     color: EMISSION.cyan, colorAlt: EMISSION.blueHi, latido: 8, lado: 'der',
   },

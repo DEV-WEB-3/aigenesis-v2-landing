@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -171,6 +172,7 @@ const ROTULO: Record<(typeof CARAS_MARCA)[number], string> = {
 }
 
 export default function BrandSphere({ tier, paused = false }: BrandSphereProps) {
+  const t = useT()
   const [listo, setListo] = useState(false)
   const [caraActiva, setCaraActiva] = useState(0)
   const porCara = POR_CARA[tier]
@@ -204,7 +206,7 @@ export default function BrandSphere({ tier, paused = false }: BrandSphereProps) 
       <div
         className="brand-sphere"
         role="group"
-        aria-label="Marcas del ecosistema"
+        aria-label={t('Marcas del ecosistema')}
         onPointerDown={(e) => alBajar(e.nativeEvent)}
       >
         <Canvas
@@ -288,7 +290,7 @@ export default function BrandSphere({ tier, paused = false }: BrandSphereProps) 
             key={cara}
             type="button"
             className={`brand-sphere-dot${i === caraActiva ? ' brand-sphere-dot--activo' : ''}`}
-            aria-label={`Ver ${ROTULO[cara]}`}
+            aria-label={`${t('Ver')} ${ROTULO[cara]}`}
             aria-current={i === caraActiva ? 'true' : undefined}
               onClick={() => irACara(i)}
             />

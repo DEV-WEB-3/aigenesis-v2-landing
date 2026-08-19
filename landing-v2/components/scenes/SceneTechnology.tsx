@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { forwardRef, useEffect, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { SectionHeader } from '@/components/ui/genesis'
@@ -23,6 +24,7 @@ interface Props { isActive?: boolean }
 
 const SceneTechnology = forwardRef<HTMLElement, Props>(
   function SceneTechnology({ isActive = false }, ref) {
+    const t = useT()
     /*
      * LAS CIFRAS SE REVELAN UNA VEZ, Y SE QUEDAN.
      *
@@ -71,8 +73,9 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
         />
 
         <motion.p variants={slideLeft} className="text-lg leading-relaxed max-w-lg text-genesis-mist">
-          Stack tecnológico de clase enterprise. Smart contracts auditados, infraestructura
-          distribuida, y motor de inteligencia artificial propietario.
+          {t(
+            'Stack tecnológico de clase enterprise. Smart contracts auditados, infraestructura distribuida, y motor de inteligencia artificial propietario.'
+          )}
         </motion.p>
 
         <motion.div variants={slideLeft} className="flex flex-wrap gap-2">
@@ -110,7 +113,7 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
               rel="noopener noreferrer"
               className="text-xs text-genesis-ion transition-colors hover:underline pointer-events-auto zona-toque enlace-verificacion"
             >
-              Verificar en BSCScan ↗
+              {t('Verificar en BSCScan ↗')}
             </a>
           </div>
         </motion.div>
@@ -121,13 +124,26 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
         >
           {STATS.map(({ value, label }, i) => (
             <div key={label} className="flex flex-col gap-1">
+              {/*
+                `dir="ltr"` EN LA CIFRA, y no es cosmetico.
+
+                En arabe y urdu el navegador reordena los caracteres neutros
+                segun el parrafo, y «< 200ms» se pinta «200ms >». El signo no se
+                mueve de sitio: CAMBIA DE SENTIDO. Una latencia que promete
+                «menos de 200 ms» pasa a prometer mas, y no hay nada en la
+                pantalla que delate el error salvo saber leerlo.
+
+                Un numero con su unidad se lee de izquierda a derecha en las once
+                lenguas, asi que se aisla como tal.
+              */}
               <span
+                dir="ltr"
                 className="text-2xl font-bold text-genesis-text font-display tech-cifra"
                 style={{ '--cifra-retardo': `${(i * 0.15).toFixed(2)}s` } as React.CSSProperties}
               >
                 {value}
               </span>
-              <span className="text-xs text-genesis-ghost uppercase tracking-wider">{label}</span>
+              <span className="text-xs text-genesis-ghost uppercase tracking-wider">{t(label)}</span>
             </div>
           ))}
         </motion.div>

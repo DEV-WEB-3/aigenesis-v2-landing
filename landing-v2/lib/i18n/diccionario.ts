@@ -1,0 +1,1335 @@
+import type { CodigoIdioma } from '@/lib/i18n/idiomas'
+
+/**
+ * EL DICCIONARIO — la clave es el texto en español.
+ *
+ * COMO SE USA: se busca la frase española tal cual aparece en el componente. Si
+ * no está, o si no está ese idioma, sale el español. Nunca sale una clave ni un
+ * hueco. El porqué de esta decisión está explicado en `IdiomaContext`.
+ *
+ * QUE NO ESTA AQUI, Y ES DELIBERADO
+ * ---------------------------------
+ * Los nombres propios no se traducen y por eso no aparecen: Genesis, AiGenesis,
+ * AiG Token, G-Pulse, G-Oracle, Booster, Staking, Mining, Marketplace, Roadmap,
+ * Smart Contract, BSC, BEP-20, on-chain. Meterlos con su propio valor seria
+ * ruido, y ademas invitaria a que alguien «tradujera» una marca.
+ *
+ * Tampoco estan las cifras: 8-11 %, 99.9 %, BEP-20. Un numero no cambia de
+ * idioma.
+ *
+ * REVISION NATIVA PENDIENTE
+ * -------------------------
+ * Ingles, portugues, frances, aleman y sueco los doy por buenos. Ruso, croata y
+ * serbio son correctos pero se benefician de una lectura nativa —sobre todo en
+ * los titulares partidos, donde la sintaxis manda—. Arabe y urdu NECESITAN
+ * revision nativa antes de considerarse publicables: no por el vocabulario, sino
+ * porque en RTL la puntuacion, los guiones largos y la mezcla con nombres
+ * latinos se comportan distinto y eso no se juzga sin leerlo en pantalla.
+ *
+ * Mientras no se revisen, la funcion ya sirve: un texto imperfecto en tu idioma
+ * comunica mas que uno perfecto que no entiendes, y el mecanismo permite
+ * corregir una frase sin tocar un solo componente.
+ */
+
+type Fila = Partial<Record<Exclude<CodigoIdioma, 'es'>, string>>
+
+export const DICCIONARIO: Record<string, Fila> = {
+  /* ── NAVEGACION Y ACCESIBILIDAD ─────────────────────────────────── */
+  'Navegación principal': {
+    en: 'Main navigation', pt: 'Navegação principal', fr: 'Navigation principale',
+    ru: 'Основная навигация', sv: 'Huvudnavigering', hr: 'Glavna navigacija',
+    ar: 'التنقل الرئيسي', de: 'Hauptnavigation', sr: 'Главна навигација', ur: 'مرکزی نیویگیشن',
+  },
+  'Navegación de secciones': {
+    en: 'Section navigation', pt: 'Navegação de seções', fr: 'Navigation des sections',
+    ru: 'Навигация по разделам', sv: 'Sektionsnavigering', hr: 'Navigacija odjeljcima',
+    ar: 'التنقل بين الأقسام', de: 'Abschnittsnavigation', sr: 'Навигација одељцима', ur: 'سیکشن نیویگیشن',
+  },
+  'Menú de navegación': {
+    en: 'Navigation menu', pt: 'Menu de navegação', fr: 'Menu de navigation',
+    ru: 'Меню навигации', sv: 'Navigeringsmeny', hr: 'Izbornik navigacije',
+    ar: 'قائمة التنقل', de: 'Navigationsmenü', sr: 'Мени навигације', ur: 'نیویگیشن مینو',
+  },
+  'Enlaces del menú': {
+    en: 'Menu links', pt: 'Links do menu', fr: 'Liens du menu',
+    ru: 'Ссылки меню', sv: 'Menylänkar', hr: 'Poveznice izbornika',
+    ar: 'روابط القائمة', de: 'Menülinks', sr: 'Везе менија', ur: 'مینو لنکس',
+  },
+  'Cerrar menú': {
+    en: 'Close menu', pt: 'Fechar menu', fr: 'Fermer le menu',
+    ru: 'Закрыть меню', sv: 'Stäng menyn', hr: 'Zatvori izbornik',
+    ar: 'إغلاق القائمة', de: 'Menü schließen', sr: 'Затвори мени', ur: 'مینو بند کریں',
+  },
+  'Sección anterior': {
+    en: 'Previous section', pt: 'Seção anterior', fr: 'Section précédente',
+    ru: 'Предыдущий раздел', sv: 'Föregående avsnitt', hr: 'Prethodni odjeljak',
+    ar: 'القسم السابق', de: 'Vorheriger Abschnitt', sr: 'Претходни одељак', ur: 'پچھلا سیکشن',
+  },
+  'Sección siguiente': {
+    en: 'Next section', pt: 'Seção seguinte', fr: 'Section suivante',
+    ru: 'Следующий раздел', sv: 'Nästa avsnitt', hr: 'Sljedeći odjeljak',
+    ar: 'القسم التالي', de: 'Nächster Abschnitt', sr: 'Следећи одељак', ur: 'اگلا سیکشن',
+  },
+  'Progreso de secciones': {
+    en: 'Section progress', pt: 'Progresso das seções', fr: 'Progression des sections',
+    ru: 'Прогресс по разделам', sv: 'Avsnittsförlopp', hr: 'Napredak odjeljaka',
+    ar: 'تقدّم الأقسام', de: 'Abschnittsfortschritt', sr: 'Напредак одељака', ur: 'سیکشن پیش رفت',
+  },
+  'Mapa del ecosistema': {
+    en: 'Ecosystem map', pt: 'Mapa do ecossistema', fr: "Carte de l'écosystème",
+    ru: 'Карта экосистемы', sv: 'Ekosystemkarta', hr: 'Karta ekosustava',
+    ar: 'خريطة المنظومة', de: 'Ökosystem-Karte', sr: 'Мапа екосистема', ur: 'ایکو سسٹم کا نقشہ',
+  },
+  'Enlaces institucionales': {
+    en: 'Institutional links', pt: 'Links institucionais', fr: 'Liens institutionnels',
+    ru: 'Официальные ссылки', sv: 'Institutionella länkar', hr: 'Institucionalne poveznice',
+    ar: 'روابط مؤسسية', de: 'Institutionelle Links', sr: 'Институционалне везе', ur: 'ادارہ جاتی لنکس',
+  },
+  'Redes sociales AiGenesis': {
+    en: 'AiGenesis social media', pt: 'Redes sociais AiGenesis', fr: 'Réseaux sociaux AiGenesis',
+    ru: 'Соцсети AiGenesis', sv: 'AiGenesis sociala medier', hr: 'AiGenesis društvene mreže',
+    ar: 'شبكات AiGenesis الاجتماعية', de: 'AiGenesis Social Media', sr: 'AiGenesis друштвене мреже', ur: 'AiGenesis سوشل میڈیا',
+  },
+  'Pie de página institucional': {
+    en: 'Institutional footer', pt: 'Rodapé institucional', fr: 'Pied de page institutionnel',
+    ru: 'Официальный подвал', sv: 'Institutionell sidfot', hr: 'Institucionalno podnožje',
+    ar: 'تذييل مؤسسي', de: 'Institutionelle Fußzeile', sr: 'Институционално подножје', ur: 'ادارہ جاتی فوٹر',
+  },
+  'GENESIS — Inicio': {
+    en: 'GENESIS — Home', pt: 'GENESIS — Início', fr: 'GENESIS — Accueil',
+    ru: 'GENESIS — Главная', sv: 'GENESIS — Start', hr: 'GENESIS — Početna',
+    ar: 'GENESIS — الرئيسية', de: 'GENESIS — Start', sr: 'GENESIS — Почетна', ur: 'GENESIS — ہوم',
+  },
+
+  /* ── ETIQUETAS DE SECCION ──────────────────────────────────────── */
+  Confianza: {
+    en: 'Trust', pt: 'Confiança', fr: 'Confiance', ru: 'Доверие', sv: 'Förtroende',
+    hr: 'Povjerenje', ar: 'الثقة', de: 'Vertrauen', sr: 'Поверење', ur: 'اعتماد',
+  },
+  Comunidad: {
+    en: 'Community', pt: 'Comunidade', fr: 'Communauté', ru: 'Сообщество', sv: 'Gemenskap',
+    hr: 'Zajednica', ar: 'المجتمع', de: 'Gemeinschaft', sr: 'Заједница', ur: 'کمیونٹی',
+  },
+  Tecnología: {
+    en: 'Technology', pt: 'Tecnologia', fr: 'Technologie', ru: 'Технология', sv: 'Teknik',
+    hr: 'Tehnologija', ar: 'التقنية', de: 'Technologie', sr: 'Технологија', ur: 'ٹیکنالوجی',
+  },
+  Protocolo: {
+    en: 'Protocol', pt: 'Protocolo', fr: 'Protocole', ru: 'Протокол', sv: 'Protokoll',
+    hr: 'Protokol', ar: 'البروتوكول', de: 'Protokoll', sr: 'Протокол', ur: 'پروٹوکول',
+  },
+  Participación: {
+    en: 'Participation', pt: 'Participação', fr: 'Participation', ru: 'Участие', sv: 'Deltagande',
+    hr: 'Sudjelovanje', ar: 'المشاركة', de: 'Teilnahme', sr: 'Учешће', ur: 'شرکت',
+  },
+  Distribución: {
+    en: 'Distribution', pt: 'Distribuição', fr: 'Distribution', ru: 'Распределение', sv: 'Distribution',
+    hr: 'Distribucija', ar: 'التوزيع', de: 'Verteilung', sr: 'Дистрибуција', ur: 'تقسیم',
+  },
+  Procesamiento: {
+    en: 'Processing', pt: 'Processamento', fr: 'Traitement', ru: 'Обработка', sv: 'Bearbetning',
+    hr: 'Obrada', ar: 'المعالجة', de: 'Verarbeitung', sr: 'Обрада', ur: 'پروسیسنگ',
+  },
+  Verificación: {
+    en: 'Verification', pt: 'Verificação', fr: 'Vérification', ru: 'Проверка', sv: 'Verifiering',
+    hr: 'Provjera', ar: 'التحقّق', de: 'Verifizierung', sr: 'Провера', ur: 'تصدیق',
+  },
+  Gobernanza: {
+    en: 'Governance', pt: 'Governança', fr: 'Gouvernance', ru: 'Управление', sv: 'Styrning',
+    hr: 'Upravljanje', ar: 'الحوكمة', de: 'Governance', sr: 'Управљање', ur: 'گورننس',
+  },
+  Modelo: {
+    en: 'Model', pt: 'Modelo', fr: 'Modèle', ru: 'Модель', sv: 'Modell',
+    hr: 'Model', ar: 'النموذج', de: 'Modell', sr: 'Модел', ur: 'ماڈل',
+  },
+  Progresivo: {
+    en: 'Progressive', pt: 'Progressivo', fr: 'Progressif', ru: 'Прогрессивная', sv: 'Progressiv',
+    hr: 'Progresivan', ar: 'تدريجي', de: 'Progressiv', sr: 'Прогресиван', ur: 'تدریجی',
+  },
+  Deflacionario: {
+    en: 'Deflationary', pt: 'Deflacionário', fr: 'Déflationniste', ru: 'Дефляционный', sv: 'Deflationär',
+    hr: 'Deflacijski', ar: 'انكماشي', de: 'Deflationär', sr: 'Дефлаторни', ur: 'ڈیفلیشنری',
+  },
+  Periodos: {
+    en: 'Periods', pt: 'Períodos', fr: 'Périodes', ru: 'Периоды', sv: 'Perioder',
+    hr: 'Razdoblja', ar: 'الفترات', de: 'Zeiträume', sr: 'Периоди', ur: 'مدتیں',
+  },
+  'Token base': {
+    en: 'Base token', pt: 'Token base', fr: 'Jeton de base', ru: 'Базовый токен', sv: 'Bastoken',
+    hr: 'Osnovni token', ar: 'الرمز الأساسي', de: 'Basis-Token', sr: 'Основни токен', ur: 'بنیادی ٹوکن',
+  },
+  'Capas activas': {
+    en: 'Active layers', pt: 'Camadas ativas', fr: 'Couches actives', ru: 'Активные слои', sv: 'Aktiva lager',
+    hr: 'Aktivni slojevi', ar: 'الطبقات النشطة', de: 'Aktive Ebenen', sr: 'Активни слојеви', ur: 'فعال تہیں',
+  },
+  'Métricas institucionales': {
+    en: 'Institutional metrics', pt: 'Métricas institucionais', fr: 'Indicateurs institutionnels',
+    ru: 'Официальные показатели', sv: 'Institutionella mätvärden', hr: 'Institucionalni pokazatelji',
+    ar: 'مؤشرات مؤسسية', de: 'Institutionelle Kennzahlen', sr: 'Институционални показатељи', ur: 'ادارہ جاتی میٹرکس',
+  },
+
+  /* ── TITULARES PARTIDOS ────────────────────────────────────────── */
+  'Ingeniería de': {
+    en: 'Engineering of', pt: 'Engenharia de', fr: 'Ingénierie de',
+    ru: 'Инженерия', sv: 'Teknik i', hr: 'Inženjerstvo',
+    ar: 'هندسة', de: 'Technik der', sr: 'Инжењерство', ur: 'انجینئرنگ',
+  },
+  'vanguardia.': {
+    en: 'the vanguard.', pt: 'vanguarda.', fr: 'pointe.',
+    ru: 'переднего края.', sv: 'framkant.', hr: 'vrhunska.',
+    ar: 'الطليعة.', de: 'Spitzenklasse.', sr: 'врхунско.', ur: 'اعلیٰ درجے کی۔',
+  },
+  'Crece con': {
+    en: 'Grow with', pt: 'Cresça com', fr: 'Grandissez avec',
+    ru: 'Расти вместе с', sv: 'Väx med', hr: 'Rasti s',
+    ar: 'انمُ مع', de: 'Wachse mit', sr: 'Расти са', ur: 'ساتھ بڑھیں',
+  },
+  'quienes crecen.': {
+    en: 'those who grow.', pt: 'quem cresce.', fr: 'ceux qui grandissent.',
+    ru: 'теми, кто растёт.', sv: 'dem som växer.', hr: 'onima koji rastu.',
+    ar: 'من ينمو.', de: 'denen, die wachsen.', sr: 'онима који расту.', ur: 'ان کے جو بڑھتے ہیں۔',
+  },
+  'Acelerador de crecimiento': {
+    en: 'Growth accelerator', pt: 'Acelerador de crescimento', fr: 'Accélérateur de croissance',
+    ru: 'Ускоритель роста', sv: 'Tillväxtaccelerator', hr: 'Ubrzivač rasta',
+    ar: 'مُسرّع النمو', de: 'Wachstumsbeschleuniger', sr: 'Убрзивач раста', ur: 'گروتھ ایکسیلریٹر',
+  },
+  'del ecosistema.': {
+    en: 'of the ecosystem.', pt: 'do ecossistema.', fr: "de l'écosystème.",
+    ru: 'экосистемы.', sv: 'för ekosystemet.', hr: 'ekosustava.',
+    ar: 'للمنظومة.', de: 'des Ökosystems.', sr: 'екосистема.', ur: 'ایکو سسٹم کا۔',
+  },
+  'Cerebro del': {
+    en: 'Brain of the', pt: 'Cérebro do', fr: 'Cerveau du',
+    ru: 'Мозг', sv: 'Hjärnan i', hr: 'Mozak',
+    ar: 'عقل', de: 'Gehirn des', sr: 'Мозак', ur: 'دماغ',
+  },
+  'ecosistema.': {
+    en: 'ecosystem.', pt: 'ecossistema.', fr: 'écosystème.',
+    ru: 'экосистемы.', sv: 'ekosystemet.', hr: 'ekosustava.',
+    ar: 'المنظومة.', de: 'Ökosystems.', sr: 'екосистема.', ur: 'ایکو سسٹم۔',
+  },
+  'Señales en': {
+    en: 'Signals in', pt: 'Sinais em', fr: 'Signaux en',
+    ru: 'Сигналы в', sv: 'Signaler i', hr: 'Signali u',
+    ar: 'إشارات في', de: 'Signale in', sr: 'Сигнали у', ur: 'سگنلز',
+  },
+  'tiempo real.': {
+    en: 'real time.', pt: 'tempo real.', fr: 'temps réel.',
+    ru: 'реальном времени.', sv: 'realtid.', hr: 'stvarnom vremenu.',
+    ar: 'الوقت الفعلي.', de: 'Echtzeit.', sr: 'реалном времену.', ur: 'حقیقی وقت میں۔',
+  },
+  Nuestro: {
+    en: 'Our', pt: 'Nosso', fr: 'Notre', ru: 'Наш', sv: 'Vår',
+    hr: 'Naš', ar: 'أفقنا', de: 'Unser', sr: 'Наш', ur: 'ہمارا',
+  },
+  'horizonte.': {
+    en: 'horizon.', pt: 'horizonte.', fr: 'horizon.', ru: 'горизонт.', sv: 'horisont.',
+    hr: 'horizont.', ar: 'المستقبلي.', de: 'Horizont.', sr: 'хоризонт.', ur: 'افق۔',
+  },
+  'Genesis Token.': {
+    en: 'Genesis Token.', pt: 'Genesis Token.', fr: 'Genesis Token.',
+    ru: 'Genesis Token.', sv: 'Genesis Token.', hr: 'Genesis Token.',
+    ar: 'Genesis Token.', de: 'Genesis Token.', sr: 'Genesis Token.', ur: 'Genesis Token.',
+  },
+  'antes del producto.': {
+    en: 'before the product.', pt: 'antes do produto.', fr: 'avant le produit.',
+    ru: 'прежде продукта.', sv: 'före produkten.', hr: 'prije proizvoda.',
+    ar: 'قبل المنتج.', de: 'vor dem Produkt.', sr: 'пре производа.', ur: 'پروڈکٹ سے پہلے۔',
+  },
+  'con el protocolo.': {
+    en: 'with the protocol.', pt: 'com o protocolo.', fr: 'avec le protocole.',
+    ru: 'с протоколом.', sv: 'med protokollet.', hr: 's protokolom.',
+    ar: 'مع البروتوكول.', de: 'mit dem Protokoll.', sr: 'са протоколом.', ur: 'پروٹوکول کے ساتھ۔',
+  },
+  'del futuro?': {
+    en: 'of the future?', pt: 'do futuro?', fr: "de l'avenir ?",
+    ru: 'будущего?', sv: 'framtidens?', hr: 'budućnosti?',
+    ar: 'المستقبل؟', de: 'der Zukunft?', sr: 'будућности?', ur: 'مستقبل کا؟',
+  },
+  'un universo en expansión': {
+    en: 'an expanding universe', pt: 'um universo em expansão', fr: 'un univers en expansion',
+    ru: 'расширяющуюся вселенную', sv: 'ett universum i expansion', hr: 'svemir koji se širi',
+    ar: 'كوناً يتوسّع', de: 'ein expandierendes Universum', sr: 'свемир који се шири', ur: 'ایک پھیلتی ہوئی کائنات',
+  },
+
+  /* ── PARRAFOS ──────────────────────────────────────────────────── */
+  'AiGenesis prioriza transparencia, seguridad técnica y trazabilidad on-chain. Conoce los pilares que sostienen el ecosistema antes de explorar sus productos.': {
+    en: 'AiGenesis puts transparency, technical security and on-chain traceability first. Get to know the pillars that hold up the ecosystem before exploring its products.',
+    pt: 'A AiGenesis prioriza transparência, segurança técnica e rastreabilidade on-chain. Conheça os pilares que sustentam o ecossistema antes de explorar seus produtos.',
+    fr: "AiGenesis privilégie la transparence, la sécurité technique et la traçabilité on-chain. Découvrez les piliers qui soutiennent l'écosystème avant d'explorer ses produits.",
+    ru: 'AiGenesis ставит на первое место прозрачность, техническую безопасность и прослеживаемость в блокчейне. Познакомьтесь с опорами экосистемы, прежде чем изучать её продукты.',
+    sv: 'AiGenesis prioriterar transparens, teknisk säkerhet och spårbarhet on-chain. Lär känna pelarna som bär upp ekosystemet innan du utforskar dess produkter.',
+    hr: 'AiGenesis na prvo mjesto stavlja transparentnost, tehničku sigurnost i on-chain sljedivost. Upoznajte stupove koji drže ekosustav prije nego istražite njegove proizvode.',
+    ar: 'تضع AiGenesis الشفافية والأمان التقني وإمكانية التتبّع على السلسلة في المقدّمة. تعرّف على الركائز التي تحمل المنظومة قبل استكشاف منتجاتها.',
+    de: 'AiGenesis stellt Transparenz, technische Sicherheit und On-Chain-Nachvollziehbarkeit an erste Stelle. Lernen Sie die Säulen kennen, die das Ökosystem tragen, bevor Sie seine Produkte erkunden.',
+    sr: 'AiGenesis на прво место ставља транспарентност, техничку безбедност и следивост на ланцу. Упознајте стубове који држе екосистем пре него што истражите његове производе.',
+    ur: 'AiGenesis شفافیت، تکنیکی سیکیورٹی اور آن چین قابلِ سراغ ہونے کو مقدم رکھتا ہے۔ مصنوعات دیکھنے سے پہلے ان ستونوں کو جانیں جو ایکو سسٹم کو سنبھالتے ہیں۔',
+  },
+  'Un universo de productos interconectados sobre Binance Smart Chain. Cada capítulo amplifica al siguiente en una arquitectura modular e institucional.': {
+    en: 'A universe of interconnected products on Binance Smart Chain. Each chapter amplifies the next in a modular, institutional architecture.',
+    pt: 'Um universo de produtos interligados sobre a Binance Smart Chain. Cada capítulo amplifica o seguinte numa arquitetura modular e institucional.',
+    fr: 'Un univers de produits interconnectés sur Binance Smart Chain. Chaque chapitre amplifie le suivant dans une architecture modulaire et institutionnelle.',
+    ru: 'Вселенная связанных продуктов на Binance Smart Chain. Каждая глава усиливает следующую в модульной институциональной архитектуре.',
+    sv: 'Ett universum av sammankopplade produkter på Binance Smart Chain. Varje kapitel förstärker nästa i en modulär, institutionell arkitektur.',
+    hr: 'Svemir međusobno povezanih proizvoda na Binance Smart Chainu. Svako poglavlje pojačava sljedeće u modularnoj, institucionalnoj arhitekturi.',
+    ar: 'كون من المنتجات المترابطة على Binance Smart Chain. كل فصل يضاعف أثر الذي يليه ضمن بنية معيارية ومؤسسية.',
+    de: 'Ein Universum vernetzter Produkte auf der Binance Smart Chain. Jedes Kapitel verstärkt das nächste in einer modularen, institutionellen Architektur.',
+    sr: 'Свемир међусобно повезаних производа на Binance Smart Chain-у. Свако поглавље појачава следеће у модуларној, институционалној архитектури.',
+    ur: 'Binance Smart Chain پر باہم مربوط مصنوعات کی ایک کائنات۔ ہر باب اگلے کو ایک ماڈیولر، ادارہ جاتی فن تعمیر میں بڑھاتا ہے۔',
+  },
+  'Token BEP-20 deflacionario sobre BSC. El activo base que articula participación, utilidad y expansión del ecosistema Genesis.': {
+    en: 'Deflationary BEP-20 token on BSC. The base asset that ties together participation, utility and expansion of the Genesis ecosystem.',
+    pt: 'Token BEP-20 deflacionário na BSC. O ativo base que articula participação, utilidade e expansão do ecossistema Genesis.',
+    fr: 'Jeton BEP-20 déflationniste sur BSC. L’actif de base qui articule participation, utilité et expansion de l’écosystème Genesis.',
+    ru: 'Дефляционный токен BEP-20 в сети BSC. Базовый актив, связывающий участие, полезность и расширение экосистемы Genesis.',
+    sv: 'Deflationär BEP-20-token på BSC. Bastillgången som binder samman deltagande, nytta och expansion i Genesis-ekosystemet.',
+    hr: 'Deflacijski BEP-20 token na BSC-u. Osnovna imovina koja povezuje sudjelovanje, korisnost i širenje Genesis ekosustava.',
+    ar: 'رمز BEP-20 انكماشي على شبكة BSC. الأصل الأساسي الذي يربط المشاركة والمنفعة وتوسّع منظومة Genesis.',
+    de: 'Deflationärer BEP-20-Token auf BSC. Der Basiswert, der Teilnahme, Nutzen und Expansion des Genesis-Ökosystems verbindet.',
+    sr: 'Дефлаторни BEP-20 токен на BSC-у. Основна имовина која повезује учешће, корисност и ширење Genesis екосистема.',
+    ur: 'BSC پر ڈیفلیشنری BEP-20 ٹوکن۔ بنیادی اثاثہ جو Genesis ایکو سسٹم کی شرکت، افادیت اور توسیع کو جوڑتا ہے۔',
+  },
+  'Mining es la capa que articula emisión, participación y distribución dentro de AiGenesis. Un mecanismo de protocolo — no una promesa de rentabilidad.': {
+    en: 'Mining is the layer that ties together issuance, participation and distribution inside AiGenesis. A protocol mechanism — not a promise of returns.',
+    pt: 'Mining é a camada que articula emissão, participação e distribuição dentro da AiGenesis. Um mecanismo de protocolo — não uma promessa de rentabilidade.',
+    fr: "Mining est la couche qui articule émission, participation et distribution au sein d'AiGenesis. Un mécanisme de protocole — pas une promesse de rendement.",
+    ru: 'Mining — это слой, связывающий эмиссию, участие и распределение внутри AiGenesis. Механизм протокола, а не обещание доходности.',
+    sv: 'Mining är lagret som binder samman utgivning, deltagande och distribution inom AiGenesis. En protokollmekanism — inte ett löfte om avkastning.',
+    hr: 'Mining je sloj koji povezuje izdavanje, sudjelovanje i distribuciju unutar AiGenesisa. Mehanizam protokola — ne obećanje prinosa.',
+    ar: 'Mining هي الطبقة التي تربط الإصدار والمشاركة والتوزيع داخل AiGenesis. آلية بروتوكول — لا وعد بعائد.',
+    de: 'Mining ist die Ebene, die Ausgabe, Teilnahme und Verteilung innerhalb von AiGenesis verbindet. Ein Protokollmechanismus — kein Renditeversprechen.',
+    sr: 'Mining је слој који повезује издавање, учешће и дистрибуцију унутар AiGenesis-а. Механизам протокола — не обећање приноса.',
+    ur: 'Mining وہ تہہ ہے جو AiGenesis کے اندر اجرا، شرکت اور تقسیم کو جوڑتی ہے۔ ایک پروٹوکول میکانزم — منافع کا وعدہ نہیں۔',
+  },
+  'Capas y multiplicadores definidos que amplifican la participación en el protocolo. Progresión por permanencia — no un esquema de captación.': {
+    en: 'Defined layers and multipliers that amplify participation in the protocol. Progression through commitment — not a recruitment scheme.',
+    pt: 'Camadas e multiplicadores definidos que amplificam a participação no protocolo. Progressão por permanência — não um esquema de captação.',
+    fr: 'Des couches et des multiplicateurs définis qui amplifient la participation au protocole. Progression par la durée — pas un système de recrutement.',
+    ru: 'Заданные слои и множители, усиливающие участие в протоколе. Продвижение за счёт постоянства, а не схема привлечения.',
+    sv: 'Definierade lager och multiplikatorer som förstärker deltagandet i protokollet. Progression genom uthållighet — inte ett värvningsupplägg.',
+    hr: 'Definirani slojevi i množitelji koji pojačavaju sudjelovanje u protokolu. Napredovanje ustrajnošću — ne shema regrutiranja.',
+    ar: 'طبقات ومضاعفات محدّدة تُعزّز المشاركة في البروتوكول. تقدّم بالاستمرارية — لا مخطّط استقطاب.',
+    de: 'Definierte Ebenen und Multiplikatoren, die die Teilnahme am Protokoll verstärken. Fortschritt durch Beständigkeit — kein Anwerbesystem.',
+    sr: 'Дефинисани слојеви и множитељи који појачавају учешће у протоколу. Напредак истрајношћу — не шема регрутовања.',
+    ur: 'متعین تہیں اور ضرب دینے والے عوامل جو پروٹوکول میں شرکت کو بڑھاتے ہیں۔ استقامت سے ترقی — بھرتی کا منصوبہ نہیں۔',
+  },
+  'Comunidad global G11 con reglas de participación publicadas. Dos aceleradores de minado —directo y de red— y fondos globales para los rangos más activos.': {
+    en: 'Global G11 community with published participation rules. Two mining accelerators — direct and network — plus global funds for the most active ranks.',
+    pt: 'Comunidade global G11 com regras de participação publicadas. Dois aceleradores de mineração — direto e de rede — e fundos globais para os níveis mais ativos.',
+    fr: 'Communauté mondiale G11 avec des règles de participation publiées. Deux accélérateurs de minage — direct et réseau — et des fonds mondiaux pour les rangs les plus actifs.',
+    ru: 'Глобальное сообщество G11 с опубликованными правилами участия. Два ускорителя майнинга — прямой и сетевой — и глобальные фонды для самых активных рангов.',
+    sv: 'Global G11-gemenskap med publicerade deltagarregler. Två brytningsacceleratorer — direkt och nätverk — samt globala fonder för de mest aktiva nivåerna.',
+    hr: 'Globalna zajednica G11 s objavljenim pravilima sudjelovanja. Dva ubrzivača rudarenja — izravni i mrežni — te globalni fondovi za najaktivnije razine.',
+    ar: 'مجتمع G11 العالمي بقواعد مشاركة معلنة. مُسرّعان للتعدين — مباشر وشبكي — وصناديق عالمية للمراتب الأكثر نشاطاً.',
+    de: 'Globale G11-Gemeinschaft mit veröffentlichten Teilnahmeregeln. Zwei Mining-Beschleuniger — direkt und Netzwerk — sowie globale Fonds für die aktivsten Ränge.',
+    sr: 'Глобална заједница G11 са објављеним правилима учешћа. Два убрзивача рударења — директни и мрежни — и глобални фондови за најактивније рангове.',
+    ur: 'شائع شدہ شرکت کے قواعد کے ساتھ عالمی G11 کمیونٹی۔ کان کنی کے دو ایکسیلریٹر — براہِ راست اور نیٹ ورک — اور سب سے فعال درجات کے لیے عالمی فنڈز۔',
+  },
+  'GPulse entrega análisis operativo y señales automatizadas para mercados globales. Capa de ejecución táctica — complementaria al núcleo de inteligencia G-Oracle.': {
+    en: 'GPulse delivers operational analysis and automated signals for global markets. A tactical execution layer — complementary to the G-Oracle intelligence core.',
+    pt: 'O GPulse entrega análise operacional e sinais automatizados para mercados globais. Camada de execução tática — complementar ao núcleo de inteligência G-Oracle.',
+    fr: 'GPulse fournit une analyse opérationnelle et des signaux automatisés pour les marchés mondiaux. Couche d’exécution tactique — complémentaire au cœur d’intelligence G-Oracle.',
+    ru: 'GPulse даёт операционную аналитику и автоматические сигналы для мировых рынков. Слой тактического исполнения, дополняющий интеллектуальное ядро G-Oracle.',
+    sv: 'GPulse levererar operativ analys och automatiserade signaler för globala marknader. Ett taktiskt exekveringslager — komplement till intelligenskärnan G-Oracle.',
+    hr: 'GPulse donosi operativnu analizu i automatizirane signale za globalna tržišta. Sloj taktičkog izvršenja — dopuna obavještajnoj jezgri G-Oracle.',
+    ar: 'يقدّم GPulse تحليلاً تشغيلياً وإشارات آلية للأسواق العالمية. طبقة تنفيذ تكتيكي — مكمّلة لنواة الذكاء G-Oracle.',
+    de: 'GPulse liefert operative Analysen und automatisierte Signale für globale Märkte. Eine taktische Ausführungsebene — ergänzend zum Intelligenzkern G-Oracle.',
+    sr: 'GPulse доноси оперативну анализу и аутоматизоване сигнале за глобална тржишта. Слој тактичког извршења — допуна обавештајном језгру G-Oracle.',
+    ur: 'GPulse عالمی منڈیوں کے لیے آپریشنل تجزیہ اور خودکار سگنلز فراہم کرتا ہے۔ حکمتِ عملی پر مبنی عمل درآمد کی تہہ — G-Oracle انٹیلیجنس کور کی تکمیل۔',
+  },
+  'Catálogo global con envío internacional. Se paga con AIG, USDT o tarjeta.': {
+    en: 'Global catalogue with international shipping. Pay with AIG, USDT or card.',
+    pt: 'Catálogo global com envio internacional. Pague com AIG, USDT ou cartão.',
+    fr: 'Catalogue mondial avec expédition internationale. Paiement en AIG, USDT ou carte.',
+    ru: 'Глобальный каталог с международной доставкой. Оплата в AIG, USDT или картой.',
+    sv: 'Global katalog med internationell frakt. Betala med AIG, USDT eller kort.',
+    hr: 'Globalni katalog s međunarodnom dostavom. Plaćanje u AIG-u, USDT-u ili karticom.',
+    ar: 'كتالوج عالمي مع شحن دولي. الدفع بـ AIG أو USDT أو بالبطاقة.',
+    de: 'Globaler Katalog mit internationalem Versand. Zahlung mit AIG, USDT oder Karte.',
+    sr: 'Глобални каталог са међународном доставом. Плаћање у AIG-у, USDT-у или картицом.',
+    ur: 'بین الاقوامی ترسیل کے ساتھ عالمی کیٹلاگ۔ AIG، USDT یا کارڈ سے ادائیگی۔',
+  },
+  'Stack tecnológico de clase enterprise. Smart contracts auditados, infraestructura distribuida, y motor de inteligencia artificial propietario.': {
+    en: 'Enterprise-class technology stack. Audited smart contracts, distributed infrastructure and a proprietary artificial-intelligence engine.',
+    pt: 'Stack tecnológico de classe enterprise. Smart contracts auditados, infraestrutura distribuída e motor de inteligência artificial proprietário.',
+    fr: "Pile technologique de classe entreprise. Smart contracts audités, infrastructure distribuée et moteur d'intelligence artificielle propriétaire.",
+    ru: 'Технологический стек корпоративного класса. Проверенные смарт-контракты, распределённая инфраструктура и собственный движок искусственного интеллекта.',
+    sv: 'Teknikstack i företagsklass. Granskade smarta kontrakt, distribuerad infrastruktur och en egen AI-motor.',
+    hr: 'Tehnološki stog poslovne klase. Revidirani pametni ugovori, distribuirana infrastruktura i vlastiti motor umjetne inteligencije.',
+    ar: 'حزمة تقنية بمستوى المؤسسات. عقود ذكية مُدقّقة وبنية موزّعة ومحرّك ذكاء اصطناعي خاص.',
+    de: 'Technologie-Stack in Enterprise-Qualität. Geprüfte Smart Contracts, verteilte Infrastruktur und eine eigene KI-Engine.',
+    sr: 'Технолошки стек пословне класе. Ревидирани паметни уговори, дистрибуирана инфраструктура и сопствени мотор вештачке интелигенције.',
+    ur: 'انٹرپرائز درجے کا ٹیکنالوجی اسٹیک۔ آڈٹ شدہ اسمارٹ کنٹریکٹس، تقسیم شدہ انفراسٹرکچر اور اپنا مصنوعی ذہانت انجن۔',
+  },
+  'El valor interno es la referencia de intercambio entre miembros y mineros para productos y servicios. No es una cotización de mercado: AIG todavía no tiene un pool público de liquidez.': {
+    en: 'The internal value is the exchange reference between members and miners for products and services. It is not a market price: AIG does not yet have a public liquidity pool.',
+    pt: 'O valor interno é a referência de troca entre membros e mineradores para produtos e serviços. Não é uma cotação de mercado: o AIG ainda não tem um pool público de liquidez.',
+    fr: "La valeur interne est la référence d'échange entre membres et mineurs pour les produits et services. Ce n'est pas un cours de marché : AIG n'a pas encore de pool de liquidité public.",
+    ru: 'Внутренняя стоимость — это ориентир обмена между участниками и майнерами за товары и услуги. Это не рыночная котировка: у AIG пока нет публичного пула ликвидности.',
+    sv: 'Det interna värdet är växelreferensen mellan medlemmar och brytare för produkter och tjänster. Det är inte en marknadskurs: AIG har ännu ingen offentlig likviditetspool.',
+    hr: 'Interna vrijednost je referenca razmjene između članova i rudara za proizvode i usluge. Nije tržišna kotacija: AIG još nema javni skup likvidnosti.',
+    ar: 'القيمة الداخلية هي مرجع التبادل بين الأعضاء والمعدّنين مقابل المنتجات والخدمات. ليست سعراً سوقياً: لا يملك AIG بعد مجمّع سيولة عاماً.',
+    de: 'Der interne Wert ist die Tauschreferenz zwischen Mitgliedern und Minern für Produkte und Dienstleistungen. Es ist kein Marktkurs: AIG hat noch keinen öffentlichen Liquiditätspool.',
+    sr: 'Интерна вредност је референца размене између чланова и рудара за производе и услуге. Није тржишна котација: AIG још нема јавни базен ликвидности.',
+    ur: 'اندرونی قدر اراکین اور کان کنوں کے درمیان مصنوعات و خدمات کے تبادلے کا حوالہ ہے۔ یہ مارکیٹ کی قیمت نہیں: AIG کے پاس ابھی عوامی لیکویڈیٹی پول نہیں ہے۔',
+  },
+
+  /* ── FICHAS Y BOTONES ──────────────────────────────────────────── */
+  'Acelerador directo 8-11%': {
+    en: 'Direct accelerator 8-11%', pt: 'Acelerador direto 8-11%', fr: 'Accélérateur direct 8-11 %',
+    ru: 'Прямой ускоритель 8-11 %', sv: 'Direkt accelerator 8-11 %', hr: 'Izravni ubrzivač 8-11 %',
+    ar: 'مُسرّع مباشر 8-11٪', de: 'Direkter Beschleuniger 8-11 %', sr: 'Директни убрзивач 8-11 %', ur: 'براہِ راست ایکسیلریٹر 8-11%',
+  },
+  'Acelerador de red': {
+    en: 'Network accelerator', pt: 'Acelerador de rede', fr: 'Accélérateur de réseau',
+    ru: 'Сетевой ускоритель', sv: 'Nätverksaccelerator', hr: 'Mrežni ubrzivač',
+    ar: 'مُسرّع الشبكة', de: 'Netzwerk-Beschleuniger', sr: 'Мрежни убрзивач', ur: 'نیٹ ورک ایکسیلریٹر',
+  },
+  'Catálogo premium verificado': {
+    en: 'Verified premium catalogue', pt: 'Catálogo premium verificado', fr: 'Catalogue premium vérifié',
+    ru: 'Проверенный премиум-каталог', sv: 'Verifierad premiumkatalog', hr: 'Provjereni premium katalog',
+    ar: 'كتالوج مميّز موثّق', de: 'Geprüfter Premium-Katalog', sr: 'Проверени премијум каталог', ur: 'تصدیق شدہ پریمیم کیٹلاگ',
+  },
+  'Seguimiento en vivo': {
+    en: 'Live tracking', pt: 'Rastreamento ao vivo', fr: 'Suivi en direct',
+    ru: 'Отслеживание в реальном времени', sv: 'Spårning i realtid', hr: 'Praćenje uživo',
+    ar: 'تتبّع مباشر', de: 'Live-Verfolgung', sr: 'Праћење уживо', ur: 'براہِ راست ٹریکنگ',
+  },
+  'Liderazgo Progresivo': {
+    en: 'Progressive leadership', pt: 'Liderança progressiva', fr: 'Leadership progressif',
+    ru: 'Прогрессивное лидерство', sv: 'Progressivt ledarskap', hr: 'Progresivno vodstvo',
+    ar: 'قيادة تدريجية', de: 'Progressive Führung', sr: 'Прогресивно вођство', ur: 'تدریجی قیادت',
+  },
+  'Infraestructura verificable': {
+    en: 'Verifiable infrastructure', pt: 'Infraestrutura verificável', fr: 'Infrastructure vérifiable',
+    ru: 'Проверяемая инфраструктура', sv: 'Verifierbar infrastruktur', hr: 'Provjerljiva infrastruktura',
+    ar: 'بنية قابلة للتحقّق', de: 'Überprüfbare Infrastruktur', sr: 'Проверљива инфраструктура', ur: 'قابلِ تصدیق انفراسٹرکچر',
+  },
+  'Compromiso a largo plazo': {
+    en: 'Long-term commitment', pt: 'Compromisso de longo prazo', fr: 'Engagement à long terme',
+    ru: 'Долгосрочные обязательства', sv: 'Långsiktigt åtagande', hr: 'Dugoročna predanost',
+    ar: 'التزام طويل الأمد', de: 'Langfristiges Engagement', sr: 'Дугорочна посвећеност', ur: 'طویل مدتی وابستگی',
+  },
+  'Motor de participación': {
+    en: 'Participation engine', pt: 'Motor de participação', fr: 'Moteur de participation',
+    ru: 'Механизм участия', sv: 'Deltagandemotor', hr: 'Motor sudjelovanja',
+    ar: 'محرّك المشاركة', de: 'Beteiligungsmotor', sr: 'Мотор учешћа', ur: 'شرکت کا انجن',
+  },
+  'Capa neurálgica': {
+    en: 'Nerve layer', pt: 'Camada neurálgica', fr: 'Couche névralgique',
+    ru: 'Нервный слой', sv: 'Nervlager', hr: 'Živčani sloj',
+    ar: 'الطبقة العصبية', de: 'Nervenschicht', sr: 'Нервни слој', ur: 'اعصابی تہہ',
+  },
+  'Motor propietario': {
+    en: 'Proprietary engine', pt: 'Motor proprietário', fr: 'Moteur propriétaire',
+    ru: 'Собственный движок', sv: 'Egen motor', hr: 'Vlastiti motor',
+    ar: 'محرّك خاص', de: 'Eigene Engine', sr: 'Сопствени мотор', ur: 'اپنا انجن',
+  },
+  'Análisis Real-Time': {
+    en: 'Real-time analysis', pt: 'Análise em tempo real', fr: 'Analyse en temps réel',
+    ru: 'Анализ в реальном времени', sv: 'Realtidsanalys', hr: 'Analiza u stvarnom vremenu',
+    ar: 'تحليل فوري', de: 'Echtzeit-Analyse', sr: 'Анализа у реалном времену', ur: 'حقیقی وقت میں تجزیہ',
+  },
+  'Señales Automatizadas': {
+    en: 'Automated signals', pt: 'Sinais automatizados', fr: 'Signaux automatisés',
+    ru: 'Автоматические сигналы', sv: 'Automatiserade signaler', hr: 'Automatizirani signali',
+    ar: 'إشارات آلية', de: 'Automatisierte Signale', sr: 'Аутоматизовани сигнали', ur: 'خودکار سگنلز',
+  },
+  'Alertas de Mercado': {
+    en: 'Market alerts', pt: 'Alertas de mercado', fr: 'Alertes de marché',
+    ru: 'Рыночные оповещения', sv: 'Marknadsvarningar', hr: 'Tržišna upozorenja',
+    ar: 'تنبيهات السوق', de: 'Marktwarnungen', sr: 'Тржишна упозорења', ur: 'مارکیٹ الرٹس',
+  },
+  'Indicadores de Mining': {
+    en: 'Mining indicators', pt: 'Indicadores de mineração', fr: 'Indicateurs de minage',
+    ru: 'Показатели майнинга', sv: 'Brytningsindikatorer', hr: 'Pokazatelji rudarenja',
+    ar: 'مؤشّرات التعدين', de: 'Mining-Indikatoren', sr: 'Показатељи рударења', ur: 'مائننگ انڈیکیٹرز',
+  },
+  'Integración G-BRIDGE': {
+    en: 'G-BRIDGE integration', pt: 'Integração G-BRIDGE', fr: 'Intégration G-BRIDGE',
+    ru: 'Интеграция G-BRIDGE', sv: 'G-BRIDGE-integration', hr: 'G-BRIDGE integracija',
+    ar: 'تكامل G-BRIDGE', de: 'G-BRIDGE-Integration', sr: 'G-BRIDGE интеграција', ur: 'G-BRIDGE انضمام',
+  },
+
+  'Crear cuenta': {
+    en: 'Create account', pt: 'Criar conta', fr: 'Créer un compte',
+    ru: 'Создать аккаунт', sv: 'Skapa konto', hr: 'Otvori račun',
+    ar: 'إنشاء حساب', de: 'Konto erstellen', sr: 'Отвори налог', ur: 'اکاؤنٹ بنائیں',
+  },
+  'Crear Cuenta': {
+    en: 'Create account', pt: 'Criar conta', fr: 'Créer un compte',
+    ru: 'Создать аккаунт', sv: 'Skapa konto', hr: 'Otvori račun',
+    ar: 'إنشاء حساب', de: 'Konto erstellen', sr: 'Отвори налог', ur: 'اکاؤنٹ بنائیں',
+  },
+  'Explora el Universo': {
+    en: 'Explore the universe', pt: 'Explore o universo', fr: "Explorez l'univers",
+    ru: 'Исследовать вселенную', sv: 'Utforska universum', hr: 'Istraži svemir',
+    ar: 'استكشف الكون', de: 'Das Universum erkunden', sr: 'Истражи свемир', ur: 'کائنات دریافت کریں',
+  },
+  'Explorar el ecosistema →': {
+    en: 'Explore the ecosystem →', pt: 'Explorar o ecossistema →', fr: "Explorer l'écosystème →",
+    ru: 'Изучить экосистему →', sv: 'Utforska ekosystemet →', hr: 'Istraži ekosustav →',
+    ar: '← استكشاف المنظومة', de: 'Ökosystem erkunden →', sr: 'Истражи екосистем →', ur: '← ایکو سسٹم دریافت کریں',
+  },
+  'Explorar Ecosistema →': {
+    en: 'Explore ecosystem →', pt: 'Explorar ecossistema →', fr: "Explorer l'écosystème →",
+    ru: 'Изучить экосистему →', sv: 'Utforska ekosystemet →', hr: 'Istraži ekosustav →',
+    ar: '← استكشاف المنظومة', de: 'Ökosystem erkunden →', sr: 'Истражи екосистем →', ur: '← ایکو سسٹم دریافت کریں',
+  },
+  'Explorar participación': {
+    en: 'Explore participation', pt: 'Explorar participação', fr: 'Explorer la participation',
+    ru: 'Изучить участие', sv: 'Utforska deltagande', hr: 'Istraži sudjelovanje',
+    ar: 'استكشاف المشاركة', de: 'Teilnahme erkunden', sr: 'Истражи учешће', ur: 'شرکت دریافت کریں',
+  },
+  'Conocer Booster': {
+    en: 'Discover Booster', pt: 'Conhecer o Booster', fr: 'Découvrir Booster',
+    ru: 'Узнать о Booster', sv: 'Lär känna Booster', hr: 'Upoznaj Booster',
+    ar: 'تعرّف على Booster', de: 'Booster kennenlernen', sr: 'Упознај Booster', ur: 'Booster جانیں',
+  },
+  'Explorar Staking': {
+    en: 'Explore Staking', pt: 'Explorar Staking', fr: 'Explorer le Staking',
+    ru: 'Изучить стейкинг', sv: 'Utforska Staking', hr: 'Istraži Staking',
+    ar: 'استكشاف Staking', de: 'Staking erkunden', sr: 'Истражи Staking', ur: 'Staking دریافت کریں',
+  },
+  'Conocer G-Oracle': {
+    en: 'Discover G-Oracle', pt: 'Conhecer o G-Oracle', fr: 'Découvrir G-Oracle',
+    ru: 'Узнать о G-Oracle', sv: 'Lär känna G-Oracle', hr: 'Upoznaj G-Oracle',
+    ar: 'تعرّف على G-Oracle', de: 'G-Oracle kennenlernen', sr: 'Упознај G-Oracle', ur: 'G-Oracle جانیں',
+  },
+  'Explorar GPulse': {
+    en: 'Explore GPulse', pt: 'Explorar o GPulse', fr: 'Explorer GPulse',
+    ru: 'Изучить GPulse', sv: 'Utforska GPulse', hr: 'Istraži GPulse',
+    ar: 'استكشاف GPulse', de: 'GPulse erkunden', sr: 'Истражи GPulse', ur: 'GPulse دریافت کریں',
+  },
+  'Acceder a G-Pulse →': {
+    en: 'Go to G-Pulse →', pt: 'Acessar o G-Pulse →', fr: 'Accéder à G-Pulse →',
+    ru: 'Перейти в G-Pulse →', sv: 'Gå till G-Pulse →', hr: 'Otvori G-Pulse →',
+    ar: '← الانتقال إلى G-Pulse', de: 'Zu G-Pulse →', sr: 'Отвори G-Pulse →', ur: '← G-Pulse پر جائیں',
+  },
+  'Explorar Marketplace →': {
+    en: 'Explore Marketplace →', pt: 'Explorar o Marketplace →', fr: 'Explorer le Marketplace →',
+    ru: 'Открыть Marketplace →', sv: 'Utforska Marketplace →', hr: 'Istraži Marketplace →',
+    ar: '← استكشاف Marketplace', de: 'Marketplace erkunden →', sr: 'Истражи Marketplace →', ur: '← Marketplace دریافت کریں',
+  },
+  'Únete a la Comunidad →': {
+    en: 'Join the community →', pt: 'Junte-se à comunidade →', fr: 'Rejoindre la communauté →',
+    ru: 'Вступить в сообщество →', sv: 'Gå med i gemenskapen →', hr: 'Pridruži se zajednici →',
+    ar: '← انضمّ إلى المجتمع', de: 'Der Gemeinschaft beitreten →', sr: 'Придружи се заједници →', ur: '← کمیونٹی میں شامل ہوں',
+  },
+  'Ver Documentación →': {
+    en: 'View documentation →', pt: 'Ver documentação →', fr: 'Voir la documentation →',
+    ru: 'Открыть документацию →', sv: 'Se dokumentationen →', hr: 'Pogledaj dokumentaciju →',
+    ar: '← عرض الوثائق', de: 'Dokumentation ansehen →', sr: 'Погледај документацију →', ur: '← دستاویزات دیکھیں',
+  },
+  'Verificar en BSCScan ↗': {
+    en: 'Verify on BSCScan ↗', pt: 'Verificar no BSCScan ↗', fr: 'Vérifier sur BSCScan ↗',
+    ru: 'Проверить в BSCScan ↗', sv: 'Verifiera på BSCScan ↗', hr: 'Provjeri na BSCScanu ↗',
+    ar: '↗ التحقّق على BSCScan', de: 'Auf BSCScan prüfen ↗', sr: 'Провери на BSCScan-у ↗', ur: '↗ BSCScan پر تصدیق کریں',
+  },
+  'Descargar plan de marketing': {
+    en: 'Download the marketing plan', pt: 'Baixar o plano de marketing', fr: 'Télécharger le plan marketing',
+    ru: 'Скачать маркетинговый план', sv: 'Ladda ner marknadsplanen', hr: 'Preuzmi marketinški plan',
+    ar: 'تنزيل الخطة التسويقية', de: 'Marketingplan herunterladen', sr: 'Преузми маркетиншки план', ur: 'مارکیٹنگ پلان ڈاؤن لوڈ کریں',
+  },
+  /* ── EL PROPIO SELECTOR ────────────────────────────────────────── */
+  Idioma: {
+    en: 'Language', pt: 'Idioma', fr: 'Langue', ru: 'Язык', sv: 'Språk',
+    hr: 'Jezik', ar: 'اللغة', de: 'Sprache', sr: 'Језик', ur: 'زبان',
+  },
+  'La presentación oficial está disponible en cada idioma': {
+    en: 'The official presentation is available in each language',
+    pt: 'A apresentação oficial está disponível em cada idioma',
+    fr: 'La présentation officielle est disponible dans chaque langue',
+    ru: 'Официальная презентация доступна на каждом языке',
+    sv: 'Den officiella presentationen finns på varje språk',
+    hr: 'Službena prezentacija dostupna je na svakom jeziku',
+    ar: 'العرض الرسمي متاح بكل لغة',
+    de: 'Die offizielle Präsentation ist in jeder Sprache verfügbar',
+    sr: 'Званична презентација доступна је на сваком језику',
+    ur: 'سرکاری پریزنٹیشن ہر زبان میں دستیاب ہے',
+  },
+  'Presentación oficial v5.0': {
+    en: 'Official presentation v5.0', pt: 'Apresentação oficial v5.0', fr: 'Présentation officielle v5.0',
+    ru: 'Официальная презентация v5.0', sv: 'Officiell presentation v5.0', hr: 'Službena prezentacija v5.0',
+    ar: 'العرض الرسمي v5.0', de: 'Offizielle Präsentation v5.0', sr: 'Званична презентација v5.0', ur: 'سرکاری پریزنٹیشن v5.0',
+  },
+  'Presentación de la versión anterior': {
+    en: 'Presentation from the previous version', pt: 'Apresentação da versão anterior',
+    fr: 'Présentation de la version précédente', ru: 'Презентация предыдущей версии',
+    sv: 'Presentation från föregående version', hr: 'Prezentacija prethodne verzije',
+    ar: 'عرض النسخة السابقة', de: 'Präsentation der vorherigen Version',
+    sr: 'Презентација претходне верзије', ur: 'پچھلے ورژن کی پریزنٹیشن',
+  },
+
+  Legal: {
+    en: 'Legal', pt: 'Jurídico', fr: 'Mentions légales', ru: 'Правовая информация', sv: 'Juridik',
+    hr: 'Pravno', ar: 'قانوني', de: 'Rechtliches', sr: 'Правно', ur: 'قانونی',
+  },
+
+  /* ═══ SEGUNDA TANDA ═══════════════════════════════════════════════
+     Salio de MEDIR, no de leer el codigo: se recorrieron las catorce
+     secciones con el idioma cambiado y se recogio cada cadena que llegaba
+     a `t()` sin traduccion. Por eso incluye lo que estaba dentro de los
+     artefactos visuales —rotulos de la maquina, llamadas de los anillos,
+     etiquetas de los indicadores— que leyendo las escenas no se ve.
+     ═════════════════════════════════════════════════════════════════ */
+
+  /* ── navegacion y sistema ──────────────────────────────────────── */
+  Ecosistema: {
+    en: 'Ecosystem', pt: 'Ecossistema', fr: 'Écosystème', ru: 'Экосистема',
+    sv: 'Ekosystem', hr: 'Ekosustav', ar: 'المنظومة', de: 'Ökosystem',
+    sr: 'Екосистем', ur: 'ایکو سسٹم',
+  },
+  Inteligencia: {
+    en: 'Intelligence', pt: 'Inteligência', fr: 'Intelligence', ru: 'Интеллект',
+    sv: 'Intelligens', hr: 'Inteligencija', ar: 'الذكاء', de: 'Intelligenz',
+    sr: 'Интелигенција', ur: 'انٹیلیجنس',
+  },
+  'Comunidad G11': {
+    en: 'G11 Community', pt: 'Comunidade G11', fr: 'Communauté G11', ru: 'Сообщество G11',
+    sv: 'G11-gemenskapen', hr: 'Zajednica G11', ar: 'مجتمع G11', de: 'G11-Community',
+    sr: 'Заједница G11', ur: 'G11 کمیونٹی',
+  },
+  'Únete': {
+    en: 'Join', pt: 'Participar', fr: 'Rejoindre', ru: 'Присоединиться',
+    sv: 'Gå med', hr: 'Pridruži se', ar: 'انضم', de: 'Mitmachen',
+    sr: 'Придружи се', ur: 'شامل ہوں',
+  },
+  'Abrir menú': {
+    en: 'Open menu', pt: 'Abrir menu', fr: 'Ouvrir le menu', ru: 'Открыть меню',
+    sv: 'Öppna menyn', hr: 'Otvori izbornik', ar: 'فتح القائمة', de: 'Menü öffnen',
+    sr: 'Отвори мени', ur: 'مینو کھولیں',
+  },
+  Hero: {
+    en: 'Home', pt: 'Início', fr: 'Accueil', ru: 'Главная',
+    sv: 'Start', hr: 'Početak', ar: 'الرئيسية', de: 'Start',
+    sr: 'Почетна', ur: 'ہوم',
+  },
+  'Portal Final': {
+    en: 'Final Portal', pt: 'Portal Final', fr: 'Portail final', ru: 'Финальный портал',
+    sv: 'Slutportal', hr: 'Završni portal', ar: 'البوابة النهائية', de: 'Abschlussportal',
+    sr: 'Завршни портал', ur: 'حتمی پورٹل',
+  },
+  'Sección': {
+    en: 'Section', pt: 'Seção', fr: 'Section', ru: 'Раздел',
+    sv: 'Avsnitt', hr: 'Odjeljak', ar: 'القسم', de: 'Abschnitt',
+    sr: 'Одељак', ur: 'سیکشن',
+  },
+  de: {
+    en: 'of', pt: 'de', fr: 'sur', ru: 'из',
+    sv: 'av', hr: 'od', ar: 'من', de: 'von',
+    sr: 'од', ur: 'میں سے',
+  },
+  Ver: {
+    en: 'View', pt: 'Ver', fr: 'Voir', ru: 'Смотреть',
+    sv: 'Visa', hr: 'Prikaži', ar: 'عرض', de: 'Ansehen',
+    sr: 'Прикажи', ur: 'دیکھیں',
+  },
+  'Marcas del ecosistema': {
+    en: 'Ecosystem brands', pt: 'Marcas do ecossistema', fr: "Marques de l'écosystème",
+    ru: 'Бренды экосистемы', sv: 'Ekosystemets varumärken', hr: 'Marke ekosustava',
+    ar: 'علامات المنظومة', de: 'Marken des Ökosystems', sr: 'Брендови екосистема',
+    ur: 'ایکو سسٹم برانڈز',
+  },
+
+  /* ── hero ──────────────────────────────────────────────────────── */
+  'Donde la Inteligencia Artificial y el Blockchain crean': {
+    en: 'Where Artificial Intelligence and Blockchain create',
+    pt: 'Onde a Inteligência Artificial e o Blockchain criam',
+    fr: "Où l'intelligence artificielle et la blockchain créent",
+    ru: 'Где искусственный интеллект и блокчейн создают',
+    sv: 'Där artificiell intelligens och blockkedjan skapar',
+    hr: 'Gdje umjetna inteligencija i blockchain stvaraju',
+    ar: 'حيث يصنع الذكاء الاصطناعي والبلوكشين',
+    de: 'Wo künstliche Intelligenz und Blockchain',
+    sr: 'Где вештачка интелигенција и блокчејн стварају',
+    ur: 'جہاں مصنوعی ذہانت اور بلاک چین تخلیق کرتے ہیں',
+  },
+
+  /* ── token ─────────────────────────────────────────────────────── */
+  'VALOR INTERNO': {
+    en: 'INTERNAL VALUE', pt: 'VALOR INTERNO', fr: 'VALEUR INTERNE', ru: 'ВНУТРЕННЯЯ СТОИМОСТЬ',
+    sv: 'INTERNT VÄRDE', hr: 'INTERNA VRIJEDNOST', ar: 'القيمة الداخلية', de: 'INTERNER WERT',
+    sr: 'ИНТЕРНА ВРЕДНОСТ', ur: 'اندرونی قدر',
+  },
+  HOLDERS: {
+    en: 'HOLDERS', pt: 'DETENTORES', fr: 'DÉTENTEURS', ru: 'ДЕРЖАТЕЛИ',
+    sv: 'INNEHAVARE', hr: 'IMATELJI', ar: 'الحائزون', de: 'INHABER',
+    sr: 'ВЛАСНИЦИ', ur: 'ہولڈرز',
+  },
+  'SUPPLY TOTAL': {
+    en: 'TOTAL SUPPLY', pt: 'FORNECIMENTO TOTAL', fr: 'OFFRE TOTALE', ru: 'ОБЩАЯ ЭМИССИЯ',
+    sv: 'TOTALT UTBUD', hr: 'UKUPNA PONUDA', ar: 'المعروض الكلي', de: 'GESAMTMENGE',
+    sr: 'УКУПНА ПОНУДА', ur: 'کل سپلائی',
+  },
+  RED: {
+    en: 'NETWORK', pt: 'REDE', fr: 'RÉSEAU', ru: 'СЕТЬ',
+    sv: 'NÄTVERK', hr: 'MREŽA', ar: 'الشبكة', de: 'NETZWERK',
+    sr: 'МРЕЖА', ur: 'نیٹ ورک',
+  },
+  Red: {
+    en: 'Network', pt: 'Rede', fr: 'Réseau', ru: 'Сеть',
+    sv: 'Nätverk', hr: 'Mreža', ar: 'الشبكة', de: 'Netzwerk',
+    sr: 'Мрежа', ur: 'نیٹ ورک',
+  },
+  'Ver en BSCScan →': {
+    en: 'View on BSCScan →', pt: 'Ver na BSCScan →', fr: 'Voir sur BSCScan →',
+    ru: 'Смотреть в BSCScan →', sv: 'Visa på BSCScan →', hr: 'Pogledaj na BSCScanu →',
+    ar: '→ عرض على BSCScan', de: 'Auf BSCScan ansehen →', sr: 'Погледај на BSCScan-у →',
+    ur: 'BSCScan پر دیکھیں ←',
+  },
+
+  /* ── mining ────────────────────────────────────────────────────── */
+  'Ciclo de emisión': {
+    en: 'Emission cycle', pt: 'Ciclo de emissão', fr: "Cycle d'émission", ru: 'Цикл эмиссии',
+    sv: 'Emissionscykel', hr: 'Ciklus emisije', ar: 'دورة الإصدار', de: 'Emissionszyklus',
+    sr: 'Циклус емисије', ur: 'اجرا کا دور',
+  },
+  Trazabilidad: {
+    en: 'Traceability', pt: 'Rastreabilidade', fr: 'Traçabilité', ru: 'Прослеживаемость',
+    sv: 'Spårbarhet', hr: 'Sljedivost', ar: 'إمكانية التتبّع', de: 'Nachverfolgbarkeit',
+    sr: 'Следљивост', ur: 'قابلِ سراغ',
+  },
+  'Red Genesis Mining': {
+    en: 'Genesis Mining network', pt: 'Rede Genesis Mining', fr: 'Réseau Genesis Mining',
+    ru: 'Сеть Genesis Mining', sv: 'Genesis Mining-nätverket', hr: 'Mreža Genesis Mining',
+    ar: 'شبكة Genesis Mining', de: 'Genesis-Mining-Netzwerk', sr: 'Мрежа Genesis Mining',
+    ur: 'Genesis Mining نیٹ ورک',
+  },
+
+  /* ── confianza ─────────────────────────────────────────────────── */
+  'Red distribuida': {
+    en: 'Distributed network', pt: 'Rede distribuída', fr: 'Réseau distribué',
+    ru: 'Распределённая сеть', sv: 'Distribuerat nätverk', hr: 'Distribuirana mreža',
+    ar: 'شبكة موزّعة', de: 'Verteiltes Netzwerk', sr: 'Дистрибуирана мрежа',
+    ur: 'تقسیم شدہ نیٹ ورک',
+  },
+  'Conectividad global segura, sin puntos únicos de falla.': {
+    en: 'Secure global connectivity, with no single points of failure.',
+    pt: 'Conectividade global segura, sem pontos únicos de falha.',
+    fr: 'Connectivité mondiale sécurisée, sans point unique de défaillance.',
+    ru: 'Безопасная глобальная связность без единых точек отказа.',
+    sv: 'Säker global uppkoppling, utan enskilda felkällor.',
+    hr: 'Sigurna globalna povezanost, bez jedinstvenih točaka kvara.',
+    ar: 'اتصال عالمي آمن، دون نقاط فشل منفردة.',
+    de: 'Sichere globale Konnektivität, ohne einzelne Ausfallpunkte.',
+    sr: 'Безбедна глобална повезаност, без јединствених тачака отказа.',
+    ur: 'محفوظ عالمی رابطہ، بغیر کسی واحد نقطۂ ناکامی کے۔',
+  },
+  'Seguridad on-chain': {
+    en: 'On-chain security', pt: 'Segurança on-chain', fr: 'Sécurité on-chain',
+    ru: 'Безопасность on-chain', sv: 'On-chain-säkerhet', hr: 'On-chain sigurnost',
+    ar: 'أمان على السلسلة', de: 'On-Chain-Sicherheit', sr: 'On-chain безбедност',
+    ur: 'آن چین سیکیورٹی',
+  },
+  'Protección criptográfica avanzada y validación descentralizada.': {
+    en: 'Advanced cryptographic protection and decentralised validation.',
+    pt: 'Proteção criptográfica avançada e validação descentralizada.',
+    fr: 'Protection cryptographique avancée et validation décentralisée.',
+    ru: 'Продвинутая криптографическая защита и децентрализованная валидация.',
+    sv: 'Avancerat kryptografiskt skydd och decentraliserad validering.',
+    hr: 'Napredna kriptografska zaštita i decentralizirana validacija.',
+    ar: 'حماية تشفيرية متقدّمة وتحقّق لامركزي.',
+    de: 'Fortgeschrittener kryptografischer Schutz und dezentrale Validierung.',
+    sr: 'Напредна криптографска заштита и децентрализована валидација.',
+    ur: 'جدید خفیہ کاری تحفظ اور غیر مرکزی توثیق۔',
+  },
+  Contratos: {
+    en: 'Contracts', pt: 'Contratos', fr: 'Contrats', ru: 'Контракты',
+    sv: 'Kontrakt', hr: 'Ugovori', ar: 'العقود', de: 'Verträge',
+    sr: 'Уговори', ur: 'کنٹریکٹس',
+  },
+  'Smart Contracts auditados y verificables. Ejecución justa y automática.': {
+    en: 'Audited, verifiable smart contracts. Fair, automatic execution.',
+    pt: 'Smart Contracts auditados e verificáveis. Execução justa e automática.',
+    fr: 'Smart contracts audités et vérifiables. Exécution équitable et automatique.',
+    ru: 'Проверенные и верифицируемые смарт-контракты. Честное автоматическое исполнение.',
+    sv: 'Granskade och verifierbara smarta kontrakt. Rättvis och automatisk exekvering.',
+    hr: 'Revidirani i provjerljivi pametni ugovori. Pravedno i automatsko izvršavanje.',
+    ar: 'عقود ذكية مدقّقة وقابلة للتحقّق. تنفيذ عادل وتلقائي.',
+    de: 'Geprüfte und verifizierbare Smart Contracts. Faire, automatische Ausführung.',
+    sr: 'Ревидирани и проверљиви паметни уговори. Правично и аутоматско извршење.',
+    ur: 'آڈٹ شدہ اور قابلِ تصدیق سمارٹ کنٹریکٹس۔ منصفانہ اور خودکار عمل درآمد۔',
+  },
+  'Auditoría continua': {
+    en: 'Continuous auditing', pt: 'Auditoria contínua', fr: 'Audit continu',
+    ru: 'Непрерывный аудит', sv: 'Löpande granskning', hr: 'Kontinuirana revizija',
+    ar: 'تدقيق مستمر', de: 'Laufende Prüfung', sr: 'Континуирана ревизија',
+    ur: 'مسلسل آڈٹ',
+  },
+  'Monitoreo permanente en tiempo real. Detección y respuesta inmediata.': {
+    en: 'Permanent real-time monitoring. Immediate detection and response.',
+    pt: 'Monitoramento permanente em tempo real. Detecção e resposta imediatas.',
+    fr: 'Surveillance permanente en temps réel. Détection et réponse immédiates.',
+    ru: 'Постоянный мониторинг в реальном времени. Мгновенное обнаружение и реакция.',
+    sv: 'Ständig övervakning i realtid. Omedelbar upptäckt och åtgärd.',
+    hr: 'Stalni nadzor u stvarnom vremenu. Trenutačno otkrivanje i odgovor.',
+    ar: 'مراقبة دائمة في الوقت الحقيقي. كشف واستجابة فوريان.',
+    de: 'Permanente Echtzeitüberwachung. Sofortige Erkennung und Reaktion.',
+    sr: 'Стални надзор у реалном времену. Тренутно откривање и одговор.',
+    ur: 'حقیقی وقت میں مسلسل نگرانی۔ فوری شناخت اور ردِعمل۔',
+  },
+  'Nodos globales': {
+    en: 'Global nodes', pt: 'Nós globais', fr: 'Nœuds mondiaux', ru: 'Глобальные узлы',
+    sv: 'Globala noder', hr: 'Globalni čvorovi', ar: 'عُقد عالمية', de: 'Globale Knoten',
+    sr: 'Глобални чворови', ur: 'عالمی نوڈز',
+  },
+  'Infraestructura distribuida en múltiples regiones para máxima disponibilidad.': {
+    en: 'Infrastructure distributed across multiple regions for maximum availability.',
+    pt: 'Infraestrutura distribuída em várias regiões para máxima disponibilidade.',
+    fr: 'Infrastructure répartie sur plusieurs régions pour une disponibilité maximale.',
+    ru: 'Инфраструктура распределена по нескольким регионам для максимальной доступности.',
+    sv: 'Infrastruktur fördelad över flera regioner för högsta tillgänglighet.',
+    hr: 'Infrastruktura raspoređena u više regija za najveću dostupnost.',
+    ar: 'بنية تحتية موزّعة على مناطق متعدّدة لأقصى قدر من التوافر.',
+    de: 'Infrastruktur über mehrere Regionen verteilt für maximale Verfügbarkeit.',
+    sr: 'Инфраструктура распоређена у више региона за максималну доступност.',
+    ur: 'زیادہ سے زیادہ دستیابی کے لیے متعدد خطوں میں تقسیم شدہ انفراسٹرکچر۔',
+  },
+  'Registro inmutable de cada evento. Transparencia total en cada movimiento.': {
+    en: 'An immutable record of every event. Full transparency on every movement.',
+    pt: 'Registro imutável de cada evento. Transparência total em cada movimento.',
+    fr: 'Registre immuable de chaque événement. Transparence totale sur chaque mouvement.',
+    ru: 'Неизменяемая запись каждого события. Полная прозрачность каждого движения.',
+    sv: 'Oföränderlig registrering av varje händelse. Full insyn i varje rörelse.',
+    hr: 'Nepromjenjiv zapis svakog događaja. Potpuna transparentnost svakog kretanja.',
+    ar: 'سجلّ غير قابل للتغيير لكل حدث. شفافية كاملة في كل حركة.',
+    de: 'Unveränderliche Aufzeichnung jedes Ereignisses. Volle Transparenz bei jeder Bewegung.',
+    sr: 'Непроменљив запис сваког догађаја. Потпуна транспарентност сваког кретања.',
+    ur: 'ہر واقعے کا ناقابلِ تبدیل ریکارڈ۔ ہر حرکت میں مکمل شفافیت۔',
+  },
+
+  /* ── ecosistema ────────────────────────────────────────────────── */
+  Pilares: {
+    en: 'Pillars', pt: 'Pilares', fr: 'Piliers', ru: 'Основы',
+    sv: 'Pelare', hr: 'Stupovi', ar: 'الركائز', de: 'Säulen',
+    sr: 'Стубови', ur: 'ستون',
+  },
+  'El stack': {
+    en: 'The stack', pt: 'A stack', fr: 'La stack', ru: 'Стек',
+    sv: 'Stacken', hr: 'Stack', ar: 'المنظومة التقنية', de: 'Der Stack',
+    sr: 'Стек', ur: 'اسٹیک',
+  },
+  'Marketplace Global': {
+    en: 'Global Marketplace', pt: 'Marketplace Global', fr: 'Marketplace mondial',
+    ru: 'Глобальный маркетплейс', sv: 'Global marknadsplats', hr: 'Globalni marketplace',
+    ar: 'المتجر العالمي', de: 'Globaler Marketplace', sr: 'Глобални маркетплејс',
+    ur: 'عالمی مارکیٹ پلیس',
+  },
+
+  /* ── booster ───────────────────────────────────────────────────── */
+  'Capa I': {
+    en: 'Layer I', pt: 'Camada I', fr: 'Couche I', ru: 'Слой I',
+    sv: 'Lager I', hr: 'Sloj I', ar: 'الطبقة I', de: 'Ebene I',
+    sr: 'Слој I', ur: 'پرت I',
+  },
+  'Capa II': {
+    en: 'Layer II', pt: 'Camada II', fr: 'Couche II', ru: 'Слой II',
+    sv: 'Lager II', hr: 'Sloj II', ar: 'الطبقة II', de: 'Ebene II',
+    sr: 'Слој II', ur: 'پرت II',
+  },
+  'Capa III': {
+    en: 'Layer III', pt: 'Camada III', fr: 'Couche III', ru: 'Слой III',
+    sv: 'Lager III', hr: 'Sloj III', ar: 'الطبقة III', de: 'Ebene III',
+    sr: 'Слој III', ur: 'پرت III',
+  },
+  'Activación': {
+    en: 'Activation', pt: 'Ativação', fr: 'Activation', ru: 'Активация',
+    sv: 'Aktivering', hr: 'Aktivacija', ar: 'التفعيل', de: 'Aktivierung',
+    sr: 'Активација', ur: 'ایکٹیویشن',
+  },
+  Multiplicador: {
+    en: 'Multiplier', pt: 'Multiplicador', fr: 'Multiplicateur', ru: 'Множитель',
+    sv: 'Multiplikator', hr: 'Množitelj', ar: 'المضاعِف', de: 'Multiplikator',
+    sr: 'Множилац', ur: 'ضرب کنندہ',
+  },
+  'Progresión': {
+    en: 'Progression', pt: 'Progressão', fr: 'Progression', ru: 'Прогрессия',
+    sv: 'Progression', hr: 'Progresija', ar: 'التدرّج', de: 'Progression',
+    sr: 'Прогресија', ur: 'پیش رفت',
+  },
+  'Entras cumpliendo requisitos publicados.': {
+    en: 'You enter by meeting published requirements.',
+    pt: 'Você entra cumprindo requisitos publicados.',
+    fr: 'Vous entrez en remplissant des conditions publiées.',
+    ru: 'Вход — при выполнении опубликованных требований.',
+    sv: 'Du kommer in genom att uppfylla publicerade krav.',
+    hr: 'Ulazite ispunjavanjem objavljenih uvjeta.',
+    ar: 'تدخل باستيفاء متطلّبات منشورة.',
+    de: 'Der Einstieg erfolgt über veröffentlichte Voraussetzungen.',
+    sr: 'Улазите испуњавањем објављених услова.',
+    ur: 'شائع شدہ شرائط پوری کر کے داخل ہوتے ہیں۔',
+  },
+  'El factor sube con la participación sostenida.': {
+    en: 'The factor rises with sustained participation.',
+    pt: 'O fator sobe com a participação sustentada.',
+    fr: 'Le facteur augmente avec une participation soutenue.',
+    ru: 'Коэффициент растёт при устойчивом участии.',
+    sv: 'Faktorn stiger med uthålligt deltagande.',
+    hr: 'Faktor raste s postojanim sudjelovanjem.',
+    ar: 'يرتفع المعامل مع المشاركة المستمرّة.',
+    de: 'Der Faktor steigt mit anhaltender Teilnahme.',
+    sr: 'Фактор расте уз постојано учешће.',
+    ur: 'مسلسل شرکت کے ساتھ عنصر بڑھتا ہے۔',
+  },
+  'Niveles con umbrales y condiciones a la vista.': {
+    en: 'Levels with thresholds and conditions in plain sight.',
+    pt: 'Níveis com limiares e condições à vista.',
+    fr: 'Des niveaux aux seuils et conditions visibles.',
+    ru: 'Уровни с открытыми порогами и условиями.',
+    sv: 'Nivåer med trösklar och villkor i öppen dager.',
+    hr: 'Razine s vidljivim pragovima i uvjetima.',
+    ar: 'مستويات بعتبات وشروط ظاهرة.',
+    de: 'Stufen mit offen einsehbaren Schwellen und Bedingungen.',
+    sr: 'Нивои с видљивим праговима и условима.',
+    ur: 'حدود اور شرائط کے ساتھ کھلے درجے۔',
+  },
+  'Acelerador cuántico Genesis Booster': {
+    en: 'Genesis Booster quantum accelerator',
+    pt: 'Acelerador quântico Genesis Booster',
+    fr: 'Accélérateur quantique Genesis Booster',
+    ru: 'Квантовый ускоритель Genesis Booster',
+    sv: 'Genesis Booster kvantaccelerator',
+    hr: 'Kvantni akcelerator Genesis Booster',
+    ar: 'مسرّع Genesis Booster الكمّي',
+    de: 'Genesis-Booster-Quantenbeschleuniger',
+    sr: 'Квантни акцелератор Genesis Booster',
+    ur: 'Genesis Booster کوانٹم ایکسیلریٹر',
+  },
+
+  /* ── staking ───────────────────────────────────────────────────── */
+  'Staking articula periodos de participación, estabilidad y alineación con el ecosistema AiGenesis. Un pilar independiente con reglas propias y trazabilidad on-chain.': {
+    en: 'Staking articulates periods of participation, stability and alignment with the AiGenesis ecosystem. An independent pillar with its own rules and on-chain traceability.',
+    pt: 'O Staking articula períodos de participação, estabilidade e alinhamento com o ecossistema AiGenesis. Um pilar independente com regras próprias e rastreabilidade on-chain.',
+    fr: "Le staking articule des périodes de participation, de stabilité et d'alignement avec l'écosystème AiGenesis. Un pilier indépendant doté de ses propres règles et d'une traçabilité on-chain.",
+    ru: 'Стейкинг задаёт периоды участия, стабильности и согласованности с экосистемой AiGenesis. Самостоятельная опора с собственными правилами и прослеживаемостью on-chain.',
+    sv: 'Staking strukturerar perioder av deltagande, stabilitet och samspel med AiGenesis ekosystem. En fristående pelare med egna regler och spårbarhet on-chain.',
+    hr: 'Staking uređuje razdoblja sudjelovanja, stabilnosti i usklađenosti s ekosustavom AiGenesis. Samostalan stup s vlastitim pravilima i on-chain sljedivošću.',
+    ar: 'يُنظّم الستيكينغ فترات المشاركة والاستقرار والتوافق مع منظومة AiGenesis. ركيزة مستقلّة بقواعد خاصّة وتتبّع على السلسلة.',
+    de: 'Staking strukturiert Zeiträume der Teilnahme, Stabilität und Ausrichtung am AiGenesis-Ökosystem. Eine eigenständige Säule mit eigenen Regeln und On-Chain-Nachverfolgbarkeit.',
+    sr: 'Стејкинг уређује периоде учешћа, стабилности и усклађености с екосистемом AiGenesis. Самосталан стуб са сопственим правилима и on-chain следљивошћу.',
+    ur: 'اسٹیکنگ شرکت، استحکام اور AiGenesis ایکو سسٹم کے ساتھ ہم آہنگی کے ادوار کو ترتیب دیتی ہے۔ اپنے قواعد اور آن چین قابلِ سراغ کے ساتھ ایک خودمختار ستون۔',
+  },
+  'Compromiso flexible': {
+    en: 'Flexible commitment', pt: 'Compromisso flexível', fr: 'Engagement flexible',
+    ru: 'Гибкое обязательство', sv: 'Flexibelt åtagande', hr: 'Fleksibilna obveza',
+    ar: 'التزام مرن', de: 'Flexible Bindung', sr: 'Флексибилна обавеза',
+    ur: 'لچکدار وابستگی',
+  },
+  'Periodos definidos con condiciones transparentes de participación y liberación.': {
+    en: 'Defined periods with transparent participation and release conditions.',
+    pt: 'Períodos definidos com condições transparentes de participação e liberação.',
+    fr: 'Des périodes définies avec des conditions transparentes de participation et de libération.',
+    ru: 'Определённые периоды с прозрачными условиями участия и разблокировки.',
+    sv: 'Definierade perioder med transparenta villkor för deltagande och frisläppning.',
+    hr: 'Definirana razdoblja s transparentnim uvjetima sudjelovanja i oslobađanja.',
+    ar: 'فترات محدّدة بشروط شفافة للمشاركة والإفراج.',
+    de: 'Definierte Zeiträume mit transparenten Teilnahme- und Freigabebedingungen.',
+    sr: 'Дефинисани периоди с транспарентним условима учешћа и ослобађања.',
+    ur: 'شرکت اور رہائی کی شفاف شرائط کے ساتھ متعین ادوار۔',
+  },
+  'Estabilidad del ecosistema': {
+    en: 'Ecosystem stability', pt: 'Estabilidade do ecossistema', fr: "Stabilité de l'écosystème",
+    ru: 'Стабильность экосистемы', sv: 'Ekosystemets stabilitet', hr: 'Stabilnost ekosustava',
+    ar: 'استقرار المنظومة', de: 'Stabilität des Ökosystems', sr: 'Стабилност екосистема',
+    ur: 'ایکو سسٹم کا استحکام',
+  },
+  'Staking fortalece la liquidez interna y la continuidad operativa del protocolo.': {
+    en: "Staking strengthens the protocol's internal liquidity and operational continuity.",
+    pt: 'O Staking fortalece a liquidez interna e a continuidade operacional do protocolo.',
+    fr: "Le staking renforce la liquidité interne et la continuité opérationnelle du protocole.",
+    ru: 'Стейкинг укрепляет внутреннюю ликвидность и операционную непрерывность протокола.',
+    sv: 'Staking stärker protokollets interna likviditet och operativa kontinuitet.',
+    hr: 'Staking jača internu likvidnost i operativni kontinuitet protokola.',
+    ar: 'يعزّز الستيكينغ السيولة الداخلية والاستمرارية التشغيلية للبروتوكول.',
+    de: 'Staking stärkt die interne Liquidität und die operative Kontinuität des Protokolls.',
+    sr: 'Стејкинг јача интерну ликвидност и оперативни континуитет протокола.',
+    ur: 'اسٹیکنگ پروٹوکول کی اندرونی لیکویڈیٹی اور عملی تسلسل کو مضبوط کرتی ہے۔',
+  },
+  'Participación sostenida': {
+    en: 'Sustained participation', pt: 'Participação sustentada', fr: 'Participation soutenue',
+    ru: 'Устойчивое участие', sv: 'Uthålligt deltagande', hr: 'Postojano sudjelovanje',
+    ar: 'مشاركة مستمرّة', de: 'Anhaltende Teilnahme', sr: 'Постојано учешће',
+    ur: 'مسلسل شرکت',
+  },
+  'Incentivos alineados con permanencia — sin garantías de rendimiento financiero.': {
+    en: 'Incentives aligned with permanence — no guarantees of financial return.',
+    pt: 'Incentivos alinhados à permanência — sem garantias de rendimento financeiro.',
+    fr: "Des incitations alignées sur la durée — sans garantie de rendement financier.",
+    ru: 'Стимулы согласованы с длительностью участия — без гарантий финансовой доходности.',
+    sv: 'Incitament i linje med varaktighet — utan garantier om finansiell avkastning.',
+    hr: 'Poticaji usklađeni s trajnošću — bez jamstva financijskog prinosa.',
+    ar: 'حوافز متوائمة مع الاستمرارية — دون ضمانات لعائد مالي.',
+    de: 'Anreize im Einklang mit Beständigkeit — ohne Garantie auf finanzielle Rendite.',
+    sr: 'Подстицаји усклађени с трајношћу — без гаранција финансијског приноса.',
+    ur: 'دوام سے ہم آہنگ ترغیبات — مالی منافع کی کوئی ضمانت نہیں۔',
+  },
+
+  /* ── g-pulse ───────────────────────────────────────────────────── */
+  ' /día': {
+    en: ' /day', pt: ' /dia', fr: ' /jour', ru: ' /день',
+    sv: ' /dag', hr: ' /dan', ar: ' /يوم', de: ' /Tag',
+    sr: ' /дан', ur: ' /یومیہ',
+  },
+  ' activas': {
+    en: ' active', pt: ' ativas', fr: ' actives', ru: ' активных',
+    sv: ' aktiva', hr: ' aktivnih', ar: ' نشِطة', de: ' aktiv',
+    sr: ' активних', ur: ' فعال',
+  },
+  'SEÑALES DIARIAS': {
+    en: 'DAILY SIGNALS', pt: 'SINAIS DIÁRIOS', fr: 'SIGNAUX QUOTIDIENS', ru: 'СИГНАЛОВ В ДЕНЬ',
+    sv: 'DAGLIGA SIGNALER', hr: 'DNEVNI SIGNALI', ar: 'إشارات يومية', de: 'TÄGLICHE SIGNALE',
+    sr: 'ДНЕВНИ СИГНАЛИ', ur: 'روزانہ سگنلز',
+  },
+  MESAS: {
+    en: 'DESKS', pt: 'MESAS', fr: 'PUPITRES', ru: 'ТОРГОВЫЕ СТОЛЫ',
+    sv: 'BORD', hr: 'STOLOVI', ar: 'المكاتب', de: 'DESKS',
+    sr: 'СТОЛОВИ', ur: 'ڈیسکس',
+  },
+
+  /* ── g-oracle ──────────────────────────────────────────────────── */
+  'G-Oracle es la capa de inteligencia que interpreta, conecta y gobierna el flujo de información. GPulse entrega señales; G-Oracle define la inteligencia estratégica del protocolo.': {
+    en: 'G-Oracle is the intelligence layer that interprets, connects and governs the flow of information. GPulse delivers signals; G-Oracle defines the protocol’s strategic intelligence.',
+    pt: 'O G-Oracle é a camada de inteligência que interpreta, conecta e governa o fluxo de informação. O GPulse entrega sinais; o G-Oracle define a inteligência estratégica do protocolo.',
+    fr: "G-Oracle est la couche d'intelligence qui interprète, relie et gouverne le flux d'information. GPulse fournit les signaux ; G-Oracle définit l'intelligence stratégique du protocole.",
+    ru: 'G-Oracle — это интеллектуальный слой, который интерпретирует, связывает и управляет потоком информации. GPulse выдаёт сигналы; G-Oracle определяет стратегический интеллект протокола.',
+    sv: 'G-Oracle är intelligenslagret som tolkar, kopplar samman och styr informationsflödet. GPulse levererar signaler; G-Oracle definierar protokollets strategiska intelligens.',
+    hr: 'G-Oracle je sloj inteligencije koji tumači, povezuje i upravlja tokom informacija. GPulse isporučuje signale; G-Oracle definira stratešku inteligenciju protokola.',
+    ar: 'G-Oracle هو طبقة الذكاء التي تفسّر تدفّق المعلومات وتربطه وتحكمه. يقدّم GPulse الإشارات؛ ويحدّد G-Oracle الذكاء الاستراتيجي للبروتوكول.',
+    de: 'G-Oracle ist die Intelligenzschicht, die den Informationsfluss deutet, verbindet und steuert. GPulse liefert Signale; G-Oracle bestimmt die strategische Intelligenz des Protokolls.',
+    sr: 'G-Oracle је слој интелигенције који тумачи, повезује и управља током информација. GPulse испоручује сигнале; G-Oracle дефинише стратешку интелигенцију протокола.',
+    ur: 'G-Oracle وہ انٹیلیجنس پرت ہے جو معلومات کے بہاؤ کی تشریح، ربط اور نگرانی کرتی ہے۔ GPulse سگنلز دیتا ہے؛ G-Oracle پروٹوکول کی حکمتِ عملی طے کرتا ہے۔',
+  },
+  'Inteligencia central': {
+    en: 'Central intelligence', pt: 'Inteligência central', fr: 'Intelligence centrale',
+    ru: 'Центральный интеллект', sv: 'Central intelligens', hr: 'Središnja inteligencija',
+    ar: 'الذكاء المركزي', de: 'Zentrale Intelligenz', sr: 'Централна интелигенција',
+    ur: 'مرکزی انٹیلیجنس',
+  },
+  'Procesa y correlaciona los datos del ecosistema.': {
+    en: 'It processes and correlates the ecosystem’s data.',
+    pt: 'Processa e correlaciona os dados do ecossistema.',
+    fr: "Il traite et met en corrélation les données de l'écosystème.",
+    ru: 'Обрабатывает и сопоставляет данные экосистемы.',
+    sv: 'Bearbetar och korrelerar ekosystemets data.',
+    hr: 'Obrađuje i povezuje podatke ekosustava.',
+    ar: 'يعالج بيانات المنظومة ويربط بينها.',
+    de: 'Verarbeitet und korreliert die Daten des Ökosystems.',
+    sr: 'Обрађује и повезује податке екосистема.',
+    ur: 'ایکو سسٹم کے ڈیٹا کو پروسیس اور مربوط کرتا ہے۔',
+  },
+  'Motor G-BRIDGE': {
+    en: 'G-BRIDGE engine', pt: 'Motor G-BRIDGE', fr: 'Moteur G-BRIDGE',
+    ru: 'Движок G-BRIDGE', sv: 'G-BRIDGE-motor', hr: 'G-BRIDGE motor',
+    ar: 'محرّك G-BRIDGE', de: 'G-BRIDGE-Engine', sr: 'G-BRIDGE мотор',
+    ur: 'G-BRIDGE انجن',
+  },
+  'IA propietaria para análisis profundo — no es el flujo de señales de GPulse.': {
+    en: 'Proprietary AI for deep analysis — not the GPulse signal feed.',
+    pt: 'IA proprietária para análise profunda — não é o fluxo de sinais do GPulse.',
+    fr: "IA propriétaire pour l'analyse approfondie — ce n'est pas le flux de signaux de GPulse.",
+    ru: 'Собственный ИИ для глубокого анализа — это не поток сигналов GPulse.',
+    sv: 'Egenutvecklad AI för djupanalys — inte GPulse signalflöde.',
+    hr: 'Vlastita umjetna inteligencija za dubinsku analizu — nije tok signala GPulsea.',
+    ar: 'ذكاء اصطناعي خاص للتحليل العميق — وليس تدفّق إشارات GPulse.',
+    de: 'Eigene KI für Tiefenanalysen — nicht der Signalstrom von GPulse.',
+    sr: 'Сопствена вештачка интелигенција за дубинску анализу — није ток сигнала GPulsea.',
+    ur: 'گہرے تجزیے کے لیے اپنی AI — یہ GPulse کا سگنل بہاؤ نہیں۔',
+  },
+  'Centro neurálgico': {
+    en: 'Nerve centre', pt: 'Centro nevrálgico', fr: 'Centre névralgique',
+    ru: 'Нервный центр', sv: 'Nervcentrum', hr: 'Živčano središte',
+    ar: 'مركز الأعصاب', de: 'Nervenzentrum', sr: 'Нервно средиште',
+    ur: 'اعصابی مرکز',
+  },
+  'Orquesta la información entre productos y protocolos.': {
+    en: 'It orchestrates information across products and protocols.',
+    pt: 'Orquestra a informação entre produtos e protocolos.',
+    fr: "Il orchestre l'information entre produits et protocoles.",
+    ru: 'Оркеструет информацию между продуктами и протоколами.',
+    sv: 'Orkestrerar information mellan produkter och protokoll.',
+    hr: 'Orkestrira informacije među proizvodima i protokolima.',
+    ar: 'ينسّق المعلومات بين المنتجات والبروتوكولات.',
+    de: 'Orchestriert Informationen zwischen Produkten und Protokollen.',
+    sr: 'Оркестрира информације међу производима и протоколима.',
+    ur: 'مصنوعات اور پروٹوکولز کے درمیان معلومات کو مربوط کرتا ہے۔',
+  },
+
+  /* ── marketplace y comunidad ───────────────────────────────────── */
+  PRODUCTOS: {
+    en: 'PRODUCTS', pt: 'PRODUTOS', fr: 'PRODUITS', ru: 'ТОВАРЫ',
+    sv: 'PRODUKTER', hr: 'PROIZVODI', ar: 'المنتجات', de: 'PRODUKTE',
+    sr: 'ПРОИЗВОДИ', ur: 'مصنوعات',
+  },
+  'PAÍSES DE ALCANCE': {
+    en: 'COUNTRIES REACHED', pt: 'PAÍSES DE ALCANCE', fr: 'PAYS COUVERTS',
+    ru: 'СТРАН ОХВАТА', sv: 'LÄNDER SOM NÅS', hr: 'OBUHVAĆENE ZEMLJE',
+    ar: 'الدول المشمولة', de: 'ERREICHTE LÄNDER', sr: 'ОБУХВАЋЕНЕ ЗЕМЉЕ',
+    ur: 'رسائی والے ممالک',
+  },
+  'PAÍSES': {
+    en: 'COUNTRIES', pt: 'PAÍSES', fr: 'PAYS', ru: 'СТРАНЫ',
+    sv: 'LÄNDER', hr: 'ZEMLJE', ar: 'الدول', de: 'LÄNDER',
+    sr: 'ЗЕМЉЕ', ur: 'ممالک',
+  },
+  'MIEMBROS ACTIVOS': {
+    en: 'ACTIVE MEMBERS', pt: 'MEMBROS ATIVOS', fr: 'MEMBRES ACTIFS', ru: 'АКТИВНЫХ УЧАСТНИКОВ',
+    sv: 'AKTIVA MEDLEMMAR', hr: 'AKTIVNI ČLANOVI', ar: 'الأعضاء النشطون', de: 'AKTIVE MITGLIEDER',
+    sr: 'АКТИВНИ ЧЛАНОВИ', ur: 'فعال ارکان',
+  },
+  DISTRIBUIDOS: {
+    en: 'DISTRIBUTED', pt: 'DISTRIBUÍDOS', fr: 'DISTRIBUÉS', ru: 'РАСПРЕДЕЛЕНО',
+    sv: 'UTDELAT', hr: 'RASPODIJELJENO', ar: 'موزّعة', de: 'AUSGESCHÜTTET',
+    sr: 'РАСПОДЕЉЕНО', ur: 'تقسیم شدہ',
+  },
+  'Global Pool Top Ranks': {
+    en: 'Global Top Ranks pool', pt: 'Fundo global dos rangos mais altos',
+    fr: 'Fonds mondial des rangs supérieurs', ru: 'Глобальный фонд высших рангов',
+    sv: 'Global pool för toppnivåer', hr: 'Globalni fond najviših rangova',
+    ar: 'الصندوق العالمي لأعلى الرتب', de: 'Globaler Pool der Spitzenränge',
+    sr: 'Глобални фонд највиших рангова', ur: 'اعلیٰ درجات کا عالمی پول',
+  },
+
+  /* ── tecnologia: rotulos y llamadas de la maquina ──────────────── */
+  /* El rotulo del anillo de la maquina: acronimo, uno por lengua. */
+  IA: {
+    en: 'AI', pt: 'IA', fr: 'IA', ru: 'ИИ',
+    sv: 'AI', hr: 'UI', ar: 'ذكاء اصطناعي', de: 'KI',
+    sr: 'ВИ', ur: 'AI',
+  },
+  BACKEND: {
+    en: 'BACKEND', pt: 'BACKEND', fr: 'BACKEND', ru: 'БЭКЕНД',
+    sv: 'BACKEND', hr: 'BACKEND', ar: 'الواجهة الخلفية', de: 'BACKEND',
+    sr: 'БЕКЕНД', ur: 'بیک اینڈ',
+  },
+  INFRAESTRUCTURA: {
+    en: 'INFRASTRUCTURE', pt: 'INFRAESTRUTURA', fr: 'INFRASTRUCTURE', ru: 'ИНФРАСТРУКТУРА',
+    sv: 'INFRASTRUKTUR', hr: 'INFRASTRUKTURA', ar: 'البنية التحتية', de: 'INFRASTRUKTUR',
+    sr: 'ИНФРАСТРУКТУРА', ur: 'انفراسٹرکچر',
+  },
+  APLICACIONES: {
+    en: 'APPLICATIONS', pt: 'APLICAÇÕES', fr: 'APPLICATIONS', ru: 'ПРИЛОЖЕНИЯ',
+    sv: 'APPLIKATIONER', hr: 'APLIKACIJE', ar: 'التطبيقات', de: 'ANWENDUNGEN',
+    sr: 'АПЛИКАЦИЈЕ', ur: 'ایپلیکیشنز',
+  },
+  LATENCIA: {
+    en: 'LATENCY', pt: 'LATÊNCIA', fr: 'LATENCE', ru: 'ЗАДЕРЖКА',
+    sv: 'LATENS', hr: 'LATENCIJA', ar: 'زمن الاستجابة', de: 'LATENZ',
+    sr: 'ЛАТЕНЦИЈА', ur: 'تاخیر',
+  },
+  MONITOREO: {
+    en: 'MONITORING', pt: 'MONITORAMENTO', fr: 'SURVEILLANCE', ru: 'МОНИТОРИНГ',
+    sv: 'ÖVERVAKNING', hr: 'NADZOR', ar: 'المراقبة', de: 'ÜBERWACHUNG',
+    sr: 'НАДЗОР', ur: 'نگرانی',
+  },
+  'Servicios y APIs': {
+    en: 'Services and APIs', pt: 'Serviços e APIs', fr: 'Services et API',
+    ru: 'Сервисы и API', sv: 'Tjänster och API:er', hr: 'Usluge i API-ji',
+    ar: 'الخدمات وواجهات البرمجة', de: 'Dienste und APIs', sr: 'Услуге и API-ји',
+    ur: 'سروسز اور APIs',
+  },
+  'APIs robustas, eventos en tiempo real y microservicios modulares.': {
+    en: 'Robust APIs, real-time events and modular microservices.',
+    pt: 'APIs robustas, eventos em tempo real e microsserviços modulares.',
+    fr: 'Des API robustes, des événements en temps réel et des microservices modulaires.',
+    ru: 'Надёжные API, события в реальном времени и модульные микросервисы.',
+    sv: 'Robusta API:er, händelser i realtid och modulära mikrotjänster.',
+    hr: 'Robusni API-ji, događaji u stvarnom vremenu i modularni mikroservisi.',
+    ar: 'واجهات برمجة متينة وأحداث فورية وخدمات مصغّرة معيارية.',
+    de: 'Robuste APIs, Echtzeit-Events und modulare Microservices.',
+    sr: 'Робусни API-ји, догађаји у реалном времену и модуларни микросервиси.',
+    ur: 'مضبوط APIs، حقیقی وقت کے ایونٹس اور ماڈیولر مائیکرو سروسز۔',
+  },
+  'Infraestructura distribuida': {
+    en: 'Distributed infrastructure', pt: 'Infraestrutura distribuída',
+    fr: 'Infrastructure distribuée', ru: 'Распределённая инфраструктура',
+    sv: 'Distribuerad infrastruktur', hr: 'Distribuirana infrastruktura',
+    ar: 'بنية تحتية موزّعة', de: 'Verteilte Infrastruktur',
+    sr: 'Дистрибуирана инфраструктура', ur: 'تقسیم شدہ انفراسٹرکچر',
+  },
+  'Escalable, redundante y preparada para millones de interacciones.': {
+    en: 'Scalable, redundant and ready for millions of interactions.',
+    pt: 'Escalável, redundante e preparada para milhões de interações.',
+    fr: "Évolutive, redondante et prête pour des millions d'interactions.",
+    ru: 'Масштабируемая, отказоустойчивая и готовая к миллионам взаимодействий.',
+    sv: 'Skalbar, redundant och redo för miljontals interaktioner.',
+    hr: 'Skalabilna, redundantna i spremna za milijune interakcija.',
+    ar: 'قابلة للتوسّع وزائدة التكرار وجاهزة لملايين التفاعلات.',
+    de: 'Skalierbar, redundant und bereit für Millionen von Interaktionen.',
+    sr: 'Скалабилна, редундантна и спремна за милионе интеракција.',
+    ur: 'قابلِ توسیع، اضافی اور لاکھوں تعاملات کے لیے تیار۔',
+  },
+  'Inteligencia artificial': {
+    en: 'Artificial intelligence', pt: 'Inteligência artificial', fr: 'Intelligence artificielle',
+    ru: 'Искусственный интеллект', sv: 'Artificiell intelligens', hr: 'Umjetna inteligencija',
+    ar: 'الذكاء الاصطناعي', de: 'Künstliche Intelligenz', sr: 'Вештачка интелигенција',
+    ur: 'مصنوعی ذہانت',
+  },
+  'Motor propietario que aprende, predice y optimiza en tiempo real.': {
+    en: 'A proprietary engine that learns, predicts and optimises in real time.',
+    pt: 'Motor proprietário que aprende, prevê e otimiza em tempo real.',
+    fr: 'Un moteur propriétaire qui apprend, prédit et optimise en temps réel.',
+    ru: 'Собственный движок, который учится, прогнозирует и оптимизирует в реальном времени.',
+    sv: 'En egenutvecklad motor som lär sig, förutsäger och optimerar i realtid.',
+    hr: 'Vlastiti motor koji uči, predviđa i optimizira u stvarnom vremenu.',
+    ar: 'محرّك خاص يتعلّم ويتنبّأ ويحسّن في الوقت الحقيقي.',
+    de: 'Eine eigene Engine, die in Echtzeit lernt, vorhersagt und optimiert.',
+    sr: 'Сопствени мотор који учи, предвиђа и оптимизује у реалном времену.',
+    ur: 'ایک اپنا انجن جو حقیقی وقت میں سیکھتا، پیش گوئی اور بہتری کرتا ہے۔',
+  },
+  'Inmutable y descentralizado': {
+    en: 'Immutable and decentralised', pt: 'Imutável e descentralizado',
+    fr: 'Immuable et décentralisé', ru: 'Неизменяемый и децентрализованный',
+    sv: 'Oföränderlig och decentraliserad', hr: 'Nepromjenjiv i decentraliziran',
+    ar: 'غير قابل للتغيير ولامركزي', de: 'Unveränderlich und dezentral',
+    sr: 'Непроменљив и децентрализован', ur: 'ناقابلِ تبدیل اور غیر مرکزی',
+  },
+  'Transacciones verificables, registros transparentes y sin puntos de falla.': {
+    en: 'Verifiable transactions, transparent records and no points of failure.',
+    pt: 'Transações verificáveis, registros transparentes e sem pontos de falha.',
+    fr: 'Des transactions vérifiables, des registres transparents et aucun point de défaillance.',
+    ru: 'Проверяемые транзакции, прозрачные записи и отсутствие точек отказа.',
+    sv: 'Verifierbara transaktioner, transparenta register och inga felkällor.',
+    hr: 'Provjerljive transakcije, transparentni zapisi i bez točaka kvara.',
+    ar: 'معاملات قابلة للتحقّق وسجلّات شفافة ودون نقاط فشل.',
+    de: 'Überprüfbare Transaktionen, transparente Aufzeichnungen und keine Ausfallpunkte.',
+    sr: 'Проверљиве трансакције, транспарентни записи и без тачака отказа.',
+    ur: 'قابلِ تصدیق لین دین، شفاف ریکارڈ اور بغیر نقطۂ ناکامی۔',
+  },
+  'Aplicaciones inteligentes': {
+    en: 'Intelligent applications', pt: 'Aplicações inteligentes', fr: 'Applications intelligentes',
+    ru: 'Умные приложения', sv: 'Intelligenta applikationer', hr: 'Inteligentne aplikacije',
+    ar: 'تطبيقات ذكية', de: 'Intelligente Anwendungen', sr: 'Интелигентне апликације',
+    ur: 'ذہین ایپلیکیشنز',
+  },
+  'Interfaces descentralizadas, experiencias fluidas y seguras.': {
+    en: 'Decentralised interfaces, fluid and secure experiences.',
+    pt: 'Interfaces descentralizadas, experiências fluidas e seguras.',
+    fr: 'Des interfaces décentralisées, des expériences fluides et sûres.',
+    ru: 'Децентрализованные интерфейсы, плавный и безопасный опыт.',
+    sv: 'Decentraliserade gränssnitt, smidiga och säkra upplevelser.',
+    hr: 'Decentralizirana sučelja, tečna i sigurna iskustva.',
+    ar: 'واجهات لامركزية وتجارب سلسة وآمنة.',
+    de: 'Dezentrale Schnittstellen, flüssige und sichere Erlebnisse.',
+    sr: 'Децентрализовани интерфејси, течна и безбедна искуства.',
+    ur: 'غیر مرکزی انٹرفیسز، رواں اور محفوظ تجربات۔',
+  },
+
+  /* ── roadmap ───────────────────────────────────────────────────── */
+  'Hitos del recorrido': {
+    en: 'Milestones along the way', pt: 'Marcos do percurso', fr: 'Jalons du parcours',
+    ru: 'Вехи пути', sv: 'Milstolpar längs vägen', hr: 'Prekretnice puta',
+    ar: 'محطّات المسار', de: 'Meilensteine des Wegs', sr: 'Прекретнице пута',
+    ur: 'سفر کے سنگِ میل',
+  },
+  'Lanzamiento AiGenesis': {
+    en: 'AiGenesis launch', pt: 'Lançamento AiGenesis', fr: 'Lancement AiGenesis',
+    ru: 'Запуск AiGenesis', sv: 'AiGenesis-lansering', hr: 'Lansiranje AiGenesisa',
+    ar: 'إطلاق AiGenesis', de: 'AiGenesis-Start', sr: 'Лансирање AiGenesisa',
+    ur: 'AiGenesis کا آغاز',
+  },
+
+  /* ── cierre y pie ──────────────────────────────────────────────── */
+  '¿Listo para ser parte': {
+    en: 'Ready to be part', pt: 'Pronto para fazer parte', fr: 'Prêt à faire partie',
+    ru: 'Готовы стать частью', sv: 'Redo att bli en del', hr: 'Spremni biti dio',
+    ar: 'هل أنت مستعدّ لتكون جزءاً', de: 'Bereit, Teil zu sein',
+    sr: 'Спремни да будете део', ur: 'حصہ بننے کو تیار',
+  },
+  Contact: {
+    en: 'Contact', pt: 'Contato', fr: 'Contact', ru: 'Контакты',
+    sv: 'Kontakt', hr: 'Kontakt', ar: 'اتصل بنا', de: 'Kontakt',
+    sr: 'Контакт', ur: 'رابطہ',
+  },
+  Privacy: {
+    en: 'Privacy', pt: 'Privacidade', fr: 'Confidentialité', ru: 'Конфиденциальность',
+    sv: 'Integritet', hr: 'Privatnost', ar: 'الخصوصية', de: 'Datenschutz',
+    sr: 'Приватност', ur: 'رازداری',
+  },
+  '© 2026 AiGenesis. All rights reserved.': {
+    en: '© 2026 AiGenesis. All rights reserved.',
+    pt: '© 2026 AiGenesis. Todos os direitos reservados.',
+    fr: '© 2026 AiGenesis. Tous droits réservés.',
+    ru: '© 2026 AiGenesis. Все права защищены.',
+    sv: '© 2026 AiGenesis. Alla rättigheter förbehållna.',
+    hr: '© 2026 AiGenesis. Sva prava pridržana.',
+    ar: '© 2026 AiGenesis. جميع الحقوق محفوظة.',
+    de: '© 2026 AiGenesis. Alle Rechte vorbehalten.',
+    sr: '© 2026 AiGenesis. Сва права задржана.',
+    ur: '© 2026 AiGenesis۔ جملہ حقوق محفوظ ہیں۔',
+  },
+  'AiGenesis involucra activos digitales y tecnologías blockchain. La participación puede implicar riesgos tecnológicos, regulatorios y de mercado. Ningún contenido debe interpretarse como garantía de rendimiento financiero.': {
+    en: 'AiGenesis involves digital assets and blockchain technologies. Participation may carry technological, regulatory and market risks. No content should be read as a guarantee of financial return.',
+    pt: 'A AiGenesis envolve ativos digitais e tecnologias blockchain. A participação pode implicar riscos tecnológicos, regulatórios e de mercado. Nenhum conteúdo deve ser interpretado como garantia de rendimento financeiro.',
+    fr: "AiGenesis fait intervenir des actifs numériques et des technologies blockchain. La participation peut comporter des risques technologiques, réglementaires et de marché. Aucun contenu ne doit être interprété comme une garantie de rendement financier.",
+    ru: 'AiGenesis связан с цифровыми активами и блокчейн-технологиями. Участие может нести технологические, регуляторные и рыночные риски. Никакое содержание не следует толковать как гарантию финансовой доходности.',
+    sv: 'AiGenesis omfattar digitala tillgångar och blockkedjeteknik. Deltagande kan innebära tekniska, regulatoriska och marknadsmässiga risker. Inget innehåll ska tolkas som en garanti för finansiell avkastning.',
+    hr: 'AiGenesis uključuje digitalnu imovinu i blockchain tehnologije. Sudjelovanje može nositi tehnološke, regulatorne i tržišne rizike. Nijedan sadržaj ne smije se tumačiti kao jamstvo financijskog prinosa.',
+    ar: 'تتضمّن AiGenesis أصولاً رقمية وتقنيات بلوكشين. قد تنطوي المشاركة على مخاطر تقنية وتنظيمية وسوقية. لا يجوز تفسير أي محتوى على أنه ضمان لعائد مالي.',
+    de: 'AiGenesis umfasst digitale Vermögenswerte und Blockchain-Technologien. Die Teilnahme kann technologische, regulatorische und Marktrisiken bergen. Kein Inhalt ist als Garantie für eine finanzielle Rendite zu verstehen.',
+    sr: 'AiGenesis укључује дигиталну имовину и блокчејн технологије. Учешће може носити технолошке, регулаторне и тржишне ризике. Ниједан садржај не сме се тумачити као гаранција финансијског приноса.',
+    ur: 'AiGenesis ڈیجیٹل اثاثوں اور بلاک چین ٹیکنالوجیز پر مشتمل ہے۔ شرکت میں تکنیکی، ضابطہ جاتی اور مارکیٹ کے خطرات ہو سکتے ہیں۔ کسی مواد کو مالی منافع کی ضمانت نہ سمجھا جائے۔',
+  },
+
+  /* ── mining: tarjetas del recorrido ────────────────────────────── */
+  'Emisión': {
+    en: 'Emission', pt: 'Emissão', fr: 'Émission', ru: 'Эмиссия',
+    sv: 'Emission', hr: 'Emisija', ar: 'الإصدار', de: 'Emission',
+    sr: 'Емисија', ur: 'اجرا',
+  },
+  'Emisión programada': {
+    en: 'Scheduled emission', pt: 'Emissão programada', fr: 'Émission programmée',
+    ru: 'Плановая эмиссия', sv: 'Schemalagd emission', hr: 'Planirana emisija',
+    ar: 'إصدار مُجدوَل', de: 'Geplante Emission', sr: 'Планирана емисија',
+    ur: 'شیڈول شدہ اجرا',
+  },
+  'Distribución on-chain con calendario transparente y reglas públicas de participación.': {
+    en: 'On-chain distribution with a transparent calendar and public participation rules.',
+    pt: 'Distribuição on-chain com calendário transparente e regras públicas de participação.',
+    fr: "Distribution on-chain avec un calendrier transparent et des règles de participation publiques.",
+    ru: 'Распределение on-chain с прозрачным календарём и публичными правилами участия.',
+    sv: 'On-chain-distribution med transparent kalender och offentliga deltagarregler.',
+    hr: 'On-chain distribucija s transparentnim kalendarom i javnim pravilima sudjelovanja.',
+    ar: 'توزيع على السلسلة بجدول شفّاف وقواعد مشاركة معلنة.',
+    de: 'On-Chain-Verteilung mit transparentem Kalender und öffentlichen Teilnahmeregeln.',
+    sr: 'On-chain дистрибуција с транспарентним календаром и јавним правилима учешћа.',
+    ur: 'شفاف کیلنڈر اور عوامی شرکت کے قواعد کے ساتھ آن چین تقسیم۔',
+  },
+  'Participación activa': {
+    en: 'Active participation', pt: 'Participação ativa', fr: 'Participation active',
+    ru: 'Активное участие', sv: 'Aktivt deltagande', hr: 'Aktivno sudjelovanje',
+    ar: 'مشاركة نشِطة', de: 'Aktive Teilnahme', sr: 'Активно учешће',
+    ur: 'فعال شرکت',
+  },
+  'El motor de Mining conecta a los participantes con la capa de emisión del ecosistema.': {
+    en: 'The Mining engine connects participants with the ecosystem’s emission layer.',
+    pt: 'O motor de Mining conecta os participantes à camada de emissão do ecossistema.',
+    fr: "Le moteur de Mining relie les participants à la couche d'émission de l'écosystème.",
+    ru: 'Движок Mining связывает участников с эмиссионным слоем экосистемы.',
+    sv: 'Mining-motorn kopplar deltagarna till ekosystemets emissionslager.',
+    hr: 'Mining motor povezuje sudionike s emisijskim slojem ekosustava.',
+    ar: 'يربط محرّك Mining المشاركين بطبقة الإصدار في المنظومة.',
+    de: 'Die Mining-Engine verbindet Teilnehmende mit der Emissionsschicht des Ökosystems.',
+    sr: 'Mining мотор повезује учеснике с емисионим слојем екосистема.',
+    ur: 'Mining انجن شرکاء کو ایکو سسٹم کی اجرا پرت سے جوڑتا ہے۔',
+  },
+  'Distribución equitativa': {
+    en: 'Equitable distribution', pt: 'Distribuição equitativa', fr: 'Distribution équitable',
+    ru: 'Справедливое распределение', sv: 'Rättvis fördelning', hr: 'Pravedna raspodjela',
+    ar: 'توزيع عادل', de: 'Gerechte Verteilung', sr: 'Правична расподела',
+    ur: 'منصفانہ تقسیم',
+  },
+  'Asignación proporcional basada en reglas del protocolo, sin promesas de rendimiento fijo.': {
+    en: 'Proportional allocation based on protocol rules, with no promise of fixed returns.',
+    pt: 'Alocação proporcional baseada nas regras do protocolo, sem promessas de rendimento fixo.',
+    fr: "Attribution proportionnelle fondée sur les règles du protocole, sans promesse de rendement fixe.",
+    ru: 'Пропорциональное распределение по правилам протокола, без обещаний фиксированной доходности.',
+    sv: 'Proportionell tilldelning enligt protokollets regler, utan löften om fast avkastning.',
+    hr: 'Proporcionalna raspodjela prema pravilima protokola, bez obećanja fiksnog prinosa.',
+    ar: 'تخصيص تناسبي وفق قواعد البروتوكول، دون وعد بعائد ثابت.',
+    de: 'Proportionale Zuteilung nach Protokollregeln, ohne Zusage fester Renditen.',
+    sr: 'Пропорционална расподела по правилима протокола, без обећања фиксног приноса.',
+    ur: 'پروٹوکول کے قواعد پر مبنی متناسب تقسیم، مقررہ منافع کے وعدے کے بغیر۔',
+  },
+}

@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { ORACLE_INFERENCE_PULSE_S, ORACLE_BRAIN_FORM_S } from '@/lib/goracle/quantumBrainLayout'
 import GoracleNeuralCore from '@/components/goracle/GoracleNeuralCore'
 import GoracleNeuralLayers from '@/components/goracle/GoracleNeuralLayers'
@@ -13,6 +14,8 @@ interface GoracleQuantumBrainProps {
 }
 
 export default function GoracleQuantumBrain({ isActive }: GoracleQuantumBrainProps) {
+
+  const t = useT()
   // Gate PEGAJOSO, no `isActive` a secas. El motivo, medido, esta en
   // `useSectionVisualActive`: con el prop crudo el visual desaparecia
   // mientras la seccion estaba a la vista.
@@ -22,7 +25,7 @@ export default function GoracleQuantumBrain({ isActive }: GoracleQuantumBrainPro
   return (
     <div
       className="goracle-quantum-brain goracle-quantum-brain--enter"
-      aria-label="Genesis Quantum Brain"
+      aria-label={t('Genesis Quantum Brain')}
       style={
         {
           '--oracle-pulse-s': `${ORACLE_INFERENCE_PULSE_S}s`,

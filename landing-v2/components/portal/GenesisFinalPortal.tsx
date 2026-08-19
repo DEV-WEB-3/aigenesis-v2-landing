@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import {
   PORTAL_ABSORB_S,
   PORTAL_CORE_PULSE_S,
@@ -16,6 +17,8 @@ interface GenesisFinalPortalProps {
 }
 
 export default function GenesisFinalPortal({ isActive }: GenesisFinalPortalProps) {
+
+  const t = useT()
   // Gate PEGAJOSO, no `isActive` a secas. El motivo, medido, esta en
   // `useSectionVisualActive`: con el prop crudo el visual desaparecia
   // mientras la seccion estaba a la vista.
@@ -25,7 +28,7 @@ export default function GenesisFinalPortal({ isActive }: GenesisFinalPortalProps
   return (
     <div
       className="genesis-final-portal genesis-final-portal--enter"
-      aria-label="Genesis Portal"
+      aria-label={t('Genesis Portal')}
       style={
         {
           '--portal-pulse-s': `${PORTAL_CORE_PULSE_S}s`,

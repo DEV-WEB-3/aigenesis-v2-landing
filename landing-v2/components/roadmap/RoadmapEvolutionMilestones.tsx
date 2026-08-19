@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { useId } from 'react'
 import { EMISSION, INK } from '@/lib/design/tokens'
 import RoadmapMilestoneIcon from '@/components/roadmap/RoadmapMilestoneIcon'
@@ -42,6 +43,8 @@ const NODO_R = 5.2
 const PLATAFORMA = [1.2, 1.62, 2.05] as const
 
 export default function RoadmapEvolutionMilestones() {
+
+  const t = useT()
   /*
    * IDS UNICOS POR INSTANCIA, y no es un detalle de estilo.
    *
@@ -324,7 +327,7 @@ export default function RoadmapEvolutionMilestones() {
               )}
               {m.title.map((linea, i) => (
                 <text key={i} className="roadmap-hito__titulo" x="0" y={4.6 + i * 3.4}>
-                  {linea}
+                  {t(linea)}
                 </text>
               ))}
             </g>

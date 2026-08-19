@@ -9323,6 +9323,254 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   PALABRAS QUE NO CABEN
+   ═══════════════════════════════════════════════════════════
+   Una caja de 96 px es suficiente para «Distribución» y no lo es para
+   «On-Chain-Verteilung». El ancho lo fija el diseño y la longitud de la palabra
+   la fija el idioma, asi que en cuanto hay once idiomas la colision es cuestion
+   de tiempo — y cuando ocurre, el texto NO se recorta con puntos suspensivos:
+   se sale de la tarjeta y se pinta encima de lo que haya al lado.
+
+   `overflow-wrap: break-word` parte la palabra SOLO cuando no cabe entera. En
+   español y en ingles no cambia una sola linea —esta comprobado midiendo antes y
+   despues—: es un ultimo recurso, no una regla de composicion.
+
+   La particion silabica va aparte y solo donde hace falta. `hyphens: auto`
+   necesita saber el idioma —lo lee de `lang`, que ya escribe el proveedor— y en
+   aleman convierte un corte feo a mitad de palabra en un guion correcto. No se
+   activa en los demas idiomas porque cambiaria el ritmo del texto sin resolver
+   ningun desborde medido: se añadira el idioma que lo pida cuando la medicion lo
+   pida, no antes. */
+body {
+  overflow-wrap: break-word;
+}
+
+:root[lang='de'] {
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ESCRITURA ARABE Y URDU
+   ═══════════════════════════════════════════════════════════
+   No es un ajuste fino: son dos reglas sin las cuales el texto se lee MAL,
+   y las dos se descubrieron mirando la pantalla, no leyendo el codigo.
+
+   1. `letter-spacing` DESTRUYE la escritura arabe.
+
+      Toda la microtipografia de la marca separa las letras —los rotulos van a
+      1,57 px de `tracking`— y en alfabeto latino eso es elegancia. En arabe las
+      letras se ENLAZAN: separarlas rompe la union entre ellas y una palabra
+      deja de leerse como palabra. Medido en el rotulo del anillo de IA: el
+      `tracking` heredado partia «ذكاء» en trazos sueltos.
+
+      Va con `!important` a proposito. El espaciado no viene de una regla que se
+      pueda ganar por especificidad: viene de decenas de utilidades de Tailwind
+      —`tracking-wider`, `tracking-widest`— repartidas por todo el arbol. La
+      unica forma de anularlas todas es esta, y la excepcion esta justificada
+      porque no es una preferencia estetica: es una regla de la escritura.
+
+   2. Inter NO trae arabe.
+
+      La fuente de la marca no cubre estos alfabetos, asi que el navegador cae
+      a lo que encuentre. Sin una pila declarada, ese «lo que encuentre» cambia
+      por sistema operativo y puede acabar en una tipografia sin diacriticos.
+      El urdu ademas se escribe en nastaliq, que es otra letra —no una variante—
+      y por eso lleva su propia pila.
+
+   Se enganchan a `lang` del elemento raiz, que es justo lo que `IdiomaContext`
+   escribe al cambiar de idioma. */
+:root[lang='ar'] *,
+:root[lang='ur'] * {
+  letter-spacing: normal !important;
+}
+
+:root[lang='ar'] body,
+:root[lang='ar'] button,
+:root[lang='ar'] input {
+  font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, 'Geeza Pro', 'Arabic Typesetting', sans-serif;
+}
+
+:root[lang='ur'] body,
+:root[lang='ur'] button,
+:root[lang='ur'] input {
+  font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* Los diacriticos van por encima y por debajo de la linea: con el interlineado
+   ajustado del latin se tocan entre renglones. */
+:root[lang='ar'] p,
+:root[lang='ur'] p,
+:root[lang='ar'] li,
+:root[lang='ur'] li {
+  line-height: 1.85;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SELECTOR DE IDIOMA
+   ═══════════════════════════════════════════════════════════
+   Mismo vocabulario de cristal que las etiquetas de la maquina y que las
+   tarjetas: desenfoque de fondo, reflejo cenital de 1 px y borde tintado. No es
+   coherencia por gusto — es lo que hace que un control de sistema pertenezca a
+   la pieza en vez de parecer un anadido de plantilla. */
+.sel-idioma {
+  position: relative;
+}
+
+.sel-idioma__boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(157, 77, 255, 0.34);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0) 46%),
+    rgba(9, 12, 24, 0.62);
+  backdrop-filter: blur(10px) saturate(1.3);
+  -webkit-backdrop-filter: blur(10px) saturate(1.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.13);
+  color: var(--g-ink-muted, #AAB4C8);
+  transition: color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.sel-idioma__boton:hover,
+.sel-idioma__boton[aria-expanded='true'] {
+  color: var(--g-ink-base, #F8FAFC);
+  border-color: rgba(0, 245, 255, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 0 18px rgba(0, 245, 255, 0.2);
+}
+
+.sel-idioma__orbe {
+  display: grid;
+  place-items: center;
+  width: 1.05rem;
+  height: 1.05rem;
+  color: var(--g-emission-cyan, #00F5FF);
+}
+
+.sel-idioma__orbe svg {
+  width: 100%;
+  height: 100%;
+}
+
+.sel-idioma__codigo {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* ── el panel ──────────────────────────────────────────────── */
+.sel-idioma__panel {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  inset-inline-end: 0;
+  z-index: 60;
+  width: max(16rem, 100%);
+  padding: 0.7rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(157, 77, 255, 0.3);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 40%),
+    rgba(7, 10, 22, 0.92);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 22px 56px rgba(2, 4, 10, 0.72);
+  animation: sel-idioma-entra 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes sel-idioma-entra {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sel-idioma__nota {
+  margin: 0 0.25rem 0.55rem;
+  font-size: 0.63rem;
+  line-height: 1.4;
+  color: var(--g-ink-faint, #6B7A94);
+}
+
+.sel-idioma__lista {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: min(60vh, 22rem);
+  overflow-y: auto;
+}
+
+.sel-idioma__opcion {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.42rem 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  color: var(--g-ink-muted, #AAB4C8);
+  text-align: start;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.sel-idioma__opcion:hover {
+  background: rgba(0, 245, 255, 0.08);
+  color: var(--g-ink-base, #F8FAFC);
+  border-color: rgba(0, 245, 255, 0.28);
+}
+
+.sel-idioma__opcion.es-actual {
+  background: rgba(0, 245, 255, 0.12);
+  border-color: rgba(0, 245, 255, 0.45);
+  color: var(--g-ink-base, #F8FAFC);
+}
+
+/* El nombre nativo manda: es lo que busca quien lo necesita, y por eso se lleva
+   todo el espacio que sobra. */
+.sel-idioma__nativo {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.78rem;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* La insignia dice QUE MATERIAL hay detras de ese idioma. `v1` en ambar, no en
+   rojo: no es un error, es la version anterior. */
+.sel-idioma__version {
+  flex: 0 0 auto;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.28rem;
+  border: 1px solid currentColor;
+  opacity: 0.85;
+}
+
+.sel-idioma__version--v5 { color: var(--g-emission-cyan, #00F5FF); }
+.sel-idioma__version--v1 { color: var(--g-state-warning, #E6B450); }
+
+@media (max-width: 420px) {
+  .sel-idioma__lista { grid-template-columns: 1fr; }
+  .sel-idioma__panel { width: min(15rem, 78vw); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sel-idioma__panel { animation: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════
    LA MAQUINA GENESIS — cinco subsistemas con reloj propio
    ═══════════════════════════════════════════════════════════
 

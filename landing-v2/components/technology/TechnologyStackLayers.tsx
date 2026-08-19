@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import {
   TECH_STACK_LAYERS,
   TECH_STACK_PULSE_S,
@@ -21,6 +22,7 @@ import {
  * sostiene, que es lo que la seccion dice con palabras.
  */
 export default function TechnologyStackLayers() {
+  const t = useT()
   return (
     <svg
       className="technology-stack-layers"
@@ -126,7 +128,7 @@ export default function TechnologyStackLayers() {
               fontSize="2.7"
               fontFamily="var(--font-space-grotesk, system-ui)"
             >
-              {layer.label}
+              {t(layer.label)}
             </text>
           </g>
         )

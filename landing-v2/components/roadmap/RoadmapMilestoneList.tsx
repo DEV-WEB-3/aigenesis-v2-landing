@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import RoadmapMilestoneIcon from '@/components/roadmap/RoadmapMilestoneIcon'
 import {
   ROADMAP_MILESTONES,
@@ -22,8 +23,9 @@ import {
  * a mano en dos sitios acaba divergiendo.
  */
 export default function RoadmapMilestoneList() {
+  const t = useT()
   return (
-    <ol className="roadmap-lista" aria-label="Hitos del recorrido">
+    <ol className="roadmap-lista" aria-label={t('Hitos del recorrido')}>
       {ROADMAP_MILESTONES.map((m) => {
         const color = milestoneColor(m.index)
         const activo = m.status === 'active'
@@ -52,7 +54,7 @@ export default function RoadmapMilestoneList() {
                 {m.year}
                 {m.quarter ? <span className="roadmap-lista__trimestre"> {m.quarter}</span> : null}
               </span>
-              <span className="roadmap-lista__titulo">{m.title.join(' ')}</span>
+              <span className="roadmap-lista__titulo">{m.title.map(t).join(' ')}</span>
             </span>
           </li>
         )

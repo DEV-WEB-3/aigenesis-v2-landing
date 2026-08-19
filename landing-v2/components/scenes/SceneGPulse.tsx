@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
 import { SectionHeader } from '@/components/ui/genesis'
@@ -16,6 +17,7 @@ interface Props { isActive?: boolean }
 
 const SceneGPulse = forwardRef<HTMLElement, Props>(
   function SceneGPulse({ isActive = false }, ref) {
+    const t = useT()
     return (
       <SceneWrapper
         ref={ref}
@@ -36,8 +38,9 @@ const SceneGPulse = forwardRef<HTMLElement, Props>(
         />
 
         <motion.p variants={slideLeft} className="text-lg leading-relaxed max-w-lg text-genesis-mist">
-          GPulse entrega análisis operativo y señales automatizadas para mercados globales.
-          Capa de ejecución táctica — complementaria al núcleo de inteligencia G-Oracle.
+          {t(
+            'GPulse entrega análisis operativo y señales automatizadas para mercados globales. Capa de ejecución táctica — complementaria al núcleo de inteligencia G-Oracle.'
+          )}
         </motion.p>
 
         <motion.div variants={containerV} className="grid grid-cols-2 gap-4">

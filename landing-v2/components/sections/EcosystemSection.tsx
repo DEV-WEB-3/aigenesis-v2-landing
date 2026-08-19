@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { useEffect, useRef, forwardRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import gsap from 'gsap'
@@ -122,6 +123,7 @@ interface EcosystemSectionProps {
 
 const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
   function EcosystemSection({ isActive = false }, ref) {
+    const t = useT()
     const {
       isNaturalScroll,
       sectionRef,
@@ -194,7 +196,7 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                       isActive={isActive}
                       className={statGradientClass}
                     />
-                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">Pilares</span>
+                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">{t('Pilares')}</span>
                   </div>
                   <div className="flex flex-col gap-1">
                     <span className={statGradientClass}>2023</span>
@@ -246,7 +248,7 @@ const EcosystemSection = forwardRef<HTMLElement, EcosystemSectionProps>(
                       isActive={isActive}
                       className={statGradientClass}
                     />
-                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">Pilares</span>
+                    <span className="text-caption text-genesis-ghost uppercase tracking-wider">{t('Pilares')}</span>
                   </div>
                   <div className="flex flex-col gap-1">
                     <span className={statGradientClass}>2023</span>

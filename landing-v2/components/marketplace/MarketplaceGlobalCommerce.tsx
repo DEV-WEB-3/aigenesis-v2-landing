@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { COMMERCE_FORM_S, COMMERCE_PULSE_S } from '@/lib/marketplace/globalCommerceLayout'
 import MarketplaceCommerceCore from '@/components/marketplace/MarketplaceCommerceCore'
 import MarketplaceGlobeLayers from '@/components/marketplace/MarketplaceGlobeLayers'
@@ -14,13 +15,15 @@ interface MarketplaceGlobalCommerceProps {
 }
 
 export default function MarketplaceGlobalCommerce({ isActive }: MarketplaceGlobalCommerceProps) {
+
+  const t = useT()
   const visible = useSectionVisualActive(isActive)
   if (!visible) return null
 
   return (
     <div
       className="marketplace-global-commerce marketplace-global-commerce--enter"
-      aria-label="Genesis Global Commerce Network"
+      aria-label={t('Genesis Global Commerce Network')}
       style={
         {
           '--commerce-pulse-s': `${COMMERCE_PULSE_S}s`,

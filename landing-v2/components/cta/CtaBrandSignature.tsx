@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { EMISSION } from '@/lib/design/tokens'
 
 import { motion } from 'framer-motion'
@@ -13,12 +14,14 @@ const TAGLINE_ITEMS = [
 ] as const
 
 export default function CtaBrandSignature() {
+
+  const t = useT()
   return (
     <motion.div variants={slideLeft} className="cta-brand-signature">
       <p className="cta-brand-signature__name font-display">AiGenesis</p>
       <p
         className="cta-brand-signature__tagline"
-        aria-label="AI, Blockchain, Marketplace, Intelligence Network"
+        aria-label={t('AI, Blockchain, Marketplace, Intelligence Network')}
       >
         {TAGLINE_ITEMS.map((item, index) => (
           <span key={item.label} className="cta-brand-signature__segment">

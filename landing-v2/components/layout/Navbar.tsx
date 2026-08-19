@@ -1,5 +1,7 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
+import SelectorIdioma from '@/components/i18n/SelectorIdioma'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -36,6 +38,7 @@ function despliega(grupo: GrupoNav): boolean {
 }
 
 export default function Navbar() {
+  const t = useT()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [grupoAbierto, setGrupoAbierto] = useState<string | null>(null)
@@ -131,14 +134,14 @@ export default function Navbar() {
               }
             : { pointerEvents: 'auto' }
         }
-        aria-label="Navegación principal"
+        aria-label={t('Navegación principal')}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           <a
             href={sectionHref('hero')}
             onClick={(e) => { e.preventDefault(); navigateToSection('hero') }}
             className="flex items-center gap-3 text-genesis-text no-underline shrink-0 focus-ring-signature rounded-sm"
-            aria-label="GENESIS — Inicio"
+            aria-label={t('GENESIS — Inicio')}
           >
             <GenesisOfficialLogo size="sm" layout="horizontal" tone="color" className="hidden sm:inline-flex" />
             {/*
@@ -189,7 +192,7 @@ export default function Navbar() {
                   className={`${navLinkClass} inline-flex items-center px-3 py-2 rounded-full hover:bg-white/5`}
                   onClick={(e) => { e.preventDefault(); navigateToSection(grupo.ancla) }}
                 >
-                  {grupo.label}
+                  {t(grupo.label)}
                   {despliega(grupo) ? (
                     <span className="nav-cabeza-marca" aria-hidden="true" />
                   ) : null}
@@ -218,7 +221,7 @@ export default function Navbar() {
                           className="nav-desplegable__enlace focus-ring-genesis"
                           onClick={() => setGrupoAbierto(null)}
                         >
-                          {r.label}
+                          {t(r.label)}
                         </Link>
                       </li>
                     ))}
@@ -229,12 +232,21 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-3">
+            {/*
+              El selector va ANTES del boton de accion y despues de los enlaces.
+              Es una preferencia, no una llamada a la accion: delante de «Unete»
+              competiria con el unico boton que la barra quiere que se pulse.
+            */}
+            <SelectorIdioma />
+
             <Button
               variant="primary"
               size="sm"
               href={ROUTES.REGISTER}
               className="hidden sm:inline-flex"
             >
+              {/* Sin `t()`: lo traduce `Button`. Envolverlo aqui tambien lo
+                  traduciria dos veces y la segunda busqueda saldria en vacio. */}
               Únete
             </Button>
 
@@ -242,7 +254,7 @@ export default function Navbar() {
               ref={menuButtonRef}
               type="button"
               className="xl:hidden flex flex-col justify-center items-center w-11 h-11 rounded-full border border-hairline bg-genesis-surface/60 focus-ring-genesis"
-              aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+              aria-label={menuOpen ? t('Cerrar menú') : t('Abrir menú')}
               aria-expanded={menuOpen}
               aria-controls={DRAWER_ID}
               onClick={() => setMenuOpen((o) => !o)}
@@ -288,21 +300,21 @@ export default function Navbar() {
               className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-sm flex flex-col bg-genesis-base border-l border-hairline xl:hidden"
               role="dialog"
               aria-modal="true"
-              aria-label="Menú de navegación"
+              aria-label={t('Menú de navegación')}
             >
               <div className="flex items-center justify-between px-6 py-5 border-b border-hairline">
                 <GenesisOfficialLogo size="sm" layout="horizontal" tone="color" />
                 <button
                   type="button"
                   className="w-10 h-10 rounded-full text-genesis-mist hover:text-genesis-text focus-ring-genesis"
-                  aria-label="Cerrar menú"
+                  aria-label={t('Cerrar menú')}
                   onClick={closeMenu}
                 >
                   ✕
                 </button>
               </div>
 
-              <nav className="flex-1 overflow-y-auto px-6 py-6" aria-label="Enlaces del menú">
+              <nav className="flex-1 overflow-y-auto px-6 py-6" aria-label={t('Enlaces del menú')}>
                 <ul className="flex flex-col gap-1 list-none m-0 p-0">
                   <li>
                     <a
@@ -326,7 +338,7 @@ export default function Navbar() {
                   */}
                   {NAV_GROUPS.map((grupo) => (
                     <li key={grupo.id} className="mt-4 first:mt-0">
-                      <h2 className="nav-cajon-cabeza">{grupo.label}</h2>
+                      <h2 className="nav-cajon-cabeza">{t(grupo.label)}</h2>
                       <ul className="list-none m-0 p-0">
                         {grupo.hijos.map((hijo) => (
                           <li key={hijo}>
@@ -351,7 +363,7 @@ export default function Navbar() {
                               className="block py-2.5 pl-3 text-base font-display text-genesis-mist hover:text-genesis-text no-underline border-b border-hairline focus-ring-genesis rounded-sm"
                               onClick={closeMenu}
                             >
-                              {r.label}
+                              {t(r.label)}
                             </Link>
                           </li>
                         ))}
@@ -364,7 +376,7 @@ export default function Navbar() {
                       className="block py-3 text-base font-display text-genesis-ion hover:text-genesis-text no-underline focus-ring-genesis rounded-sm"
                       onClick={closeMenu}
                     >
-                      Únete
+                      {t('Únete')}
                     </a>
                   </li>
                 </ul>
@@ -372,7 +384,7 @@ export default function Navbar() {
 
               <div className="px-6 py-6 border-t border-hairline">
                 <Button variant="primary" size="lg" href={ROUTES.REGISTER} className="w-full justify-center">
-                  Crear cuenta
+                  {t('Crear cuenta')}
                 </Button>
               </div>
             </motion.aside>

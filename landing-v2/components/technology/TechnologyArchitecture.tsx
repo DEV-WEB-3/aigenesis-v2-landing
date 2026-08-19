@@ -1,5 +1,7 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
+import { partirEnLineas } from '@/lib/i18n/partirLineas'
 import { useId, useRef } from 'react'
 import { EMISSION, INK } from '@/lib/design/tokens'
 import { usePointerParallax } from '@/hooks/usePointerParallax'
@@ -78,6 +80,7 @@ const GLIFOS: Record<string, React.ReactNode> = {
  * oclusion y la cascada.
  */
 export default function TechnologyArchitecture() {
+  const t = useT()
   /*
    * IDS UNICOS POR INSTANCIA. La seccion monta el visual dos veces —escritorio y
    * la variante movil, esta en `display: none`— y `url(#id)` resuelve al PRIMERO
@@ -267,7 +270,10 @@ export default function TechnologyArchitecture() {
            * `INFRAESTRUCTURA`, que con `rx * 1,24` ocupaba la placa entera y se
            * montaba sobre su propio glifo.
            */
-          const anchoPlaca = 5.9 + e.label.length * 1.5 + 4.2
+          /* Se mide el rotulo TRADUCIDO, no el español: «INFRASTRUKTUR» es
+             mas largo que «INFRAESTRUCTURA» y la placa tiene que crecer con el. */
+          const rotulo = t(e.label)
+          const anchoPlaca = 5.9 + rotulo.length * 1.5 + 4.2
 
           return (
             <g
@@ -414,7 +420,7 @@ export default function TechnologyArchitecture() {
                   x={ARQ_EJE_X - anchoPlaca / 2 + 5.9} y={tapa - 0.75}
                   fill={INK.base} textAnchor="start"
                 >
-                  {e.label}
+                  {rotulo}
                 </text>
               </g>
 
@@ -462,9 +468,9 @@ export default function TechnologyArchitecture() {
                   x={lecturaX + 2.4} y={tapa - 1.6}
                   fill={e.color} textAnchor="start"
                 >
-                  {e.lectura}
+                  {t(e.lectura)}
                 </text>
-                {e.detalle.map((linea, i) => (
+                {partirEnLineas(t(e.detalle), 2).map((linea, i) => (
                   <text
                     key={i}
                     className="arq__lectura-detalle"

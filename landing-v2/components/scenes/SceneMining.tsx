@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
 import { SectionHeader, Button } from '@/components/ui/genesis'
@@ -48,6 +49,7 @@ const SceneMining = forwardRef<HTMLElement, Props>(function SceneMining(
   { isActive = false },
   ref
 ) {
+  const t = useT()
   return (
     <SceneWrapper
       ref={ref}
@@ -84,9 +86,9 @@ const SceneMining = forwardRef<HTMLElement, Props>(function SceneMining(
               </span>
               <span className="mining-flow-card__step">{item.step}</span>
             </div>
-            <span className="mining-flow-card__track">{item.track}</span>
-            <h3 className="mining-flow-card__title">{item.title}</h3>
-            <p className="mining-flow-card__desc">{item.description}</p>
+            <span className="mining-flow-card__track">{t(item.track)}</span>
+            <h3 className="mining-flow-card__title">{t(item.title)}</h3>
+            <p className="mining-flow-card__desc">{t(item.description)}</p>
           </motion.article>
         ))}
       </motion.div>
@@ -95,14 +97,14 @@ const SceneMining = forwardRef<HTMLElement, Props>(function SceneMining(
         <MiningConstellation isActive={isActive} variant="compact" />
       </motion.div>
 
-      <motion.div variants={slideLeft} className="mining-kpi-grid" aria-label="Indicadores de Mining">
+      <motion.div variants={slideLeft} className="mining-kpi-grid" aria-label={t('Indicadores de Mining')}>
         {MINING_KPIS.map((kpi) => (
           <div key={kpi.label} className="mining-kpi-card">
             <span className="mining-kpi-card__icon" aria-hidden="true">
               <MiningKpiIcon kind={kpi.icon} />
             </span>
-            <span className={`mining-kpi-card__value${kpi.mono ? ' font-mono' : ''}`}>{kpi.value}</span>
-            <span className="mining-kpi-card__label">{kpi.label}</span>
+            <span dir="ltr" className={`mining-kpi-card__value${kpi.mono ? ' font-mono' : ''}`}>{t(kpi.value)}</span>
+            <span className="mining-kpi-card__label">{t(kpi.label)}</span>
           </div>
         ))}
       </motion.div>

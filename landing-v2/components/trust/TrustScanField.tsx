@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   ANILLO,
@@ -171,6 +172,7 @@ function CampoDibujado({
   onEnfocar?: (id: PilarId, angulo: number) => void
   onDesenfocar?: () => void
 }) {
+  const t = useT()
   return (
     <div className="lienzo-apaisado">
       <svg viewBox={vb} preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="trust-scan__svg">
@@ -228,7 +230,7 @@ function CampoDibujado({
               {...(interactivo
                 ? {
                     type: 'button' as const,
-                    'aria-label': `${p.titulo}. ${p.descripcion}`,
+                    'aria-label': `${t(p.titulo)}. ${t(p.descripcion)}`,
                     onFocus: () => onEnfocar?.(p.id, p.angulo),
                     onBlur: () => onDesenfocar?.(),
                     onPointerEnter: () => onEnfocar?.(p.id, p.angulo),
@@ -245,8 +247,8 @@ function CampoDibujado({
               style={sitio}
               aria-hidden="true"
             >
-              <b>{p.titulo}</b>
-              <span>{p.descripcion}</span>
+              <b>{t(p.titulo)}</b>
+              <span>{t(p.descripcion)}</span>
             </div>
           </div>
         )

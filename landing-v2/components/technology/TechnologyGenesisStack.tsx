@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { TECH_STACK_FORM_S, TECH_STACK_PULSE_S } from '@/lib/technology/techStackLayout'
 import TechnologyMachine from '@/components/technology/TechnologyMachine'
 import { useSectionVisualActive } from '@/hooks/useSectionVisualActive'
@@ -9,6 +10,8 @@ interface TechnologyGenesisStackProps {
 }
 
 export default function TechnologyGenesisStack({ isActive }: TechnologyGenesisStackProps) {
+
+  const t = useT()
   // Gate PEGAJOSO, no `isActive` a secas. El motivo, medido, esta en
   // `useSectionVisualActive`: con el prop crudo el visual desaparecia
   // mientras la seccion estaba a la vista.
@@ -18,7 +21,7 @@ export default function TechnologyGenesisStack({ isActive }: TechnologyGenesisSt
   return (
     <div
       className="technology-genesis-stack technology-genesis-stack--enter"
-      aria-label="Genesis Technology Stack"
+      aria-label={t('Genesis Technology Stack')}
       style={
         {
           '--tech-pulse-s': `${TECH_STACK_PULSE_S}s`,

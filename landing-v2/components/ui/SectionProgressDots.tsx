@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { EMISSION } from '@/lib/design/tokens'
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
@@ -36,6 +37,7 @@ export default function SectionProgressDots({
   current,
   onDotClick,
 }: SectionProgressDotsProps) {
+  const t = useT()
   const navRef = useRef<HTMLElement>(null)
   const nodeRefs = useRef<(HTMLButtonElement | null)[]>([])
   const [nodeCenters, setNodeCenters] = useState<number[]>([])
@@ -120,7 +122,7 @@ export default function SectionProgressDots({
 
       <nav
         ref={navRef}
-        aria-label="Navegación de secciones"
+        aria-label={t('Navegación de secciones')}
         className="genesis-scroll-rail hidden xl:flex"
       style={
         reduceMotion
@@ -202,7 +204,7 @@ export default function SectionProgressDots({
               setHoveredIndex(null)
               setTooltipShiftY(0)
             }}
-            aria-label={sectionNavTooltipLabel(i)}
+            aria-label={t(sectionNavTooltipLabel(i))}
             aria-current={isActive ? 'true' : undefined}
             className="genesis-scroll-rail__node-btn"
           >
@@ -220,7 +222,7 @@ export default function SectionProgressDots({
                     exit={{ opacity: 0, x: 8, scale: 0.96 }}
                     transition={tooltipTransition}
                   >
-                    {sectionNavTooltipLabel(i)}
+                    {t(sectionNavTooltipLabel(i))}
                   </motion.span>
                 </span>
               )}
@@ -264,19 +266,20 @@ function MobileScrollProgress({
   current,
   onDotClick,
 }: SectionProgressDotsProps) {
+  const t = useT()
   const progress = ((current + 1) / total) * 100
 
   return (
     <nav
-      aria-label="Progreso de secciones"
+      aria-label={t('Progreso de secciones')}
       className="genesis-mobile-scroll-progress fixed bottom-[max(0.85rem,env(safe-area-inset-bottom))] left-1/2 z-40 flex -translate-x-1/2 items-center gap-2.5 rounded-full border border-white/10 bg-[rgba(5,7,13,0.88)] px-3 py-2 shadow-[0_8px_28px_rgba(0,0,0,0.45)] backdrop-blur-md xl:hidden"
     >
       <span className="sr-only">
-        Sección {current + 1} de {total}
+        {t('Sección')} {current + 1} {t('de')} {total}
       </span>
       <button
         type="button"
-        aria-label="Sección anterior"
+        aria-label={t('Sección anterior')}
         disabled={current <= 0}
         onClick={() => onDotClick(Math.max(0, current - 1))}
         className="flex h-6 w-6 items-center justify-center rounded-full text-xs text-genesis-mist transition-colors hover:text-genesis-text disabled:opacity-30"
@@ -303,7 +306,7 @@ function MobileScrollProgress({
       </span>
       <button
         type="button"
-        aria-label="Sección siguiente"
+        aria-label={t('Sección siguiente')}
         disabled={current >= total - 1}
         onClick={() => onDotClick(Math.min(total - 1, current + 1))}
         className="flex h-6 w-6 items-center justify-center rounded-full text-xs text-genesis-mist transition-colors hover:text-genesis-text disabled:opacity-30"

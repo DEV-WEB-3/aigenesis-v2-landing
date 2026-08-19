@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import {
   MINING_CONSTELLATION_CENTER,
   MINING_CONSTELLATION_NODES,
@@ -17,6 +18,8 @@ interface MiningConstellationProps {
 }
 
 export default function MiningConstellation({ isActive, variant = 'full' }: MiningConstellationProps) {
+
+  const t = useT()
   const visible = useSectionVisualActive(isActive)
   if (!visible) return null
 
@@ -28,7 +31,7 @@ export default function MiningConstellation({ isActive, variant = 'full' }: Mini
   return (
     <div
       className={`mining-constellation${isCompact ? ' mining-constellation--compact' : ''}`}
-      aria-label="Red Genesis Mining"
+      aria-label={t('Red Genesis Mining')}
       style={{ '--constellation-pulse-s': `${MINING_CONSTELLATION_PULSE_S}s` } as React.CSSProperties}
     >
       <div className="mining-constellation__layer mining-constellation__layer--mid">

@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import type { Ancla } from '@/components/technology/webgl/TechMachineCanvas'
 import { CAPAS_3D } from '@/lib/technology/techMachine3d'
 
@@ -52,6 +53,7 @@ const GLIFOS: Record<string, React.ReactNode> = {
  * colocada en el sitio equivocado durante dos cuadros se ve, y se ve mal.
  */
 export default function TechMachineOverlay({ anclas }: { anclas: Ancla[] }) {
+  const t = useT()
   if (!anclas.length) return null
   const porId = new Map(anclas.map((a) => [a.id, a]))
 
@@ -110,7 +112,7 @@ export default function TechMachineOverlay({ anclas }: { anclas: Ancla[] }) {
                 {GLIFOS[capa.id]}
               </svg>
             </span>
-            <span className="maq-rotulo__texto">{capa.label}</span>
+            <span className="maq-rotulo__texto">{t(capa.label)}</span>
           </div>
         )
       })}
@@ -161,10 +163,8 @@ export default function TechMachineOverlay({ anclas }: { anclas: Ancla[] }) {
               '--capa-retardo': `${(1.3 + capa.orden * 0.08).toFixed(2)}s`,
             } as React.CSSProperties}
           >
-            <span className="maq-lectura__titulo">{capa.lectura}</span>
-            {capa.detalle.map((l) => (
-              <span key={l} className="maq-lectura__linea">{l}</span>
-            ))}
+            <span className="maq-lectura__titulo">{t(capa.lectura)}</span>
+            <span className="maq-lectura__linea">{t(capa.detalle)}</span>
           </div>
         )
       })}
@@ -187,7 +187,7 @@ export default function TechMachineOverlay({ anclas }: { anclas: Ancla[] }) {
         <div className="maq-hud__barra">
           <span className="maq-hud__punto" />
           <span className="maq-hud__punto maq-hud__punto--dos" />
-          <span className="maq-hud__titulo">GENESIS · OPS</span>
+          <span className="maq-hud__titulo">{t('GENESIS · OPS')}</span>
         </div>
         <div className="maq-hud__cuerpo">
           <svg className="maq-hud__grafica" viewBox="0 0 120 46" preserveAspectRatio="none">

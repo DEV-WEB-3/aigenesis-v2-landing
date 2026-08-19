@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
 import {
@@ -15,6 +16,7 @@ interface Props { isActive?: boolean }
 
 const SceneMarketplace = forwardRef<HTMLElement, Props>(
   function SceneMarketplace({ isActive = false }, ref) {
+    const t = useT()
     return (
       <SceneWrapper
         ref={ref}
@@ -58,7 +60,9 @@ const SceneMarketplace = forwardRef<HTMLElement, Props>(
           o tarjeta vale más que saber que son tres.
         */}
         <motion.p variants={slideLeft} className="text-lg leading-relaxed max-w-lg text-genesis-mist">
-          Catálogo global con envío internacional. Se paga con AIG, USDT o tarjeta.
+          {t(
+            'Catálogo global con envío internacional. Se paga con AIG, USDT o tarjeta.'
+          )}
         </motion.p>
 
         <motion.div variants={containerV} className="grid grid-cols-2 gap-4">

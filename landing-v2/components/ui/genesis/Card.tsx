@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import type { ReactNode } from 'react'
 import { Heading, HeadingLevel } from './Heading'
 
@@ -97,6 +98,7 @@ export function Card({
    * ajustada del sitio y por eso se lee bien. Y es verificable: se mide como
    * alto del contenido entre alto de la caja.
    */
+  const t = useT()
   const soloRotulo = !description && !children && !label
 
   return (
@@ -121,14 +123,14 @@ export function Card({
           className
         )}
       >
-        {label ? <span className="label-section">{label}</span> : null}
+        {label ? <span className="label-section">{t(label)}</span> : null}
         {title ? (
           <Heading className={cn('font-display text-genesis-text', variantTitleClass[variant])}>
-            {title}
+            {t(title)}
           </Heading>
         ) : null}
         {description ? (
-          <p className="text-body-lg text-genesis-mist max-w-prose">{description}</p>
+          <p className="text-body-lg text-genesis-mist max-w-prose">{t(description)}</p>
         ) : null}
         {children}
       </article>

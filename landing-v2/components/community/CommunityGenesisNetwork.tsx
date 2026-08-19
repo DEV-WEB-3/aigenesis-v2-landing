@@ -1,5 +1,6 @@
 'use client'
 
+import { useT } from '@/context/IdiomaContext'
 import { COMMUNITY_FORM_S, COMMUNITY_PULSE_S } from '@/lib/community/communityNetworkLayout'
 import CommunityOrganicField from '@/components/community/CommunityOrganicField'
 import CommunityLinks from '@/components/community/CommunityLinks'
@@ -13,13 +14,15 @@ interface CommunityGenesisNetworkProps {
 }
 
 export default function CommunityGenesisNetwork({ isActive }: CommunityGenesisNetworkProps) {
+
+  const t = useT()
   const visible = useSectionVisualActive(isActive)
   if (!visible) return null
 
   return (
     <div
       className="community-genesis-network community-genesis-network--enter"
-      aria-label="Genesis Community Network"
+      aria-label={t('Genesis Community Network')}
       style={
         {
           '--community-pulse-s': `${COMMUNITY_PULSE_S}s`,
