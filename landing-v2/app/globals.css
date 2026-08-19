@@ -9146,12 +9146,31 @@ body {
       convertian en 21 px de desborde de la seccion entera. Un minimo no impide
       crecer; para que no crezca hay que decir cuanto mide.
     */
-    height: min(80vh, 830px, var(--alto-hueco));
+    height: min(76vh, 800px, var(--alto-hueco));
     min-height: 0;
     margin-left: auto;
     margin-right: auto;
     transform: translateX(-1.5%);
     pointer-events: none;
+  }
+
+  /*
+    EL CONTENEDOR DEL LIENZO MIDE LO QUE MIDE SU HUECO. NADA MAS.
+
+    Arrastraba `min-height: min(82vh, 860px)`, `max-height` y `aspect-ratio:
+    0.72` del diseno SVG anterior, cuando el dibujo tenia proporcion propia y el
+    contenedor la imponia. Con el lienzo WebGL eso ya no vale: medido, el
+    contenedor salia 860 px dentro de un hueco de 830 y, centrado, SOBRESALIA
+    15 px por arriba y otros 15 por abajo — que es de donde venia el recorte.
+
+    Solo se anula en escritorio, que es donde hay lienzo. Por debajo de 1024 px
+    manda la version SVG y sus medidas propias siguen haciendo falta.
+  */
+  #technology.technology-section-layout .technology-genesis-stack {
+    height: 100%;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: auto;
   }
 }
 

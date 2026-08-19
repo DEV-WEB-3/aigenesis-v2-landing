@@ -198,7 +198,17 @@ export const SUELO_Y = -1.15
  */
 export const CAMARA = {
   fov: 30,
-  distancia: 25.5,
+  /*
+   * 30 y no 25,5. MEDIDO sobre la captura: el dibujo ocupaba el 99,6 % del alto
+   * del lienzo y 108 pixeles encendidos TOCABAN el borde inferior — o sea que la
+   * placa base salia cortada. Una pieza que llega justo al borde no se lee como
+   * grande: se lee como mal encuadrada.
+   *
+   * Alejando la camara a 30, el alto visible pasa de 13,7 a 16,1 unidades de
+   * escena para un contenido de 13,7: queda un 15 % de aire repartido arriba y
+   * abajo, y la maquina deja de pelearse con su marco.
+   */
+  distancia: 30,
   /*
    * 10°, NO 17,5°.
    *
