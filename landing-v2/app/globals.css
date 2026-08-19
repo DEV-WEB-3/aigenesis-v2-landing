@@ -9136,17 +9136,29 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   LA ARQUITECTURA DE GENESIS — cinco estratos que arrancan
+   LA MAQUINA GENESIS — cinco subsistemas con reloj propio
    ═══════════════════════════════════════════════════════════
 
    La seccion tiene que contar, sin leer una palabra, que hay una MAQUINA
    debajo. Por eso el arranque va de ABAJO ARRIBA: backend despierta, la
-   corriente sube por la columna y solo al final aparece lo que el usuario toca.
-   Al reves seria un adorno; en este orden es una afirmacion — las aplicaciones
-   existen sobre una infraestructura real.
+   corriente sube y solo al final aparece lo que el usuario toca. Al reves seria
+   un adorno; en este orden es una afirmacion — las aplicaciones existen sobre
+   una infraestructura real.
 
-   Todo lo que se mueve es `opacity` y `transform`, mas `animateMotion` para los
-   datos que suben. Nada repinta por cuadro.
+   DOS RELOJES, A PROPOSITO
+   ------------------------
+   El LATIDO DEL SISTEMA (8 s) es lo unico coreografiado: el nucleo emite y la
+   orden recorre los cinco de abajo arriba, 0,3 s por escalon. Todo lo demas
+   corre a su propio reloj —4,8 · 5,6 · 6,4 · 7,2 · 8 · 9,6 s— y por eso la
+   maquina no se repite: los seis relojes vuelven a coincidir a los 34 minutos.
+   Si los seis latieran a 8 s el conjunto se leeria como una coreografia, y una
+   maquina coreografiada no parece que funcione: parece que actua.
+
+   PRESUPUESTO
+   -----------
+   Solo se anima `transform`, `opacity` y un `stroke-dashoffset`. Nada de
+   `width`, `height`, `top` ni `left`. Los cientos de nodos de detalle —trazas,
+   ventanillas, racks, bloques— son ESTATICOS: dan la piel, no el movimiento.
 */
 #technology .arq {
   position: absolute;
@@ -9164,10 +9176,10 @@ body {
   vistazo.
 
   LAS CANTIDADES SON UNIDADES DE `viewBox`, NO PIXELES DE PANTALLA. En un
-  elemento SVG el `px` de un `transform` de CSS vale una unidad de usuario: con
-  un lienzo de 120 dibujado en 490 px, cada unidad son ~4 px reales. Por eso
+  elemento SVG el `px` de un transform de CSS vale una unidad de usuario: con
+  un lienzo de 160 dibujado en 490 px, cada unidad son ~3 px reales. Por eso
   `1.5` ya es un gesto visible y no un detalle: pedir «6 px» habria movido el
-  nucleo 24.
+  nucleo 18.
 
   El fondo va al REVES que el frente. Es lo que convierte el gesto en
   profundidad y no en un balanceo del conjunto entero.
@@ -9191,13 +9203,26 @@ body {
   transform: translate(calc(var(--arq-px, 0) * 1.5px), calc(var(--arq-py, 0) * 0.9px));
 }
 
-/* ── el arranque, estrato a estrato ─────────────────────────── */
-#technology .arq__estrato {
+/* ── SECUENCIA DE ARRANQUE ──────────────────────────────────
+   Placa base → cinco modulos (150 ms de escalon) → nucleo → modulos
+   flotantes → lecturas. Aprox. 1,5 s en total. Los escalones son RETARDOS y no
+   duraciones: es el mecanismo que la rejilla de tempo recomienda para separar
+   cosas iguales sin que deriven unas de otras. */
+#technology .arq__estrato,
+#technology .arq__placa-base,
+#technology .arq__nucleo,
+#technology .arq__hud,
+#technology .arq__interludio {
   transform-box: fill-box;
   transform-origin: center;
   animation: arq-arranca var(--arq-llegada-s, 1.2s) cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: var(--capa-retardo, 0s);
 }
+
+#technology .arq__placa-base { animation-delay: 0s; }
+#technology .arq__estrato { animation-delay: var(--capa-retardo, 0s); }
+#technology .arq__interludio { animation-delay: var(--capa-retardo, 0.6s); }
+#technology .arq__nucleo { animation-delay: var(--arq-nucleo-retardo, 0.95s); }
+#technology .arq__hud { animation-delay: var(--hud-retardo, 1.1s); }
 
 #technology .arq__canto,
 #technology .arq__tapa {
@@ -9215,53 +9240,205 @@ body {
 }
 
 /*
-  AUTOCHEQUEO. Cada cierto tiempo una onda recorre los cinco de abajo arriba y
-  cada anillo responde con un halo breve. No es decoracion: es la maquina
-  comprobando su propio estado, y por eso el retardo respeta el mismo orden que
-  el arranque.
+  EL LATIDO DEL SISTEMA. Cada 8 s el nucleo emite y la orden sube. Cada modulo
+  responde 0,3 s despues del de abajo, asi que el recorrido completo dura 1,2 s
+  dentro de un ciclo de 8: el 85 % del tiempo esto no existe. Un evento, no un
+  estado — que es justo la diferencia entre un latido y un parpadeo.
 */
-#technology .arq__escaneo {
+#technology .arq__latido {
   transform-box: fill-box;
   transform-origin: center;
   opacity: 0;
-  animation: arq-escaneo var(--arq-escaneo-s, 8s) ease-out infinite;
-  animation-delay: var(--capa-retardo, 0s);
+  animation: arq-latido var(--arq-ciclo-s, 8s) ease-out infinite;
+  animation-delay: var(--capa-ciclo-retardo, 0s);
 }
 
-/* los indicadores vivos del canto laten; los apagados se quedan quietos */
-#technology .arq__puerto--vivo {
-  animation: arq-puerto var(--arq-pulso-s, 4s) ease-in-out infinite;
+/* los indicadores vivos laten a SU capa, no a la del vecino */
+#technology .arq__puerto--vivo,
+#technology .arq__ventanilla--viva {
+  animation: arq-puerto var(--capa-latido, 8s) ease-in-out infinite;
 }
 
-#technology .arq__conducto {
-  opacity: 0.5;
-}
+/* ── LA COLUMNA DE ENERGIA ──────────────────────────────────
+   Cuatro capas: aura, haz, barrido y cuerpos. Ninguna sustituye a otra —el
+   aura da volumen, el haz da nitidez, el barrido da direccion y los cuerpos
+   dan velocidad—, y quitar cualquiera deja la columna leyendose como una
+   linea. */
+#technology .arq__conducto { opacity: 0.55; }
 
 #technology .arq__conducto-halo {
   opacity: 0.16;
   animation: arq-conducto var(--arq-dato-s, 8s) ease-in-out infinite;
 }
 
-#technology .arq__suelo {
-  animation: arq-suelo var(--arq-escaneo-s, 8s) ease-in-out infinite;
+/*
+  El unico `stroke-dashoffset` animado del portal, y esta justificado: son
+  decenas de marcas subiendo por la columna. Como cuerpos costarian decenas de
+  nodos; como trazo discontinuo cuesta uno.
+*/
+#technology .arq__conducto-scan {
+  animation: arq-scan var(--arq-dato-s, 8s) linear infinite;
 }
 
-/* ── el nucleo: levita, no rebota ───────────────────────────── */
-#technology .arq__nucleo-cuerpo {
+/*
+  LA RESPUESTA DESCENDENTE. `animateMotion` la mueve; esto la enciende solo
+  mientras viaja. Sin la parte de opacidad se quedaria visible y quieta en el
+  extremo inferior durante 13 de cada 16 segundos, que es peor que no tenerla.
+*/
+#technology .arq__dato-baja {
+  opacity: 0;
+  animation: arq-respuesta var(--arq-respuesta-s, 16s) linear infinite;
+}
+
+#technology .arq__suelo-barrido {
+  animation: arq-suelo var(--arq-ciclo-s, 8s) ease-in-out infinite;
+}
+
+#technology .arq__interludio {
+  animation-name: arq-arranca, arq-interludio;
+  animation-duration: var(--arq-llegada-s, 1.2s), 9.6s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease-in-out;
+  animation-iteration-count: 1, infinite;
+  animation-fill-mode: both, none;
+}
+
+/* ── EL GENESIS CORE ────────────────────────────────────────
+   Levita, gira opticamente y emite. Tres movimientos independientes sobre tres
+   elementos distintos: si fueran uno solo, la levitacion arrastraria el giro y
+   el conjunto se leeria como una peonza. */
+#technology .arq__nucleo {
+  animation-name: arq-arranca, arq-levita;
+  animation-duration: var(--arq-llegada-s, 1.2s), var(--arq-nucleo-s, 9.6s);
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease-in-out;
+  animation-iteration-count: 1, infinite;
+  animation-fill-mode: both, none;
+  animation-delay: 0.95s, 0.95s;
+}
+
+#technology .arq__marca {
   transform-box: fill-box;
   transform-origin: center;
-  animation: arq-levita var(--arq-anillo-s, 32s) ease-in-out infinite;
+  animation: arq-orbita var(--arq-anillo-s, 32s) linear infinite;
+}
+
+/* brillo de cristal: recorre la camara y desaparece. Un cristal no brilla
+   siempre — brilla cuando la luz lo cruza. */
+#technology .arq__camara-brillo {
+  opacity: 0;
+  mix-blend-mode: screen;
+  animation: arq-cristal var(--arq-nucleo-s, 9.6s) ease-in-out infinite;
+}
+
+#technology .arq__nucleo-punto {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: arq-chispa 1.6s ease-in-out infinite;
 }
 
 #technology .arq__nucleo-halo {
-  animation: arq-nucleo-halo var(--arq-pulso-s, 4s) ease-in-out infinite;
+  animation: arq-nucleo-halo var(--arq-nucleo-s, 9.6s) ease-in-out infinite;
+}
+
+/* la emision: el aro que sale del nucleo y arranca el latido del sistema */
+#technology .arq__nucleo-pulso,
+#technology .arq__nucleo-emision {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation: arq-emision var(--arq-ciclo-s, 8s) ease-out infinite;
 }
 
 #technology .arq__sosten {
   animation: arq-sosten var(--arq-dato-s, 8s) ease-in-out infinite;
 }
 
-/* ── tipografia de la maquina ───────────────────────────────── */
+/* ── MAQUINARIA DE CADA SUBSISTEMA ──────────────────────────
+   Cada uno responde a SU reloj, pasado por `--capa-latido` y por
+   `animation-duration` en linea desde el componente. */
+#technology .arq__servicio,
+#technology .arq__consenso,
+#technology .arq__panel {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-name: arq-responde;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+
+#technology .arq__nodo-vivo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-name: arq-puerto;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+/* IA: entra, converge, sale. La asimetria —cuatro entran, una sale— es lo que
+   lo lee como «procesa» y no como «circula». */
+#technology .arq__ia-entrada {
+  opacity: 0;
+  animation-name: arq-ia-entra;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+#technology .arq__ia-pulso {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation-name: arq-ia-pulso;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+
+#technology .arq__ia-salida {
+  opacity: 0;
+  animation-name: arq-ia-sale;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* blockchain: el arco que confirma. Se dibuja con `stroke-dasharray` sobre el
+   propio recorrido de la cadena, asi que confirma exactamente el tramo que la
+   transaccion acaba de recorrer. */
+#technology .arq__confirmacion {
+  opacity: 0;
+  stroke-dasharray: 60;
+  animation-name: arq-confirma;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+
+#technology .arq__barra {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation-name: arq-barra;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+#technology .arq__paquete {
+  filter: none;
+}
+
+/* ── MODULOS FLOTANTES ──────────────────────────────────────
+   Cada uno con su reloj y su signo de deriva: si los tres flotaran igual se
+   leerian como un bloque pegado, no como tres objetos en el mismo espacio. */
+#technology .arq__hud {
+  animation-name: arq-arranca, arq-flota;
+  animation-duration: var(--arq-llegada-s, 1.2s), var(--hud-reloj, 7.2s);
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease-in-out;
+  animation-iteration-count: 1, infinite;
+  animation-fill-mode: both, none;
+  animation-delay: var(--hud-retardo, 1.1s), var(--hud-retardo, 1.1s);
+}
+
+#technology .arq__hud-linea {
+  stroke-dasharray: 40;
+  animation: arq-traza 7.2s ease-in-out infinite;
+}
+
+/* ── TIPOGRAFIA DE LA MAQUINA ───────────────────────────────── */
 #technology .arq__rotulo {
   font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
   font-size: 2.2px;
@@ -9272,8 +9449,9 @@ body {
 
 #technology .arq__nucleo-marca {
   font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 5px;
+  font-size: 4.4px;
   font-weight: 700;
+  dominant-baseline: middle;
 }
 
 #technology .arq__lectura-titulo {
@@ -9295,8 +9473,9 @@ body {
   y compiten con la columna de texto. Apareciendo por hover, la maquina se lee
   sola y el detalle se pide.
 
-  En pantallas sin puntero fino —tactiles— se muestran siempre: alli no hay
-  hover que valga y ocultar el texto seria perderlo.
+  En pantallas sin puntero fino —tactiles— no hay hover que valga: alli se
+  esconden del todo y cada capa se identifica por color, glifo y maquinaria, que
+  es exactamente para lo que se dibujo la maquinaria.
 */
 #technology .arq__lectura {
   opacity: 0;
@@ -9304,51 +9483,73 @@ body {
   pointer-events: none;
 }
 
+#technology .arq__lectura-aro {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  #technology .arq__estrato:hover .arq__lectura {
-    opacity: 1;
+  #technology .arq__estrato:hover .arq__lectura { opacity: 1; }
+
+  /* el nodo de la lectura late solo mientras su capa esta seleccionada */
+  #technology .arq__estrato:hover .arq__lectura-aro {
+    animation: arq-lectura-aro 1.6s ease-out infinite;
+  }
+
+  #technology .arq__estrato:hover .arq__lectura-guia {
+    stroke-width: 0.3;
   }
 
   /*
-    Al posarse sobre un estrato, ese se eleva un poco y los demas bajan su
+    Al posarse sobre un modulo, ese se eleva y se acerca; los demas bajan su
     intensidad. Es lo que hace que la seleccion se lea sin marcos ni tooltips.
+    1,2 unidades son ~3,6 px reales — dentro de lo que pide el concepto.
   */
   #technology .arq__estrato:hover {
-    transform: translateY(-1.2px);
+    transform: translateY(-1.2px) scale(1.015);
   }
 
-  #technology .arq:hover .arq__estrato:not(:hover) {
-    opacity: 0.55;
-  }
+  #technology .arq:hover .arq__estrato:not(:hover) { opacity: 0.55; }
 
   #technology .arq__estrato {
     transition: opacity 220ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  #technology .arq__estrato:hover .arq__canto {
-    fill-opacity: 0.2;
+  #technology .arq__estrato:hover .arq__canto { fill-opacity: 0.2; }
+  #technology .arq__estrato:hover .arq__tapa { stroke-width: 0.5; }
+
+  /*
+    EL CONTRATO ES PARTE DE LA MAQUINA.
+
+    Al posarse sobre la direccion del smart contract en la columna de texto, la
+    capa BLOCKCHAIN responde. Es la unica relacion explicita entre el marco
+    teorico y el dibujo, y existe porque esa direccion NO es un dato decorativo:
+    es el contrato que la capa valida.
+  */
+  #technology[data-arq-sc='1'] .arq__estrato--blockchain .arq__tapa {
+    stroke-width: 0.62;
   }
 
-  #technology .arq__estrato:hover .arq__tapa {
-    stroke-width: 0.5;
+  #technology[data-arq-sc='1'] .arq__estrato--blockchain .arq__latido {
+    animation: arq-latido 0.8s ease-out;
+  }
+
+  #technology[data-arq-sc='1'] .arq__sc-pulso {
+    animation: arq-sc-viaja 0.8s ease-in both;
   }
 }
 
+/* el paquete del contrato no existe hasta que se pide */
+#technology .arq__sc-pulso { opacity: 0; }
+
 @media (hover: none), (pointer: coarse) {
-  #technology .arq__lectura {
-    opacity: 0.9;
-  }
+  #technology .arq__lectura { display: none; }
 }
 
 @keyframes arq-arranca {
-  from {
-    opacity: 0;
-    transform: translateY(5px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(5px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes arq-orbita {
@@ -9356,19 +9557,18 @@ body {
 }
 
 /*
-  La onda dura poco y espera mucho: una comprobacion es un instante, no un
-  estado. Con `ease-out` y este reparto, el 88 % del ciclo el anillo esta en
-  reposo.
+  El latido dura poco y espera mucho: una orden es un instante, no un estado.
+  Con este reparto, el 85 % del ciclo el aro no existe.
 */
-@keyframes arq-escaneo {
-  0% { opacity: 0; transform: scale(0.94); }
-  6% { opacity: 0.7; transform: scale(1); }
-  16% { opacity: 0; transform: scale(1.1); }
-  100% { opacity: 0; transform: scale(1.1); }
+@keyframes arq-latido {
+  0% { opacity: 0; transform: scale(0.9); }
+  5% { opacity: 0.85; transform: scale(1); }
+  15% { opacity: 0; transform: scale(1.12); }
+  100% { opacity: 0; transform: scale(1.12); }
 }
 
 @keyframes arq-puerto {
-  0%, 100% { opacity: 0.35; }
+  0%, 100% { opacity: 0.3; }
   50% { opacity: 1; }
 }
 
@@ -9377,24 +9577,168 @@ body {
   50% { opacity: 0.3; }
 }
 
+@keyframes arq-scan {
+  to { stroke-dashoffset: -32; }
+}
+
+@keyframes arq-respuesta {
+  0% { opacity: 0; }
+  2% { opacity: 0.9; }
+  14% { opacity: 0.9; }
+  17%, 100% { opacity: 0; }
+}
+
 @keyframes arq-suelo {
-  0%, 100% { opacity: 0.5; }
+  0%, 100% { opacity: 0.45; }
   50% { opacity: 0.9; }
 }
 
-@keyframes arq-levita {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-1.6px) rotate(6deg); }
-}
-
-@keyframes arq-nucleo-halo {
-  0%, 100% { opacity: 0.55; }
+@keyframes arq-interludio {
+  0%, 100% { opacity: 0.7; }
   50% { opacity: 1; }
 }
 
+@keyframes arq-levita {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.4px); }
+}
+
+@keyframes arq-cristal {
+  0%, 74% { opacity: 0; }
+  82% { opacity: 0.14; }
+  92%, 100% { opacity: 0; }
+}
+
+@keyframes arq-chispa {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.5); opacity: 1; }
+}
+
+@keyframes arq-nucleo-halo {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes arq-emision {
+  0% { opacity: 0; transform: scale(0.7); }
+  4% { opacity: 0.9; }
+  16% { opacity: 0; transform: scale(1.9); }
+  100% { opacity: 0; transform: scale(1.9); }
+}
+
 @keyframes arq-sosten {
-  0%, 100% { opacity: 0.28; }
+  0%, 100% { opacity: 0.3; }
   50% { opacity: 0.7; }
+}
+
+@keyframes arq-responde {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  6% { opacity: 1; transform: scale(1.1); }
+  18% { opacity: 0.85; transform: scale(1); }
+}
+
+@keyframes arq-ia-entra {
+  0% { opacity: 0; }
+  4% { opacity: 0.9; }
+  30% { opacity: 0.9; }
+  36%, 100% { opacity: 0; }
+}
+
+@keyframes arq-ia-pulso {
+  0%, 34% { opacity: 0; transform: scale(0.5); }
+  40% { opacity: 0.9; transform: scale(1); }
+  54% { opacity: 0; transform: scale(1.7); }
+  100% { opacity: 0; transform: scale(1.7); }
+}
+
+@keyframes arq-ia-sale {
+  0%, 50% { opacity: 0; }
+  56% { opacity: 1; }
+  76% { opacity: 1; }
+  82%, 100% { opacity: 0; }
+}
+
+@keyframes arq-confirma {
+  0%, 52% { opacity: 0; stroke-dashoffset: 60; }
+  58% { opacity: 0.85; }
+  76% { opacity: 0; stroke-dashoffset: 0; }
+  100% { opacity: 0; stroke-dashoffset: 0; }
+}
+
+@keyframes arq-barra {
+  0%, 100% { transform: scaleY(1); }
+  40% { transform: scaleY(0.55); }
+  70% { transform: scaleY(1.25); }
+}
+
+@keyframes arq-flota {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(calc(var(--hud-deriva, 1) * -1.2px)); }
+}
+
+@keyframes arq-traza {
+  0% { stroke-dashoffset: 40; }
+  40%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes arq-lectura-aro {
+  0% { opacity: 0.8; transform: scale(0.6); }
+  100% { opacity: 0; transform: scale(1.6); }
+}
+
+@keyframes arq-sc-viaja {
+  0% { opacity: 0; transform: translateX(-18px); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(0); }
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────
+   No es «quitar cosas»: es decidir QUE sobra cuando el dibujo se hace pequeno.
+   Lo primero que deja de leerse son los detalles de 0,3 unidades —trazas de la
+   placa, ventanillas, estructuras suspendidas—, que a esa escala ya no aportan
+   textura sino ruido. Lo ultimo que se toca es la identidad de las capas. */
+@media (max-width: 1279px) {
+  #technology .arq__huds,
+  #technology .arq__interludios { display: none; }
+  #technology .arq__placa-base { opacity: 0.55; }
+}
+
+@media (max-width: 900px) {
+  #technology .arq__ventanillas,
+  #technology .arq__sub .arq__paquete { display: none; }
+  /* la placa base se reduce a sus aros: las trazas a esta escala son ruido */
+  #technology .arq__placa-base polyline,
+  #technology .arq__placa-base rect { display: none; }
+
+  /*
+    LA ETIQUETA SE VA; EL ICONO SE QUEDA.
+
+    Medido a 429 px de ancho: el rotulo caia a 4,7 px de altura de caja. Un
+    texto que no se lee sigue costando pixeles, sigue tapando la maquinaria y
+    —aqui el visual va DETRAS del parrafo— convierte el fondo en un diagrama
+    ilegible compitiendo con el texto que si se lee.
+
+    El icono a 0,2 de escala mide 10 px reales y sigue identificando la capa,
+    que es exactamente lo que el concepto pide conservar en movil.
+  */
+  /*
+    HIJO DIRECTO, no descendiente. `.arq__placa rect` alcanzaba tambien los
+    `<rect>` de DENTRO del glifo: el icono de INFRAESTRUCTURA —tres rectangulos
+    y nada mas— desaparecia entero, y el de APLICACIONES perdia su marco.
+    Medido: 0x0 px. Un selector de descendiente sobre SVG barre mas de lo que
+    parece, porque el icono vive dentro de la misma pastilla que quiero quitar.
+  */
+  #technology .arq__placa > rect,
+  #technology .arq__rotulo { display: none; }
+
+  /* 0,32 y no 0,2: medido, a 0,2 el icono quedaba en 6 px y a esa altura no
+     identifica nada. A 0,32 mide 10-11 px reales y si se reconoce. */
+  #technology .arq__glifo {
+    transform: translate(var(--glifo-cx, 0), var(--glifo-cy, 0)) scale(0.32);
+  }
+
+  /* nucleo simplificado: la camara exterior y las escuadras no se distinguen */
+  #technology .arq__camara polygon:first-of-type { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -9402,35 +9746,90 @@ body {
     Con movimiento reducido la maquina se queda ENCENDIDA y quieta. No se
     esconde: quitarle la animacion de arranque sin mas la dejaria en su primer
     fotograma —opacidad 0— y la arquitectura entera desapareceria justo para
-    quien pidio menos movimiento.
+    quien pidio menos movimiento. Los modulos flotantes, el nucleo y la placa
+    base siguen visibles; lo unico que se apaga es el movimiento.
   */
-  #technology .arq__estrato,
-  #technology .arq__orbita,
-  #technology .arq__escaneo,
-  #technology .arq__puerto--vivo,
-  #technology .arq__conducto-halo,
-  #technology .arq__suelo,
-  #technology .arq__nucleo-cuerpo,
-  #technology .arq__nucleo-halo,
-  #technology .arq__capa,
-  #technology .arq__sosten,
-  #technology .arq__dato {
+  #technology .arq *,
+  #technology .arq {
     animation: none !important;
   }
 
-  #technology .arq__estrato {
+  #technology .arq__estrato,
+  #technology .arq__placa-base,
+  #technology .arq__nucleo,
+  #technology .arq__hud,
+  #technology .arq__interludio,
+  #technology .arq__conducto,
+  #technology .arq__conducto-halo {
     opacity: 1;
+    transform: none;
   }
 
-  #technology .arq__escaneo {
+  /* los eventos son eventos: sin movimiento, no ocurren */
+  #technology .arq__latido,
+  #technology .arq__escaneo,
+  #technology .arq__dato-baja,
+  #technology .arq__ia-entrada,
+  #technology .arq__ia-pulso,
+  #technology .arq__ia-salida,
+  #technology .arq__confirmacion,
+  #technology .arq__nucleo-pulso,
+  #technology .arq__nucleo-emision,
+  #technology .arq__camara-brillo,
+  #technology .arq__sc-pulso {
     opacity: 0;
   }
 
-  /* el paralaje no se anima: se apaga. La variable deja de escribirse desde el
-     gancho, pero la neutralizacion explicita evita depender de ello. */
   #technology .arq__capa {
     transform: none;
     transition: none;
+  }
+}
+
+/* ── LA COLUMNA DE TEXTO HABLA CON LA MAQUINA ────────────────
+   Dos interacciones, y las dos existen porque el dato es real: la direccion del
+   contrato senala a la capa que lo valida, y las cifras se revelan una sola vez
+   al llegar. */
+#technology .tech-contrato {
+  transition: color 200ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #technology .tech-contrato:hover .font-mono {
+    color: var(--g-emission-violet-hi, #9D4DFF);
+    text-shadow: 0 0 8px rgba(157, 77, 255, 0.45);
+  }
+}
+
+/*
+  REVELACION DE LAS CIFRAS — barrido, no contador.
+
+  Un `count up` sobre «99.9%» funciona, pero sobre «<200ms» y «24/7» no hay nada
+  que contar: habria que animar una de las tres y dejar dos quietas, o inventar
+  numeros que no significan nada. El barrido revela las tres igual porque lo que
+  revela es el DATO, no su magnitud.
+
+  Ocurre una vez: la clase la pone un pestillo que ya no se quita.
+*/
+#technology .tech-cifra {
+  display: inline-block;
+}
+
+#technology .tech-cifras--revelada .tech-cifra {
+  clip-path: inset(0 100% 0 0);
+  animation: tech-cifra-barre 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--cifra-retardo, 0s);
+}
+
+@keyframes tech-cifra-barre {
+  from { clip-path: inset(0 100% 0 0); opacity: 0.2; }
+  to { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #technology .tech-cifras--revelada .tech-cifra {
+    animation: none;
+    clip-path: none;
   }
 }
 

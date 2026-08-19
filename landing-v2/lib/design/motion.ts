@@ -224,6 +224,41 @@ export const PULSOS_ADMITIDOS = [2, 4, 8] as const
 export const LLEGADAS_ADMITIDAS = [0.8, 1.2, 1.6] as const
 
 /**
+ * LATIDOS — la tercera serie, y la unica que rompe a proposito la regla de
+ * «misma duracion, distinto retardo».
+ *
+ * POR QUE EXISTE
+ * --------------
+ * `desfase` separa elementos IGUALES: doce nodos del mismo tipo que no deben
+ * latir a la vez. Funciona porque son intercambiables, y mantenerlos en fase con
+ * el portal es una virtud.
+ *
+ * Una maquina compuesta de SUBSISTEMAS DISTINTOS es otro problema. Si el motor
+ * de IA, el consenso de blockchain y el enrutado de infraestructura respiran
+ * todos cada 8 s —aunque empiecen en momentos distintos—, el conjunto se lee
+ * como una coreografia: cinco piezas obedeciendo a un director. Y una maquina
+ * coreografiada no parece que funcione, parece que actua. La vida esta
+ * justamente en que cada subsistema tenga su propio reloj.
+ *
+ * POR QUE ESTOS NUMEROS Y NO 4,7 · 5,8 · 6,5 · 7,2 · 9
+ * ----------------------------------------------------
+ * Los cinco son multiplos EXACTOS de 0,8 s —la unidad de tempo del portal—:
+ * 6 · 7 · 8 · 9 · 12 unidades. Eso conserva lo que la rejilla protege (todo
+ * sigue midiendose en la misma unidad) y concede lo que la maquina necesita
+ * (que deriven entre si).
+ *
+ * La diferencia con el desorden que este archivo elimino no es de forma sino de
+ * cierre: 4 · 4,65 · 5,3 no vuelven a coincidir JAMAS porque no comparten
+ * unidad. Estos vuelven a coincidir a los 2016 s —unos 34 minutos—, asi que hay
+ * deriva percibida sin deriva real. Nadie mira la seccion 34 minutos; el ojo
+ * solo registra que nada se repite.
+ *
+ * Es una excepcion DECLARADA y acotada a una maquina con subsistemas
+ * heterogeneos. Un grupo de elementos iguales sigue separandose con `desfase`.
+ */
+export const LATIDOS_ADMITIDOS = [4.8, 5.6, 6.4, 7.2, 9.6] as const
+
+/**
  * LLEGADA DEL CONTENIDO — el texto, no la figura.
  *
  * `LLEGADA_S` describe cuanto tarda LA MATERIA en formar la figura de la

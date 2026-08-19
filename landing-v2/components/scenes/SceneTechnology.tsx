@@ -1,6 +1,6 @@
 'use client'
 
-import { forwardRef } from 'react'
+import { forwardRef, useEffect, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { SectionHeader } from '@/components/ui/genesis'
 import {
@@ -23,6 +23,35 @@ interface Props { isActive?: boolean }
 
 const SceneTechnology = forwardRef<HTMLElement, Props>(
   function SceneTechnology({ isActive = false }, ref) {
+    /*
+     * LAS CIFRAS SE REVELAN UNA VEZ, Y SE QUEDAN.
+     *
+     * Un contador que se reinicia cada vez que vuelves a la seccion deja de ser
+     * un dato y pasa a ser un adorno: a la tercera pasada el visitante ya no lo
+     * lee, lo espera. El pestillo hace que la revelacion ocurra en la primera
+     * visita y nunca mas — despues, las cifras estan simplemente ahi.
+     */
+    const [cifrasVistas, setCifrasVistas] = useState(false)
+    useEffect(() => {
+      if (isActive) setCifrasVistas(true)
+    }, [isActive])
+
+    /*
+     * EL CONTRATO SENALA A SU CAPA.
+     *
+     * La bandera se pone en la SECCION y no se pasa por props: el dibujo vive
+     * en `particleSlot`, que es un hermano, y llevar el estado hasta alli
+     * obligaria a subirlo a `SceneWrapper` —comun a las catorce secciones— por
+     * una interaccion que solo tiene esta. Un atributo en el ancestro comun es
+     * la via mas corta que no contamina a las otras trece.
+     */
+    const marcarContrato = useCallback((activo: boolean) => (ev: React.SyntheticEvent) => {
+      const seccion = ev.currentTarget.closest('section')
+      if (!seccion) return
+      if (activo) seccion.dataset.arqSc = '1'
+      else delete seccion.dataset.arqSc
+    }, [])
+
     return (
       <SceneWrapper
         ref={ref}
@@ -57,7 +86,14 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
           ))}
         </motion.div>
 
-        <motion.div variants={slideLeft} className="flex flex-col gap-1">
+        <motion.div
+          variants={slideLeft}
+          className="flex flex-col gap-1 tech-contrato"
+          onPointerEnter={marcarContrato(true)}
+          onPointerLeave={marcarContrato(false)}
+          onFocus={marcarContrato(true)}
+          onBlur={marcarContrato(false)}
+        >
           <span className="text-xs text-genesis-ghost uppercase tracking-widest">Smart Contract</span>
           <div className="flex items-center gap-3">
             <span className="text-sm font-mono text-genesis-mist">0xC1F076...E2a4</span>
@@ -79,10 +115,16 @@ const SceneTechnology = forwardRef<HTMLElement, Props>(
           </div>
         </motion.div>
 
-        <motion.div variants={slideLeft} className="flex gap-10">
-          {STATS.map(({ value, label }) => (
+        <motion.div
+          variants={slideLeft}
+          className={`flex gap-10 tech-cifras${cifrasVistas ? ' tech-cifras--revelada' : ''}`}
+        >
+          {STATS.map(({ value, label }, i) => (
             <div key={label} className="flex flex-col gap-1">
-              <span className="text-2xl font-bold text-genesis-text font-display">
+              <span
+                className="text-2xl font-bold text-genesis-text font-display tech-cifra"
+                style={{ '--cifra-retardo': `${(i * 0.15).toFixed(2)}s` } as React.CSSProperties}
+              >
                 {value}
               </span>
               <span className="text-xs text-genesis-ghost uppercase tracking-wider">{label}</span>

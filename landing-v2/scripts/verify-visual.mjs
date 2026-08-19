@@ -84,6 +84,10 @@ function construirRejilla() {
   const t = readFileSync(FUENTE_MOTION, 'utf8')
   const pulsos = leerLista(t, 'PULSOS_ADMITIDOS')
   const llegadas = leerLista(t, 'LLEGADAS_ADMITIDAS')
+  // La tercera serie: los relojes propios de los subsistemas de una maquina.
+  // Se lee igual que las otras dos — si manana se anade o quita un latido, esta
+  // guarda lo aprende sola en vez de mentir en verde.
+  const latidos = leerLista(t, 'LATIDOS_ADMITIDOS')
   const paralaje = leerObjeto(t, 'PARALAJE')
 
   // Las dos excepciones declaradas del portal. Se leen igual que lo demas: si
@@ -96,7 +100,7 @@ function construirRejilla() {
     throw new Error('verify-visual: no encuentro LLEGADA_PRIMERA_PINTURA_S')
   }
 
-  return [...new Set([...pulsos, ...llegadas, ...paralaje, establecimiento, primeraPintura])]
+  return [...new Set([...pulsos, ...llegadas, ...latidos, ...paralaje, establecimiento, primeraPintura])]
     .sort((a, b) => a - b)
 }
 

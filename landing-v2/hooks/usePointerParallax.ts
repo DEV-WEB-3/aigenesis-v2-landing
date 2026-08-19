@@ -52,19 +52,44 @@ export function usePointerParallax(
     let px = 0
     let py = 0
 
+    /*
+     * LA CAJA SE CACHEA. NO se mide en cada `pointermove`.
+     *
+     * Medido con una traza del navegador: leer `getBoundingClientRect()` dentro
+     * del manejador provoca un REFLUJO FORZADO en cada evento. `pointermove`
+     * dispara decenas de veces por cuadro, y cada lectura obliga al navegador a
+     * recalcular la maquetacion que las animaciones acaban de invalidar. Es el
+     * patron clasico de layout thrashing, y aqui lo pagaba una seccion con 500
+     * nodos.
+     *
+     * La caja solo cambia al redimensionar o al desplazarse; ahi se refresca, y
+     * no una vez por movimiento del raton.
+     */
+    let cajaX = 0
+    let cajaY = 0
+    let semiAncho = 0
+    let semiAlto = 0
+
+    const medirZona = () => {
+      const c = zona.getBoundingClientRect()
+      semiAncho = c.width / 2
+      semiAlto = c.height / 2
+      cajaX = c.left + semiAncho
+      cajaY = c.top + semiAlto
+    }
+
     const pintar = () => {
       nodo.style.setProperty('--arq-px', px.toFixed(3))
       nodo.style.setProperty('--arq-py', py.toFixed(3))
     }
 
     const alMover = (ev: PointerEvent) => {
-      const caja = zona.getBoundingClientRect()
-      if (caja.width <= 0 || caja.height <= 0) return
+      if (semiAncho <= 0 || semiAlto <= 0) return
       // −1..1 desde el centro, recortado: fuera de la seccion no se sigue empujando
-      px = Math.max(-1, Math.min(1, (ev.clientX - (caja.left + caja.width / 2)) / (caja.width / 2)))
-      py = Math.max(-1, Math.min(1, (ev.clientY - (caja.top + caja.height / 2)) / (caja.height / 2)))
-      // Un solo repintado por cuadro. `pointermove` dispara decenas de veces por
-      // cuadro y escribir la variable en cada uno invalida el estilo otras tantas.
+      px = Math.max(-1, Math.min(1, (ev.clientX - cajaX) / semiAncho))
+      py = Math.max(-1, Math.min(1, (ev.clientY - cajaY) / semiAlto))
+      // Un solo repintado por cuadro: escribir la variable en cada evento
+      // invalidaria el estilo decenas de veces por cuadro.
       cancelAnimationFrame(rafRef.current)
       rafRef.current = requestAnimationFrame(pintar)
     }
@@ -77,13 +102,24 @@ export function usePointerParallax(
       rafRef.current = requestAnimationFrame(pintar)
     }
 
+    medirZona()
     zona.addEventListener('pointermove', alMover, { passive: true })
     zona.addEventListener('pointerleave', alSalir, { passive: true })
+    win.addEventListener('resize', medirZona, { passive: true })
+    /*
+     * El desplazamiento tambien mueve la caja, y el portal se recorre por
+     * secciones: sin esto, el paralaje seguiria midiendo contra la posicion que
+     * la seccion tenia dos pantallas atras. Va en captura porque el contenedor
+     * que desplaza no es la ventana.
+     */
+    win.addEventListener('scroll', medirZona, { passive: true, capture: true })
 
     return () => {
       cancelAnimationFrame(rafRef.current)
       zona.removeEventListener('pointermove', alMover)
       zona.removeEventListener('pointerleave', alSalir)
+      win.removeEventListener('resize', medirZona)
+      win.removeEventListener('scroll', medirZona, true)
       nodo.style.removeProperty('--arq-px')
       nodo.style.removeProperty('--arq-py')
     }
