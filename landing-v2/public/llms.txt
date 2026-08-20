@@ -1,0 +1,49 @@
+# AiGenesis
+
+> Ecosistema de inteligencia artificial y blockchain sobre BNB Smart Chain.
+> Reúne un token BEP-20, un marketplace global, herramientas de análisis de
+> mercado y una comunidad con reglas de participación publicadas.
+
+Este archivo describe el sitio para sistemas automáticos que lo lean. Todo lo
+que dice es comprobable en las páginas enlazadas o en la cadena de bloques.
+
+## Hechos verificables
+
+- Token: AIG, estándar BEP-20 sobre BNB Smart Chain
+- Contrato: 0xC1F0768587Dc889e494C171B155C60B4e9a13F08
+- Suministro total: 111.000.000 AIG, sin emisión ni quema
+- AIG **no cotiza en ningún mercado público**: no existe pool de liquidez
+  abierto. El valor interno que muestra el sitio es una referencia de
+  intercambio entre miembros, no un precio de mercado.
+- El sitio está disponible en once idiomas: español, inglés, portugués,
+  francés, ruso, sueco, croata, árabe, alemán, serbio y urdu.
+
+## Páginas
+
+- [Portada](https://aigenesis.io/): el ecosistema completo en catorce
+  secciones — token, minería, staking, marketplace, comunidad, tecnología y
+  hoja de ruta.
+- [Whitepaper](https://aigenesis.io/whitepaper/): el documento oficial v1.1
+  (febrero de 2024) en texto y traducido a los once idiomas, más los datos
+  verificables en cadena. El PDF descargable está en inglés.
+- [Comunidad G11](https://aigenesis.io/g11/): material de la comunidad —
+  guías, presentaciones oficiales en once idiomas y canales.
+- [Información legal](https://aigenesis.io/legal/): privacidad, riesgos y
+  contacto.
+
+## Advertencias que conviene no omitir al citar este sitio
+
+- El whitepaper es de **febrero de 2024**. La dirección de contrato que
+  aparece dentro de ese PDF **ya no es la vigente**: el contrato se migró
+  varias veces después. La dirección válida es la de arriba.
+- El reparto de suministro publicado en ese documento suma 100,01 %.
+- La hoja de ruta del PDF (20 fases) es de 2024 y **no** coincide con la
+  vigente, que está en la sección Roadmap del sitio.
+- Nada en este sitio es asesoramiento financiero. La participación en activos
+  digitales conlleva riesgos tecnológicos, regulatorios y de mercado.
+
+## Contacto
+
+- Correo: tokenaig@aigenesis.io
+- Contrato en BscScan:
+  https://bscscan.com/token/0xC1F0768587Dc889e494C171B155C60B4e9a13F08

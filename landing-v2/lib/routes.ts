@@ -21,6 +21,8 @@ export const PAGES = {
   WHITEPAPER: '/whitepaper',
   /** Portal de habilitación de la Comunidad G11 — ver `lib/g11.ts`. */
   G11: '/g11',
+  /** Centro de ayuda — consume el corpus de `lib/soporte/`, una sola fuente. */
+  SOPORTE: '/soporte',
 } as const
 
 /**

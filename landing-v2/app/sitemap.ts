@@ -29,6 +29,8 @@ const METADATOS: Record<
   G11: { changeFrequency: 'monthly', priority: 0.7 },
   WHITEPAPER: { changeFrequency: 'monthly', priority: 0.6 },
   LEGAL: { changeFrequency: 'monthly', priority: 0.5 },
+  // El centro de ayuda crece con cada corrección del corpus de soporte.
+  SOPORTE: { changeFrequency: 'weekly', priority: 0.7 },
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -5,6 +5,7 @@ import { Space_Grotesk, Inter, IBM_Plex_Mono } from 'next/font/google'
 import { SITE_URL } from '@/lib/routes'
 import { IdiomaProvider } from '@/context/IdiomaContext'
 import SkipLink from '@/components/layout/SkipLink'
+import AvisoCookies from '@/components/consentimiento/AvisoCookies'
 import { WALLET_EXTENSION_GUARD_SCRIPT } from '@/components/layout/WalletExtensionGuard'
 import SiteAnalytics from '@/components/analytics/SiteAnalytics'
 import StructuredData from '@/components/seo/StructuredData'
@@ -169,6 +170,12 @@ export default function RootLayout({
           */}
           <SkipLink />
           {children}
+          {/*
+            Dentro del proveedor y DESPUÉS de `children`: necesita `t()` para
+            los once idiomas, y al ir después se pinta por encima sin pelear
+            con nadie por el z-index. La lección de esta semana.
+          */}
+          <AvisoCookies />
         </IdiomaProvider>
         <SiteAnalytics />
       </body>

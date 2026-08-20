@@ -12,6 +12,7 @@ import Navbar from '@/components/layout/Navbar'
 import SectionProgressDots from '@/components/ui/SectionProgressDots'
 import { WebGLBoundary, soportaWebGL } from '@/components/webgl/WebGLBoundary'
 import StaticWorldFallback from '@/components/webgl/StaticWorldFallback'
+import AsistenteFlotante from '@/components/soporte/AsistenteFlotante'
 
 /**
  * El canvas se carga sólo en cliente. Antes esto pasaba por un
@@ -185,6 +186,8 @@ function PageContent() {
       <MundoVisual sectionIndex={sectionIndex} />
       <Navbar />
       <SectionProgressDots total={TOTAL_SECTIONS} current={sectionIndex} onDotClick={scrollToSection} />
+      {/* El asistente: el mismo cerebro que /soporte, en un panel flotante. */}
+      <AsistenteFlotante />
 
       <main
         id="main-content"

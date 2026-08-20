@@ -65,17 +65,30 @@ const SceneMarketplace = forwardRef<HTMLElement, Props>(
           que la sección se sienta recargada teniendo sólo 60 palabras.
 
           El reparto ahora:
-            descripción  qué es y CÓMO se paga (nombra los tres medios)
+            descripción  qué es y CÓMO se paga (nombra los medios vigentes)
             fichas       lo que no es un número: proveedor y capacidad
             métricas     los números, y sólo ellos
 
-          Se retiró además la métrica «3 MÉTODOS DE PAGO»: contar tres cuando la
-          frase de arriba ya los NOMBRA no añade nada — saber que son AIG, USDT
-          o tarjeta vale más que saber que son tres.
+          Se retiró además la métrica «3 MÉTODOS DE PAGO»: contar cuántos hay
+          cuando la frase de arriba ya los NOMBRA no añade nada — saber CUÁLES
+          son vale más que saber cuántos.
+
+          Y EL 19-AGO-2026 SE QUITÓ LA TARJETA DE ESA FRASE.
+
+          Decía «AIG, USDT o tarjeta». El owner confirmó que esta temporada la
+          tarjeta NO se ofrece, y la caja del producto sólo enseña dos formas:
+          AIG + USDT, o USDT solo. Anunciar un medio de pago que no aparece al
+          pagar no es un matiz de redacción: es la promesa que se rompe en el
+          único momento en que el visitante ya decidió comprar.
+
+          Cambiar esta frase invalidó sus diez traducciones, porque en este
+          proyecto la clave del diccionario ES el texto español. Se
+          reescribieron las diez a la vez; dejar una sin tocar habría hecho que
+          ese idioma cayera al español y siguiera prometiendo la tarjeta.
         */}
         <motion.p variants={slideLeft} className="text-lg leading-relaxed max-w-lg text-genesis-mist">
           {t(
-            'Catálogo global con envío internacional. Se paga con AIG, USDT o tarjeta.'
+            'Catálogo global con envío internacional. Se paga con AIG y USDT desde tu wallet.'
           )}
         </motion.p>
 
