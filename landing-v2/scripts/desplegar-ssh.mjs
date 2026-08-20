@@ -42,7 +42,15 @@ if (!sub) {
   console.error('Falta el valor de --destino')
   process.exit(1)
 }
-const DESTINO = `${BASE_REMOTA}/${sub}`
+/*
+ * MODO RAÍZ (20-ago-2026). El script nació cuando el sitio vivía en /nueva y
+ * la migración a la raíz lo dejó sin camino: su guarda —correctamente—
+ * rechazaba subir a /nueva un export construido para la raíz. `--destino
+ * raiz` es EXPLÍCITO a propósito: que nadie pise la raíz del dominio por un
+ * argumento olvidado.
+ */
+const esRaiz = sub === 'raiz'
+const DESTINO = esRaiz ? BASE_REMOTA : `${BASE_REMOTA}/${sub}`
 
 if (!existsSync(ORIGEN)) {
   console.error(`No existe ${ORIGEN}.`)
@@ -61,11 +69,11 @@ const indice = join(ORIGEN, 'index.html')
 const html = existsSync(indice) ? execFileSync('node', ['-e', `process.stdout.write(require('fs').readFileSync(${JSON.stringify(indice)},'utf8'))`], { encoding: 'utf8', maxBuffer: 40e6 }) : ''
 const tienePrefijo = html.includes(`"/${sub}/_next/`)
 const tieneRaiz = html.includes('"/_next/')
-if (!tienePrefijo || tieneRaiz) {
-  console.error(`La exportación de out/ NO corresponde al destino "/${sub}".`)
+if (esRaiz ? !tieneRaiz : (!tienePrefijo || tieneRaiz)) {
+  console.error(`La exportación de out/ NO corresponde al destino ${esRaiz ? 'raíz' : `"/${sub}"`}.`)
   console.error(`  rutas con /${sub}/_next/: ${tienePrefijo ? 'sí' : 'NO'}`)
-  console.error(`  rutas a la raíz /_next/:  ${tieneRaiz ? 'SÍ (mal)' : 'no'}`)
-  console.error(`Vuelve a exportar:  BASE_PATH=${sub} npm run exportar`)
+  console.error(`  rutas a la raíz /_next/:  ${tieneRaiz ? 'sí' : 'NO'}`)
+  console.error(esRaiz ? 'Vuelve a exportar SIN BASE_PATH:  npm run exportar' : `Vuelve a exportar:  BASE_PATH=${sub} npm run exportar`)
   process.exit(1)
 }
 
@@ -81,7 +89,7 @@ const bytes = archivos.reduce((s, f) => s + statSync(f).size, 0)
 
 console.log(`origen   ${ORIGEN}`)
 console.log(`destino  ${ALIAS}:~/${DESTINO}`)
-console.log(`         ${archivos.length} archivos · ${(bytes / 1048576).toFixed(1)} MB · prefijo /${sub} verificado`)
+console.log(`         ${archivos.length} archivos · ${(bytes / 1048576).toFixed(1)} MB · ${esRaiz ? "raíz verificada" : `prefijo /${sub} verificado`}`)
 
 if (simular) {
   console.log('\n(--simular) no se sube nada.')
@@ -92,9 +100,19 @@ if (simular) {
    public_html: dentro sería descargable por cualquiera. */
 const marca = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '')
 console.log('\n→ respaldando el destino si ya existe…')
+/*
+ * En modo raíz NO se respalda public_html entero: ahí conviven /nueva y otras
+ * carpetas que este despliegue no toca — empaquetarlas sería lento y
+ * engañoso. Se respalda EXACTAMENTE lo que la subida puede pisar: las
+ * entradas de primer nivel de out/ que ya existan en el servidor.
+ */
+const entradas = esRaiz ? readdirSync(ORIGEN).map((n) => `'${n}'`).join(' ') : ''
+const ordenRespaldo = esRaiz
+  ? `cd ~/${BASE_REMOTA} && existentes=$(for e in ${entradas}; do [ -e "$e" ] && printf '%s ' "$e"; done); if [ -n "$existentes" ]; then mkdir -p ~/copias && tar czf ~/copias/raiz-previo-${marca}.tar.gz $existentes && echo "   respaldado en ~/copias/raiz-previo-${marca}.tar.gz ($existentes)"; else echo "   nada que respaldar"; fi`
+  : `if [ -d ~/${DESTINO} ] && [ -n "$(ls -A ~/${DESTINO} 2>/dev/null)" ]; then mkdir -p ~/copias && tar czf ~/copias/${sub}-previo-${marca}.tar.gz -C ~/${BASE_REMOTA} ${sub} && echo "   respaldado en ~/copias/${sub}-previo-${marca}.tar.gz"; else echo "   destino vacío o inexistente: nada que respaldar"; fi`
 const previo = spawnSync(
   'ssh',
-  [ALIAS, `if [ -d ~/${DESTINO} ] && [ -n "$(ls -A ~/${DESTINO} 2>/dev/null)" ]; then mkdir -p ~/copias && tar czf ~/copias/${sub}-previo-${marca}.tar.gz -C ~/${BASE_REMOTA} ${sub} && echo "   respaldado en ~/copias/${sub}-previo-${marca}.tar.gz"; else echo "   destino vacío o inexistente: nada que respaldar"; fi`],
+  [ALIAS, ordenRespaldo],
   { encoding: 'utf8', stdio: 'inherit' }
 )
 if (previo.status !== 0) process.exit(previo.status ?? 1)

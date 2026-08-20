@@ -65,8 +65,16 @@ ${lineas.join('\n')}
 # ── URLs sin .html ──────────────────────────────────────────────────────
 # La exportación se hace con \`trailingSlash: true\`, así que cada ruta es una
 # carpeta con su \`index.html\`. Apache/LiteSpeed lo resuelven solos con
-# DirectoryIndex; esto sólo asegura el 404 propio del sitio en vez del del
-# servidor, que es una pantalla blanca ajena a la marca.
+# ── LA LÍNEA QUE HACE LA MIGRACIÓN — NO QUITAR ─────────────────────────
+# En public_html convive el index.php del WordPress antiguo. Sin esta línea,
+# el servidor lo prefiere y la portada vuelve a ser el WP viejo AUNQUE
+# index.html esté recién subido — pasó el 20-ago-2026: el despliegue pisó el
+# .htaccess con uno generado sin ella y el dominio retrocedió en silencio.
+# Este generador es la única fuente del .htaccess, así que la línea vive AQUÍ.
+DirectoryIndex index.html index.php
+
+# ErrorDocument asegura el 404 propio del sitio en vez del del servidor, que
+# es una pantalla blanca ajena a la marca.
 ErrorDocument 404 /404.html
 
 # ── Compresión ──────────────────────────────────────────────────────────
