@@ -73,6 +73,20 @@ const VACIAS = new Set([
    * mano porque ninguna estadística sobre catorce fichas las va a detectar.
    */
   'necesito', 'quiero', 'quisiera', 'saber', 'ayudenme', 'alguien', 'gente',
+  /*
+   * CONECTORES Y MULETILLAS DE CORTESÍA — segunda tanda de la misma lección,
+   * medida el 20-ago con el asistente ya vivo en el portal.
+   *
+   * «Hola, tengo una duda: mi hold aparece anclado y no baja aunque reclamo»
+   * devolvía la respuesta del P2P (3.81 contra 3.74). Las palabras que
+   * inclinaron la balanza fueron «aunque» —que está en la pregunta oficial
+   * del P2P: “aunque ya estoy dentro”— y «aparece»/«duda», que son cómo la
+   * gente ENMARCA un problema, no el problema. Un conector que puede abrir
+   * cualquier queja no señala ninguna ficha; si puntúa, es por rareza dentro
+   * de mi colección, que es exactamente el espejismo de «necesito».
+   */
+  'aunque', 'pero', 'sino', 'osea', 'entonces', 'duda', 'dudas', 'consulta',
+  'pregunta', 'aparece', 'sale', 'pasa', 'dice',
 ])
 
 function terminos(texto: string): string[] {

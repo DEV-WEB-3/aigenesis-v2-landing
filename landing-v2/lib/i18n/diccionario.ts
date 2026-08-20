@@ -2175,4 +2175,10 @@ export const DICCIONARIO: Record<string, Fila> = {
     ur: 'نہ ایکٹیویشن کا وعدہ کرتا ہے نہ نتائج کا۔ جب نہیں جانتا تو کسی فرد کے حوالے کر دیتا ہے۔',
   },
 
+  'Escribiendo…': {
+    en: 'Typing…', pt: 'A escrever…', fr: "En train d'écrire…", ru: 'Печатает…',
+    sv: 'Skriver…', hr: 'Piše…', ar: 'يكتب…', de: 'Schreibt…', sr: 'Пише…',
+    ur: 'لکھ رہا ہے…',
+  },
+
 }

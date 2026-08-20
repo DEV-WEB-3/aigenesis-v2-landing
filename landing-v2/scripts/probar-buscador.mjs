@@ -124,6 +124,21 @@ const CASOS = [
     espera: 'respuesta',
     id: 'gen-descongelar-automatico',
   },
+  {
+    /*
+     * FRASE MEDIDA EN EL PORTAL VIVO (20-ago): con «aunque», «duda» y
+     * «aparece» fuera de la puntuación, gana la ficha del hold y no la del
+     * P2P. Si este caso vuelve a rojo, alguien sacó los conectores de VACIAS.
+     */
+    consulta: 'Hola, tengo una duda: mi hold aparece anclado y no baja aunque reclamo. ¿Por qué?',
+    espera: 'respuesta',
+    categoria: 'Hold y estado de la cuenta',
+  },
+  {
+    consulta: 'Por qué mi hold del 14% sigue anclado y no baja',
+    espera: 'respuesta',
+    categoria: 'Hold y estado de la cuenta',
+  },
   /* Los que DEBEN callarse: sin relación con nada documentado. */
   {
     consulta: 'a que hora es la reunion de hoy con el equipo',
