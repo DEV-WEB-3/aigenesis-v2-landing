@@ -8,32 +8,37 @@
  * existe clave pública que verificar: verificar acá exigiría copiar el
  * SECRETKEY del legacy a Vercel, exactamente lo que la firma quería evitar.
  *
- * LA MITIGACIÓN PROPUESTA: no verificar la firma — DELEGARLA. El Bearer se
- * reenvía a un endpoint read-only de core-api; si el AWS dice 200, la
- * sesión es válida.
+ * LA MITIGACIÓN (E6 B', RESUELTA 21-ago): no verificar la firma aquí —
+ * DELEGARLA a core-api. El Bearer se reenvía server-side a
+ * `GET /api/auth/session-introspect`, que verifica la firma HS256 con el
+ * SECRETKEY (que se queda en AWS) y devuelve el userId. Ese userId FIRMADO
+ * es la identidad autoritativa; la landing no confía en el payload que
+ * decodifica.
  *
- * ⚠️ HALLAZGO FORENSE (21-ago, smoke E2E con el token real de sesión): ESTE
- * HOP NO ALCANZA. Medido: `Authorization: Bearer <jwt>` con `credentials:
- * 'omit'` (server-side no tiene cookie) → **401** en `/api/marketplace/orders`
- * Y en `/api/genesis/me`. El portal valida por COOKIE de sesión httponly,
- * no por Bearer puro — el 200 del navegador venía de la cookie same-origin,
- * no del token. Una cookie httponly no la ve el JS ni la puede reenviar el
- * backend. El módulo queda como está (el ritual es correcto), pero E6 está
- * BLOQUEADO por identidad hasta una decisión de arriba — ver el handoff:
- *   A' · copiar el SECRETKEY (HS256) a Vercel y verificar aquí — es lo que
- *        la firma quería evitar; decisión del auditor/owner.
- *   B' · core-api expone un endpoint que acepte Bearer puro para validar
- *        (cambio en prod-aligned, otro linaje).
- * NO se degrada a «confiar en el payload sin verificar»: cualquiera
- * falsificaría un userId. Sin verificación real, no hay tickets por cuenta.
+ * Historia (por qué costó): el primer hop apuntaba a `/api/marketplace/orders`,
+ * que valida por COOKIE httponly y daba 401 a un Bearer server-side (el 200
+ * del navegador era la cookie same-origin, no el token). El smoke E2E lo
+ * reveló y se abrió el introspect en prod-aligned (A' —copiar el secreto a
+ * Vercel— fue rechazada). NO se degrada a «confiar en el payload sin
+ * verificar»: cualquiera falsificaría un userId.
  * ═════════════════════════════════════════════════════════════════════════
  */
 
+/*
+ * EL HOP APUNTA AL INTROSPECT (E6 B', 21-ago — resuelto). core-api expone
+ * `GET /api/auth/session-introspect`, que VERIFICA la firma HS256 con el
+ * SECRETKEY (que se queda en AWS) y devuelve el userId. La identidad
+ * autoritativa es la que ESE 200 devuelve —firmada—, no la que decodifica
+ * la landing sin verificar. El endpoint viejo (marketplace/orders) validaba
+ * por cookie httponly y daba 401 a un Bearer server-side: por eso E6 estuvo
+ * bloqueado hasta este endpoint.
+ */
 const URL_DE_VALIDACION =
-  process.env.SOPORTE_VALIDACION_URL || 'https://g-pulse.aigenesis.io/api/marketplace/orders'
+  process.env.SOPORTE_VALIDACION_URL ||
+  'https://g-pulse.aigenesis.io/api/auth/session-introspect'
 
-/** Caché en memoria de tokens ya validados: hash → vencimiento. */
-const validados = new Map<string, number>()
+/** Caché en memoria de identidades ya validadas: hash del token → { userId, vence }. */
+const validados = new Map<string, { userId: string; vence: number }>()
 const CACHE_MS = 5 * 60 * 1000
 
 async function hashDelToken(token: string): Promise<string> {
@@ -48,24 +53,25 @@ export interface Identidad {
   userName: string
 }
 
-/** Payload del JWT SIN verificar firma — sólo se usa tras el hop en 200. */
-function leerPayload(token: string): Identidad | null {
+/*
+ * Datos de DISPLAY (wallet, userName) del payload — NO se usan para
+ * autorizar: el userId autoritativo llega firmado desde el introspect. Esto
+ * es solo para poblar la ficha sin un ida y vuelta extra.
+ */
+function displayDelPayload(token: string): { wallet: string; userName: string } {
   try {
     const crudo = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
     const p = JSON.parse(Buffer.from(crudo, 'base64').toString('utf8'))
-    const userId = String(p._id ?? '')
-    if (!/^[0-9a-f]{24}$/i.test(userId)) return null
-    if (p.exp && Date.now() / 1000 > Number(p.exp)) return null
-    return { userId, wallet: String(p.wallet ?? ''), userName: String(p.userName ?? '') }
+    return { wallet: String(p.wallet ?? ''), userName: String(p.userName ?? '') }
   } catch {
-    return null
+    return { wallet: '', userName: '' }
   }
 }
 
 /**
- * @returns la identidad si la sesión es válida; 'invalida' si el AWS dijo
- * 401; 'sin_respaldo' si el AWS no respondió (el llamador devuelve 503 —
- * honesto, no un 401 falso).
+ * @returns la identidad (con el userId FIRMADO por core-api) si la sesión es
+ * válida; 'invalida' si el introspect dijo 401; 'sin_respaldo' si no respondió
+ * (el llamador devuelve 503 honesto, no un 401 falso).
  */
 export async function validarSesion(
   authHeader: string | null
@@ -73,12 +79,12 @@ export async function validarSesion(
   const token = (authHeader ?? '').replace(/^Bearer\s+/i, '').trim()
   if (!token || token.split('.').length !== 3) return 'invalida'
 
-  const identidad = leerPayload(token)
-  if (!identidad) return 'invalida'
-
+  const display = displayDelPayload(token)
   const clave = await hashDelToken(token)
-  const vence = validados.get(clave)
-  if (vence && vence > Date.now()) return identidad
+  const cacheada = validados.get(clave)
+  if (cacheada && cacheada.vence > Date.now()) {
+    return { userId: cacheada.userId, ...display }
+  }
 
   const control = new AbortController()
   const t = setTimeout(() => control.abort(), 5000)
@@ -89,13 +95,18 @@ export async function validarSesion(
     })
     if (r.status === 401 || r.status === 403) return 'invalida'
     if (!r.ok) return 'sin_respaldo'
-    validados.set(clave, Date.now() + CACHE_MS)
-    /* la caché no crece sin fin */
+    const cuerpo = (await r.json().catch(() => null)) as { ok?: boolean; userId?: unknown } | null
+    /* El userId autoritativo: el que el introspect VERIFICÓ por firma. Sin
+       un userId válido en el 200, no hay identidad — jamás caer al payload. */
+    const userId = typeof cuerpo?.userId === 'string' ? cuerpo.userId : ''
+    if (!cuerpo?.ok || !/^[0-9a-f]{24}$/i.test(userId)) return 'invalida'
+
+    validados.set(clave, { userId, vence: Date.now() + CACHE_MS })
     if (validados.size > 2000) {
       const ahora = Date.now()
-      for (const [k, v] of Array.from(validados.entries())) if (v < ahora) validados.delete(k)
+      for (const [k, v] of Array.from(validados.entries())) if (v.vence < ahora) validados.delete(k)
     }
-    return identidad
+    return { userId, ...display }
   } catch {
     return 'sin_respaldo'
   } finally {
