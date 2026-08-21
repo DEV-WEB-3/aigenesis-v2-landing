@@ -110,6 +110,56 @@ export default function AsistenteChat({
   const pausaRef = useRef<number | undefined>(undefined)
   const finDelHilo = useRef<HTMLDivElement>(null)
 
+  /*
+   * DICTADO Y VOZ — Tren D pieza 5 (Web Speech API, $0). Opt-in por gesto:
+   * el micrófono solo escucha al pulsarlo y la lectura solo suena al
+   * pedirla. Sin soporte del navegador, los botones ni aparecen.
+   */
+  const Reconocedor =
+    typeof window !== 'undefined'
+      ? ((window as unknown as Record<string, unknown>).SpeechRecognition ??
+         (window as unknown as Record<string, unknown>).webkitSpeechRecognition)
+      : undefined
+  const hayVoz = typeof window !== 'undefined' && 'speechSynthesis' in window
+  const [grabando, setGrabando] = useState(false)
+  const reconocedorRef = useRef<{ stop: () => void } | null>(null)
+
+  const dictar = () => {
+    if (!Reconocedor) return
+    if (grabando) {
+      reconocedorRef.current?.stop()
+      return
+    }
+    const rec = new (Reconocedor as new () => {
+      lang: string
+      interimResults: boolean
+      onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript?: string }>> }) => void) | null
+      onend: (() => void) | null
+      onerror: (() => void) | null
+      start: () => void
+      stop: () => void
+    })()
+    reconocedorRef.current = rec
+    rec.lang = 'es-419'
+    rec.interimResults = false
+    rec.onresult = (e) => {
+      const dicho = Array.from(e.results, (r) => r[0]?.transcript ?? '').join(' ').trim()
+      if (dicho) setConsulta((previo) => (previo ? previo + ' ' : '') + dicho)
+    }
+    rec.onend = () => setGrabando(false)
+    rec.onerror = () => setGrabando(false)
+    setGrabando(true)
+    rec.start()
+  }
+
+  const leer = (texto: string) => {
+    if (!hayVoz) return
+    window.speechSynthesis.cancel()
+    const u = new SpeechSynthesisUtterance(texto)
+    u.lang = 'es-419'
+    window.speechSynthesis.speak(u)
+  }
+
   useEffect(() => () => window.clearTimeout(pausaRef.current), [])
 
   const alFrente = () =>
@@ -185,6 +235,16 @@ export default function AsistenteChat({
                       turno.pregunta.respuesta
                     )}
                   </p>
+                  {extrasVisibles && hayVoz && turno.pregunta ? (
+                    <button
+                      type="button"
+                      onClick={() => leer(turno.pregunta!.respuesta)}
+                      aria-label={t('Leer en voz alta')}
+                      className="mt-1.5 block text-xs text-genesis-mist transition-colors hover:text-genesis-ion"
+                    >
+                      🔊 {t('Escuchar')}
+                    </button>
+                  ) : null}
                   {extrasVisibles && turno.relacionadas.length > 0 ? (
                     <div className="mt-2 text-xs text-genesis-mist">
                       <p>{t('También suele preguntarse:')}</p>
@@ -289,6 +349,22 @@ export default function AsistenteChat({
           }`}
           lang="es"
         />
+        {Reconocedor ? (
+          <button
+            type="button"
+            onClick={dictar}
+            aria-label={grabando ? t('Detener el dictado') : t('Dictar la pregunta')}
+            className={`shrink-0 rounded-xl border transition-colors ${
+              compacto ? 'px-3 py-3 text-sm' : 'px-4 py-4'
+            } ${
+              grabando
+                ? 'animate-pulse border-red-400/70 text-genesis-text'
+                : 'border-genesis-ghost text-genesis-mist hover:border-genesis-ion'
+            }`}
+          >
+            🎙
+          </button>
+        ) : null}
         <button
           type="submit"
           className={`shrink-0 rounded-xl border border-genesis-ion text-genesis-text transition-colors hover:bg-genesis-surface ${

@@ -2181,4 +2181,25 @@ export const DICCIONARIO: Record<string, Fila> = {
     ur: 'لکھ رہا ہے…',
   },
 
+  /* ── dictado y voz (Tren D) ── */
+  'Escuchar': {
+    en: 'Listen', pt: 'Ouvir', fr: 'Écouter', ru: 'Прослушать', sv: 'Lyssna',
+    hr: 'Poslušaj', ar: 'استمع', de: 'Anhören', sr: 'Послушај', ur: 'سنیں',
+  },
+  'Leer en voz alta': {
+    en: 'Read aloud', pt: 'Ler em voz alta', fr: 'Lire à voix haute', ru: 'Прочитать вслух',
+    sv: 'Läs högt', hr: 'Pročitaj naglas', ar: 'اقرأ بصوت عالٍ', de: 'Vorlesen',
+    sr: 'Прочитај наглас', ur: 'بلند آواز میں پڑھیں',
+  },
+  'Dictar la pregunta': {
+    en: 'Dictate your question', pt: 'Ditar a pergunta', fr: 'Dicter la question',
+    ru: 'Продиктовать вопрос', sv: 'Diktera frågan', hr: 'Izgovori pitanje',
+    ar: 'أملِ سؤالك', de: 'Frage diktieren', sr: 'Издиктирај питање', ur: 'سوال بول کر لکھوائیں',
+  },
+  'Detener el dictado': {
+    en: 'Stop dictation', pt: 'Parar o ditado', fr: 'Arrêter la dictée', ru: 'Остановить диктовку',
+    sv: 'Stoppa diktering', hr: 'Zaustavi diktiranje', ar: 'أوقف الإملاء', de: 'Diktat stoppen',
+    sr: 'Заустави диктирање', ur: 'ڈکٹیشن روکیں',
+  },
+
 }
