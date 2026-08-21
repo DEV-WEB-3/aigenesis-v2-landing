@@ -155,6 +155,27 @@ const CASOS = [
     consulta: 'cuanto paga el binario por equipo',
     espera: 'derivar',
   },
+  /* Tren C pieza 2: frases textuales del canal que ANTES derivaban. */
+  {
+    consulta: 'Tarda demasiado los retiros quiero hacer demostración al instante y no he podido',
+    espera: 'respuesta',
+    id: 'gen-cuanto-tarda-reclamo',
+  },
+  {
+    consulta: 'Te abre el bacofis de Genesis?',
+    espera: 'respuesta',
+    id: 'gen-no-reconoce',
+  },
+  {
+    consulta: 'Necesito blanquear la clave',
+    espera: 'respuesta',
+    id: 'gen-olvide-contrasena',
+  },
+  {
+    consulta: 'el sistema está en mantenimiento???',
+    espera: 'respuesta',
+    id: 'gen-sistema-caido',
+  },
   /* Los que DEBEN callarse: sin relación con nada documentado. */
   {
     consulta: 'a que hora es la reunion de hoy con el equipo',

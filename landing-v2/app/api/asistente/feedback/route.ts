@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { registrarFeedback } from '../almacen'
+import { contarPeticion, registrarFeedback } from '../almacen'
 
 /*
  * FEEDBACK DEL ASISTENTE — E2 (R1). Hasta hoy el 😞😐😍 moría en el
@@ -52,7 +52,10 @@ export async function OPTIONS(req: Request) {
 export async function POST(req: Request) {
   const cors = cabecerasCors(req.headers.get('origin'))
   const ip = (req.headers.get('x-forwarded-for') ?? 'sin-ip').split(',')[0].trim()
-  if (!dentroDelTope(ip)) {
+  /* Tren C: tope real en KV con fail-soft al de memoria (ver route.ts). */
+  const enKv = await contarPeticion(ip, 'feedback').catch(() => null)
+  const pasa = enKv !== null ? enKv <= TOPE : dentroDelTope(ip)
+  if (!pasa) {
     return NextResponse.json({ error: 'demasiadas_peticiones' }, { status: 429, headers: cors })
   }
 

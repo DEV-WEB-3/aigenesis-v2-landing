@@ -54,6 +54,32 @@ async function pipeline(comandos: (string | number)[][]): Promise<unknown> {
   }
 }
 
+/*
+ * RATE-LIMIT REAL — Tren C, pieza 1 (GO del auditor, 21-ago-2026). Es el
+ * prerrequisito duro de E7, adelantado; NO habilita E7.
+ *
+ * Cuenta por IP y ventana en el KV con INCR + EXPIRE, así el tope vale
+ * entre TODAS las instancias serverless — el de memoria muere con cada
+ * instancia nueva y contra eso avisaba su propio comentario.
+ *
+ * FAIL-SOFT por contrato: si el KV no está configurado o no responde en
+ * 600 ms, esto devuelve null y el llamador cae al tope en memoria de
+ * siempre. La cortesía y el corpus JAMÁS se caen por culpa del contador.
+ */
+export async function contarPeticion(ip: string, ambito: string): Promise<number | null> {
+  if (!REGISTRO_ACTIVO) return null
+  const ventana = Math.floor(Date.now() / 60_000)
+  const clave = `tope:${ambito}:${ventana}:${ip}`
+  const r = (await pipeline([
+    ['INCR', clave],
+    /* 120 s y no 60: la clave debe sobrevivir su ventana entera aunque el
+       INCR llegue al final del minuto. Expira sola; no se acumula basura. */
+    ['EXPIRE', clave, 120],
+  ])) as { result?: number }[] | null
+  const n = Number(r?.[0]?.result)
+  return Number.isFinite(n) && n > 0 ? n : null
+}
+
 export interface EventoDeRegistro {
   ts: number
   proyecto?: string

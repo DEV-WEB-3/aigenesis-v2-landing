@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { responder } from '@/lib/soporte/buscar'
 import type { Proyecto } from '@/lib/soporte/tipos'
-import { registrarConsulta } from './almacen'
+import { contarPeticion, registrarConsulta } from './almacen'
 
 /*
  * EL ENDPOINT DEL ASISTENTE — vive en Vercel, no en el servidor del dinero.
@@ -94,7 +94,14 @@ export async function POST(req: Request) {
   const cors = cabecerasCors(req.headers.get('origin'))
   const ip = (req.headers.get('x-forwarded-for') ?? 'sin-ip').split(',')[0].trim()
 
-  if (!dentroDelTope(ip)) {
+  /*
+   * Tren C: el tope REAL cuenta en KV entre todas las instancias; si el KV
+   * no está o no responde (fail-soft), decide el tope en memoria de
+   * siempre. El asistente jamás se cae por culpa del contador.
+   */
+  const enKv = await contarPeticion(ip, 'asistente').catch(() => null)
+  const pasa = enKv !== null ? enKv <= TOPE : dentroDelTope(ip)
+  if (!pasa) {
     return NextResponse.json(
       { error: 'demasiadas_peticiones' },
       { status: 429, headers: { ...cors, 'Retry-After': '60' } }

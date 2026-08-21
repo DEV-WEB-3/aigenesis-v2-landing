@@ -70,7 +70,10 @@ export const PREGUNTAS_GENESIS: readonly Pregunta[] = [
     pregunta: 'Dice que no existe mi correo o mi wallet',
     respuesta:
       'Entra por donde te diste de alta. Si te registraste con correo y contraseña, entrar conectando la wallet no funciona, y al revés tampoco: el sistema no asocia las dos formas por su cuenta. Comprueba también que el correo sea exactamente el del alta.',
-    sinonimos: ['no existe el email', 'no reconoce mi wallet', 'no puedo iniciar sesion', 'no me deja entrar'],
+    sinonimos: [
+      'no existe el email', 'no reconoce mi wallet', 'no puedo iniciar sesion', 'no me deja entrar',
+      /* del canal real (Tren C): */ 'no puedo acceder', 'no puedo acceder a mi cuenta', 'no puedo acceder a mis cuentas', 'mis cuentas', 'backoffice', 'bacofis', 'back office', 'no me abre el backoffice',
+    ],
     fuente: 'producto',
   },
   {
@@ -80,7 +83,10 @@ export const PREGUNTAS_GENESIS: readonly Pregunta[] = [
     pregunta: 'Olvidé mi contraseña',
     respuesta:
       'Se resuelve sin ayuda de nadie: «¿Olvidaste la contraseña?» está en la propia pantalla de acceso y te manda un correo de recuperación desde una dirección de aigenesis.io. Si no llega, comprueba que escribiste el correo del alta — el sistema no avisa cuando una dirección no existe, y es a propósito, para no revelar quién tiene cuenta.',
-    sinonimos: ['recuperar contrasena', 'cambiar clave', 'perdi mi password', 'resetear contrasena'],
+    sinonimos: [
+      'recuperar contrasena', 'cambiar clave', 'perdi mi password', 'resetear contrasena',
+      /* del canal real (Tren C): */ 'blanquear la clave', 'resetear la clave', 'restablecer mi clave',
+    ],
     fuente: 'codigo',
   },
 
@@ -223,7 +229,10 @@ export const PREGUNTAS_GENESIS: readonly Pregunta[] = [
     pregunta: 'Reclamé y no ha llegado nada',
     respuesta:
       'Un reclamo puede tardar desde un minuto hasta 72 horas en llegar a tu wallet, según el caso, por procesos de verificación y seguridad. Que no aparezca al momento no significa que haya fallado, y volver a reclamar no lo acelera. Pasadas 72 horas sí es un caso: escribe con el hash, la hora y el importe.',
-    sinonimos: ['no me ha llegado', 'cuanto tarda', 'reclame y nada', 'sigue en proceso', '72 horas'],
+    sinonimos: [
+      'no me ha llegado', 'cuanto tarda', 'reclame y nada', 'sigue en proceso', '72 horas',
+      /* del canal real (Tren C): */ 'tarda demasiado', 'los retiros tardan', 'demora el retiro', 'retiro lento',
+    ],
     fuente: 'owner',
   },
   {
@@ -409,6 +418,20 @@ export const PREGUNTAS_GENESIS: readonly Pregunta[] = [
     fuente: 'porDefinir',
   },
 
+  {
+    id: 'gen-sistema-caido',
+    proyecto: 'genesis',
+    categoria: 'Acceso',
+    pregunta: 'La página no carga — ¿el sistema está en mantenimiento?',
+    respuesta:
+      'Primero descarta lo local: recarga con Ctrl+Mayús+R, prueba en una ventana de incógnito (eso descarta caché y cookies) y, si puedes, desde otra red o con datos móviles. Si desde varios lugares sigue sin cargar, probablemente sea del lado del sistema: los mantenimientos y las caídas se comunican por los canales oficiales, así que revisa ahí antes de rehacer operaciones. Y si estabas en medio de una operación de dinero, no la repitas — verifica primero en qué quedó.',
+    sinonimos: [
+      /* del canal real (Tren C): */ 'mantenimiento', 'sistema caido', 'se cayo el sistema',
+      'la pagina no carga', 'no abre la pagina', 'error del sitio', 'borrar cookies', 'borre las cookies', 'no me carga',
+    ],
+    fuente: 'producto',
+  },
+
   /* ════════════ BOOSTER Y STAKING (seed E4, 20-ago-2026) ════════════
    *
    * Lo que se puede afirmar con fuente: el CAMINO (tx on-chain → registro en
@@ -464,6 +487,7 @@ export const PREGUNTAS_GENESIS: readonly Pregunta[] = [
     sinonimos: [
       'cuanto paga el binario', 'porcentaje de referidos', 'plan de compensacion',
       'cuanto gano por equipo', 'comision del binario', 'pierna izquierda derecha',
+      /* del canal real (Tren C): */ 'reclamar binario', 'no paga el binario', 'puntos en derecha e izquierda',
     ],
     fuente: 'porDefinir',
   },
