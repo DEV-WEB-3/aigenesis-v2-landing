@@ -90,8 +90,19 @@ export interface EventoDeRegistro {
   puntos?: number
 }
 
+/*
+ * EL TRÁFICO SINTÉTICO NO ES MEMORIA (lección del 21-ago): los canarios del
+ * rate-limit —míos y del auditor— metieron 70+ entradas de ruido en el
+ * registro el primer día. Un miss inventado por una prueba se parece
+ * demasiado a una pregunta real, y el destilador (E5) comería basura.
+ * Contrato: toda sonda sintética empieza con «canario:» — ejercita el
+ * responder y el tope igual, pero no queda en la memoria.
+ */
+const ES_TRAFICO_SINTETICO = /^\s*canario\s*:/i
+
 export async function registrarConsulta(evento: EventoDeRegistro): Promise<void> {
   if (!REGISTRO_ACTIVO) return
+  if (ES_TRAFICO_SINTETICO.test(evento.consulta)) return
   const entrada = JSON.stringify({ ...evento, consulta: evento.consulta.slice(0, 200) })
   await pipeline([
     ['LPUSH', CLAVE_REGISTRO, entrada],

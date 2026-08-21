@@ -260,4 +260,16 @@ export const PREGUNTAS_GEVY: readonly Pregunta[] = [
     sinonimos: ['a quien reclamo', 'quien vende', 'garantia', 'devolucion'],
     fuente: 'owner',
   },
+
+  /* Hueco DECLARADO del registro vivo (21-ago): facturación fiscal. */
+  {
+    id: 'gevy-factura-fiscal',
+    proyecto: 'gevy',
+    categoria: 'Pagar',
+    pregunta: '¿Puedo facturar mi compra con datos fiscales?',
+    respuesta:
+      'La facturación con datos fiscales todavía no está documentada aquí, y preferimos decírtelo a improvisarte un procedimiento. Escríbenos por el canal oficial con tu usuario y el número de pedido, y el equipo te confirma qué comprobantes puede emitir para tu caso y tu país.',
+    sinonimos: ['facturar', 'factura', 'datos fiscales', 'comprobante fiscal', 'factura de mi empresa', 'necesito factura'],
+    fuente: 'porDefinir',
+  },
 ] as const

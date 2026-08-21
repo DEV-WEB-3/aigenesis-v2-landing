@@ -176,6 +176,22 @@ const CASOS = [
     espera: 'respuesta',
     id: 'gen-sistema-caido',
   },
+  /* Del REGISTRO VIVO (primera tanda dirigida por datos reales, 21-ago). */
+  {
+    consulta: 'tengo mi mineria congelada',
+    espera: 'respuesta',
+    categoria: 'Hold y estado de la cuenta',
+  },
+  {
+    consulta: 'quiero saber cual es la taza de holdeo para activar la mineria',
+    espera: 'respuesta',
+    id: 'gen-hold-cuanto',
+  },
+  {
+    /* facturación: hueco DECLARADO — deriva con la ficha porDefinir. */
+    consulta: 'quiero facturar con datos fiscales de mi empresa',
+    espera: 'derivar',
+  },
   /* Los que DEBEN callarse: sin relación con nada documentado. */
   {
     consulta: 'a que hora es la reunion de hoy con el equipo',

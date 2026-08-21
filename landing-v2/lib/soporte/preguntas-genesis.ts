@@ -110,7 +110,10 @@ export const PREGUNTAS_GENESIS: readonly Pregunta[] = [
     pregunta: 'Retiré mis AIG y la cuenta se congeló. ¿Por qué no baja lo que me piden?',
     respuesta:
       'Porque el hold NO se calcula sobre lo que tienes ahora, sino sobre lo que has minado históricamente. Sacar monedas no reduce el requisito: reduce lo que tienes para cubrirlo, y por eso la cuenta pasa a congelada. La propia pantalla lo enseña con la frase «Históricamente has minado…». Para reactivarla hay que devolver AIG hasta cubrir de nuevo el mínimo.',
-    sinonimos: ['retire y se congelo', 'saque mis aig', 'cuenta frozen', 'porque sigo congelado'],
+    sinonimos: [
+      'retire y se congelo', 'saque mis aig', 'cuenta frozen', 'porque sigo congelado',
+      /* del registro vivo (21-ago): el genero importa — «congelada» no matcheaba */ 'congelada', 'mineria congelada', 'cuenta congelada',
+    ],
     /*
      * ES LA RESPUESTA MÁS IMPORTANTE DEL ARCHIVO. Explica de una vez los 23
      * casos de cuenta congelada: casi todos son la misma persona haciendo lo
@@ -127,7 +130,10 @@ export const PREGUNTAS_GENESIS: readonly Pregunta[] = [
     pregunta: '¿Cuánto AIG tengo que mantener exactamente?',
     respuesta:
       'El 14% de lo que has minado históricamente. Sobre ese mínimo hay bandas de margen —el sistema las llama Recomendado y Óptimo— que existen para que un movimiento pequeño no te deje por debajo del límite. La cifra exacta en AIG la calcula tu propia cuenta: mírala en el panel antes de mover nada, porque depende de tu histórico y no del de nadie más.',
-    sinonimos: ['cuanto hold', 'que porcentaje', 'cuanto debo dejar', 'minimo de aig', '14%'],
+    sinonimos: [
+      'cuanto hold', 'que porcentaje', 'cuanto debo dejar', 'minimo de aig', '14%',
+      /* del registro vivo (21-ago), con su ortografia real: */ 'tasa de holdeo', 'taza de holdeo', 'porcentaje de holdeo',
+    ],
     /*
      * EL PORCENTAJE SE ESCRIBE PORQUE EL OWNER LO CONFIRMÓ (19-ago-2026), no
      * porque lo leyera en el código. La distinción importa: en el código
@@ -488,6 +494,7 @@ export const PREGUNTAS_GENESIS: readonly Pregunta[] = [
       'cuanto paga el binario', 'porcentaje de referidos', 'plan de compensacion',
       'cuanto gano por equipo', 'comision del binario', 'pierna izquierda derecha',
       /* del canal real (Tren C): */ 'reclamar binario', 'no paga el binario', 'puntos en derecha e izquierda',
+      /* del registro vivo (21-ago): */ 'plan de recompensas', 'recompensas de genesis',
     ],
     fuente: 'porDefinir',
   },
