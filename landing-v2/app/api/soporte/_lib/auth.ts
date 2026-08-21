@@ -99,7 +99,8 @@ export async function validarSesion(
     /* El userId autoritativo: el que el introspect VERIFICÓ por firma. Sin
        un userId válido en el 200, no hay identidad — jamás caer al payload. */
     const userId = typeof cuerpo?.userId === 'string' ? cuerpo.userId : ''
-    if (!cuerpo?.ok || !/^[0-9a-f]{24}$/i.test(userId)) return 'invalida'
+    /* userId = wallet (0x+40hex) o Mongo _id (24hex): el support-token lleva la wallet. */
+    if (!cuerpo?.ok || !(/^0x[0-9a-f]{40}$/i.test(userId) || /^[0-9a-f]{24}$/i.test(userId))) return 'invalida'
 
     validados.set(clave, { userId, vence: Date.now() + CACHE_MS })
     if (validados.size > 2000) {
