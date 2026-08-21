@@ -408,4 +408,76 @@ export const PREGUNTAS_GENESIS: readonly Pregunta[] = [
     ],
     fuente: 'porDefinir',
   },
+
+  /* ════════════ BOOSTER Y STAKING (seed E4, 20-ago-2026) ════════════
+   *
+   * Lo que se puede afirmar con fuente: el CAMINO (tx on-chain → registro en
+   * el servidor, con la vía de incidencias detrás). Lo que NO se afirma:
+   * porcentajes y condiciones de compensación — eso es hueco DECLARADO
+   * (`porDefinir`) hasta que el owner confirme cifras. La regla de siempre:
+   * el hueco declarado vence a la respuesta verosímil.
+   */
+  {
+    id: 'gen-booster-tras-pagar',
+    proyecto: 'genesis',
+    categoria: 'Booster y staking',
+    categoriaIncidencia: 'booster',
+    pregunta: 'Pagué el booster y no se refleja en mi cuenta',
+    respuesta:
+      'Primero: no repitas la compra ni reenvíes fondos. El pago del booster tiene dos pasos — la transacción en la cadena y el registro en el servidor — y a veces la cadena confirma antes de que el registro termine. Si el registro llega a fallar, el propio portal abre una incidencia en Soporte VIP con el hash de tu transacción para que el equipo la revise contra la cadena. Ten a mano ese hash: con él se reconstruye todo; sin él, no.',
+    sinonimos: [
+      'compre el booster y nada', 'el booster no aparece', 'pague y no se activo el paquete',
+      'compre un pack y no sale', 'booster pendiente',
+    ],
+    fuente: 'producto',
+  },
+  {
+    id: 'gen-cancelar-firma',
+    proyecto: 'genesis',
+    categoria: 'Booster y staking',
+    pregunta: 'Cancelé la firma en la wallet — ¿se cobró algo?',
+    respuesta:
+      'No. Si cancelas la firma en tu wallet, la transacción nunca sale: no se mueve nada y no hay nada que revertir. Puedes intentarlo de nuevo cuando quieras. Solo si FIRMASTE y luego algo falló vale la pena revisar: en ese caso guarda el hash de la transacción y escribe a soporte con él.',
+    sinonimos: [
+      'rechace la transaccion', 'le di cancelar en metamask', 'user rejected',
+      'cancele la firma', 'no firme al final',
+    ],
+    fuente: 'codigo',
+  },
+  {
+    id: 'gen-rebooster-que-es',
+    proyecto: 'genesis',
+    categoria: 'Booster y staking',
+    pregunta: '¿Qué es el rebooster?',
+    respuesta:
+      'Es la reinversión desde tu saldo de booster: en lugar de traer fondos nuevos desde la wallet, usas lo ya generado para reforzar el paquete. Tras confirmar, el registro sigue el mismo camino que una compra de booster — así que si algo no se refleja, aplica lo mismo: no repitas la operación y guarda el detalle de la confirmación para soporte.',
+    sinonimos: ['rebooster', 'reinvertir booster', 'reinversion del saldo', 'volver a meter lo ganado'],
+    fuente: 'codigo',
+  },
+  {
+    id: 'gen-compensacion-binario',
+    proyecto: 'genesis',
+    categoria: 'Booster y staking',
+    pregunta: '¿Cómo se calcula la compensación del binario y los equipos?',
+    respuesta:
+      'Los porcentajes y condiciones exactos del plan de compensación los confirma el equipo por los canales oficiales — preferimos no publicarte una cifra aquí sin esa confirmación, porque un número equivocado sobre tu compensación es peor que pedirte un paso más. Escríbenos por el canal oficial con tu usuario y te lo detallan sobre tu caso.',
+    sinonimos: [
+      'cuanto paga el binario', 'porcentaje de referidos', 'plan de compensacion',
+      'cuanto gano por equipo', 'comision del binario', 'pierna izquierda derecha',
+    ],
+    fuente: 'porDefinir',
+  },
+  {
+    id: 'gen-novedades',
+    proyecto: 'ecosistema',
+    categoria: 'Novedades',
+    pregunta: '¿Cuándo sale la próxima actualización o novedad?',
+    respuesta:
+      'Las fechas y novedades se anuncian únicamente por los canales oficiales del ecosistema. Si viste una fecha en otro lado, trátala con cautela: nadie fuera del equipo puede confirmarla. Cuando algo esté disponible, lo verás anunciado — y aquí se responde sobre lo que ya existe, no sobre promesas.',
+    sinonimos: [
+      'cuando sale', 'fecha de lanzamiento', 'proxima actualizacion', 'que viene ahora',
+      'nuevo proyecto', 'roadmap',
+    ],
+    fuente: 'porDefinir',
+  },
 ] as const

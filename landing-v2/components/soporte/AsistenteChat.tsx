@@ -132,7 +132,9 @@ export default function AsistenteChat({
       onTurno(
         r.tipo === 'respuesta'
           ? { q, t: 'r', id: r.pregunta.id, rel: r.relacionadas.map((p) => p.id) }
-          : { q, t: 'd', rel: r.sugerencias.map((p) => p.id) }
+          : r.tipo === 'cortesia'
+            ? { q, t: 'c', clase: r.clase }
+            : { q, t: 'd', rel: r.sugerencias.map((p) => p.id) }
       )
       alFrente()
     }, 650)
@@ -159,7 +161,16 @@ export default function AsistenteChat({
               <p className={`ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm surface-card px-4 py-2.5 text-genesis-text ${txt}`}>
                 {turno.q}
               </p>
-              {turno.tipo === 'respuesta' && turno.pregunta ? (
+              {turno.tipo === 'cortesia' && turno.mensaje ? (
+                /* Cortesía: burbuja simple y cálida — sin ficha, sin telegram. */
+                <div className={`max-w-[92%] rounded-2xl rounded-bl-sm surface-card border-genesis-ion/40 px-4 py-3 leading-relaxed text-genesis-mist ${txt}`}>
+                  {escribiendo ? (
+                    <MaquinaDeEscribir texto={turno.mensaje} onFin={() => { setEscrituraLista(true); alFrente() }} />
+                  ) : (
+                    turno.mensaje
+                  )}
+                </div>
+              ) : turno.tipo === 'respuesta' && turno.pregunta ? (
                 <div className="max-w-[92%] rounded-2xl rounded-bl-sm surface-card border-genesis-ion/40 px-4 py-3">
                   <p className={`font-semibold text-genesis-text ${compacto ? 'text-sm' : ''}`}>
                     {turno.pregunta.pregunta}

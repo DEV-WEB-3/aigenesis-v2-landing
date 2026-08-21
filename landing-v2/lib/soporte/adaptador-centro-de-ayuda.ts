@@ -76,6 +76,11 @@ export function responderComoAsistente(
     return { body: `${r.pregunta.respuesta}${cola}`, agent: ASISTENTE, derivar: false }
   }
 
+  /* Cortesía (E1): un saludo se contesta como saludo, no como derivación. */
+  if (r.tipo === 'cortesia') {
+    return { body: r.mensaje, agent: ASISTENTE, derivar: false }
+  }
+
   /*
    * DERIVACIÓN. El texto dice POR QUÉ no se responde, y no se disculpa de
    * más: «no te lo puedo confirmar» es información útil; «lo siento mucho,

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { responder } from '@/lib/soporte/buscar'
 import type { Proyecto } from '@/lib/soporte/tipos'
+import { registrarConsulta } from './almacen'
 
 /*
  * EL ENDPOINT DEL ASISTENTE — vive en Vercel, no en el servidor del dinero.
@@ -121,10 +122,25 @@ export async function POST(req: Request) {
       : undefined
 
   /*
-   * La respuesta viaja con su tipo (`respuesta` | `derivar`) tal cual sale
-   * del cerebro. El cliente NO decide si se supo responder: lo decide el
-   * corpus, igual que en la página. Un cliente que maquille el `derivar`
-   * estaría rompiendo el contrato de honestidad en su lado.
+   * La respuesta viaja con su tipo (`respuesta` | `derivar` | `cortesia`)
+   * tal cual sale del cerebro. El cliente NO decide si se supo responder: lo
+   * decide el corpus, igual que en la página. Un cliente que maquille el
+   * `derivar` estaría rompiendo el contrato de honestidad en su lado.
    */
-  return NextResponse.json(responder(consulta, proyecto), { headers: cors })
+  const r = responder(consulta, proyecto)
+
+  /*
+   * R1 — LA MEMORIA (E2): cada consulta queda en el registro con su
+   * resultado. Sin PII (ni la IP del tope entra aquí). Con tope de tiempo
+   * interno y catch: registrar jamás puede romper ni demorar el responder.
+   */
+  await registrarConsulta({
+    ts: Date.now(),
+    proyecto,
+    consulta,
+    resultado: r.tipo,
+    id: r.tipo === 'respuesta' ? r.pregunta.id : r.tipo === 'cortesia' ? r.clase : undefined,
+  }).catch(() => {})
+
+  return NextResponse.json(r, { headers: cors })
 }

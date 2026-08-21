@@ -1,4 +1,5 @@
 import { TODAS_LAS_PREGUNTAS } from './buscar'
+import { RESPUESTAS_DE_CORTESIA, type ClaseDeCortesia } from './cortesia'
 import type { Pregunta } from './tipos'
 
 /*
@@ -39,12 +40,14 @@ const MAX_CONVERSACIONES = 20
 export interface TurnoGuardado {
   /** Lo que tecleó la persona. */
   q: string
-  /** 'r' = hubo respuesta del corpus · 'd' = derivación. */
-  t: 'r' | 'd'
+  /** 'r' = respuesta del corpus · 'd' = derivación · 'c' = cortesía (E1). */
+  t: 'r' | 'd' | 'c'
   /** ID de la pregunta del corpus que respondió (si t === 'r'). */
   id?: string
   /** IDs de relacionadas / sugerencias, para repintarlas. */
   rel?: readonly string[]
+  /** Clase de cortesía (si t === 'c') — el texto se rehidrata, no se copia. */
+  clase?: ClaseDeCortesia
 }
 
 export interface Conversacion {
@@ -57,9 +60,11 @@ export interface Conversacion {
 /** Turno listo para pintar: con la Pregunta real del corpus, rehidratada. */
 export interface TurnoVivo {
   q: string
-  tipo: 'respuesta' | 'derivar'
+  tipo: 'respuesta' | 'derivar' | 'cortesia'
   pregunta?: Pregunta
   relacionadas: readonly Pregunta[]
+  /** Texto de cortesía rehidratado desde `cortesia.ts` (si tipo === 'cortesia'). */
+  mensaje?: string
 }
 
 const porId = new Map(TODAS_LAS_PREGUNTAS.map((p) => [p.id, p]))
@@ -107,6 +112,11 @@ export function rehidratar(turnos: readonly TurnoGuardado[]): TurnoVivo[] {
       .map((id) => porId.get(id))
       .filter((p): p is Pregunta => Boolean(p))
     if (t.t === 'r' && pregunta) return { q: t.q, tipo: 'respuesta', pregunta, relacionadas }
+    /* Cortesía: mismo principio que el corpus — se guarda la clase y el texto
+       se rehidrata del módulo vivo. Una clase desconocida degrada a derivación. */
+    if (t.t === 'c' && t.clase && RESPUESTAS_DE_CORTESIA[t.clase]) {
+      return { q: t.q, tipo: 'cortesia', mensaje: RESPUESTAS_DE_CORTESIA[t.clase], relacionadas: [] }
+    }
     return { q: t.q, tipo: 'derivar', relacionadas }
   })
 }
@@ -117,6 +127,14 @@ export function rehidratar(turnos: readonly TurnoGuardado[]): TurnoVivo[] {
 
 export type Valoracion = 'no' | 'medio' | 'si'
 
+/*
+ * E2 (R1): además del localStorage, el feedback viaja al registro del
+ * ecosistema — fire-and-forget: si la red falla, la persona ni se entera y
+ * lo local queda igual. La copia de Hostinger es estática, así que la URL es
+ * absoluta al despliegue de Vercel (el mismo que sirve al portal).
+ */
+const URL_FEEDBACK = 'https://aigenesis-landing.vercel.app/api/asistente/feedback'
+
 export function guardarFeedback(preguntaId: string, valor: Valoracion): void {
   if (!hayVentana()) return
   try {
@@ -125,6 +143,16 @@ export function guardarFeedback(preguntaId: string, valor: Valoracion): void {
     localStorage.setItem(CLAVE_FEEDBACK, JSON.stringify(f))
   } catch {
     /* sin persistencia no se rompe nada */
+  }
+  try {
+    void fetch(URL_FEEDBACK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ preguntaId, valor }),
+      keepalive: true,
+    }).catch(() => {})
+  } catch {
+    /* fire-and-forget de verdad */
   }
 }
 

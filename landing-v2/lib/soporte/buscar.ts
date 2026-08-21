@@ -2,6 +2,7 @@ import type { Pregunta, Proyecto } from './tipos'
 import { PREGUNTAS_GENESIS } from './preguntas-genesis'
 import { PREGUNTAS_GEVY } from './preguntas-gevy'
 import { PREGUNTAS_GPULSE } from './preguntas-gpulse'
+import { clasificarCortesia, RESPUESTAS_DE_CORTESIA, type ClaseDeCortesia } from './cortesia'
 
 /**
  * EL BUSCADOR DE SOPORTE.
@@ -226,8 +227,20 @@ export function buscar(
 export type Respuesta =
   | { tipo: 'respuesta'; pregunta: Pregunta; relacionadas: readonly Pregunta[] }
   | { tipo: 'derivar'; motivo: string; sugerencias: readonly Pregunta[] }
+  | { tipo: 'cortesia'; clase: ClaseDeCortesia; mensaje: string }
 
 export function responder(consulta: string, proyecto?: Proyecto): Respuesta {
+  /*
+   * CORTESÍA ANTES QUE RETRIEVAL (E1). Un «hola» puro no es una pregunta que
+   * no entendimos: es un saludo, y se contesta como tal. La condición es
+   * estricta — saludo SIN contenido —, así que «hola, mi hold…» sigue yendo
+   * al corpus exactamente igual que antes.
+   */
+  const clase = clasificarCortesia(normalizar(consulta))
+  if (clase) {
+    return { tipo: 'cortesia', clase, mensaje: RESPUESTAS_DE_CORTESIA[clase] }
+  }
+
   const encontrados = buscar(consulta, { proyecto, limite: 4 })
   const mejor = encontrados[0]
 

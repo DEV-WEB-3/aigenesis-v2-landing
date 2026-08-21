@@ -139,14 +139,57 @@ const CASOS = [
     espera: 'respuesta',
     categoria: 'Hold y estado de la cuenta',
   },
+  /* Seed E4 (20-ago): booster/staking documentados, compensación DECLARADA. */
+  {
+    consulta: 'compre el booster y no aparece en mi cuenta',
+    espera: 'respuesta',
+    id: 'gen-booster-tras-pagar',
+  },
+  {
+    consulta: 'le di cancelar en metamask, se me cobro algo?',
+    espera: 'respuesta',
+    id: 'gen-cancelar-firma',
+  },
+  {
+    /* porDefinir: el hueco declarado DERIVA — jamás inventa un porcentaje. */
+    consulta: 'cuanto paga el binario por equipo',
+    espera: 'derivar',
+  },
   /* Los que DEBEN callarse: sin relación con nada documentado. */
   {
     consulta: 'a que hora es la reunion de hoy con el equipo',
     espera: 'derivar',
   },
+  /*
+   * CORTESÍA (E1): la expectativa de «hola buenas tardes» CAMBIA de derivar a
+   * cortesia — un saludo no es una pregunta que no entendimos. La condición
+   * es estricta: saludo con contenido sigue yendo al corpus (control abajo).
+   */
   {
     consulta: 'hola buenas tardes',
-    espera: 'derivar',
+    espera: 'cortesia',
+  },
+  {
+    consulta: 'Hola!!',
+    espera: 'cortesia',
+  },
+  {
+    consulta: 'muchas gracias muy amable',
+    espera: 'cortesia',
+  },
+  {
+    consulta: 'adios, hasta luego',
+    espera: 'cortesia',
+  },
+  {
+    consulta: 'como estas?',
+    espera: 'cortesia',
+  },
+  {
+    /* CONTROL: saludo + contenido NO es cortesía — va al corpus. */
+    consulta: 'buenas, tengo 3 usdt y no me deja reclamar',
+    espera: 'respuesta',
+    id: 'gen-reclamar-minimo',
   },
 ]
 
@@ -154,7 +197,7 @@ let fallos = 0
 for (const caso of CASOS) {
   const r = responder(caso.consulta)
   let ok = r.tipo === caso.espera
-  let detalle = r.tipo === 'respuesta' ? r.pregunta.id : 'derivar'
+  let detalle = r.tipo === 'respuesta' ? r.pregunta.id : r.tipo
 
   if (ok && r.tipo === 'respuesta') {
     if (caso.id && r.pregunta.id !== caso.id) ok = false

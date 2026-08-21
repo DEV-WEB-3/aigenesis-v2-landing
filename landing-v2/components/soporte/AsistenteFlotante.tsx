@@ -159,6 +159,11 @@ export default function AsistenteFlotante() {
     const r = responder(q)
     if (r.tipo === 'respuesta') {
       abrirArticulo(r.pregunta)
+    } else if (r.tipo === 'cortesia') {
+      /* Un saludo escrito en el buscador: al chat, saludado como se debe. */
+      setConv(nuevaConversacion())
+      irA('chat')
+      alTurno({ q, t: 'c', clase: r.clase })
     } else {
       /* Sin acierto claro: al chat, que sabe derivar con honestidad. */
       setConv(nuevaConversacion())
