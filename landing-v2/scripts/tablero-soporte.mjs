@@ -45,7 +45,7 @@ const datos = await r.json()
 const limpio = (datos.registro ?? []).filter((e) => Number(e.ts) >= DESDE)
 const excluidas = (datos.registro ?? []).length - limpio.length
 
-const conteo = { respuesta: 0, derivar: 0, cortesia: 0 }
+const conteo = { respuesta: 0, derivar: 0, cortesia: 0, hibrida: 0 }
 const misses = new Map()
 const hits = new Map()
 for (const e of limpio) {
@@ -56,7 +56,7 @@ for (const e of limpio) {
   }
   if (e.resultado === 'respuesta' && e.id) hits.set(e.id, (hits.get(e.id) ?? 0) + 1)
 }
-const total = conteo.respuesta + conteo.derivar + conteo.cortesia
+const total = conteo.respuesta + conteo.derivar + conteo.cortesia + conteo.hibrida
 const pct = (n) => (total ? `${((100 * n) / total).toFixed(1)}%` : '—')
 
 const feedback = new Map()
@@ -81,6 +81,12 @@ w(`|---|---|---|`)
 w(`| Corpus (respuesta) | ${conteo.respuesta} | ${pct(conteo.respuesta)} |`)
 w(`| Derivar | ${conteo.derivar} | ${pct(conteo.derivar)} |`)
 w(`| Cortesía | ${conteo.cortesia} | ${pct(conteo.cortesia)} |`)
+w(`| Híbrida (API) | ${conteo.hibrida} | ${pct(conteo.hibrida)} |`)
+w()
+/* E9 — LA LÍNEA DE CONVERGENCIA: el compilado debe crecer y la API decrecer.
+   Meta de régimen estable (plan del owner): corpus ≥ 85%. */
+const compilado = conteo.respuesta + conteo.cortesia
+w(`**Convergencia (E9):** compilado ${pct(compilado)} · API ${pct(conteo.hibrida)} · derivar ${pct(conteo.derivar)} — meta: compilado ≥ 85%`)
 w()
 w(`## Top misses (la lista de la próxima tanda E4 / insumo E5)`)
 if (topMisses.length === 0) w(`_Sin misses en la ventana — nada que accionar._`)

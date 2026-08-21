@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
-import { responder } from '@/lib/soporte/buscar'
+import { responder, type Respuesta } from '@/lib/soporte/buscar'
 import type { Proyecto } from '@/lib/soporte/tipos'
 import { contarPeticion, registrarConsulta } from './almacen'
+import { consultarHibrido, HIBRIDO_ACTIVO, type RespuestaHibrida } from './hibrido'
 
 /*
  * EL ENDPOINT DEL ASISTENTE — vive en Vercel, no en el servidor del dinero.
@@ -137,17 +138,37 @@ export async function POST(req: Request) {
   const r = responder(consulta, proyecto)
 
   /*
+   * E7 — EL HÍBRIDO: solo cuando el corpus DERIVÓ, y solo si la doble
+   * puerta está abierta (env + clave). Si el modelo no supera sus tres
+   * validaciones (JSON, cita real, guarda de lenguaje), se deriva igual
+   * que siempre — el usuario jamás ve un error del modelo.
+   */
+  let final: Respuesta | RespuestaHibrida = r
+  if (r.tipo === 'derivar' && HIBRIDO_ACTIVO) {
+    const h = await consultarHibrido(consulta, proyecto).catch(() => null)
+    if (h) final = h
+  }
+
+  /*
    * R1 — LA MEMORIA (E2): cada consulta queda en el registro con su
    * resultado. Sin PII (ni la IP del tope entra aquí). Con tope de tiempo
    * interno y catch: registrar jamás puede romper ni demorar el responder.
+   * `hibrida` cuenta aparte: es la línea del tablero de convergencia (E9).
    */
   await registrarConsulta({
     ts: Date.now(),
     proyecto,
     consulta,
-    resultado: r.tipo,
-    id: r.tipo === 'respuesta' ? r.pregunta.id : r.tipo === 'cortesia' ? r.clase : undefined,
+    resultado: final.tipo,
+    id:
+      final.tipo === 'respuesta'
+        ? final.pregunta.id
+        : final.tipo === 'cortesia'
+          ? final.clase
+          : final.tipo === 'hibrida'
+            ? final.citas.join(',')
+            : undefined,
   }).catch(() => {})
 
-  return NextResponse.json(r, { headers: cors })
+  return NextResponse.json(final, { headers: cors })
 }

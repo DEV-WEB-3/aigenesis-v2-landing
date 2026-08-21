@@ -84,7 +84,7 @@ export interface EventoDeRegistro {
   ts: number
   proyecto?: string
   consulta: string
-  resultado: 'respuesta' | 'derivar' | 'cortesia'
+  resultado: 'respuesta' | 'derivar' | 'cortesia' | 'hibrida'
   /** id de la ficha (hit) o clase de cortesía. */
   id?: string
   puntos?: number
