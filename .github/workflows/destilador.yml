@@ -1,0 +1,57 @@
+# EL DESTILADOR (E5) — EN SECO hasta el GO del auditor (~28-ago-2026).
+#
+# Qué hace HOY (dry-run): corre el tablero contra el registro vivo y publica
+# el digest de misses como artifact — el insumo que el humano y, con GO, el
+# modelo van a leer. NO llama a ninguna API de pago: el paso del modelo está
+# doblemente gateado (variable DESTILADOR_ACTIVO + secret ANTHROPIC_API_KEY,
+# hoy inexistentes los dos).
+#
+# Encendido (solo tras GO E5): setear la var DESTILADOR_ACTIVO=1 y el secret
+# ANTHROPIC_API_KEY (con límite de gasto en la consola de Anthropic), y
+# activar el schedule descomentándolo. El prompt aprobado vive en
+# scripts/destilador/PROMPT.md — el GO aprueba ESE texto.
+name: destilador
+on:
+  workflow_dispatch: {}
+  # schedule:            # ← se descomenta SOLO con el GO de E5
+  #   - cron: '17 6 * * *'
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Tablero (ventana limpia) → digest de misses
+        working-directory: landing-v2
+        env:
+          ASISTENTE_REGISTRO_CLAVE: ${{ secrets.ASISTENTE_REGISTRO_CLAVE }}
+        run: |
+          node scripts/tablero-soporte.mjs --md tablero-del-dia.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tablero-del-dia
+          path: landing-v2/tablero-del-dia.md
+          retention-days: 30
+
+  modelo:
+    needs: digest
+    runs-on: ubuntu-latest
+    # DOBLE PUERTA: sin la variable Y el secret, este job ni arranca.
+    if: ${{ vars.DESTILADOR_ACTIVO == '1' }}
+    steps:
+      - name: Guardia de la clave
+        env:
+          TIENE_CLAVE: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+        run: |
+          if [ "$TIENE_CLAVE" != "true" ]; then
+            echo "DESTILADOR_ACTIVO=1 pero sin ANTHROPIC_API_KEY — nada que hacer."
+            exit 1
+          fi
+      - name: Batch API + PR de candidatas (pendiente de implementación con el GO)
+        run: |
+          echo "Implementación del paso del modelo: llega CON el GO de E5,"
+          echo "usando scripts/destilador/PROMPT.md tal cual fue aprobado."
+          exit 1
