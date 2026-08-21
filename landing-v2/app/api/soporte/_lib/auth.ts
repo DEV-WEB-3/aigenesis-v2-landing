@@ -8,16 +8,24 @@
  * existe clave pública que verificar: verificar acá exigiría copiar el
  * SECRETKEY del legacy a Vercel, exactamente lo que la firma quería evitar.
  *
- * LA MITIGACIÓN: no verificamos la firma — la DELEGAMOS. El Bearer se
- * reenvía a un endpoint YA autenticado y de solo lectura de core-api
- * (`/api/marketplace/orders`): si el AWS dice 200, la sesión es válida, y
- * la identidad se lee del payload del MISMO token que el AWS acaba de
- * aceptar. El secreto nunca sale de casa; el que verifica es quien siempre
- * verificó.
+ * LA MITIGACIÓN PROPUESTA: no verificar la firma — DELEGARLA. El Bearer se
+ * reenvía a un endpoint read-only de core-api; si el AWS dice 200, la
+ * sesión es válida.
  *
- * Trade-off dicho: los tickets dependen de que core-api responda. Volumen
- * de tickets ≈ mínimo, la llamada es GET de lo propio, y hay caché de
- * validación (5 min por token) para no golpear al AWS por cada mensaje.
+ * ⚠️ HALLAZGO FORENSE (21-ago, smoke E2E con el token real de sesión): ESTE
+ * HOP NO ALCANZA. Medido: `Authorization: Bearer <jwt>` con `credentials:
+ * 'omit'` (server-side no tiene cookie) → **401** en `/api/marketplace/orders`
+ * Y en `/api/genesis/me`. El portal valida por COOKIE de sesión httponly,
+ * no por Bearer puro — el 200 del navegador venía de la cookie same-origin,
+ * no del token. Una cookie httponly no la ve el JS ni la puede reenviar el
+ * backend. El módulo queda como está (el ritual es correcto), pero E6 está
+ * BLOQUEADO por identidad hasta una decisión de arriba — ver el handoff:
+ *   A' · copiar el SECRETKEY (HS256) a Vercel y verificar aquí — es lo que
+ *        la firma quería evitar; decisión del auditor/owner.
+ *   B' · core-api expone un endpoint que acepte Bearer puro para validar
+ *        (cambio en prod-aligned, otro linaje).
+ * NO se degrada a «confiar en el payload sin verificar»: cualquiera
+ * falsificaría un userId. Sin verificación real, no hay tickets por cuenta.
  * ═════════════════════════════════════════════════════════════════════════
  */
 
