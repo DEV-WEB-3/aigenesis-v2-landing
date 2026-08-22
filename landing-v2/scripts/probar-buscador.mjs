@@ -208,6 +208,13 @@ const CASOS = [
   { consulta: 'como publico liquidez para vender', espera: 'respuesta', id: 'op-depositar-liquidez' },
   { consulta: 'como tomo una oferta en el p2p', espera: 'respuesta', id: 'op-tomar-oferta' },
   { consulta: 'donde esta mi dinero no cuadra el saldo', espera: 'respuesta', id: 'op-donde-esta-mi-dinero' },
+  /* G-Pulse (3ª tanda, verificado en código): membresías propias, pago dual, modos. */
+  { consulta: 'cuanto cuesta la membresia de gpulse', espera: 'respuesta', id: 'gpm-membresias' },
+  { consulta: 'con que monedas pago gpulse', espera: 'respuesta', id: 'gpm-pago-dual' },
+  { consulta: 'gpulse tiene modo manual y automatico', espera: 'respuesta', id: 'gpm-modos' },
+  { consulta: 'necesito membresia para entrar a gpulse', espera: 'respuesta', id: 'gpm-acceso-membresia' },
+  { consulta: 'gpulse tiene referidos', espera: 'respuesta', id: 'gpm-sin-plan-compensacion' },
+  { consulta: 'se me vencio la membresia de gpulse', espera: 'respuesta', id: 'gpm-membresia-vencida' },
   /* Los que DEBEN callarse: sin relación con nada documentado. */
   {
     consulta: 'a que hora es la reunion de hoy con el equipo',

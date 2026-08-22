@@ -51,6 +51,7 @@ export const PREGUNTAS_MANUALES: readonly Pregunta[] = [
       'como activo la mineria', 'activar mineria', 'como mino', 'como empiezo a minar', 'comprar pack',
       'como funciona la mineria', 'aig mining', 'paso a paso mineria', 'como se activa el minado',
       'cuanto rinde la mineria', 'el 250%', 'hasta cuanto mina',
+      'taza de holdeo para minar', 'holdeo para activar la mineria', 'tasa de holdeo para la mineria',
     ],
     fuente: 'landing',
   },
