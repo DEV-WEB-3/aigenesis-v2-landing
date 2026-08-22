@@ -185,13 +185,23 @@ const CASOS = [
   {
     consulta: 'quiero saber cual es la taza de holdeo para activar la mineria',
     espera: 'respuesta',
-    id: 'gen-hold-cuanto',
+    id: 'man-activar-mineria',
   },
   {
     /* facturación: hueco DECLARADO — deriva con la ficha porDefinir. */
     consulta: 'quiero facturar con datos fiscales de mi empresa',
     espera: 'derivar',
   },
+  /* Base ampliada (22-ago): token/tokenomics + manuales paso a paso. */
+  { consulta: 'cuantos aig hay en total', espera: 'respuesta', id: 'tok-supply' },
+  { consulta: 'cual es el contrato oficial del aig', espera: 'respuesta', id: 'tok-contrato' },
+  { consulta: 'como activo la mineria paso a paso', espera: 'respuesta', id: 'man-activar-mineria' },
+  { consulta: 'como activo el booster', espera: 'respuesta', id: 'man-activar-booster' },
+  { consulta: 'como hago staking de mis aig', espera: 'respuesta', id: 'man-activar-staking' },
+  { consulta: 'como reclamo mis recompensas', espera: 'respuesta', id: 'man-reclamar' },
+  { consulta: 'paso a paso para unirme al ecosistema', espera: 'respuesta', id: 'man-como-unirse' },
+  { consulta: 'que son los rangos del start al g11', espera: 'respuesta', id: 'man-rangos' },
+  { consulta: 'es una estafa aigenesis', espera: 'respuesta', id: 'tok-no-es-financiera' },
   /* Los que DEBEN callarse: sin relación con nada documentado. */
   {
     consulta: 'a que hora es la reunion de hoy con el equipo',
