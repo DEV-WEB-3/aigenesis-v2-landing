@@ -202,6 +202,12 @@ const CASOS = [
   { consulta: 'paso a paso para unirme al ecosistema', espera: 'respuesta', id: 'man-como-unirse' },
   { consulta: 'que son los rangos del start al g11', espera: 'respuesta', id: 'man-rangos' },
   { consulta: 'es una estafa aigenesis', espera: 'respuesta', id: 'tok-no-es-financiera' },
+  /* Operaciones de dinero (2ª tanda, 22-ago) — el dato clave: retirar no pide firma. */
+  { consulta: 'como retiro mi liquidez del p2p', espera: 'respuesta', id: 'op-retirar-liquidez' },
+  { consulta: 'retire y no me abrio metamask', espera: 'respuesta', id: 'op-retirar-liquidez' },
+  { consulta: 'como publico liquidez para vender', espera: 'respuesta', id: 'op-depositar-liquidez' },
+  { consulta: 'como tomo una oferta en el p2p', espera: 'respuesta', id: 'op-tomar-oferta' },
+  { consulta: 'donde esta mi dinero no cuadra el saldo', espera: 'respuesta', id: 'op-donde-esta-mi-dinero' },
   /* Los que DEBEN callarse: sin relación con nada documentado. */
   {
     consulta: 'a que hora es la reunion de hoy con el equipo',
