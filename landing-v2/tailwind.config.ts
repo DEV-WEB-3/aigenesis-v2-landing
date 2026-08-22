@@ -1,4 +1,5 @@
 import { EMISSION, INK, STATE, VOID } from './lib/design/tokens'
+import { G1 } from './lib/design/g1'
 import type { Config } from 'tailwindcss'
 
 /**
@@ -48,6 +49,10 @@ const config: Config = {
           orbInner: VOID.raised,
           orbGlow: EMISSION.magenta,
           energyLine: 'rgba(233, 30, 139, 0.35)',
+        },
+        /* G1 — sub-marca de la alianza. Solo el acento propio; el resto hereda `genesis.*`. */
+        g1: {
+          amber: G1.amber,
         },
       },
       fontFamily: {
