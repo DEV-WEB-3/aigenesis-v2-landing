@@ -221,6 +221,13 @@ const CASOS = [
   { consulta: 'que es genesis y cual es su vision', espera: 'respuesta', id: 'eco-vision-genesis' },
   { consulta: 'que es el plan g11', espera: 'respuesta', id: 'eco-plan-g11' },
   { consulta: 'como se que es oficial cuales son las fuentes verificables', espera: 'respuesta', id: 'eco-canales-oficiales' },
+  /* Alianza Aitech One (Aitech + Genesis + TAG): productos y usabilidad del AiG. */
+  { consulta: 'que es aitech one y la alianza con genesis', espera: 'respuesta', id: 'ali-aitech-one' },
+  { consulta: 'para que sirve el aig en la alianza donde lo uso', espera: 'respuesta', id: 'ali-aig-usabilidad' },
+  { consulta: 'que es bit1 el exchange', espera: 'respuesta', id: 'ali-bit1' },
+  { consulta: 'que es bix o bixcard la tarjeta', espera: 'respuesta', id: 'ali-bixcard' },
+  { consulta: 'que es tag markets el broker', espera: 'respuesta', id: 'ali-tagmarkets' },
+  { consulta: 'como me uno a la alianza tagmarket por la comunidad', espera: 'respuesta', id: 'ali-como-empezar' },
   /* Los que DEBEN callarse: sin relación con nada documentado. */
   {
     consulta: 'a que hora es la reunion de hoy con el equipo',
