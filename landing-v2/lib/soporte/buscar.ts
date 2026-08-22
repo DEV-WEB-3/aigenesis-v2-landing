@@ -6,6 +6,7 @@ import { PREGUNTAS_TOKEN } from './preguntas-token'
 import { PREGUNTAS_MANUALES } from './preguntas-manuales'
 import { PREGUNTAS_OPERACIONES } from './preguntas-operaciones'
 import { PREGUNTAS_GPULSE_MEMBRESIA } from './preguntas-gpulse-membresia'
+import { PREGUNTAS_ECOSISTEMA_PLAN } from './preguntas-ecosistema-plan'
 import { clasificarCortesia, RESPUESTAS_DE_CORTESIA, type ClaseDeCortesia } from './cortesia'
 
 /**
@@ -38,6 +39,7 @@ export const TODAS_LAS_PREGUNTAS: readonly Pregunta[] = [
   ...PREGUNTAS_MANUALES,
   ...PREGUNTAS_OPERACIONES,
   ...PREGUNTAS_GPULSE_MEMBRESIA,
+  ...PREGUNTAS_ECOSISTEMA_PLAN,
 ]
 
 /**

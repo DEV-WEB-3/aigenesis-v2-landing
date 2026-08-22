@@ -33,6 +33,8 @@ export const PREGUNTAS_MANUALES: readonly Pregunta[] = [
       'como empezar', 'que necesito para empezar', 'como ingreso', 'quiero unirme', 'como participo',
       'desde cuanto puedo empezar', 'desde 20 usdt',
       'inversion minima',
+      'como inicio en la comunidad', 'empezar por la comunidad', 'como entro a la comunidad g11',
+      'como inicio en tagmarket', 'como empiezo en genesis',
     ],
     fuente: 'landing',
     enlace: 'https://conect.aigenesis.io/login',

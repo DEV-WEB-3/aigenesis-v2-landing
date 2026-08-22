@@ -251,6 +251,35 @@ export const PREGUNTAS_GEVY: readonly Pregunta[] = [
     fuente: 'codigo',
   },
   {
+    id: 'gevy-compra-e2e',
+    proyecto: 'gevy',
+    categoria: 'Pagar',
+    categoriaIncidencia: 'deposito',
+    pregunta: '¿Cómo es la compra de principio a fin, paso a paso?',
+    respuesta:
+      'De punta a punta: 1) Entras a la tienda con tu cuenta de Genesis y conectas tu wallet en la red BSC. 2) Buscas o navegas el catálogo y abres la ficha del producto. 3) Lo agregas al carrito (puedes seguir sumando artículos). 4) En la caja pones la dirección de envío —queda guardada— y eliges la forma de pago: DUAL (AIG + USDT) o USDT solo. 5) Revisas el total, que ya incluye el envío, y confirmas firmando desde tu wallet. 6) Ves la confirmación del pedido, y a partir de ahí lo sigues desde «Mis pedidos» con avisos en pagado, enviado, en tránsito y entregado. Si algo no cuadra en el total antes de firmar, no confirmes.',
+    sinonimos: [
+      'compra paso a paso', 'como comprar de principio a fin', 'recorrido de compra', 'e2e de compra',
+      'como hago una compra completa', 'todo el proceso de compra', 'desde que entro hasta que pago',
+      'guia de compra', 'como funciona comprar en gevy',
+    ],
+    fuente: 'codigo',
+  },
+  {
+    id: 'gevy-portales-comprador',
+    proyecto: 'gevy',
+    categoria: 'Envío y seguimiento',
+    pregunta: '¿Qué herramientas o portales tengo como comprador?',
+    respuesta:
+      'Todo con tu misma cuenta de Genesis: el buscador y el catálogo por categorías para descubrir productos; la ficha de cada producto con su detalle; el carrito para juntar lo que vas a llevar; la lista de deseos para guardar lo que te interesa; y «Mis pedidos», donde ves cada compra, retomas un pago que quedó a medias y sigues el estado del envío paso a paso. No hay portales aparte ni contraseñas distintas: es la misma sesión del ecosistema.',
+    sinonimos: [
+      'que herramientas tengo', 'portales del comprador', 'lista de deseos', 'wishlist',
+      'mis pedidos', 'donde veo mis compras', 'que puedo hacer en la tienda', 'panel del comprador',
+      'donde guardo productos', 'favoritos',
+    ],
+    fuente: 'codigo',
+  },
+  {
     id: 'gevy-proveedor',
     proyecto: 'gevy',
     categoria: 'Si algo sale mal',

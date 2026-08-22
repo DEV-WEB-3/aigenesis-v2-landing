@@ -215,6 +215,12 @@ const CASOS = [
   { consulta: 'necesito membresia para entrar a gpulse', espera: 'respuesta', id: 'gpm-acceso-membresia' },
   { consulta: 'gpulse tiene referidos', espera: 'respuesta', id: 'gpm-sin-plan-compensacion' },
   { consulta: 'se me vencio la membresia de gpulse', espera: 'respuesta', id: 'gpm-membresia-vencida' },
+  /* Marketplace E2E + portales, y plan de negocio Genesis/G11 + fuentes oficiales. */
+  { consulta: 'como es la compra paso a paso de principio a fin', espera: 'respuesta', id: 'gevy-compra-e2e' },
+  { consulta: 'que herramientas tengo como comprador lista de deseos', espera: 'respuesta', id: 'gevy-portales-comprador' },
+  { consulta: 'que es genesis y cual es su vision', espera: 'respuesta', id: 'eco-vision-genesis' },
+  { consulta: 'que es el plan g11', espera: 'respuesta', id: 'eco-plan-g11' },
+  { consulta: 'como se que es oficial cuales son las fuentes verificables', espera: 'respuesta', id: 'eco-canales-oficiales' },
   /* Los que DEBEN callarse: sin relación con nada documentado. */
   {
     consulta: 'a que hora es la reunion de hoy con el equipo',
