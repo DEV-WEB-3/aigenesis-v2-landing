@@ -1,0 +1,262 @@
+<title>Wireframe G1</title>
+<meta name="description" content="Wireframe de baja fidelidad F0 — las 6 rutas de g1.aigenesis.io, con CredentialStrip, disclaimer y asistente.">
+<style>
+  :root{
+    color-scheme: light;
+    --paper:#eef0f4; --paper2:#e7eaf0; --card:#ffffff; --ink:#1b2333; --ink2:#4a566b; --faint:#8b95a7;
+    --line:#c9d0dc; --line2:#dde2ea; --ph:#dfe4ec; --ph-line:#c6ccd8;
+    --accent:#2563eb; --accent2:#0e9488; --warn:#b45309; --danger:#be123c; --ok:#047857;
+    --fmono:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,monospace;
+    --fsans:Inter,system-ui,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--fsans);line-height:1.55;font-size:15px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+  h1,h2,h3{margin:0;font-weight:750;letter-spacing:-.01em;line-height:1.15}
+  .mono{font-family:var(--fmono)}
+  code{font-family:var(--fmono);font-size:.85em;background:var(--paper2);border:1px solid var(--line2);padding:1px 6px;border-radius:5px}
+
+  header.top{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,#f7f8fb)}
+  .top .wrap{padding:30px 20px 26px}
+  .kicker{font-family:var(--fmono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent)}
+  h1{font-size:clamp(28px,5vw,42px);margin:12px 0 8px}
+  .sub{color:var(--ink2);max-width:70ch}
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .lg{font-family:var(--fmono);font-size:11px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 11px;color:var(--ink2);display:flex;align-items:center;gap:7px}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+  section{padding:34px 0;border-bottom:1px solid var(--line2)}
+  .rlabel{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .rlabel .n{font-family:var(--fmono);font-size:12px;color:#fff;background:var(--ink);border-radius:7px;padding:4px 9px;letter-spacing:.05em}
+  .rlabel code{font-size:13px}
+  .rlabel h2{font-size:20px}
+  .rnote{color:var(--ink2);font-size:14px;margin:2px 0 16px}
+
+  /* browser frame */
+  .screen{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 10px 26px -18px rgba(20,30,50,.4)}
+  .chrome{height:38px;background:#f1f3f7;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:7px;padding:0 14px}
+  .chrome i{width:10px;height:10px;border-radius:50%;background:#cfd6e2;display:block}
+  .chrome .url{margin-left:10px;font-family:var(--fmono);font-size:11.5px;color:var(--faint);background:#fff;border:1px solid var(--line2);border-radius:6px;padding:3px 10px}
+  .canvas{padding:16px}
+
+  /* nav + footer bars (shared) */
+  .bar{border:1px dashed var(--ph-line);background:var(--paper2);border-radius:9px;padding:10px 14px;display:flex;align-items:center;gap:12px;font-family:var(--fmono);font-size:12px;color:var(--ink2);flex-wrap:wrap}
+  .bar .brand{font-weight:700;color:var(--ink);letter-spacing:.02em}
+  .bar .spacer{flex:1}
+  .bar .pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px}
+  .stack{display:flex;flex-direction:column;gap:12px;margin:12px 0}
+
+  /* placeholder blocks */
+  .ph{border:1px solid var(--ph-line);background:repeating-linear-gradient(135deg,var(--ph),var(--ph) 10px,#e7ebf2 10px,#e7ebf2 20px);border-radius:10px;padding:16px;position:relative;min-height:56px}
+  .ph.plain{background:var(--ph)}
+  .ph .lab{font-family:var(--fmono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);font-weight:600}
+  .ph .desc{font-size:12.5px;color:var(--ink2);margin-top:4px}
+  .ph.hero{min-height:150px;background:linear-gradient(120deg,#dfe6f5,#e9e2f3 55%,#f3e5da);border-color:#c3ccdf}
+  .ph.hero .lab{color:#3730a3}
+  .row{display:grid;gap:12px}
+  @media(min-width:640px){.row.c2{grid-template-columns:1fr 1fr}.row.c3{grid-template-columns:1fr 1fr 1fr}}
+  .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+  .cta .b{font-family:var(--fmono);font-size:12px;border-radius:999px;padding:8px 16px;border:1px solid var(--ink);background:#fff}
+  .cta .b.pri{background:var(--ink);color:#fff}
+
+  /* annotations */
+  .ann{border-left:3px solid var(--accent);background:#eef4ff;border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:#1e3a8a;margin:12px 0}
+  .ann.warn{border-color:var(--warn);background:#fff7ed;color:#7c2d12}
+  .ann.danger{border-color:var(--danger);background:#fff1f3;color:#881337}
+  .ann.ok{border-color:var(--ok);background:#ecfdf5;color:#065f46}
+  .ann b{font-family:var(--fmono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:2px}
+  .float{position:relative}
+  .float .bubble{position:absolute;right:14px;bottom:10px;font-family:var(--fmono);font-size:11px;border:1px dashed var(--accent2);color:var(--accent2);background:#e6fbf7;border-radius:999px;padding:5px 12px}
+
+  .grid-notes{display:grid;gap:14px;margin-top:8px}@media(min-width:720px){.grid-notes{grid-template-columns:1fr 1fr}}
+  .note{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
+  .note h3{font-size:15px;margin-bottom:6px}
+  .note .k{font-family:var(--fmono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+  ul.clean{margin:0;padding-left:18px}ul.clean li{margin:.3em 0;font-size:13.5px;color:var(--ink2)}
+  footer{padding:30px 0 60px;color:var(--faint);font-size:12.5px}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Wireframe · baja fidelidad · Fase F0</div>
+    <h1>Wireframe G1</h1>
+    <p class="sub">Estructura de las <b>6 rutas</b> de <code>g1.aigenesis.io</code> antes de tocar tokens o WebGL. Valida el esqueleto, dónde va la <b>franja de credenciales</b>, el <b>descargo</b> y el <b>asistente</b>. No es diseño final — es el plano; por eso se ve en gris.</p>
+    <div class="legend">
+      <span class="lg"><span class="dot" style="background:#c3ccdf"></span> bloque de contenido</span>
+      <span class="lg"><span class="dot" style="background:#dfe6f5"></span> hero WebGL</span>
+      <span class="lg"><span class="dot" style="background:var(--accent)"></span> anotación</span>
+      <span class="lg"><span class="dot" style="background:var(--danger)"></span> compliance</span>
+      <span class="lg"><span class="dot" style="background:var(--accent2)"></span> asistente</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- GLOBAL -->
+  <section>
+    <div class="rlabel"><span class="n">GLOBAL</span><h2>Marco común a todas las páginas</h2></div>
+    <p class="rnote">Header, footer y asistente se repiten en las 6 rutas. Abajo se muestran una sola vez.</p>
+    <div class="screen float">
+      <div class="chrome"><i></i><i></i><i></i><span class="url">g1.aigenesis.io</span></div>
+      <div class="canvas">
+        <div class="bar"><span class="brand">◇ G1</span><span class="pill">Qué es G1</span><span class="pill">Cómo funciona</span><span class="pill">Ecosistema</span><span class="pill">Comunidad</span><span class="pill">FAQ</span><span class="spacer"></span><span class="pill">🌐 Idioma ▾</span><span class="pill">Back Office ↗</span></div>
+        <div class="ph plain" style="min-height:40px;margin:12px 0"><span class="lab">↑ Header — logo G1 · navegación · idioma (11) · Back Office (portal externo)</span></div>
+        <div class="ph" style="min-height:44px"><span class="lab">CredentialStrip</span><span class="desc">Aitech · TAG · Lloyd’s · FSC Mauritius · DASP · MSB — cada logo/registro <b>enlaza a su fuente oficial</b>.</span></div>
+        <div class="ann"><b>Regla — atribuir, no certificar</b>Cada credencial dice «según la documentación oficial de Aitech/TAG» + enlace. Nunca «certificado por Génesis».</div>
+        <div class="ph plain" style="min-height:36px"><span class="lab">Footer — sello G-TAG (Génesis × Aitech × TAG) · legales · idioma · redes</span></div>
+        <div class="ann danger"><b>DisclaimerBar (persistente en finanzas)</b>«Informativo. No es asesoría financiera. Participación voluntaria y con riesgos.» — visible en Home, Cómo funciona y Ecosistema.</div>
+        <div class="bubble">● Asistente flotante (globo) — reutiliza el ya construido</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOME -->
+  <section>
+    <div class="rlabel"><span class="n">01</span><code>/</code><h2>Home</h2></div>
+    <p class="rnote">Primer impacto: el hero WebGL + la propuesta + puertas al ecosistema.</p>
+    <div class="screen">
+      <div class="chrome"><i></i><i></i><i></i><span class="url">g1.aigenesis.io/</span></div>
+      <div class="canvas">
+        <div class="ph hero">
+          <span class="lab">HERO — Canvas WebGL (R3F)</span>
+          <div class="desc" style="max-width:60ch">Partículas que forman el <b>símbolo Génesis</b> (mask pool + <code>ParticleMorphSystem</code> ya existente) y se dispersan a campo tipo qpaycard.<br>Encima, HTML real: eyebrow mono · H1 «G1 — la alianza que le da uso a tu comunidad» · lede · 2 CTAs.</div>
+          <div class="cta"><span class="b pri">Conocer el ecosistema →</span><span class="b">Cómo funciona ↗</span></div>
+        </div>
+        <div class="ann ok"><b>Fallback</b>En móvil / GPU baja / reduced-motion → póster estático. El texto del hero nunca vive dentro del canvas (SEO + accesibilidad).</div>
+        <div class="stack">
+          <div class="ph"><span class="lab">Franja «La alianza»</span><span class="desc">Génesis (comunidad) × Aitech × TAG — una línea de posicionamiento + 3 logos.</span></div>
+          <div class="row c3">
+            <div class="ph"><span class="lab">Tag Markets</span><span class="desc">Trading sistemático</span></div>
+            <div class="ph"><span class="lab">Bit1</span><span class="desc">Exchange</span></div>
+            <div class="ph"><span class="lab">BixCard</span><span class="desc">Tarjeta Visa cripto</span></div>
+          </div>
+          <div class="ph"><span class="lab">AiG Token — usabilidad</span><span class="desc">DUAL (AIG-USDT) como capital operativo → liquidez. Sin cifras de resultado.</span></div>
+          <div class="ph plain" style="min-height:40px"><span class="lab">CredentialStrip (trust) + FAQ preview → link</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUE ES G1 -->
+  <section>
+    <div class="rlabel"><span class="n">02</span><code>/que-es-g1</code><h2>Qué es G1</h2></div>
+    <p class="rnote">La alianza y la visión. Deja claro que Génesis es la comunidad que se une; Aitech/TAG ofrecen las herramientas.</p>
+    <div class="screen">
+      <div class="chrome"><i></i><i></i><i></i><span class="url">g1.aigenesis.io/que-es-g1</span></div>
+      <div class="canvas">
+        <div class="ph hero" style="min-height:96px"><span class="lab">Hero secundario (WebGL sutil / póster)</span><div class="desc">H1 + subtítulo de la visión.</div></div>
+        <div class="stack">
+          <div class="row c2">
+            <div class="ph"><span class="lab">Qué es la alianza (Aitech One)</span></div>
+            <div class="ph"><span class="lab">La visión Génesis · G11</span></div>
+          </div>
+          <div class="ph"><span class="lab">Quiénes ofrecen — Aitech (comunidad) + TAG (broker)</span><span class="desc">Génesis aporta comunidad y usabilidad del AiG.</span></div>
+          <div class="ph plain" style="min-height:40px"><span class="lab">CredentialStrip (ampliada, con enlaces)</span></div>
+        </div>
+        <div class="ann"><b>Copy — pasa la guarda de lenguaje</b>Todo el texto de la visión se reescribe para no disparar reglas (sin «inversión/rentabilidad/ganancias»).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section>
+    <div class="rlabel"><span class="n">03</span><code>/como-funciona</code><h2>Cómo funciona</h2></div>
+    <p class="rnote">Cómo participa el usuario y qué es cada herramienta — <b>sin cifras del plan</b>.</p>
+    <div class="screen">
+      <div class="chrome"><i></i><i></i><i></i><span class="url">g1.aigenesis.io/como-funciona</span></div>
+      <div class="canvas">
+        <div class="ph" style="min-height:60px"><span class="lab">3 pasos — unirte por la comunidad</span><span class="desc">Invitación → cuenta/wallet → elegir herramienta. Narrativa, no números.</span></div>
+        <div class="row c3" style="margin:12px 0">
+          <div class="ph"><span class="lab">Trading (Tag Markets)</span></div>
+          <div class="ph"><span class="lab">Exchange (Bit1)</span></div>
+          <div class="ph"><span class="lab">Tarjeta (BixCard)</span></div>
+        </div>
+        <div class="ann danger"><b>Compliance — zona sensible</b>Ningún %, apalancamiento, comisión ni premio. DisclaimerBar visible. El auditor pide <b>ampliar el scope de <code>verify-lenguaje.mjs</code></b> para escanear estas páginas y sumar reglas para «apalancamiento/comisión» antes de publicar (F3).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ECOSISTEMA -->
+  <section>
+    <div class="rlabel"><span class="n">04</span><code>/ecosistema</code><h2>Ecosistema</h2></div>
+    <p class="rnote">La grilla completa: productos de la alianza + los de Génesis. Cada card «qué es» + enlace.</p>
+    <div class="screen">
+      <div class="chrome"><i></i><i></i><i></i><span class="url">g1.aigenesis.io/ecosistema</span></div>
+      <div class="canvas">
+        <div class="row c3">
+          <div class="ph"><span class="lab">Tag Markets</span></div>
+          <div class="ph"><span class="lab">Bit1</span></div>
+          <div class="ph"><span class="lab">BixCard</span></div>
+          <div class="ph"><span class="lab">G-Pulse</span><span class="desc">Génesis</span></div>
+          <div class="ph"><span class="lab">Gevy</span><span class="desc">Génesis</span></div>
+          <div class="ph"><span class="lab">AiG Token</span><span class="desc">Génesis</span></div>
+        </div>
+        <div class="ph plain" style="min-height:40px;margin-top:12px"><span class="lab">CredentialStrip + CTA a Comunidad</span></div>
+        <div class="ann ok"><b>Reutilización</b>Las descripciones salen del corpus de soporte ya verificado (una sola fuente).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMUNIDAD -->
+  <section>
+    <div class="rlabel"><span class="n">05</span><code>/comunidad</code><h2>Comunidad / Eventos</h2></div>
+    <p class="rnote">SEED (formación), eventos y cómo iniciar por la comunidad. Sin incentivos con cifras.</p>
+    <div class="screen">
+      <div class="chrome"><i></i><i></i><i></i><span class="url">g1.aigenesis.io/comunidad</span></div>
+      <div class="canvas">
+        <div class="row c2">
+          <div class="ph"><span class="lab">SEED — sistema de formación</span></div>
+          <div class="ph"><span class="lab">Eventos / calendario</span></div>
+        </div>
+        <div class="ph" style="min-height:52px;margin-top:12px"><span class="lab">Cómo iniciar por la comunidad</span><span class="desc">Contacta a quien te invitó → portal. CTA a Back Office.</span></div>
+        <div class="ann warn"><b>Cuidado</b>Los «incentivos de liderazgo» del deck (viajes, premios, cifras) <b>no</b> se muestran. Solo formación y comunidad.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="rlabel"><span class="n">06</span><code>/faq</code><h2>Preguntas frecuentes</h2></div>
+    <p class="rnote">Buscador + acordeón, alimentados por el corpus ya verificado. El asistente cubre lo conversacional.</p>
+    <div class="screen float">
+      <div class="chrome"><i></i><i></i><i></i><span class="url">g1.aigenesis.io/faq</span></div>
+      <div class="canvas">
+        <div class="ph plain" style="min-height:38px"><span class="lab">🔍 Buscador (responder() del corpus)</span></div>
+        <div class="stack">
+          <div class="ph" style="min-height:34px"><span class="lab">▸ ¿Qué es la alianza?</span></div>
+          <div class="ph" style="min-height:34px"><span class="lab">▸ ¿Para qué sirve el AiG?</span></div>
+          <div class="ph" style="min-height:34px"><span class="lab">▸ ¿Es confiable? (credenciales)</span></div>
+        </div>
+        <div class="ann ok"><b>Fuente única</b>Mismo corpus (<code>lib/soporte</code>) que la landing actual y el asistente del portal. Cero duplicación.</div>
+        <div class="bubble">● Asistente — «Abrir un caso»</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTAS DE INGENIERÍA -->
+  <section style="border-bottom:none">
+    <div class="rlabel"><span class="n">F0</span><h2>Notas para F1 (cierran el wireframe)</h2></div>
+    <div class="grid-notes">
+      <div class="note"><div class="k">Confirmado por el auditor</div>
+        <ul class="clean">
+          <li>Stack alcanza sin cambiar framework (Next 14.2 · R3F · three · postprocessing · framer · gsap).</li>
+          <li><code>ParticleMorphSystem</code> + mask pool Génesis <b>ya existen</b> → base del hero.</li>
+          <li>Subdominio: <code>BASE_PATH</code> vacío + <code>exportar</code>/<code>desplegar-hosting</code>.</li>
+        </ul>
+      </div>
+      <div class="note"><div class="k">Pendientes antes de F3</div>
+        <ul class="clean">
+          <li>Instalar <code>@react-three/drei</code>.</li>
+          <li><b>Ampliar el scope de <code>verify-lenguaje.mjs</code></b> a las páginas G1 + reglas para %/comisión/apalancamiento.</li>
+          <li>DNS de <code>g1.aigenesis.io</code> (owner).</li>
+          <li>Fuentes self-hosted (@font-face, sin CDN): Space Grotesk · JetBrains Mono · Exo 2.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Wireframe G1 · F0 · baja fidelidad · 22-ago-2026 · para <code>docs/ux/G1-WIREFRAME.html</code> en aigenesis-v2-landing · siguiente: F1 (sistema de diseño y tokens).
+  </footer>
+</main>
