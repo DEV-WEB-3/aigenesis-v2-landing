@@ -77,7 +77,7 @@ export function G1Header() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-px"
         style={{ background: `linear-gradient(90deg, transparent, ${G1.violet}55, ${G1.cyan}66, ${G1.amber}55, transparent)`, opacity: scrolled ? 1 : 0.5 }}
       />
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-[clamp(16px,4vw,40px)]">
+      <div className="flex h-16 w-full items-center justify-between px-[clamp(14px,2.4vw,32px)]">
         {/* marca */}
         <Link href="/g1" className="group flex items-center gap-2.5" aria-label="G1 · inicio">
           <span
@@ -150,7 +150,7 @@ export function G1Header() {
           className="md:hidden"
           style={{ background: 'rgba(6,9,16,0.94)', backdropFilter: 'blur(14px)', borderBottom: `1px solid ${G1.cyan}1f` }}
         >
-          <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-[clamp(16px,4vw,40px)] py-4">
+          <nav className="flex w-full flex-col gap-1 px-[clamp(14px,2.4vw,32px)] py-4">
             {NAV.map((n) => (
               <Link
                 key={n.href}

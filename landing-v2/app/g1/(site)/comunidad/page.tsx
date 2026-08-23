@@ -37,7 +37,7 @@ const PILARES = [
 export default function ComunidadPage() {
   return (
     <div className="mx-auto max-w-6xl px-[clamp(16px,4vw,40px)]">
-      <section className="relative overflow-hidden py-[clamp(48px,9vw,110px)] text-center">
+      <section className="relative py-[clamp(48px,9vw,110px)] text-center">
         <G1Aurora tint="warm" />
         <SectionReveal className="relative z-10">
           <Eyebrow>Comunidad</Eyebrow>

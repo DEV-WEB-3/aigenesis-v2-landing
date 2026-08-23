@@ -155,13 +155,13 @@ export function G1Aurora({
     return (
       <div
         aria-hidden
-        className={`pointer-events-none absolute inset-0 ${className ?? ''}`}
+        className={`pointer-events-none absolute inset-y-0 left-1/2 w-screen -translate-x-1/2 ${className ?? ''}`}
         style={{ background: `radial-gradient(80% 60% at 50% 0%, ${stops[0]}22, transparent 60%), radial-gradient(70% 50% at 70% 20%, ${stops[1]}18, transparent 62%)` }}
       />
     )
   }
   return (
-    <div aria-hidden className={`pointer-events-none absolute inset-0 ${className ?? ''}`}>
+    <div aria-hidden className={`pointer-events-none absolute inset-y-0 left-1/2 w-screen -translate-x-1/2 ${className ?? ''}`}>
       <Canvas gl={{ alpha: true, antialias: true, premultipliedAlpha: true }} dpr={[1, 1.75]} camera={{ position: [0, 0, 1] }}>
         <AuroraPlane stops={stops} amplitude={amplitude} blend={blend} speed={speed} />
       </Canvas>
