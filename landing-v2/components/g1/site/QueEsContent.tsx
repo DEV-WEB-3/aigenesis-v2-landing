@@ -12,9 +12,9 @@ import { G1, G1_GRADIENT } from '@/lib/design/g1'
  * deja un eyebrow-título de sección para marcar el arranque del contenido.
  */
 const ENTIDADES = [
-  { k: 'La comunidad', n: 'Génesis', d: 'La comunidad que se une y aporta usabilidad y liquidez al AiG Token a través de sus productos (G-Pulse, marketplace y más).' },
-  { k: 'La tecnología', n: 'Aitech', d: 'Comunidad y compañía internacional que aporta la infraestructura y las herramientas de la alianza Aitech One.' },
-  { k: 'El mercado', n: 'TAG', d: 'El acceso a los mercados con la trilogía: Tag Markets (trading), Bit1 (exchange) y BixCard (tarjeta Visa cripto).' },
+  { k: 'Comunidad + tecnología', n: 'Génesis', d: 'La comunidad que se une y aporta su propia tecnología: G-Pulse, marketplace, el AiG Token y blockchain. Es la que da usabilidad y liquidez al ecosistema.' },
+  { k: 'Adopción y comunidad global', n: 'Aitech', d: 'La comunidad internacional de Aitech One: educación, liderazgo y expansión que acercan la tecnología a las personas.' },
+  { k: 'Finanzas', n: 'TAG', d: 'La infraestructura financiera de la alianza: Tag Markets (trading), Bit1 (exchange) y BixCard (tarjeta Visa cripto).' },
 ]
 
 export function QueEsContent({ hero = true }: { hero?: boolean }) {
@@ -41,7 +41,11 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
             G1 es la puerta a un ecosistema donde una <b className="text-genesis-text">comunidad</b> se
             encuentra con <b className="text-genesis-text">herramientas financieras reales</b> —trading,
             exchange y tarjeta cripto— con la usabilidad del <b className="text-genesis-text">AiG&nbsp;Token</b>.
-            Nace de la unión de tres movimientos.
+            Nace de la unión de tres fuerzas: <b className="text-genesis-text">comunidad</b>,
+            <b className="text-genesis-text"> tecnología</b> y <b className="text-genesis-text">finanzas</b>.
+          </p>
+          <p className="mx-auto mt-6 font-display text-[clamp(18px,2.6vw,26px)] font-bold tracking-tight">
+            <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>Tres fuerzas. Un ecosistema.</span>
           </p>
         </SectionReveal>
         </div>
@@ -51,11 +55,15 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
       <section className="py-[clamp(24px,5vw,56px)]">
         <SectionReveal>
           <p className="text-center font-mono text-[12px] uppercase tracking-[0.24em]" style={{ color: G1.amber }}>
-            Tres movimientos, una marca
+            Tres fuerzas, un ecosistema
           </p>
           <h2 className="mx-auto mt-4 max-w-[22ch] text-center font-display text-[clamp(24px,3.6vw,38px)] font-bold tracking-tight">
             Génesis △ Aitech △ TAG
           </h2>
+          <p className="mx-auto mt-4 max-w-[46ch] text-center text-[14.5px] leading-relaxed text-genesis-mist">
+            Tres organizaciones independientes que, hacia la comunidad, funcionan como una sola
+            experiencia. Tres fuerzas que convergen en un solo núcleo.
+          </p>
         </SectionReveal>
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           {ENTIDADES.map((e, i) => (
@@ -68,6 +76,17 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
             </SectionReveal>
           ))}
         </div>
+        <SectionReveal>
+          <p className="mt-9 text-center font-mono text-[11px] uppercase tracking-[0.28em] text-genesis-mist">
+            <span style={{ color: G1.cyan }}>G1</span>
+            <span className="mx-2 text-genesis-ghost">·</span>Una visión
+            <span className="mx-2 text-genesis-ghost">·</span>Una red
+            <span className="mx-2 text-genesis-ghost">·</span>Un ecosistema
+          </p>
+          <p className="mt-2 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-genesis-ghost">
+            Powered by Génesis × Aitech × TAG
+          </p>
+        </SectionReveal>
       </section>
 
       {/* media destacada — la alianza, con presencia */}
