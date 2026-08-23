@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { G1Header } from '@/components/g1/site/G1Header'
 import { G1Footer } from '@/components/g1/site/G1Footer'
 import { G1SiteTheme } from '@/components/g1/site/G1SiteTheme'
+import AsistenteFlotante from '@/components/soporte/AsistenteFlotante'
 
 /**
  * Layout de la WEB G1 (route group (site)). Monta el TEMA DE FONDO persistente
@@ -20,6 +21,10 @@ export default function G1SiteLayout({ children }: { children: ReactNode }) {
       <div className="relative z-10">
         <G1Footer />
       </div>
+
+      {/* Asistente flotante — el mismo mensajero de aigenesis.io; ayuda al usuario
+          en toda la web G1. Cerebro client-side (responder sobre el corpus). */}
+      <AsistenteFlotante />
     </div>
   )
 }
