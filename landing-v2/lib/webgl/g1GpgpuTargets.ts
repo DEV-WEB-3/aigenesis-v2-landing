@@ -11,6 +11,13 @@ import { G1 } from '@/lib/design/g1'
 
 export const HERO_HALF = 1.55
 
+/**
+ * Ancho en MUNDO del lockup del logo. El plano del logo 3D y la silueta de
+ * partículas usan EXACTAMENTE este valor y el mismo mapeo → convergen sin
+ * divergencia (cada partícula cae sobre el téxel del logo).
+ */
+export const LOGO_WORLD_W = 3.5
+
 const C_VIOLET = new THREE.Color(G1.violet)
 const C_CYAN = new THREE.Color(G1.cyan)
 const C_AMBER = new THREE.Color(G1.amber)
@@ -79,6 +86,40 @@ function fieldXYZ(n: number, half: number): Float32Array {
     out[i * 3 + 2] = (Math.random() - 0.5) * 2.2
   }
   return out
+}
+
+/**
+ * Muestrea la SILUETA de una imagen del logo (alfa) y la mapea al MISMO plano
+ * mundo que dibuja el plano del logo 3D. Devuelve el target RGBA listo para la
+ * textura `uTarget`. La ecuación de mapeo es idéntica a la del plano → alineación
+ * milimétrica garantizada por construcción.
+ */
+export function sampleLogoSilhouette(
+  img: CanvasImageSource & { width?: number; height?: number; naturalWidth?: number; naturalHeight?: number },
+  size: number,
+  seeds: Float32Array
+): Float32Array | null {
+  if (typeof document === 'undefined') return null
+  const W = (img.naturalWidth ?? img.width) as number
+  const H = (img.naturalHeight ?? img.height) as number
+  if (!W || !H) return null
+  const c = document.createElement('canvas'); c.width = W; c.height = H
+  const g = c.getContext('2d')!
+  g.drawImage(img, 0, 0)
+  const d = g.getImageData(0, 0, W, H).data
+  const px: number[] = []
+  for (let y = 0; y < H; y += 1) for (let x = 0; x < W; x += 1) if (d[(y * W + x) * 4 + 3]! > 90) px.push(x, y)
+  const m = px.length / 2 || 1
+  const count = size * size
+  const sx = LOGO_WORLD_W / W // misma escala en X e Y → aspecto exacto del logo
+  const xyz = new Float32Array(count * 3)
+  for (let i = 0; i < count; i++) {
+    const j = (i % m) * 2
+    xyz[i * 3] = (px[j]! - W / 2) * sx
+    xyz[i * 3 + 1] = -(px[j + 1]! - H / 2) * sx
+    xyz[i * 3 + 2] = (seeds[i]! - 0.5) * 0.32 // grosor volumétrico del polvo
+  }
+  return packRGBA(size, xyz, seeds, count)
 }
 
 /** Empaqueta xyz(+seed) en RGBA del tamaño SIZE²; texeles sin partícula se ocultan lejos. */

@@ -1,11 +1,31 @@
 'use client'
 
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { GPUComputationRenderer } from 'three/examples/jsm/misc/GPUComputationRenderer.js'
-import { buildGpgpuData, gpgpuSize } from '@/lib/webgl/g1GpgpuTargets'
+import { buildGpgpuData, gpgpuSize, sampleLogoSilhouette, LOGO_WORLD_W } from '@/lib/webgl/g1GpgpuTargets'
 import { G1 } from '@/lib/design/g1'
+
+// shader del plano del logo: textura del cristal + barrido de brillo (vida premium)
+const LOGO_VERT = /* glsl */ `
+  varying vec2 vUv;
+  void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
+`
+const LOGO_FRAG = /* glsl */ `
+  uniform sampler2D uMap;
+  uniform float uTime;
+  uniform float uOpacity;
+  uniform float uShine;
+  varying vec2 vUv;
+  void main() {
+    vec4 t = texture2D(uMap, vUv);
+    // barrido diagonal de luz que recorre el cristal
+    float band = exp(-pow((vUv.x + vUv.y - mod(uTime * 0.16, 2.2)) * 3.2, 2.0));
+    vec3 col = t.rgb + band * uShine * t.a * vec3(0.72, 0.86, 1.0);
+    gl_FragColor = vec4(col, t.a * uOpacity);
+  }
+`
 
 // colores firma de cada trilogía (Acto 1/2/3)
 const TINT_VIOLET = new THREE.Color(G1.violet)
@@ -183,8 +203,42 @@ export function G1GpgpuField({
       depthWrite: false,
       blending: THREE.AdditiveBlending,
     })
-    return { gpu, posVar, orbTex, g1Tex, fieldTex, sprite, geo, mat, size }
+    return { gpu, posVar, orbTex, g1Tex, fieldTex, sprite, geo, mat, size, data }
   }, [gl])
+
+  // Texturas del logo (monograma cristal + órbitas) y muestreo de la SILUETA
+  // hacia el target g1 → el polvo forma el logo EXACTO, alineado con el plano 3D.
+  const [logoTex, setLogoTex] = useState<THREE.Texture | null>(null)
+  const [orbitTex, setOrbitTex] = useState<THREE.Texture | null>(null)
+  const [logoAspect, setLogoAspect] = useState(995 / 560)
+  const [orbAspect, setOrbAspect] = useState(1000 / 563)
+  const logoMatRef = useRef<THREE.ShaderMaterial>(null)
+  const orbMatRef = useRef<THREE.MeshBasicMaterial>(null)
+  const logoMeshRef = useRef<THREE.Mesh>(null)
+  const orbMeshRef = useRef<THREE.Mesh>(null)
+
+  useEffect(() => {
+    const loader = new THREE.TextureLoader()
+    let alive = true
+    loader.load('/brand/g1/g1-monogram-560.webp', (t) => {
+      if (!alive) return
+      t.colorSpace = THREE.SRGBColorSpace
+      const img = t.image as HTMLImageElement
+      setLogoAspect((img.naturalWidth || 995) / (img.naturalHeight || 560))
+      setLogoTex(t)
+      // reemplaza el target g1 (texto) por la SILUETA del logo, mismo mapeo que el plano
+      const sil = sampleLogoSilhouette(img, sys.size, sys.data.seeds)
+      if (sil) { (sys.g1Tex.image.data as unknown as Float32Array).set(sil); sys.g1Tex.needsUpdate = true }
+    })
+    loader.load('/brand/g1/g1-orbits-1000.webp', (t) => {
+      if (!alive) return
+      t.colorSpace = THREE.SRGBColorSpace
+      const img = t.image as HTMLImageElement
+      setOrbAspect((img.naturalWidth || 1000) / (img.naturalHeight || 563))
+      setOrbitTex(t)
+    })
+    return () => { alive = false }
+  }, [sys])
 
   useEffect(() => {
     return () => {
@@ -198,12 +252,15 @@ export function G1GpgpuField({
     }
   }, [sys])
 
+  useEffect(() => () => { logoTex?.dispose(); orbitTex?.dispose() }, [logoTex, orbitTex])
+
   useFrame((s, dt) => {
     const u = sys.posVar.material.uniforms
     u.uTime!.value = s.clock.elapsedTime
     let bright = 0.95
     let tintAmt = 0
     let opMul = 1 // el polvo se atenúa cuando el logo real cristaliza encima
+    let logoOp = 0 // opacidad del logo 3D (cristaliza en la fusión)
 
     if (progressRef) {
       // MODO SCROLL: el estado lo decide el progreso 0..1 del relato
@@ -229,6 +286,8 @@ export function G1GpgpuField({
       const ss = (e0: number, e1: number, x: number) => { const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t) }
       const reveal = ss(0.58, 0.69, p) * (1 - ss(0.86, 0.93, p))
       opMul = 1 - 0.86 * reveal
+      // el logo cristaliza a la par que el polvo se asienta (cross-fade: dust → crystal)
+      logoOp = ss(0.60, 0.72, p) * (1 - ss(0.85, 0.92, p))
     } else {
       // MODO RELOJ: fases automáticas (preview suelto)
       const S = st.current
@@ -258,11 +317,47 @@ export function G1GpgpuField({
       grp.current.rotation.y += (s.pointer.x * 0.16 - grp.current.rotation.y) * 0.04
       grp.current.rotation.x += (-s.pointer.y * 0.1 - grp.current.rotation.x) * 0.04
     }
+
+    // LOGO 3D — cristaliza con el polvo (mismo grupo/cámara → sin divergencia)
+    const t = s.clock.elapsedTime
+    if (logoMatRef.current) {
+      const uo = logoMatRef.current.uniforms
+      uo.uOpacity!.value += (logoOp - uo.uOpacity!.value) * (1 - Math.pow(0.02, dt))
+      uo.uTime!.value = t
+      uo.uShine!.value = 0.55
+    }
+    if (orbMatRef.current) {
+      orbMatRef.current.opacity += (logoOp * 0.95 - orbMatRef.current.opacity) * (1 - Math.pow(0.02, dt))
+    }
+    // vida: órbitas que giran suave, respiración del lockup
+    if (orbMeshRef.current) orbMeshRef.current.rotation.z = t * 0.06
+    const breathe = 1 + Math.sin(t * 0.9) * 0.012
+    if (logoMeshRef.current) logoMeshRef.current.scale.setScalar(breathe)
   })
 
   return (
     <group ref={grp}>
-      <points geometry={sys.geo} material={sys.mat} frustumCulled={false} />
+      <points geometry={sys.geo} material={sys.mat} frustumCulled={false} renderOrder={0} />
+      {orbitTex ? (
+        <mesh ref={orbMeshRef} position={[0, 0, -0.06]} renderOrder={1}>
+          <planeGeometry args={[LOGO_WORLD_W * 1.16, (LOGO_WORLD_W * 1.16) / orbAspect]} />
+          <meshBasicMaterial ref={orbMatRef} map={orbitTex} transparent opacity={0} depthWrite={false} depthTest={false} blending={THREE.AdditiveBlending} toneMapped={false} />
+        </mesh>
+      ) : null}
+      {logoTex ? (
+        <mesh ref={logoMeshRef} position={[0, 0, 0.04]} renderOrder={2}>
+          <planeGeometry args={[LOGO_WORLD_W, LOGO_WORLD_W / logoAspect]} />
+          <shaderMaterial
+            ref={logoMatRef}
+            vertexShader={LOGO_VERT}
+            fragmentShader={LOGO_FRAG}
+            transparent
+            depthWrite={false}
+            depthTest={false}
+            uniforms={{ uMap: { value: logoTex }, uTime: { value: 0 }, uOpacity: { value: 0 }, uShine: { value: 0.55 } }}
+          />
+        </mesh>
+      ) : null}
     </group>
   )
 }

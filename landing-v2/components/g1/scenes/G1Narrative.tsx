@@ -86,7 +86,6 @@ export function G1Narrative() {
   const caRef = useRef<any>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
-  const logoRef = useRef<HTMLDivElement>(null)
   const actRefs = useRef<Array<HTMLDivElement | null>>([])
 
   useEffect(() => {
@@ -111,16 +110,6 @@ export function G1Narrative() {
           const fade = 1 - smoothstep(0.9, 1.0, p)
           stageRef.current.style.opacity = String(fade)
           stageRef.current.style.pointerEvents = fade < 0.05 ? 'none' : 'auto'
-        }
-        // REVEAL del logo real: el polvo cristaliza en el monograma en la fusión
-        // (entra 0.55→0.66, sostiene, se retira al llegar la CTA del Acto 5).
-        if (logoRef.current) {
-          const inn = smoothstep(0.55, 0.68, p)
-          const li = smoothstep(0.55, 0.64, p) * (1 - smoothstep(0.82, 0.9, p))
-          logoRef.current.style.opacity = String(li)
-          logoRef.current.style.transform = `translate(-50%, -50%) scale(${(0.74 + 0.26 * inn).toFixed(3)})`
-          logoRef.current.style.filter = `blur(${((1 - inn) * 14).toFixed(2)}px)`
-          logoRef.current.style.display = li < 0.02 ? 'none' : 'block'
         }
         for (let i = 0; i < WIN.length; i++) {
           const [a, b] = WIN[i]!
@@ -176,21 +165,9 @@ export function G1Narrative() {
           style={{ background: 'radial-gradient(120% 92% at 50% 46%, transparent 50%, rgba(2,4,10,.5) 82%, rgba(2,4,10,.8) 100%)' }}
         />
 
-        {/* REVEAL del logo real — el polvo de diamante cristaliza en el monograma
-            de cristal + órbitas (guiado por scroll en onUpdate). */}
-        <div
-          ref={logoRef}
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[46%] z-[2]"
-          style={{ opacity: 0, transform: 'translate(-50%,-50%) scale(0.74)', display: 'none', willChange: 'opacity, transform, filter' }}
-        >
-          <div className="relative flex h-[clamp(220px,38vw,400px)] w-[clamp(320px,58vw,620px)] items-center justify-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/g1/g1-orbits-1000.webp" alt="" className="absolute w-[min(620px,124%)] max-w-none opacity-90" style={{ filter: 'drop-shadow(0 0 54px rgba(0,245,255,0.3))' }} />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/g1/g1-monogram-560.webp" alt="G1" className="relative h-[clamp(96px,18vw,178px)] w-auto" style={{ filter: `drop-shadow(0 10px 44px ${G1.violet}99)` }} />
-          </div>
-        </div>
+        {/* El logo real (monograma cristal + órbitas) ahora se renderiza EN 3D
+            dentro del mismo grupo de partículas (G1GpgpuField) → converge con el
+            polvo sin divergencia. Ver Movida F2. */}
 
         {/* ACTO 0 */}
         <div ref={(el) => { actRefs.current[0] = el }} className={actClass} style={{ opacity: 1, zIndex: 2 }}>
