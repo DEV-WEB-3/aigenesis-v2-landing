@@ -63,14 +63,20 @@ export function G1Header() {
 
   return (
     <header
-      className="fixed inset-x-0 top-0 z-50 transition-colors duration-300"
+      className="fixed inset-x-0 top-0 z-50 transition-all duration-300"
       style={{
-        background: scrolled ? 'rgba(6,9,16,0.72)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px) saturate(1.2)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(12px) saturate(1.2)' : 'none',
-        borderBottom: scrolled ? `1px solid ${G1.cyan}1f` : '1px solid transparent',
+        background: scrolled ? 'rgba(8,11,18,0.55)' : 'rgba(8,11,18,0.28)',
+        backdropFilter: 'blur(18px) saturate(1.35)',
+        WebkitBackdropFilter: 'blur(18px) saturate(1.35)',
+        boxShadow: scrolled ? '0 8px 34px -18px rgba(0,0,0,0.9)' : 'none',
       }}
     >
+      {/* compuesto único de marca: hairline gradiente violeta→cian→ámbar */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px"
+        style={{ background: `linear-gradient(90deg, transparent, ${G1.violet}55, ${G1.cyan}66, ${G1.amber}55, transparent)`, opacity: scrolled ? 1 : 0.5 }}
+      />
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-[clamp(16px,4vw,40px)]">
         {/* marca */}
         <Link href="/g1" className="group flex items-center gap-2.5" aria-label="G1 · inicio">
@@ -117,7 +123,7 @@ export function G1Header() {
                 title={p.title}
                 aria-label={p.title}
                 className="grid h-9 w-9 place-items-center rounded-lg text-genesis-mist transition-colors hover:text-genesis-text"
-                style={{ border: `1px solid ${G1.cyan}22` }}
+                style={{ border: `1px solid ${G1.cyan}22`, background: 'rgba(255,255,255,0.03)' }}
               >
                 {p.icon}
               </a>

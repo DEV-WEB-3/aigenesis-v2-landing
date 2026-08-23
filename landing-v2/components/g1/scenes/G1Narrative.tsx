@@ -85,6 +85,7 @@ export function G1Narrative() {
   const bloomRef = useRef<any>(null) // el ref del efecto se tipa como la clase; any evita el choque
   const caRef = useRef<any>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
   const actRefs = useRef<Array<HTMLDivElement | null>>([])
 
   useEffect(() => {
@@ -104,6 +105,12 @@ export function G1Narrative() {
       onUpdate: (self) => {
         const p = self.progress
         progressRef.current = p
+        // al final del relato, el stage se funde y le entrega el fondo al ambiente persistente
+        if (stageRef.current) {
+          const fade = 1 - smoothstep(0.9, 1.0, p)
+          stageRef.current.style.opacity = String(fade)
+          stageRef.current.style.pointerEvents = fade < 0.05 ? 'none' : 'auto'
+        }
         for (let i = 0; i < WIN.length; i++) {
           const [a, b] = WIN[i]!
           // 1 en el plateau, ramp de 0.04 en cada borde, 0 fuera de [a,b] → sin solape
@@ -129,8 +136,8 @@ export function G1Narrative() {
 
   return (
     <div ref={wrapRef} className="relative w-full" style={{ height: '620vh' }}>
-      {/* stage FIJO al viewport (no sticky: el overflow-x del body rompe sticky) */}
-      <div className="fixed inset-0 z-0 h-[100svh] w-full overflow-hidden bg-genesis-void">
+      {/* stage FIJO al viewport (no sticky: el overflow-x del body rompe sticky). Se funde al final. */}
+      <div ref={stageRef} className="fixed inset-0 z-0 h-[100svh] w-full overflow-hidden bg-genesis-void">
         {/* WEBGL persistente (continuous hero morph) */}
         <div className="absolute inset-0 z-0">
           <Canvas
