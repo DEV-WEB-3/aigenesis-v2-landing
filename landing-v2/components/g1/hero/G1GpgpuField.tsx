@@ -20,9 +20,9 @@ const LOGO_FRAG = /* glsl */ `
   varying vec2 vUv;
   void main() {
     vec4 t = texture2D(uMap, vUv);
-    // barrido diagonal de luz que recorre el cristal
-    float band = exp(-pow((vUv.x + vUv.y - mod(uTime * 0.16, 2.2)) * 3.2, 2.0));
-    vec3 col = t.rgb + band * uShine * t.a * vec3(0.72, 0.86, 1.0);
+    // barrido diagonal de luz FINO y lento que recorre el cristal (elegante)
+    float band = exp(-pow((vUv.x + vUv.y - mod(uTime * 0.09, 2.4)) * 6.5, 2.0));
+    vec3 col = t.rgb + band * uShine * t.a * vec3(0.78, 0.9, 1.0);
     gl_FragColor = vec4(col, t.a * uOpacity);
   }
 `
@@ -324,7 +324,7 @@ export function G1GpgpuField({
       const uo = logoMatRef.current.uniforms
       uo.uOpacity!.value += (logoOp - uo.uOpacity!.value) * (1 - Math.pow(0.02, dt))
       uo.uTime!.value = t
-      uo.uShine!.value = 0.55
+      uo.uShine!.value = 0.3
     }
     if (orbMatRef.current) {
       orbMatRef.current.opacity += (logoOp * 0.95 - orbMatRef.current.opacity) * (1 - Math.pow(0.02, dt))
@@ -354,7 +354,7 @@ export function G1GpgpuField({
             transparent
             depthWrite={false}
             depthTest={false}
-            uniforms={{ uMap: { value: logoTex }, uTime: { value: 0 }, uOpacity: { value: 0 }, uShine: { value: 0.55 } }}
+            uniforms={{ uMap: { value: logoTex }, uTime: { value: 0 }, uOpacity: { value: 0 }, uShine: { value: 0.3 } }}
           />
         </mesh>
       ) : null}

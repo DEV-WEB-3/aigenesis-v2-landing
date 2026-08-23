@@ -48,8 +48,8 @@ function ScrollPostDriver({
 }) {
   useFrame((_s, dt) => {
     const p = progressRef.current
-    // BLOOM: base tenue; sube hacia la fusión (Acto 4) para el pico de luz de "G1"
-    const bloomTarget = 0.45 + smoothstep(0.5, 0.68, p) * (1 - smoothstep(0.8, 0.9, p)) * 0.85
+    // BLOOM: base tenue; sube SUAVE hacia la fusión (Acto 4) — glow elegante, sin flash
+    const bloomTarget = 0.42 + smoothstep(0.5, 0.7, p) * (1 - smoothstep(0.82, 0.92, p)) * 0.42
     // CHROMATIC ABERRATION: chispa SUTIL en la fusión (0.62) y en la disolución (0.85)
     const ca = 0.0004 + (bump(p, 0.62, 0.07) + bump(p, 0.85, 0.05)) * 0.0011
     const k = 1 - Math.pow(0.05, dt)
