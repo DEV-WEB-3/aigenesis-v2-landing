@@ -1,33 +1,29 @@
 'use client'
 
-import { useState } from 'react'
 import { G1HeroShell } from './G1HeroShell'
-import { G1ParticleCore, type CorePhase } from './G1ParticleCore'
-import { GlassLogo } from './GlassLogo'
+import { G1ParticleCore } from './G1ParticleCore'
 
 function heroCount() {
-  if (typeof window === 'undefined') return 3600
+  if (typeof window === 'undefined') return 9000
   const w = window.innerWidth
-  return w < 640 ? 2200 : w < 1100 ? 3400 : 4800
+  return w < 640 ? 5000 : w < 1100 ? 9000 : 14000
 }
 
 /**
- * VARIANTE A — glassmorphism HTML + luz. El logo sólido es un panel frosted
- * (backdrop-blur, paleta de marca) con el símbolo Génesis / «G1» cristal; detrás,
- * las partículas + una nebula de luz suave. La más legible y la más liviana en
- * móvil (el cristal es HTML, no GPU).
+ * VARIANTE A — MASA VOLUMÉTRICA pura partícula (estilo qpaycard). UN solo sistema:
+ * las mismas partículas se muestrean sobre una superficie 3D (`MeshSurfaceSampler`)
+ * → orbe/gema con profundidad, se pulverizan al campo y se reconstruyen en «G1».
+ * Sin cristal HTML: la masa ES el contenido (sin unión de componentes).
  */
 export function G1HeroA() {
-  const [solid, setSolid] = useState<'genesis' | 'g1' | null>(null)
   return (
     <G1HeroShell
-      label="Variante A · glassmorphism + luz"
+      label="Variante A · masa volumétrica (MeshSurfaceSampler)"
       smoke
-      smokeIntensity={0.7}
+      smokeIntensity={0.55}
       bloomIntensity={0.5}
-      glass={<GlassLogo active={solid} />}
     >
-      <G1ParticleCore count={heroCount()} onPhase={(p: CorePhase) => setSolid(p.solid)} />
+      <G1ParticleCore count={heroCount()} baseOpacity={0.82} />
     </G1HeroShell>
   )
 }

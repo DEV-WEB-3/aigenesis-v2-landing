@@ -15,7 +15,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { buildGenesisLogoMaskPoints } from '@/lib/trust/GenesisLogoMaskSampler'
+import { MeshSurfaceSampler } from 'three/examples/jsm/math/MeshSurfaceSampler.js'
 import { G1 } from '@/lib/design/g1'
 
 const HERO_HALF = 1.55
@@ -28,12 +28,28 @@ function rampG1(u: number, out: THREE.Color) {
   else out.copy(C_CYAN).lerp(C_AMBER, (u - 0.5) * 2)
   return out
 }
-function normalizeToHalf(src: Float32Array, half: number): Float32Array {
-  let m = 1e-6
-  for (let i = 0; i < src.length; i++) { const a = Math.abs(src[i]!); if (a > m) m = a }
-  const k = half / m
-  const out = new Float32Array(src.length)
-  for (let i = 0; i < src.length; i++) out[i] = src[i]! * k
+/**
+ * Masa VOLUMÉTRICA: puntos repartidos sobre la SUPERFICIE de una malla 3D con
+ * `MeshSurfaceSampler` (la técnica de qpaycard). Da profundidad real, no un plano.
+ * Orbe/gema achatado en z + ruido orgánico sobre la normal para que sea una masa
+ * viva, no una esfera perfecta.
+ */
+function orbTargets(count: number, R: number): Float32Array {
+  const geo = new THREE.IcosahedronGeometry(R, 5)
+  const mesh = new THREE.Mesh(geo)
+  const sampler = new MeshSurfaceSampler(mesh).build()
+  const out = new Float32Array(count * 3)
+  const p = new THREE.Vector3()
+  const n = new THREE.Vector3()
+  for (let i = 0; i < count; i++) {
+    sampler.sample(p, n)
+    const noise = Math.sin(p.x * 4.1 + p.y * 5.3) * Math.cos(p.z * 4.7) * 0.09 * R
+    p.addScaledVector(n, noise)
+    out[i * 3] = p.x
+    out[i * 3 + 1] = p.y
+    out[i * 3 + 2] = p.z * 0.8 // achatar → gema con cara frontal
+  }
+  geo.dispose()
   return out
 }
 function textTargets(text: string, count: number, half: number): Float32Array {
@@ -109,12 +125,12 @@ export type CorePhase = { key: string; target: 'genesis' | 'g1' | 'field'; dur: 
 
 /** Coreografía por defecto (variantes A/B). C pasa la suya. */
 export const DEFAULT_PHASES: CorePhase[] = [
-  { key: 'genesis-in', target: 'genesis', dur: 1.9, solid: null, bright: 1.0 },
-  { key: 'genesis-hold', target: 'genesis', dur: 2.4, solid: 'genesis', bright: 0.24 },
-  { key: 'to-field-1', target: 'field', dur: 1.7, solid: null, bright: 1.0 },
-  { key: 'g1-in', target: 'g1', dur: 1.9, solid: null, bright: 1.0 },
-  { key: 'g1-hold', target: 'g1', dur: 2.4, solid: 'g1', bright: 0.24 },
-  { key: 'to-field-2', target: 'field', dur: 1.7, solid: null, bright: 1.0 },
+  { key: 'genesis-in', target: 'genesis', dur: 2.0, solid: null, bright: 1.0 },
+  { key: 'genesis-hold', target: 'genesis', dur: 2.6, solid: 'genesis', bright: 0.92 },
+  { key: 'to-field-1', target: 'field', dur: 1.8, solid: null, bright: 1.0 },
+  { key: 'g1-in', target: 'g1', dur: 2.0, solid: null, bright: 1.0 },
+  { key: 'g1-hold', target: 'g1', dur: 2.6, solid: 'g1', bright: 0.92 },
+  { key: 'to-field-2', target: 'field', dur: 1.8, solid: null, bright: 1.0 },
 ]
 
 function smoothstep(e0: number, e1: number, x: number) {
@@ -144,18 +160,23 @@ export function G1ParticleCore({
   useEffect(() => () => sprite?.dispose(), [sprite])
 
   const { positions, colors, seeds, targets } = useMemo(() => {
-    const genesis = normalizeToHalf(buildGenesisLogoMaskPoints(count), HERO_HALF)
+    const seeds = new Float32Array(count)
+    for (let i = 0; i < count; i++) seeds[i] = Math.random()
+    // estado sólido = MASA VOLUMÉTRICA (orbe muestreado en superficie 3D)
+    const genesis = orbTargets(count, HERO_HALF * 0.98)
+    // wordmark G1 con GROSOR (slab) → también volumétrico, no un plano
     const g1 = textTargets('G1', count, HERO_HALF * 1.05)
+    for (let i = 0; i < count; i++) g1[i * 3 + 2] = (seeds[i]! - 0.5) * 0.5
     const field = fieldTargets(count, HERO_HALF)
     const positions = field.slice()
     const colors = new Float32Array(count * 3)
-    const seeds = new Float32Array(count)
     const tmp = new THREE.Color()
     for (let i = 0; i < count; i++) {
-      const u = (genesis[i * 3]! / HERO_HALF + 1) / 2
-      rampG1(Math.min(1, Math.max(0, u)), tmp)
+      // color de marca por ángulo azimutal del orbe → violeta→cian→ámbar girando
+      const ang = Math.atan2(genesis[i * 3 + 1]!, genesis[i * 3]!)
+      const u = (ang + Math.PI) / (Math.PI * 2)
+      rampG1(u, tmp)
       colors[i * 3] = tmp.r; colors[i * 3 + 1] = tmp.g; colors[i * 3 + 2] = tmp.b
-      seeds[i] = Math.random()
     }
     return { positions, colors, seeds, targets: { genesis, g1, field } }
   }, [count])
@@ -165,18 +186,20 @@ export function G1ParticleCore({
     () => (shader: THREE.WebGLProgramParametersWithUniforms) => {
       shader.uniforms.uTime = uTime.current
       shader.vertexShader =
-        'attribute float aSeed;\nvarying float vTw;\nuniform float uTime;\n' +
+        'attribute float aSeed;\nvarying float vTw;\nvarying float vDepth;\nuniform float uTime;\n' +
         shader.vertexShader.replace(
           'gl_PointSize = size;',
           'float tw = 0.5 + 0.5 * sin(uTime * 2.3 + aSeed * 6.2831853);\n' +
             'vTw = tw;\n' +
+            // profundidad en espacio cámara → frente (cerca) brillante, fondo tenue
+            'vDepth = clamp((mvPosition.z + 6.8) / 3.2, 0.0, 1.0);\n' +
             'gl_PointSize = size * (0.4 + aSeed * 1.7) * (0.55 + 0.55 * tw);'
         )
       shader.fragmentShader =
-        'varying float vTw;\n' +
+        'varying float vTw;\nvarying float vDepth;\n' +
         shader.fragmentShader.replace(
           '#include <color_fragment>',
-          '#include <color_fragment>\n  diffuseColor.rgb *= (0.7 + 0.9 * vTw);'
+          '#include <color_fragment>\n  diffuseColor.rgb *= (0.7 + 0.9 * vTw) * (0.5 + 0.7 * vDepth);'
         )
     },
     []
@@ -233,7 +256,7 @@ export function G1ParticleCore({
       const targetOp = baseOpacity * ph.bright
       mat.current.opacity += (targetOp - mat.current.opacity) * (1 - Math.pow(0.02, dt))
       // pico de tamaño en el estallido (luz) — vuelve al reformar
-      const sizeTarget = 0.03 * (1 + burst * 0.9) * (1 + smoothstep(0, 0.4, p) * (ph.solid !== null ? -0.15 : 0))
+      const sizeTarget = 0.026 * (1 + burst * 0.9) * (1 + smoothstep(0, 0.4, p) * (ph.solid !== null ? -0.12 : 0))
       mat.current.size += (sizeTarget - mat.current.size) * (1 - Math.pow(0.05, dt))
     }
     if (grp.current && parallax) {
@@ -252,7 +275,7 @@ export function G1ParticleCore({
         </bufferGeometry>
         <pointsMaterial
           ref={mat}
-          size={0.03}
+          size={0.026}
           map={sprite ?? undefined}
           alphaTest={0.01}
           sizeAttenuation
