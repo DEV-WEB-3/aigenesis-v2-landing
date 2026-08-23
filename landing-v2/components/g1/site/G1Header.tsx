@@ -77,19 +77,17 @@ export function G1Header() {
         style={{ background: `linear-gradient(90deg, transparent, ${G1.violet}55, ${G1.cyan}66, ${G1.amber}55, transparent)`, opacity: scrolled ? 1 : 0.5 }}
       />
       <div className="flex h-16 w-full items-center justify-between px-[clamp(14px,2.4vw,32px)]">
-        {/* marca */}
+        {/* marca — logo G1 (monograma de cristal chrome) */}
         <Link href="/g1" className="group flex items-center gap-2.5" aria-label="G1 · inicio">
-          <span
-            className="grid h-8 w-8 place-items-center rounded-[9px] font-display text-[15px] font-extrabold text-genesis-void"
-            style={{ background: G1_GRADIENT, boxShadow: `0 0 22px -6px ${G1.violet}` }}
-          >
-            G1
-          </span>
-          <span className="hidden font-display text-[15px] font-bold tracking-tight text-genesis-text sm:block">
-            G1
-            <span className="ml-2 font-mono text-[11px] font-normal tracking-[0.14em] text-genesis-mist">
-              × Aitech · TAG
-            </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/g1/g1-monogram-128.webp"
+            alt="G1"
+            className="h-9 w-auto transition-transform duration-300 group-hover:scale-[1.04]"
+            style={{ filter: `drop-shadow(0 0 14px ${G1.violet}55)` }}
+          />
+          <span className="hidden font-mono text-[11px] font-normal tracking-[0.14em] text-genesis-mist sm:block">
+            × Aitech · TAG
           </span>
         </Link>
 
