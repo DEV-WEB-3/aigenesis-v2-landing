@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, type ReactNode } from 'react'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
-import { EffectComposer, Bloom } from '@react-three/postprocessing'
+import { EffectComposer, Bloom, ChromaticAberration, Noise, Vignette } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
+import type { BloomEffect, ChromaticAberrationEffect } from 'postprocessing'
+import { Vector2 } from 'three'
 import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -30,6 +32,36 @@ function ScrollCamera({ progressRef }: { progressRef: { current: number } }) {
   return null
 }
 
+const smoothstep = (e0: number, e1: number, x: number) => {
+  const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)))
+  return t * t * (3 - 2 * t)
+}
+const bump = (p: number, c: number, half: number) => Math.max(0, 1 - Math.abs(p - c) / half)
+
+/** Postprocessing coreografiado por scroll: pico de luz en la fusión + aberración en las transiciones. */
+function ScrollPostDriver({
+  progressRef, bloomRef, caRef,
+}: {
+  progressRef: { current: number }
+  bloomRef: { current: BloomEffect | null }
+  caRef: { current: ChromaticAberrationEffect | null }
+}) {
+  useFrame((_s, dt) => {
+    const p = progressRef.current
+    // BLOOM: base tenue; sube hacia la fusión (Acto 4) para el pico de luz de "G1"
+    const bloomTarget = 0.45 + smoothstep(0.5, 0.68, p) * (1 - smoothstep(0.8, 0.9, p)) * 0.85
+    // CHROMATIC ABERRATION: chispa SUTIL en la fusión (0.62) y en la disolución (0.85)
+    const ca = 0.0004 + (bump(p, 0.62, 0.07) + bump(p, 0.85, 0.05)) * 0.0011
+    const k = 1 - Math.pow(0.05, dt)
+    if (bloomRef.current) bloomRef.current.intensity += (bloomTarget - bloomRef.current.intensity) * k
+    if (caRef.current) {
+      const o = caRef.current.offset
+      o.set(o.x + (ca - o.x) * k, o.y + (ca - o.y) * k)
+    }
+  })
+  return null
+}
+
 const GRAD = `linear-gradient(100deg, ${G1.violet}, ${G1.cyan} 60%, ${G1.amber})`
 
 function Pill({ children }: { children: ReactNode }) {
@@ -43,13 +75,15 @@ function Pill({ children }: { children: ReactNode }) {
   )
 }
 
-/** Ventanas de opacidad de cada acto sobre el progreso 0..1. */
+/** Ventanas [inicio,fin] de cada acto sobre el progreso 0..1, SIN solape (huecos = handoff). */
 const WIN: [number, number][] = [
-  [0.0, 0.14], [0.14, 0.3], [0.3, 0.46], [0.46, 0.62], [0.62, 0.86], [0.84, 1.0],
+  [0.0, 0.12], [0.15, 0.27], [0.31, 0.43], [0.47, 0.59], [0.63, 0.79], [0.83, 1.0],
 ]
 
 export function G1Narrative() {
   const progressRef = useRef(0)
+  const bloomRef = useRef<any>(null) // el ref del efecto se tipa como la clase; any evita el choque
+  const caRef = useRef<any>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
   const actRefs = useRef<Array<HTMLDivElement | null>>([])
 
@@ -72,10 +106,8 @@ export function G1Narrative() {
         progressRef.current = p
         for (let i = 0; i < WIN.length; i++) {
           const [a, b] = WIN[i]!
-          const mid = (a + b) / 2
-          const half = (b - a) / 2
-          const d = Math.abs(p - mid)
-          const o = Math.min(1, Math.max(0, 1 - Math.max(0, d - half * 0.4) / (half * 0.8)))
+          // 1 en el plateau, ramp de 0.04 en cada borde, 0 fuera de [a,b] → sin solape
+          const o = Math.min(1, Math.max(0, Math.min((p - a) / 0.04, (b - p) / 0.04)))
           const el = actRefs.current[i]
           if (el) {
             el.style.opacity = String(o)
@@ -109,8 +141,12 @@ export function G1Narrative() {
             <G1ParticleSky count={6000} progressRef={progressRef} />
             <G1GpgpuField baseOpacity={0.82} progressRef={progressRef} />
             <ScrollCamera progressRef={progressRef} />
+            <ScrollPostDriver progressRef={progressRef} bloomRef={bloomRef} caRef={caRef} />
             <EffectComposer>
-              <Bloom luminanceThreshold={0.5} luminanceSmoothing={0.45} intensity={0.5} blendFunction={BlendFunction.ADD} mipmapBlur />
+              <Bloom ref={bloomRef} luminanceThreshold={0.5} luminanceSmoothing={0.45} intensity={0.5} blendFunction={BlendFunction.ADD} mipmapBlur />
+              <ChromaticAberration ref={caRef} offset={new Vector2(0.0006, 0.0006)} radialModulation={false} modulationOffset={0} />
+              <Noise premultiply blendFunction={BlendFunction.OVERLAY} opacity={0.035} />
+              <Vignette eskil={false} offset={0.28} darkness={0.72} />
             </EffectComposer>
           </Canvas>
         </div>
