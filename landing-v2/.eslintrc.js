@@ -26,7 +26,7 @@ module.exports = {
     {
       // tokens.ts y g1.ts SON las fuentes de tokens (submarca incluida): aqui
       // viven los literales de color de marca por definicion, como en tokens.ts.
-      files: ['lib/design/tokens.ts', 'lib/design/g1.ts', 'scripts/**'],
+      files: ['lib/design/tokens.ts', 'lib/design/g1.ts', 'scripts/**', 'components/g1/brand/**'],
       rules: { 'no-restricted-syntax': 'off' },
     },
     {
