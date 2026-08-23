@@ -24,7 +24,9 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['lib/design/tokens.ts', 'scripts/**'],
+      // tokens.ts y g1.ts SON las fuentes de tokens (submarca incluida): aqui
+      // viven los literales de color de marca por definicion, como en tokens.ts.
+      files: ['lib/design/tokens.ts', 'lib/design/g1.ts', 'scripts/**'],
       rules: { 'no-restricted-syntax': 'off' },
     },
     {

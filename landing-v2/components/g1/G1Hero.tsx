@@ -55,7 +55,7 @@ function sampleTextTargets(text: string, count: number, half: number): Float32Ar
   const W = 420, H = 220
   const c = document.createElement('canvas'); c.width = W; c.height = H
   const g = c.getContext('2d')!
-  g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'
+  g.fillStyle = 'white'; g.textAlign = 'center'; g.textBaseline = 'middle'
   g.font = '800 168px "Space Grotesk", system-ui, sans-serif'
   g.fillText(text, W / 2, H / 2 + 8)
   const data = g.getImageData(0, 0, W, H).data
