@@ -117,6 +117,25 @@ export default function ComunidadPage() {
         </div>
       </section>
 
+      {/* momentos — fotos reales de la comunidad */}
+      <section className="py-[clamp(24px,5vw,56px)]">
+        <SectionReveal>
+          <p className="font-mono text-[12px] uppercase tracking-[0.24em]" style={{ color: G1.amber }}>Momentos</p>
+          <h2 className="mt-3 max-w-[24ch] font-display text-[clamp(23px,3.4vw,36px)] font-bold tracking-tight">La comunidad, en persona.</h2>
+        </SectionReveal>
+        <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+          {['02', '03', '04', '05'].map((n, i) => (
+            <SectionReveal key={n} delay={i * 0.06}>
+              <div className="relative overflow-hidden rounded-2xl" style={{ border: `1px solid ${G1.cyan}26`, aspectRatio: '4 / 3' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`/g1/media/aitech/access/${n}.jpg`} alt="" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+                <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: `linear-gradient(160deg, ${G1.violet}1f 0%, transparent 45%, ${G1.cyan}12 100%)`, mixBlendMode: 'overlay' }} />
+              </div>
+            </SectionReveal>
+          ))}
+        </div>
+      </section>
+
       <section className="py-[clamp(40px,7vw,90px)] text-center">
         <SectionReveal>
           <h2 className="mx-auto max-w-[22ch] font-display text-[clamp(24px,3.6vw,40px)] font-bold tracking-tight">
