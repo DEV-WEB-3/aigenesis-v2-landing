@@ -53,3 +53,9 @@ credenciales.json
 *.credenciales.json
 .hostinger/
 /.api-apartada-durante-export/
+
+# harness local de capturas/harvest (no se despliega)
+_shoot*.mjs
+_harvest.mjs
+_diag.mjs
+_media.mjs
