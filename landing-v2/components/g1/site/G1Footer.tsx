@@ -4,6 +4,7 @@ import { G1, G1_GRADIENT } from '@/lib/design/g1'
 import { DisclaimerBar } from '../DisclaimerBar'
 import { CredentialStrip } from '../CredentialStrip'
 import { SideRays } from './fx'
+import { OFFICIAL_SOCIAL } from '@/lib/official-links'
 
 /**
  * G1 FOOTER — completo y premium, con nuestra data (adaptado del mapa de la
@@ -32,6 +33,16 @@ const ECOSISTEMA = [
 ]
 const LEGAL = ['Términos y condiciones', 'Política de privacidad', 'Política de cookies', 'Aviso de riesgo', 'Descargo de responsabilidad']
 
+// Redes reales (lib/official-links) — iconos monoline, se tiñen al hover.
+const SOCIAL = [
+  { href: OFFICIAL_SOCIAL.X, label: 'X', d: 'M4 4l7 8.5L4.5 20H7l5.2-6 4.8 6H20l-7.3-9L19.5 4H17l-4.6 5.3L8.2 4H4z' },
+  { href: OFFICIAL_SOCIAL.TELEGRAM, label: 'Telegram', d: 'M21 5L3 12l5 1.8L17 8l-6.5 7.2L10 20l3-2.6 4 2.9L21 5z' },
+  { href: OFFICIAL_SOCIAL.INSTAGRAM, label: 'Instagram', d: 'M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm5 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm5.2-.7a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8z' },
+  { href: OFFICIAL_SOCIAL.YOUTUBE, label: 'YouTube', d: 'M22 8.2a3 3 0 0 0-2.1-2.1C18 5.5 12 5.5 12 5.5s-6 0-7.9.6A3 3 0 0 0 2 8.2 31 31 0 0 0 1.7 12 31 31 0 0 0 2 15.8a3 3 0 0 0 2.1 2.1c1.9.6 7.9.6 7.9.6s6 0 7.9-.6a3 3 0 0 0 2.1-2.1c.3-1.3.3-3.8.3-3.8s0-2.5-.3-3.8zM10 15V9l5 3-5 3z' },
+  { href: OFFICIAL_SOCIAL.DISCORD, label: 'Discord', d: 'M19 6.5A16 16 0 0 0 15 5l-.3.6a12 12 0 0 1 3.4 1.6 11 11 0 0 0-9.3 0A12 12 0 0 1 12.3 5.6L12 5a16 16 0 0 0-4 1.5C5 10 4.4 13.4 4.7 16.8A16 16 0 0 0 9 19l.6-1a10 10 0 0 1-1.6-.8l.4-.3a11 11 0 0 0 9.3 0l.4.3a10 10 0 0 1-1.6.8l.6 1a16 16 0 0 0 4.3-2.2c.4-4-.6-7.3-2.4-10.3zM9.5 14.5c-.8 0-1.4-.7-1.4-1.6s.6-1.6 1.4-1.6 1.5.8 1.4 1.6c0 .9-.6 1.6-1.4 1.6zm5 0c-.8 0-1.4-.7-1.4-1.6s.6-1.6 1.4-1.6 1.5.8 1.4 1.6c0 .9-.6 1.6-1.4 1.6z' },
+  { href: OFFICIAL_SOCIAL.EMAIL, label: 'Correo', d: 'M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1.2 2L12 12l7.8-5H4.2z' },
+]
+
 function Col({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
@@ -56,8 +67,8 @@ export function G1Footer() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-[clamp(16px,4vw,40px)] py-14">
-        <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
+      <div className="mx-auto max-w-6xl px-[clamp(16px,4vw,40px)] py-[clamp(48px,7vw,72px)]">
+        <div className="grid gap-x-8 gap-y-12 md:grid-cols-[1.6fr_1fr_1fr_1fr_1fr]">
           {/* marca */}
           <div>
             <div className="flex items-center gap-2.5">
@@ -67,14 +78,31 @@ export function G1Footer() {
             <p className="mt-5 font-display text-[19px] font-bold leading-tight tracking-tight">
               <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>Tres fuerzas. Un ecosistema.</span>
             </p>
-            <p className="mt-4 max-w-[42ch] text-[14px] leading-relaxed text-genesis-mist">
+            <p className="mt-4 max-w-[38ch] text-[14px] leading-relaxed text-genesis-mist">
               G1 conecta comunidad, mercados, activos digitales y herramientas de pago dentro de la
               alianza Génesis × Aitech × TAG.
             </p>
             <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em]" style={{ color: G1.cyan }}>
               Trading · Exchange · Tarjeta cripto
             </p>
-            <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: G1.amber }}>
+            {/* redes reales de la comunidad */}
+            <div className="mt-6 flex flex-wrap gap-2">
+              {SOCIAL.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target={s.href.startsWith('mailto') ? undefined : '_blank'}
+                  rel={s.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+                  title={s.label}
+                  aria-label={s.label}
+                  className="grid h-9 w-9 place-items-center rounded-lg text-genesis-mist transition-colors hover:text-genesis-text"
+                  style={{ border: `1px solid ${G1.cyan}1f`, background: 'rgba(255,255,255,0.03)' }}
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d={s.d} /></svg>
+                </a>
+              ))}
+            </div>
+            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: G1.amber }}>
               Sello G‑TAG · Génesis × Aitech × TAG
             </p>
           </div>
@@ -95,18 +123,17 @@ export function G1Footer() {
             ))}
           </Col>
 
-          <div className="space-y-8">
-            <Col title="Acceso">
-              <li><a href="https://g-pulse.aigenesis.io" target="_blank" rel="noopener noreferrer" className="text-[14px] text-genesis-text hover:underline">Únete / Ingresar ↗</a></li>
-              <li><a href="https://genesis.ibportal.io" target="_blank" rel="noopener noreferrer" className="text-[14px] text-genesis-text hover:underline">Portal IBO ↗</a></li>
-              <li><Link href="/g1/comunidad" className="text-[14px] text-genesis-text hover:underline">Próximos eventos</Link></li>
-            </Col>
-            <Col title="Legal">
-              {LEGAL.map((l) => (
-                <li key={l}><Link href="/legal" className="text-[13.5px] text-genesis-mist hover:text-genesis-text">{l}</Link></li>
-              ))}
-            </Col>
-          </div>
+          <Col title="Acceso">
+            <li><a href="https://g-pulse.aigenesis.io" target="_blank" rel="noopener noreferrer" className="text-[14px] text-genesis-text hover:underline">Únete / Ingresar ↗</a></li>
+            <li><a href="https://genesis.ibportal.io" target="_blank" rel="noopener noreferrer" className="text-[14px] text-genesis-text hover:underline">Portal IBO ↗</a></li>
+            <li><Link href="/g1/comunidad" className="text-[14px] text-genesis-text hover:underline">Próximos eventos</Link></li>
+          </Col>
+
+          <Col title="Legal">
+            {LEGAL.map((l) => (
+              <li key={l}><Link href="/legal" className="text-[13.5px] text-genesis-mist hover:text-genesis-text">{l}</Link></li>
+            ))}
+          </Col>
         </div>
 
         {/* cápsula de cumplimiento — un solo cristal curvo suave: respaldo + aviso

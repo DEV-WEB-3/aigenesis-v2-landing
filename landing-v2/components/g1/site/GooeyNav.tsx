@@ -37,7 +37,11 @@ export function GooeyNav({
   }, [target, items.length])
 
   return (
-    <nav className="relative hidden items-center md:flex" onMouseLeave={() => setHover(null)}>
+    <nav
+      className="relative hidden items-center rounded-full border px-1.5 py-1 md:flex"
+      style={{ borderColor: `${G1.cyan}1a`, background: 'rgba(255,255,255,0.035)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}
+      onMouseLeave={() => setHover(null)}
+    >
       {/* capa goo — la pill + el satélite (se funden al moverse) */}
       <span className="pointer-events-none absolute inset-0" style={{ filter: 'url(#g1-goo)' }}>
         {pill ? (
