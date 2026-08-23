@@ -2,6 +2,7 @@ import { Eyebrow } from '../Eyebrow'
 import { PillCTA } from '../PillCTA'
 import { SectionReveal } from './SectionReveal'
 import { G1Aurora } from './G1Aurora'
+import { G1Trilogy } from './G1Trilogy'
 import { GlassMedia } from './GlassMedia'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 
@@ -51,21 +52,10 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
         </div>
       </section>
 
-      {/* tres movimientos */}
+      {/* tres fuerzas — emblema de alianza en glass premium + detalle */}
       <section className="py-[clamp(24px,5vw,56px)]">
-        <SectionReveal>
-          <p className="text-center font-mono text-[12px] uppercase tracking-[0.24em]" style={{ color: G1.amber }}>
-            Tres fuerzas, un ecosistema
-          </p>
-          <h2 className="mx-auto mt-4 max-w-[22ch] text-center font-display text-[clamp(24px,3.6vw,38px)] font-bold tracking-tight">
-            Génesis △ Aitech △ TAG
-          </h2>
-          <p className="mx-auto mt-4 max-w-[46ch] text-center text-[14.5px] leading-relaxed text-genesis-mist">
-            Tres organizaciones independientes que, hacia la comunidad, funcionan como una sola
-            experiencia. Tres fuerzas que convergen en un solo núcleo.
-          </p>
-        </SectionReveal>
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
+        <G1Trilogy />
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
           {ENTIDADES.map((e, i) => (
             <SectionReveal key={e.n} delay={i * 0.08}>
               <div className="h-full rounded-2xl border border-genesis-ghost/50 bg-genesis-surface/40 p-6">
@@ -76,17 +66,6 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
             </SectionReveal>
           ))}
         </div>
-        <SectionReveal>
-          <p className="mt-9 text-center font-mono text-[11px] uppercase tracking-[0.28em] text-genesis-mist">
-            <span style={{ color: G1.cyan }}>G1</span>
-            <span className="mx-2 text-genesis-ghost">·</span>Una visión
-            <span className="mx-2 text-genesis-ghost">·</span>Una red
-            <span className="mx-2 text-genesis-ghost">·</span>Un ecosistema
-          </p>
-          <p className="mt-2 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-genesis-ghost">
-            Powered by Génesis × Aitech × TAG
-          </p>
-        </SectionReveal>
       </section>
 
       {/* media destacada — la alianza, con presencia */}
