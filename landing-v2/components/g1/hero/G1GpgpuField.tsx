@@ -114,7 +114,14 @@ function makeSprite(): THREE.CanvasTexture {
   const t = new THREE.CanvasTexture(c); t.needsUpdate = true; return t
 }
 
-export function G1GpgpuField({ baseOpacity = 0.82 }: { baseOpacity?: number }) {
+export function G1GpgpuField({
+  baseOpacity = 0.82,
+  progressRef,
+}: {
+  baseOpacity?: number
+  /** Si se pasa, el estado lo maneja el SCROLL (0..1), no el reloj: sky→orbe→G1→disolución. */
+  progressRef?: { current: number }
+}) {
   const gl = useThree((s) => s.gl)
   const grp = useRef<THREE.Group>(null)
   const st = useRef({ phase: 0, t: 0 })
@@ -180,27 +187,44 @@ export function G1GpgpuField({ baseOpacity = 0.82 }: { baseOpacity?: number }) {
   }, [sys])
 
   useFrame((s, dt) => {
-    const S = st.current
-    S.t += dt
-    if (S.t > PHASES[S.phase]!.dur) { S.t = 0; S.phase = (S.phase + 1) % PHASES.length }
-    const ph = PHASES[S.phase]!
-    const prev = PHASES[(S.phase - 1 + PHASES.length) % PHASES.length]!
-    const p = Math.min(1, S.t / ph.dur)
-    const isShatter = ph.target === 'field' && prev.target !== 'field'
-    const burst = isShatter ? Math.max(0, 1 - p * 1.7) : 0
-
     const u = sys.posVar.material.uniforms
     u.uTime!.value = s.clock.elapsedTime
-    u.uTarget!.value = ph.target === 'orb' ? sys.orbTex : ph.target === 'g1' ? sys.g1Tex : sys.fieldTex
-    u.uEase!.value = isShatter ? 0.05 : ph.key.endsWith('hold') ? 0.02 : 0.03
-    u.uFlow!.value = ph.key.endsWith('hold') ? 0.01 : 0.05 + burst * 0.03
-    u.uBurst!.value = burst
+    let bright = 0.95
+
+    if (progressRef) {
+      // MODO SCROLL: el estado lo decide el progreso 0..1 del relato
+      const p = Math.min(1, Math.max(0, progressRef.current))
+      let tex = sys.fieldTex, flow = 0.06, ease = 0.04, burst = 0
+      if (p < 0.12) { tex = sys.fieldTex; flow = 0.06; ease = 0.035 } // Acto 0 · cielo
+      else if (p < 0.6) { tex = sys.orbTex; flow = 0.025; ease = 0.05 } // Actos 1–3 · orbes
+      else if (p < 0.82) { tex = sys.g1Tex; flow = 0.02; ease = 0.05 } // Acto 4 · fusión G1
+      else { tex = sys.fieldTex; flow = 0.07; ease = 0.045; burst = Math.max(0, 1 - (p - 0.82) / 0.06) } // Acto 5 · disolución
+      u.uTarget!.value = tex
+      u.uFlow!.value = flow
+      u.uEase!.value = ease
+      u.uBurst!.value = burst
+    } else {
+      // MODO RELOJ: fases automáticas (preview suelto)
+      const S = st.current
+      S.t += dt
+      if (S.t > PHASES[S.phase]!.dur) { S.t = 0; S.phase = (S.phase + 1) % PHASES.length }
+      const ph = PHASES[S.phase]!
+      const prev = PHASES[(S.phase - 1 + PHASES.length) % PHASES.length]!
+      const pp = Math.min(1, S.t / ph.dur)
+      const isShatter = ph.target === 'field' && prev.target !== 'field'
+      const burst = isShatter ? Math.max(0, 1 - pp * 1.7) : 0
+      bright = ph.bright
+      u.uTarget!.value = ph.target === 'orb' ? sys.orbTex : ph.target === 'g1' ? sys.g1Tex : sys.fieldTex
+      u.uEase!.value = isShatter ? 0.05 : ph.key.endsWith('hold') ? 0.02 : 0.03
+      u.uFlow!.value = ph.key.endsWith('hold') ? 0.01 : 0.05 + burst * 0.03
+      u.uBurst!.value = burst
+    }
 
     sys.gpu.compute()
     const mu = sys.mat.uniforms
     mu.uPositions!.value = sys.gpu.getCurrentRenderTarget(sys.posVar).texture
     mu.uTime!.value = s.clock.elapsedTime
-    const targetOp = baseOpacity * ph.bright * 0.62
+    const targetOp = baseOpacity * bright * 0.62
     mu.uOpacity!.value += (targetOp - mu.uOpacity!.value) * (1 - Math.pow(0.02, dt))
 
     if (grp.current) {
