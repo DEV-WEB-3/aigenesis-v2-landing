@@ -2,6 +2,7 @@ import { Eyebrow } from '../Eyebrow'
 import { PillCTA } from '../PillCTA'
 import { SectionReveal } from './SectionReveal'
 import { G1Aurora } from './G1Aurora'
+import { GlassMedia } from './GlassMedia'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 
 /**
@@ -67,6 +68,18 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
             </SectionReveal>
           ))}
         </div>
+      </section>
+
+      {/* media destacada — la alianza, con presencia */}
+      <section className="py-[clamp(24px,5vw,64px)]">
+        <SectionReveal>
+          <div className="mx-auto max-w-4xl">
+            <GlassMedia motif="community" ratio="16 / 9" />
+          </div>
+          <p className="mx-auto mt-5 max-w-[56ch] text-center text-[14px] leading-relaxed text-genesis-mist">
+            Una comunidad internacional unida por herramientas reales. Material informativo.
+          </p>
+        </SectionReveal>
       </section>
 
       {/* AiG Token */}

@@ -75,7 +75,7 @@ export default function ComoFuncionaPage() {
             Trading, exchange y tarjeta — reales.
           </h2>
           <div className="mx-auto mt-9 max-w-4xl">
-            <GlassMedia motif="appDemo" ratio="16 / 9" />
+            <GlassMedia motif="network" ratio="16 / 9" />
           </div>
           <p className="mx-auto mt-5 max-w-[56ch] text-center text-[14px] leading-relaxed text-genesis-mist">
             La plataforma de la alianza en acción. Material informativo.

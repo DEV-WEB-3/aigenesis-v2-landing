@@ -45,6 +45,18 @@ export default function EcosistemaPage() {
         </SectionReveal>
       </section>
 
+      {/* franja de logos de la alianza */}
+      <section className="pb-[clamp(16px,3vw,32px)]">
+        <SectionReveal>
+          <div className="flex flex-wrap items-center justify-center gap-x-[clamp(28px,6vw,72px)] gap-y-6 rounded-2xl border py-7" style={{ borderColor: `${G1.cyan}1f`, background: 'rgba(255,255,255,0.02)' }}>
+            {['tag-markets', 'bit1', 'bix'].map((l) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={l} src={`/g1/media/aitech-brand/partners/${l}.png`} alt="" className="h-7 w-auto opacity-70 transition-opacity hover:opacity-100 sm:h-8" />
+            ))}
+          </div>
+        </SectionReveal>
+      </section>
+
       {/* trilogía */}
       <section className="py-[clamp(24px,5vw,56px)]">
         <SectionReveal>
