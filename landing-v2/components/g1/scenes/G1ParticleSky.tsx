@@ -34,7 +34,16 @@ function makeBokeh(): THREE.CanvasTexture {
   const t = new THREE.CanvasTexture(c); t.needsUpdate = true; return t
 }
 
-export function G1ParticleSky({ count = 7000, parallax = true }: { count?: number; parallax?: boolean }) {
+export function G1ParticleSky({
+  count = 7000,
+  parallax = true,
+  progressRef,
+}: {
+  count?: number
+  parallax?: boolean
+  /** Si se pasa, el cielo se atenúa detrás de los orbes y vuelve en la disolución. */
+  progressRef?: { current: number }
+}) {
   const pts = useRef<THREE.Points>(null)
   const grp = useRef<THREE.Group>(null)
   const sprite = useMemo(() => (typeof document !== 'undefined' ? makeBokeh() : null), [])
@@ -103,6 +112,13 @@ export function G1ParticleSky({ count = 7000, parallax = true }: { count?: numbe
       ;(geo.attributes.position as THREE.BufferAttribute).needsUpdate = true
     }
     uTime.current.value = s.clock.elapsedTime
+    // fade por scroll: protagonista en el cielo (Acto 0) y la disolución; tenue detrás de los orbes
+    const skyMat = pts.current?.material as THREE.PointsMaterial | undefined
+    if (skyMat && progressRef) {
+      const p = progressRef.current
+      const target = p < 0.12 ? 0.9 : p > 0.84 ? 0.7 : 0.24
+      skyMat.opacity += (target - skyMat.opacity) * (1 - Math.pow(0.03, dt))
+    }
     if (grp.current && parallax) {
       grp.current.rotation.y += (s.pointer.x * 0.06 - grp.current.rotation.y) * 0.03
       grp.current.rotation.x += (-s.pointer.y * 0.04 - grp.current.rotation.x) * 0.03

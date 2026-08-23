@@ -9,6 +9,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { G1 } from '@/lib/design/g1'
 import { G1GpgpuField } from '../hero/G1GpgpuField'
+import { G1ParticleSky } from './G1ParticleSky'
 import { Eyebrow } from '../Eyebrow'
 import { PillCTA } from '../PillCTA'
 import { DisclaimerBar } from '../DisclaimerBar'
@@ -92,7 +93,7 @@ export function G1Narrative() {
   }, [])
 
   const actClass =
-    'pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-[clamp(18px,4vw,46px)] text-center'
+    'pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-[clamp(18px,4vw,46px)] text-center drop-shadow-[0_2px_22px_rgba(2,4,10,0.92)]'
 
   return (
     <div ref={wrapRef} className="relative w-full" style={{ height: '620vh' }}>
@@ -105,6 +106,7 @@ export function G1Narrative() {
             dpr={[1, 2]}
             gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           >
+            <G1ParticleSky count={6000} progressRef={progressRef} />
             <G1GpgpuField baseOpacity={0.82} progressRef={progressRef} />
             <ScrollCamera progressRef={progressRef} />
             <EffectComposer>

@@ -5,6 +5,13 @@ import { useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { GPUComputationRenderer } from 'three/examples/jsm/misc/GPUComputationRenderer.js'
 import { buildGpgpuData, gpgpuSize } from '@/lib/webgl/g1GpgpuTargets'
+import { G1 } from '@/lib/design/g1'
+
+// colores firma de cada trilogía (Acto 1/2/3)
+const TINT_VIOLET = new THREE.Color(G1.violet)
+const TINT_CYAN = new THREE.Color(G1.cyan)
+const TINT_AMBER = new THREE.Color(G1.amber)
+const _tintTmp = new THREE.Color()
 
 /**
  * CAMPO GPGPU de G1 — densidad tipo qpaycard (hasta 65k partículas) simuladas en
@@ -67,13 +74,16 @@ const VERT = /* glsl */ `
 const FRAG = /* glsl */ `
   uniform sampler2D uSprite;
   uniform float uOpacity;
+  uniform vec3 uTint;
+  uniform float uTintAmount;
   varying vec3 vColor;
   varying float vTw;
   varying float vDepth;
   void main() {
     vec4 tex = texture2D(uSprite, gl_PointCoord);
     float a = tex.a;
-    vec3 col = vColor * (0.7 + 0.9 * vTw) * (0.5 + 0.7 * vDepth);
+    vec3 base = mix(vColor, uTint, uTintAmount); // tinte por acto (violeta/cian/ámbar)
+    vec3 col = base * (0.7 + 0.9 * vTw) * (0.5 + 0.7 * vDepth);
     gl_FragColor = vec4(col * a, a * uOpacity);
   }
 `
@@ -164,6 +174,8 @@ export function G1GpgpuField({
         uSize: { value: size < 160 ? 15 : 11 },
         uSprite: { value: sprite },
         uOpacity: { value: 0 },
+        uTint: { value: new THREE.Color(G1.violet) },
+        uTintAmount: { value: 0 },
       },
       vertexShader: VERT,
       fragmentShader: FRAG,
@@ -190,6 +202,7 @@ export function G1GpgpuField({
     const u = sys.posVar.material.uniforms
     u.uTime!.value = s.clock.elapsedTime
     let bright = 0.95
+    let tintAmt = 0
 
     if (progressRef) {
       // MODO SCROLL: el estado lo decide el progreso 0..1 del relato
@@ -203,6 +216,14 @@ export function G1GpgpuField({
       u.uFlow!.value = flow
       u.uEase!.value = ease
       u.uBurst!.value = burst
+      // tinte firma por acto: violeta (Aitech) → cian (TAG) → ámbar (Génesis)
+      if (p >= 0.1 && p <= 0.62) {
+        const local = Math.min(1, Math.max(0, (p - 0.12) / 0.48))
+        if (local < 0.5) _tintTmp.copy(TINT_VIOLET).lerp(TINT_CYAN, local * 2)
+        else _tintTmp.copy(TINT_CYAN).lerp(TINT_AMBER, (local - 0.5) * 2)
+        tintAmt = 0.6 * Math.max(0, Math.min(1, Math.min((p - 0.1) / 0.05, (0.62 - p) / 0.05)))
+        sys.mat.uniforms.uTint!.value.copy(_tintTmp)
+      }
     } else {
       // MODO RELOJ: fases automáticas (preview suelto)
       const S = st.current
@@ -226,6 +247,7 @@ export function G1GpgpuField({
     mu.uTime!.value = s.clock.elapsedTime
     const targetOp = baseOpacity * bright * 0.62
     mu.uOpacity!.value += (targetOp - mu.uOpacity!.value) * (1 - Math.pow(0.02, dt))
+    mu.uTintAmount!.value += (tintAmt - mu.uTintAmount!.value) * (1 - Math.pow(0.05, dt))
 
     if (grp.current) {
       grp.current.rotation.y += (s.pointer.x * 0.16 - grp.current.rotation.y) * 0.04
