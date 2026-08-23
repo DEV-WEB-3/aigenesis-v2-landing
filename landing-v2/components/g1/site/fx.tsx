@@ -64,7 +64,11 @@ export function SpotlightCard({
   )
 }
 
-/** BORDER GLOW — un borde de gradiente de marca que gira, glow suave alrededor. */
+/**
+ * BORDER GLOW — glow de marca suave y CONTENIDO alrededor del elemento (estático,
+ * sin girar). Un anillo de gradiente fino en el borde + un halo difuso detrás; el
+ * halo respira muy sutilmente al pasar el cursor. Nada de luz girando.
+ */
 export function BorderGlow({
   children,
   className = '',
@@ -75,11 +79,24 @@ export function BorderGlow({
   rounded?: string
 }) {
   return (
-    <span className={`relative inline-flex ${rounded} ${className}`}>
+    <span className={`group/bg relative inline-flex ${rounded} ${className}`}>
+      {/* halo difuso detrás — estático, contenido, se aviva un poco al hover */}
       <span
         aria-hidden
-        className={`pointer-events-none absolute -inset-[1.5px] -z-10 ${rounded} opacity-70 blur-[3px] motion-safe:animate-[spin_6s_linear_infinite]`}
-        style={{ background: `conic-gradient(from 0deg, ${G1.violet}, ${G1.cyan}, ${G1.amber}, ${G1.violet})` }}
+        className={`pointer-events-none absolute -inset-[2px] -z-10 ${rounded} opacity-45 blur-[6px] transition-opacity duration-300 group-hover/bg:opacity-70`}
+        style={{ background: `linear-gradient(120deg, ${G1.violet}, ${G1.cyan}, ${G1.amber})` }}
+      />
+      {/* anillo de gradiente fino en el borde (máscara) */}
+      <span
+        aria-hidden
+        className={`pointer-events-none absolute inset-0 ${rounded}`}
+        style={{
+          background: `linear-gradient(120deg, ${G1.violet}, ${G1.cyan}, ${G1.amber})`,
+          padding: '1.4px',
+          WebkitMask: 'linear-gradient(black 0 0) content-box, linear-gradient(black 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
+        }}
       />
       {children}
     </span>
