@@ -203,6 +203,7 @@ export function G1GpgpuField({
     u.uTime!.value = s.clock.elapsedTime
     let bright = 0.95
     let tintAmt = 0
+    let opMul = 1 // el polvo se atenúa cuando el logo real cristaliza encima
 
     if (progressRef) {
       // MODO SCROLL: el estado lo decide el progreso 0..1 del relato
@@ -211,7 +212,7 @@ export function G1GpgpuField({
       if (p < 0.12) { tex = sys.fieldTex; flow = 0.06; ease = 0.035 } // Acto 0 · cielo
       else if (p < 0.6) { tex = sys.orbTex; flow = 0.025; ease = 0.05 } // Actos 1–3 · orbes
       else if (p < 0.82) { tex = sys.g1Tex; flow = 0.02; ease = 0.05 } // Acto 4 · fusión G1
-      else { tex = sys.fieldTex; flow = 0.07; ease = 0.045; burst = Math.max(0, 1 - (p - 0.82) / 0.06) } // Acto 5 · disolución
+      else { tex = sys.g1Tex; flow = 0.03; ease = 0.05; burst = 0 } // Acto 5 · el polvo se asienta en G1 (converge, no dispersa)
       u.uTarget!.value = tex
       u.uFlow!.value = flow
       u.uEase!.value = ease
@@ -224,6 +225,10 @@ export function G1GpgpuField({
         tintAmt = 0.6 * Math.max(0, Math.min(1, Math.min((p - 0.1) / 0.05, (0.62 - p) / 0.05)))
         sys.mat.uniforms.uTint!.value.copy(_tintTmp)
       }
+      // al cristalizar el logo (0.64→0.86) el polvo baja a aura sutil; vuelve al soltar
+      const ss = (e0: number, e1: number, x: number) => { const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t) }
+      const reveal = ss(0.58, 0.69, p) * (1 - ss(0.86, 0.93, p))
+      opMul = 1 - 0.86 * reveal
     } else {
       // MODO RELOJ: fases automáticas (preview suelto)
       const S = st.current
@@ -245,7 +250,7 @@ export function G1GpgpuField({
     const mu = sys.mat.uniforms
     mu.uPositions!.value = sys.gpu.getCurrentRenderTarget(sys.posVar).texture
     mu.uTime!.value = s.clock.elapsedTime
-    const targetOp = baseOpacity * bright * 0.62
+    const targetOp = baseOpacity * bright * 0.62 * opMul
     mu.uOpacity!.value += (targetOp - mu.uOpacity!.value) * (1 - Math.pow(0.02, dt))
     mu.uTintAmount!.value += (tintAmt - mu.uTintAmount!.value) * (1 - Math.pow(0.05, dt))
 
