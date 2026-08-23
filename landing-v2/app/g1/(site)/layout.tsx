@@ -23,8 +23,12 @@ export default function G1SiteLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Asistente flotante — el mismo mensajero de aigenesis.io; ayuda al usuario
-          en toda la web G1. Cerebro client-side (responder sobre el corpus). */}
-      <AsistenteFlotante />
+          en toda la web G1. Cerebro client-side (responder sobre el corpus).
+          Sugeridos de ONBOARDING (usuario nuevo): qué es, cómo empezar, el token,
+          G-Pulse y el respaldo — no las de soporte de cuenta. */}
+      <AsistenteFlotante
+        sugeridos={['ali-como-empezar', 'ali-aitech-one', 'tok-que-es', 'gp-que-es', 'ali-credenciales']}
+      />
     </div>
   )
 }

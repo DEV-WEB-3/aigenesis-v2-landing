@@ -86,7 +86,7 @@ const FUENTES: Record<Pregunta['fuente'], string> = {
   porDefinir: 'pendiente de confirmar con el equipo',
 }
 
-export default function AsistenteFlotante() {
+export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos?: readonly string[] } = {}) {
   const t = useT()
   const [abierto, setAbierto] = useState(false)
   const [cerrando, setCerrando] = useState(false)
@@ -182,7 +182,7 @@ export default function AsistenteFlotante() {
       {abierto ? (
         <section
           aria-label={t('Asistente de soporte')}
-          className={`fixed inset-x-3 bottom-3 top-16 z-40 flex flex-col overflow-hidden rounded-2xl border border-genesis-ghost bg-genesis-base/95 shadow-2xl backdrop-blur-xl transition-all duration-200 sm:inset-auto sm:bottom-24 sm:right-6 sm:top-auto sm:h-[min(680px,calc(100vh-8rem))] sm:w-[400px] ${
+          className={`fixed inset-x-3 bottom-3 top-16 z-[80] flex flex-col overflow-hidden rounded-2xl border border-genesis-ghost bg-genesis-base/95 shadow-2xl backdrop-blur-xl transition-all duration-200 sm:inset-auto sm:bottom-24 sm:right-6 sm:top-auto sm:h-[min(680px,calc(100dvh-8rem))] sm:max-h-[min(680px,calc(100dvh-8rem))] sm:w-[min(400px,calc(100vw-3rem))] ${
             cerrando ? 'translate-y-3 opacity-0' : 'translate-y-0 opacity-100'
           }`}
         >
@@ -248,7 +248,7 @@ export default function AsistenteFlotante() {
                   {t('Hacer una pregunta')} <span className="text-genesis-ion">➤</span>
                 </button>
                 <div className="overflow-hidden rounded-xl border border-genesis-ghost" lang="es">
-                  {SUGERIDOS.map((id) => {
+                  {sugeridos.map((id) => {
                     const p = porId.get(id)
                     if (!p) return null
                     return (
@@ -483,7 +483,9 @@ export default function AsistenteFlotante() {
         onClick={() => (abierto ? cerrar() : setAbierto(true))}
         aria-label={abierto ? t('Cerrar el asistente') : t('Abrir el asistente')}
         aria-expanded={abierto}
-        className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-gradient-genesis-signature p-[3px] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 active:scale-90 sm:bottom-6 sm:right-6"
+        className={`fixed bottom-5 right-5 z-[80] h-14 w-14 place-items-center rounded-full bg-gradient-genesis-signature p-[3px] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 active:scale-90 sm:bottom-6 sm:right-6 sm:grid ${
+          abierto ? 'hidden sm:grid' : 'grid'
+        }`}
       >
         <span className="grid h-full w-full place-items-center rounded-full bg-genesis-base">
           <span className="relative grid h-6 w-6 place-items-center">
