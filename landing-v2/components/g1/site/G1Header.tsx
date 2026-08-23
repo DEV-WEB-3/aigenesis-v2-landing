@@ -10,14 +10,14 @@ import { GlareHover, BorderGlow } from './fx'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 
 const IBO_URL = 'https://genesis.ibportal.io'
-const GPULSE_URL = 'https://g-pulse.aigenesis.io'
+const REGISTER_URL = 'https://genesis.ibportal.io/auth/register?e=3K6GzjHBJ_y8cA2HayXAJNwnNadze1aLg9ZDSOZmJUs&a=1'
 
 /**
  * G1 HEADER — cabecera de la web G1. Marca a la izquierda, navegación GOOEY al
- * centro y en la ESQUINA el CTA "Ingresar" (→ Portal IBO de Génesis, explícito y
- * premium con border-glow + glare) más el acceso secundario a G-Pulse. El botón
- * dice "Ingresar" a propósito: que se entienda que es la puerta de acceso.
- * Transparente sobre el hero, con blur al scrollear. Menú hamburguesa en móvil.
+ * centro y en la ESQUINA los CTA de acceso: "Regístrate" (→ registro del Portal
+ * IBO de Génesis) e "Ingresar" (→ Portal IBO, primario, premium con border-glow +
+ * glare). Transparente sobre el hero, con blur al scrollear. Menú hamburguesa en
+ * móvil.
  */
 
 const NAV = [
@@ -36,9 +36,12 @@ const IconIngresar = (
     <path d="M15 12H3" />
   </svg>
 )
-const IconGPulse = (
-  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M3 12h4l2 6 4-14 2 8h6" />
+// Icono "registrarse" (persona con +) — refuerza que es crear cuenta.
+const IconRegister = (
+  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M15 20a5 5 0 0 0-10 0" />
+    <circle cx="10" cy="8" r="3.2" />
+    <path d="M18 8v6M15 11h6" />
   </svg>
 )
 
@@ -93,19 +96,20 @@ export function G1Header() {
         {/* nav centro (desktop) — gooey */}
         <GooeyNav items={NAV} current={pathname} t={t} />
 
-        {/* esquina: Ingresar (IBO) + G-Pulse + idioma + hamburguesa */}
+        {/* esquina: Regístrate + Ingresar (IBO) + idioma + hamburguesa */}
         <div className="flex items-center gap-2">
-          {/* G-Pulse — acceso secundario (tu panel) */}
+          {/* Regístrate — crear cuenta en el Portal IBO (secundario, ghost) */}
           <a
-            href={GPULSE_URL}
+            href={REGISTER_URL}
             target="_blank"
             rel="noopener noreferrer"
-            title="G-Pulse · tu panel"
-            aria-label="G-Pulse · tu panel"
-            className="hidden h-9 w-9 place-items-center rounded-lg text-genesis-mist transition-colors hover:text-genesis-text sm:grid"
-            style={{ border: `1px solid ${G1.cyan}22`, background: 'rgba(255,255,255,0.03)' }}
+            title="Regístrate en el Portal IBO de Génesis"
+            aria-label="Regístrate en el Portal IBO de Génesis"
+            className="hidden items-center gap-2 rounded-full px-4 py-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-genesis-text transition-colors hover:text-white sm:inline-flex"
+            style={{ border: `1px solid ${G1.cyan}33`, background: 'rgba(255,255,255,0.03)' }}
           >
-            {IconGPulse}
+            {IconRegister}
+            Regístrate
           </a>
           {/* Ingresar — CTA principal, va al Portal IBO de Génesis */}
           <BorderGlow rounded="rounded-full" className="hidden sm:inline-flex">
@@ -174,14 +178,15 @@ export function G1Header() {
                 Ingresar · Portal IBO
               </a>
               <a
-                href={GPULSE_URL}
+                href={REGISTER_URL}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Regístrate en el Portal IBO de Génesis"
                 className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-3 font-mono text-[13px] uppercase tracking-[0.1em] text-genesis-text"
                 style={{ border: `1px solid ${G1.cyan}2e`, background: 'rgba(255,255,255,0.03)' }}
               >
-                {IconGPulse}
-                G-Pulse · tu panel
+                {IconRegister}
+                Regístrate · Portal IBO
               </a>
               <div className="mt-1">
                 <SelectorIdioma />

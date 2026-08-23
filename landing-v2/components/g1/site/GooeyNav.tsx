@@ -1,16 +1,22 @@
 'use client'
 
 import Link from 'next/link'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { G1 } from '@/lib/design/g1'
 
 /**
- * GOOEY NAV — portado de React Bits a CSS/SVG (sin deps). Una "pill" líquida se
- * desliza bajo el ítem activo/hover; un satélite la sigue con retraso y, gracias
- * al filtro `goo` (blur + umbral de alpha), ambos se estiran y funden como un
- * fluido al moverse. El texto va en una capa aparte (nítido, sin filtro).
+ * NAV PILL — dos indicadores independientes (pedido del owner):
+ *
+ *  1) PILL ACTIVA (fija): marca SIEMPRE la página en la que estoy. No se mueve al
+ *     pasar el cursor por otra — se queda donde estoy. Cian con borde.
+ *  2) EFECTO HOVER (temporal): un resalte más tenue sobre el ítem que estoy
+ *     señalando; se desliza entre ítems y DESAPARECE al quitar el cursor (salvo
+ *     que sea la propia página activa, que ya tiene su pill).
+ *
+ * Así siempre se entiende en qué página estoy y cuál estoy señalando.
  */
 type Item = { href: string; label: string }
+type Rect = { left: number; width: number } | null
 
 export function GooeyNav({
   items,
@@ -23,18 +29,26 @@ export function GooeyNav({
 }) {
   const refs = useRef<Array<HTMLAnchorElement | null>>([])
   const [hover, setHover] = useState<number | null>(null)
-  const [pill, setPill] = useState<{ left: number; width: number } | null>(null)
+  const [rects, setRects] = useState<Rect[]>([])
   const activeIndex = items.findIndex((i) => i.href === current)
-  const target = hover ?? (activeIndex >= 0 ? activeIndex : null)
+  const labelsKey = items.map((i) => t(i.label)).join('|')
+
+  const measure = useCallback(() => {
+    setRects(refs.current.map((el) => (el ? { left: el.offsetLeft, width: el.offsetWidth } : null)))
+  }, [])
 
   useLayoutEffect(() => {
-    if (target == null) {
-      setPill(null)
-      return
-    }
-    const el = refs.current[target]
-    if (el) setPill({ left: el.offsetLeft, width: el.offsetWidth })
-  }, [target, items.length])
+    measure()
+  }, [measure, labelsKey])
+
+  useEffect(() => {
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [measure])
+
+  const activeRect = activeIndex >= 0 ? rects[activeIndex] ?? null : null
+  const showHover = hover != null && hover !== activeIndex
+  const hoverRect = hover != null ? rects[hover] ?? null : null
 
   return (
     <nav
@@ -42,21 +56,33 @@ export function GooeyNav({
       style={{ borderColor: `${G1.cyan}1a`, background: 'rgba(255,255,255,0.035)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}
       onMouseLeave={() => setHover(null)}
     >
-      {/* capa goo — la pill + el satélite (se funden al moverse) */}
-      <span className="pointer-events-none absolute inset-0" style={{ filter: 'url(#g1-goo)' }}>
-        {pill ? (
-          <>
-            <span
-              className="absolute top-1/2 h-8 -translate-y-1/2 rounded-full transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
-              style={{ left: pill.left, width: pill.width, background: `${G1.cyan}30` }}
-            />
-            <span
-              className="absolute top-1/2 h-8 w-8 -translate-y-1/2 rounded-full transition-all duration-[750ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-              style={{ left: pill.left + pill.width / 2 - 16, background: `${G1.cyan}30` }}
-            />
-          </>
-        ) : null}
-      </span>
+      {/* 1) pill ACTIVA — fija en la página actual */}
+      {activeRect ? (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute top-1/2 h-8 -translate-y-1/2 rounded-full"
+          style={{
+            left: activeRect.left,
+            width: activeRect.width,
+            background: `${G1.cyan}22`,
+            border: `1px solid ${G1.cyan}45`,
+          }}
+        />
+      ) : null}
+
+      {/* 2) efecto HOVER — temporal, sobre lo que señalo; se desvanece al salir */}
+      {hoverRect ? (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute top-1/2 h-8 -translate-y-1/2 rounded-full transition-all duration-300 ease-out"
+          style={{
+            left: hoverRect.left,
+            width: hoverRect.width,
+            background: `${G1.cyan}12`,
+            opacity: showHover ? 1 : 0,
+          }}
+        />
+      ) : null}
 
       {items.map((n, idx) => {
         const active = n.href === current
@@ -68,24 +94,18 @@ export function GooeyNav({
               refs.current[idx] = el
             }}
             onMouseEnter={() => setHover(idx)}
-            className="relative z-10 rounded-full px-3.5 py-2 font-mono text-[12.5px] uppercase tracking-[0.1em] transition-colors"
-            style={{ color: active ? G1.cyan : undefined }}
+            aria-current={active ? 'page' : undefined}
+            className="relative z-10 rounded-full px-3.5 py-2 font-mono text-[12.5px] uppercase tracking-[0.1em]"
           >
-            <span className={active ? '' : 'text-genesis-mist hover:text-genesis-text'}>{t(n.label)}</span>
+            <span
+              className={active ? 'font-semibold' : 'text-genesis-mist transition-colors hover:text-genesis-text'}
+              style={active ? { color: G1.cyan } : undefined}
+            >
+              {t(n.label)}
+            </span>
           </Link>
         )
       })}
-
-      {/* filtro goo (una sola instancia por header) */}
-      <svg width="0" height="0" className="absolute" aria-hidden>
-        <defs>
-          <filter id="g1-goo">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b" />
-            <feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="g" />
-            <feBlend in="SourceGraphic" in2="g" />
-          </filter>
-        </defs>
-      </svg>
     </nav>
   )
 }
