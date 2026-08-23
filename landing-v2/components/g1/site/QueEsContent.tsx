@@ -1,7 +1,7 @@
 import { Eyebrow } from '../Eyebrow'
 import { PillCTA } from '../PillCTA'
 import { SectionReveal } from './SectionReveal'
-import { G1PageFigure } from './G1PageFigure'
+import { G1Aurora } from './G1Aurora'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 
 /**
@@ -21,7 +21,7 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
     <div className="mx-auto max-w-6xl px-[clamp(16px,4vw,40px)]">
       {/* arranque del contenido — con figura "fusión" en la ruta standalone */}
       <section className={`relative overflow-hidden ${hero ? 'py-[clamp(48px,9vw,110px)]' : 'pt-[clamp(40px,7vw,90px)] pb-[clamp(24px,4vw,48px)]'} text-center`}>
-        {hero ? <G1PageFigure variant="fuse" /> : null}
+        {hero ? <G1Aurora tint="brand" /> : null}
         <div className="relative z-10">
         <SectionReveal>
           <Eyebrow>Qué es G1</Eyebrow>
