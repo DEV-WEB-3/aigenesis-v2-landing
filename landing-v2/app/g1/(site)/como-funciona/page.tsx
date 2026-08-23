@@ -4,6 +4,7 @@ import { PillCTA } from '@/components/g1/PillCTA'
 import { SectionReveal } from '@/components/g1/site/SectionReveal'
 import { G1Aurora } from '@/components/g1/site/G1Aurora'
 import { GlassMedia } from '@/components/g1/site/GlassMedia'
+import { SideRays } from '@/components/g1/site/fx'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 
 export const metadata: Metadata = {
@@ -85,9 +86,10 @@ export default function ComoFuncionaPage() {
 
       <section className="py-[clamp(24px,5vw,56px)]">
         <SectionReveal>
-          <div className="rounded-2xl border p-[clamp(20px,3vw,32px)]" style={{ borderColor: `${G1.amber}33`, background: `${G1.amber}0a` }}>
-            <p className="font-mono text-[11px] uppercase tracking-[0.16em]" style={{ color: G1.amber }}>Lo que esta página no dice</p>
-            <p className="mt-3 max-w-[70ch] text-[14.5px] leading-relaxed text-genesis-mist">
+          <div className="relative overflow-hidden rounded-2xl border p-[clamp(20px,3vw,32px)]" style={{ borderColor: `${G1.amber}33`, background: `${G1.amber}0a` }}>
+            <SideRays />
+            <p className="relative font-mono text-[11px] uppercase tracking-[0.16em]" style={{ color: G1.amber }}>Lo que esta página no dice</p>
+            <p className="relative mt-3 max-w-[70ch] text-[14.5px] leading-relaxed text-genesis-mist">
               G1 no publica porcentajes de resultado, comisiones, apalancamiento ni premios de ningún
               plan. Esa información vive solo en los canales oficiales de cada producto y bajo la
               responsabilidad de cada persona. Aquí contamos <b className="text-genesis-text">qué es</b> y

@@ -5,13 +5,19 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import SelectorIdioma from '@/components/i18n/SelectorIdioma'
 import { useT } from '@/context/IdiomaContext'
+import { GooeyNav } from './GooeyNav'
+import { GlareHover, BorderGlow } from './fx'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 
+const IBO_URL = 'https://genesis.ibportal.io'
+const GPULSE_URL = 'https://g-pulse.aigenesis.io'
+
 /**
- * G1 HEADER — cabecera de la web G1. Marca a la izquierda, navegación al centro
- * y en la ESQUINA los accesos a los portales (IBO de TAG/Génesis y G-Pulse),
- * como en cualquier cabecera de producto. Transparente sobre el hero, con blur
- * al scrollear. Menú hamburguesa en móvil.
+ * G1 HEADER — cabecera de la web G1. Marca a la izquierda, navegación GOOEY al
+ * centro y en la ESQUINA el CTA "Ingresar" (→ Portal IBO de Génesis, explícito y
+ * premium con border-glow + glare) más el acceso secundario a G-Pulse. El botón
+ * dice "Ingresar" a propósito: que se entienda que es la puerta de acceso.
+ * Transparente sobre el hero, con blur al scrollear. Menú hamburguesa en móvil.
  */
 
 const NAV = [
@@ -22,32 +28,19 @@ const NAV = [
   { href: '/g1/faq', label: 'FAQ' },
 ]
 
-// Accesos a los portales existentes (externos) — los iconos de la esquina.
-const PORTALS = [
-  {
-    href: 'https://genesis.ibportal.io',
-    label: 'Portal IBO',
-    title: 'Portal IBO · Génesis × TAG',
-    icon: (
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <rect x="3" y="3" width="7" height="7" rx="1.5" />
-        <rect x="14" y="3" width="7" height="7" rx="1.5" />
-        <rect x="3" y="14" width="7" height="7" rx="1.5" />
-        <rect x="14" y="14" width="7" height="7" rx="1.5" />
-      </svg>
-    ),
-  },
-  {
-    href: 'https://g-pulse.aigenesis.io',
-    label: 'G-Pulse',
-    title: 'G-Pulse · tu panel',
-    icon: (
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M3 12h4l2 6 4-14 2 8h6" />
-      </svg>
-    ),
-  },
-]
+// Icono "log in" (flecha entrando a la puerta) — refuerza que es INGRESAR.
+const IconIngresar = (
+  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+    <path d="M10 17l5-5-5-5" />
+    <path d="M15 12H3" />
+  </svg>
+)
+const IconGPulse = (
+  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M3 12h4l2 6 4-14 2 8h6" />
+  </svg>
+)
 
 export function G1Header() {
   const [scrolled, setScrolled] = useState(false)
@@ -97,43 +90,42 @@ export function G1Header() {
           </span>
         </Link>
 
-        {/* nav centro (desktop) */}
-        <nav className="hidden items-center gap-1 md:flex">
-          {NAV.map((n) => {
-            const active = pathname === n.href
-            return (
-              <Link
-                key={n.href}
-                href={n.href}
-                className="rounded-full px-3.5 py-2 font-mono text-[12.5px] uppercase tracking-[0.1em] transition-colors"
-                style={{ color: active ? G1.cyan : undefined }}
-              >
-                <span className={active ? '' : 'text-genesis-mist hover:text-genesis-text'}>{t(n.label)}</span>
-              </Link>
-            )
-          })}
-        </nav>
+        {/* nav centro (desktop) — gooey */}
+        <GooeyNav items={NAV} current={pathname} t={t} />
 
-        {/* esquina: portales + hamburguesa */}
-        <div className="flex items-center gap-1.5">
-          <div className="flex items-center gap-1">
-            {PORTALS.map((p) => (
+        {/* esquina: Ingresar (IBO) + G-Pulse + idioma + hamburguesa */}
+        <div className="flex items-center gap-2">
+          {/* G-Pulse — acceso secundario (tu panel) */}
+          <a
+            href={GPULSE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="G-Pulse · tu panel"
+            aria-label="G-Pulse · tu panel"
+            className="hidden h-9 w-9 place-items-center rounded-lg text-genesis-mist transition-colors hover:text-genesis-text sm:grid"
+            style={{ border: `1px solid ${G1.cyan}22`, background: 'rgba(255,255,255,0.03)' }}
+          >
+            {IconGPulse}
+          </a>
+          {/* Ingresar — CTA principal, va al Portal IBO de Génesis */}
+          <BorderGlow rounded="rounded-full" className="hidden sm:inline-flex">
+            <GlareHover rounded="rounded-full">
               <a
-                key={p.href}
-                href={p.href}
+                href={IBO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                title={p.title}
-                aria-label={p.title}
-                className="grid h-9 w-9 place-items-center rounded-lg text-genesis-mist transition-colors hover:text-genesis-text"
-                style={{ border: `1px solid ${G1.cyan}22`, background: 'rgba(255,255,255,0.03)' }}
+                title="Ingresar al Portal IBO de Génesis"
+                aria-label="Ingresar al Portal IBO de Génesis"
+                className="inline-flex items-center gap-2 rounded-full px-4 py-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-genesis-void"
+                style={{ background: G1_GRADIENT }}
               >
-                {p.icon}
+                {IconIngresar}
+                Ingresar
               </a>
-            ))}
-          </div>
+            </GlareHover>
+          </BorderGlow>
           {/* selector de idioma — español-first: arranca en ES, presente en toda la web */}
-          <div className="ml-0.5 hidden sm:block">
+          <div className="hidden sm:block">
             <SelectorIdioma compacto />
           </div>
           <button
@@ -168,8 +160,32 @@ export function G1Header() {
                 <span className={pathname === n.href ? '' : 'text-genesis-text'}>{t(n.label)}</span>
               </Link>
             ))}
-            <div className="mt-2 border-t pt-3" style={{ borderColor: `${G1.cyan}1f` }}>
-              <SelectorIdioma />
+            <div className="mt-3 flex flex-col gap-2 border-t pt-4" style={{ borderColor: `${G1.cyan}1f` }}>
+              {/* Ingresar — CTA al Portal IBO de Génesis */}
+              <a
+                href={IBO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ingresar al Portal IBO de Génesis"
+                className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-3 font-mono text-[13px] font-semibold uppercase tracking-[0.12em] text-genesis-void"
+                style={{ background: G1_GRADIENT }}
+              >
+                {IconIngresar}
+                Ingresar · Portal IBO
+              </a>
+              <a
+                href={GPULSE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-3 font-mono text-[13px] uppercase tracking-[0.1em] text-genesis-text"
+                style={{ border: `1px solid ${G1.cyan}2e`, background: 'rgba(255,255,255,0.03)' }}
+              >
+                {IconGPulse}
+                G-Pulse · tu panel
+              </a>
+              <div className="mt-1">
+                <SelectorIdioma />
+              </div>
             </div>
           </nav>
         </div>

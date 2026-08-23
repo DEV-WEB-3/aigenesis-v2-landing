@@ -1,5 +1,6 @@
 import { G1 } from '@/lib/design/g1'
 import { GlassMedia, type MediaMotif } from './GlassMedia'
+import { SpotlightCard } from './fx'
 
 export type Producto = {
   tag: string
@@ -22,8 +23,9 @@ const ACCENT: Record<NonNullable<Producto['accent']>, string> = {
 export function ProductCard({ tag, name, desc, href, accent = 'cyan', motif }: Producto) {
   const color = ACCENT[accent]
   const inner = (
-    <div
-      className="group relative h-full overflow-hidden rounded-2xl border border-genesis-ghost/50 bg-genesis-surface/40 p-6 transition-colors"
+    <SpotlightCard
+      color={`${color}1f`}
+      className="group h-full rounded-2xl border border-genesis-ghost/50 bg-genesis-surface/40 p-6 transition-colors"
       style={{ borderColor: `${color}22` }}
     >
       <span
@@ -41,7 +43,7 @@ export function ProductCard({ tag, name, desc, href, accent = 'cyan', motif }: P
         {href ? <span className="ml-1.5 text-[14px] text-genesis-mist transition-colors group-hover:text-genesis-text">↗</span> : null}
       </h3>
       <p className="mt-3 text-[14.5px] leading-relaxed text-genesis-mist">{desc}</p>
-    </div>
+    </SpotlightCard>
   )
   if (href) {
     return (

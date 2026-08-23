@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 import { DisclaimerBar } from '../DisclaimerBar'
 import { CredentialStrip } from '../CredentialStrip'
+import { SideRays } from './fx'
 
 /**
  * G1 FOOTER — completo y premium, con nuestra data (adaptado del mapa de la
@@ -121,9 +122,11 @@ export function G1Footer() {
             boxShadow: 'inset 0 1px 0 0 rgba(255,255,255,0.06), 0 24px 60px -40px rgba(0,0,0,0.9)',
           }}
         >
+          {/* rayos de luz suaves detrás del cristal de aviso */}
+          <SideRays />
           {/* brillo superior del cristal */}
           <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${G1.cyan}3a, transparent)` }} />
-          <div className="grid gap-x-12 gap-y-8 md:grid-cols-[1.15fr_1px_1fr] md:items-stretch">
+          <div className="relative grid gap-x-12 gap-y-8 md:grid-cols-[1.15fr_1px_1fr] md:items-stretch">
             {/* respaldo */}
             <CredentialStrip bare />
             {/* divisor hairline (solo desktop) */}
