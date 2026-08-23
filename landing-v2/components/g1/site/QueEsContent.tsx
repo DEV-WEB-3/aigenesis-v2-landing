@@ -3,6 +3,7 @@ import { PillCTA } from '../PillCTA'
 import { SectionReveal } from './SectionReveal'
 import { G1Aurora } from './G1Aurora'
 import { G1Trilogy } from './G1Trilogy'
+import { Ferrofluid } from './Ferrofluid'
 import { GlassMedia } from './GlassMedia'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 
@@ -83,8 +84,12 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
       {/* AiG Token */}
       <section className="py-[clamp(24px,5vw,56px)]">
         <SectionReveal>
-          <div className="rounded-3xl border border-genesis-ghost/50 bg-genesis-surface/30 p-[clamp(24px,4vw,48px)]">
-            <div className="grid gap-8 md:grid-cols-[1.3fr_1fr] md:items-center">
+          <div className="relative overflow-hidden rounded-3xl border border-genesis-ghost/50 bg-genesis-surface/30 p-[clamp(24px,4vw,48px)]">
+            {/* fondo Ferrofluid — fluido de marca dentro del cristal del token */}
+            <Ferrofluid />
+            {/* oscurecido para mantener el texto legible sobre el fluido (protege la columna de texto) */}
+            <span aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(8,11,18,0.92) 0%, rgba(8,11,18,0.8) 30%, rgba(8,11,18,0.4) 62%, rgba(8,11,18,0.12) 100%)' }} />
+            <div className="relative z-10 grid gap-8 md:grid-cols-[1.3fr_1fr] md:items-center">
               <div>
                 <Eyebrow>El AiG Token, con uso real</Eyebrow>
                 <h2 className="mt-4 font-display text-[clamp(22px,3.2vw,34px)] font-bold tracking-tight">
