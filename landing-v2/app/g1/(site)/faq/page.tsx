@@ -4,6 +4,7 @@ import type { Pregunta } from '@/lib/soporte/tipos'
 import { Eyebrow } from '@/components/g1/Eyebrow'
 import { PillCTA } from '@/components/g1/PillCTA'
 import { SectionReveal } from '@/components/g1/site/SectionReveal'
+import { G1PageFigure } from '@/components/g1/site/G1PageFigure'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 
 export const metadata: Metadata = {
@@ -42,8 +43,9 @@ export default function FaqPage() {
   const grupos = agrupar()
   return (
     <div className="mx-auto max-w-4xl px-[clamp(16px,4vw,40px)]">
-      <section className="py-[clamp(48px,9vw,100px)] text-center">
-        <SectionReveal>
+      <section className="relative overflow-hidden py-[clamp(48px,9vw,100px)] text-center">
+        <G1PageFigure variant="grid" />
+        <SectionReveal className="relative z-10">
           <Eyebrow>Preguntas frecuentes</Eyebrow>
           <h1 className="mx-auto mt-6 max-w-[16ch] font-display text-[clamp(32px,5.6vw,60px)] font-extrabold leading-[1.04] tracking-tight">
             Lo que{' '}

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Eyebrow } from '@/components/g1/Eyebrow'
 import { PillCTA } from '@/components/g1/PillCTA'
 import { SectionReveal } from '@/components/g1/site/SectionReveal'
+import { G1PageFigure } from '@/components/g1/site/G1PageFigure'
 import { ProductCard, type Producto } from '@/components/g1/site/ProductCard'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 
@@ -27,8 +28,9 @@ export default function EcosistemaPage() {
   return (
     <div className="mx-auto max-w-6xl px-[clamp(16px,4vw,40px)]">
       {/* hero */}
-      <section className="py-[clamp(48px,9vw,110px)] text-center">
-        <SectionReveal>
+      <section className="relative overflow-hidden py-[clamp(48px,9vw,110px)] text-center">
+        <G1PageFigure variant="constellation" />
+        <SectionReveal className="relative z-10">
           <Eyebrow>Ecosistema</Eyebrow>
           <h1 className="mx-auto mt-6 max-w-[20ch] font-display text-[clamp(34px,6.2vw,68px)] font-extrabold leading-[1.04] tracking-tight">
             Una comunidad,{' '}
