@@ -81,15 +81,24 @@ const EXCLUIDOS = [
   'acuerdo-de-uso.ts',
 ]
 
+/*
+ * ALCANCE. La guarda ya no cubre solo el corpus del asistente: cubre también la
+ * WEB G1 (app/g1 + components/g1), donde vive copy de cara al público. Se
+ * incluyen .ts y .tsx (las páginas son .tsx).
+ */
+const CARPETAS = [CARPETA, resolve(raiz, 'app', 'g1'), resolve(raiz, 'components', 'g1')]
+
 const archivos = []
-;(function recorrer(dir) {
-  for (const n of readdirSync(dir)) {
-    const p = join(dir, n)
-    if (statSync(p).isDirectory()) recorrer(p)
-    /* `lenguaje.ts` se salta: contiene los términos prohibidos por definición. */
-    else if (p.endsWith('.ts') && !EXCLUIDOS.some((e) => p.endsWith(e))) archivos.push(p)
-  }
-})(CARPETA)
+for (const carpeta of CARPETAS) {
+  ;(function recorrer(dir) {
+    for (const n of readdirSync(dir)) {
+      const p = join(dir, n)
+      if (statSync(p).isDirectory()) recorrer(p)
+      /* `lenguaje.ts` se salta: contiene los términos prohibidos por definición. */
+      else if ((p.endsWith('.ts') || p.endsWith('.tsx')) && !EXCLUIDOS.some((e) => p.endsWith(e))) archivos.push(p)
+    }
+  })(carpeta)
+}
 
 /*
  * CONTRAEJEMPLOS: las únicas líneas exentas, y por qué.
@@ -244,7 +253,7 @@ if (problemas.length) {
   process.exit(1)
 }
 console.log(
-  `lenguaje: ${archivos.length} archivo(s) de soporte limpios contra ${REGLAS.length} reglas` +
+  `lenguaje: ${archivos.length} archivo(s) (soporte + web G1) limpios contra ${REGLAS.length} reglas` +
     (exentas
       ? ` · ${exentas} exención(es) declaradas (contraejemplos, sinónimos y rótulos de pantalla)`
       : '') +

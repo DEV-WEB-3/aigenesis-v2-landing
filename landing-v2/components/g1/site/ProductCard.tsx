@@ -1,4 +1,5 @@
 import { G1 } from '@/lib/design/g1'
+import { GlassMedia, type MediaMotif } from './GlassMedia'
 
 export type Producto = {
   tag: string
@@ -6,6 +7,7 @@ export type Producto = {
   desc: string
   href?: string
   accent?: 'violet' | 'cyan' | 'amber' | 'magenta' | 'blue'
+  motif?: MediaMotif
 }
 
 const ACCENT: Record<NonNullable<Producto['accent']>, string> = {
@@ -17,7 +19,7 @@ const ACCENT: Record<NonNullable<Producto['accent']>, string> = {
 }
 
 /** Tarjeta de producto/ecosistema. Acento por color, enlace externo opcional. */
-export function ProductCard({ tag, name, desc, href, accent = 'cyan' }: Producto) {
+export function ProductCard({ tag, name, desc, href, accent = 'cyan', motif }: Producto) {
   const color = ACCENT[accent]
   const inner = (
     <div
@@ -29,6 +31,7 @@ export function ProductCard({ tag, name, desc, href, accent = 'cyan' }: Producto
         className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full opacity-40 blur-2xl transition-opacity group-hover:opacity-70"
         style={{ background: color }}
       />
+      {motif ? <GlassMedia motif={motif} className="mb-5" ratio="16 / 10" /> : null}
       <div className="flex items-center gap-2">
         <span className="h-2 w-2 rounded-full" style={{ background: color }} />
         <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-genesis-mist">{tag}</p>

@@ -13,15 +13,15 @@ export const metadata: Metadata = {
 }
 
 const TRILOGIA: Producto[] = [
-  { tag: 'TAG · trading', name: 'Tag Markets', accent: 'cyan', href: 'https://www.tagmarkets.com', desc: 'Bróker de trading sistemático: acceso a los mercados con herramientas profesionales de la alianza.' },
-  { tag: 'TAG · exchange', name: 'Bit1', accent: 'blue', href: 'https://www.bit1.com', desc: 'Exchange de activos digitales para comprar, vender y custodiar cripto dentro del ecosistema.' },
-  { tag: 'TAG · tarjeta', name: 'BixCard · BIX', accent: 'amber', desc: 'Tarjeta Visa respaldada por cripto para usar tus activos en el día a día.' },
+  { tag: 'TAG · trading', name: 'Tag Markets', accent: 'cyan', motif: 'markets', href: 'https://www.tagmarkets.com', desc: 'Bróker de trading sistemático: acceso a los mercados con herramientas profesionales de la alianza.' },
+  { tag: 'TAG · exchange', name: 'Bit1', accent: 'blue', motif: 'network', href: 'https://www.bit1.com', desc: 'Exchange de activos digitales para comprar, vender y custodiar cripto dentro del ecosistema.' },
+  { tag: 'TAG · tarjeta', name: 'BixCard · BIX', accent: 'amber', motif: 'card', desc: 'Tarjeta Visa respaldada por cripto para usar tus activos en el día a día.' },
 ]
 
 const GENESIS: Producto[] = [
-  { tag: 'Génesis · panel', name: 'G-Pulse', accent: 'violet', href: 'https://g-pulse.aigenesis.io', desc: 'El panel de la comunidad: membresías, actividad y el acceso a tu cuenta.' },
-  { tag: 'Génesis · marca hija', name: 'Gevy', accent: 'magenta', desc: 'Marca hija de Génesis, con su propia identidad bilingüe dentro del ecosistema.' },
-  { tag: 'Génesis · token', name: 'AiG Token', accent: 'cyan', desc: 'El token de utilidad del ecosistema, usado en formato DUAL (AIG + USDT) para dar liquidez y acceso.' },
+  { tag: 'Génesis · panel', name: 'G-Pulse', accent: 'violet', motif: 'community', href: 'https://g-pulse.aigenesis.io', desc: 'El panel de la comunidad: membresías, actividad y el acceso a tu cuenta.' },
+  { tag: 'Génesis · marca hija', name: 'Gevy', accent: 'magenta', motif: 'community', desc: 'Marca hija de Génesis, con su propia identidad bilingüe dentro del ecosistema.' },
+  { tag: 'Génesis · token', name: 'AiG Token', accent: 'cyan', motif: 'token', desc: 'El token de utilidad del ecosistema, usado en formato DUAL (AIG + USDT) para dar liquidez y acceso.' },
 ]
 
 export default function EcosistemaPage() {
