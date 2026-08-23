@@ -20,10 +20,55 @@ const LOGO_FRAG = /* glsl */ `
   varying vec2 vUv;
   void main() {
     vec4 t = texture2D(uMap, vUv);
+    if (t.a < 0.35) discard; // solo el cristal escribe profundidad (para el weaving de los aros)
     // barrido diagonal de luz FINO y lento que recorre el cristal (elegante)
     float band = exp(-pow((vUv.x + vUv.y - mod(uTime * 0.09, 2.4)) * 6.5, 2.0));
     vec3 col = t.rgb + band * uShine * t.a * vec3(0.78, 0.9, 1.0);
     gl_FragColor = vec4(col, t.a * uOpacity);
+  }
+`
+
+// ARO orbital de cristal líquido: brillo fresnel en el borde + energía que circula.
+const RING_VERT = /* glsl */ `
+  varying vec2 vUv;
+  varying float vFres;
+  void main() {
+    vUv = uv;
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    vec3 N = normalize(normalMatrix * normal);
+    vec3 V = normalize(-mv.xyz);
+    vFres = pow(1.0 - abs(dot(N, V)), 1.5);
+    gl_Position = projectionMatrix * mv;
+  }
+`
+const RING_FRAG = /* glsl */ `
+  uniform vec3 uColA;
+  uniform vec3 uColB;
+  uniform float uTime;
+  uniform float uOpacity;
+  uniform float uSpeed;
+  varying vec2 vUv;
+  varying float vFres;
+  void main() {
+    vec3 base = mix(uColA, uColB, 0.5 + 0.5 * sin(vUv.x * 6.2831853));
+    // energía líquida que circula a lo largo del aro (uv.x recorre el anillo)
+    float flow = exp(-pow(sin(3.14159265 * (vUv.x * 3.0 - uTime * uSpeed)) * 2.1, 2.0));
+    // el tubo brilla (base) + realce de borde (fresnel) + energía que circula
+    vec3 col = base * (0.95 + 0.55 * vFres) + flow * vec3(0.86, 0.94, 1.0) * 0.9;
+    float a = (0.6 + 0.55 * vFres + flow * 0.5) * uOpacity;
+    gl_FragColor = vec4(col * a, a);
+  }
+`
+
+// NODO — esfera de cristal (fresnel rim + núcleo). Reusa RING_VERT (vFres).
+const NODE_FRAG = /* glsl */ `
+  uniform vec3 uCol;
+  uniform float uOpacity;
+  varying float vFres;
+  void main() {
+    vec3 col = uCol * (0.35 + 1.05 * vFres) + vec3(0.72, 0.86, 1.0) * pow(vFres, 3.0) * 0.7;
+    float a = (0.42 + 0.85 * vFres) * uOpacity;
+    gl_FragColor = vec4(col * a, a);
   }
 `
 
@@ -107,6 +152,17 @@ const FRAG = /* glsl */ `
     gl_FragColor = vec4(col * a, a * uOpacity);
   }
 `
+
+/**
+ * Los tres AROS orbitales: cada uno en su propio plano (tilt distinto), con su
+ * dirección y velocidad de precesión propia (signos opuestos) y su energía que
+ * circula. NO giran todos igual; respetan profundidad (weaving con el logo).
+ */
+const RINGS = [
+  { r: 2.28, tiltX: 1.05, tiltZ: 0.16, prec: 0.11, speed: 0.5, a: G1.cyan, b: G1.blue, nodes: [{ ang: 0.4, s: 0.13, c: G1.cyan }, { ang: 3.7, s: 0.08, c: G1.blue }] },
+  { r: 1.98, tiltX: 0.6, tiltZ: -0.46, prec: -0.16, speed: -0.4, a: G1.violet, b: G1.magenta, nodes: [{ ang: 1.5, s: 0.15, c: G1.violet }] },
+  { r: 2.52, tiltX: 1.32, tiltZ: 0.72, prec: 0.08, speed: 0.64, a: G1.cyan, b: G1.violet, nodes: [{ ang: 2.4, s: 0.11, c: G1.amber }, { ang: 5.2, s: 0.09, c: G1.cyan }] },
+] as const
 
 type Phase = { key: string; target: 'orb' | 'g1' | 'field'; dur: number; bright: number }
 const PHASES: Phase[] = [
@@ -209,13 +265,12 @@ export function G1GpgpuField({
   // Texturas del logo (monograma cristal + órbitas) y muestreo de la SILUETA
   // hacia el target g1 → el polvo forma el logo EXACTO, alineado con el plano 3D.
   const [logoTex, setLogoTex] = useState<THREE.Texture | null>(null)
-  const [orbitTex, setOrbitTex] = useState<THREE.Texture | null>(null)
   const [logoAspect, setLogoAspect] = useState(995 / 560)
-  const [orbAspect, setOrbAspect] = useState(1000 / 563)
   const logoMatRef = useRef<THREE.ShaderMaterial>(null)
-  const orbMatRef = useRef<THREE.MeshBasicMaterial>(null)
   const logoMeshRef = useRef<THREE.Mesh>(null)
-  const orbMeshRef = useRef<THREE.Mesh>(null)
+  const ringMeshRefs = useRef<Array<THREE.Mesh | null>>([])
+  const ringMatRefs = useRef<Array<THREE.ShaderMaterial | null>>([])
+  const nodeMatRefs = useRef<Array<THREE.ShaderMaterial | null>>([])
 
   useEffect(() => {
     const loader = new THREE.TextureLoader()
@@ -229,13 +284,6 @@ export function G1GpgpuField({
       // reemplaza el target g1 (texto) por la SILUETA del logo, mismo mapeo que el plano
       const sil = sampleLogoSilhouette(img, sys.size, sys.data.seeds)
       if (sil) { (sys.g1Tex.image.data as unknown as Float32Array).set(sil); sys.g1Tex.needsUpdate = true }
-    })
-    loader.load('/brand/g1/g1-orbits-1000.webp', (t) => {
-      if (!alive) return
-      t.colorSpace = THREE.SRGBColorSpace
-      const img = t.image as HTMLImageElement
-      setOrbAspect((img.naturalWidth || 1000) / (img.naturalHeight || 563))
-      setOrbitTex(t)
     })
     return () => { alive = false }
   }, [sys])
@@ -252,7 +300,7 @@ export function G1GpgpuField({
     }
   }, [sys])
 
-  useEffect(() => () => { logoTex?.dispose(); orbitTex?.dispose() }, [logoTex, orbitTex])
+  useEffect(() => () => { logoTex?.dispose() }, [logoTex])
 
   useFrame((s, dt) => {
     const u = sys.posVar.material.uniforms
@@ -286,8 +334,9 @@ export function G1GpgpuField({
       const ss = (e0: number, e1: number, x: number) => { const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t) }
       const reveal = ss(0.58, 0.69, p) * (1 - ss(0.86, 0.93, p))
       opMul = 1 - 0.86 * reveal
-      // el logo cristaliza a la par que el polvo se asienta (cross-fade: dust → crystal)
-      logoOp = ss(0.60, 0.72, p) * (1 - ss(0.85, 0.92, p))
+      // el logo cristaliza a la par que el polvo se asienta (cross-fade: dust →
+      // crystal). Llega al máximo rápido y SOSTIENE toda la fusión.
+      logoOp = ss(0.56, 0.65, p) * (1 - ss(0.9, 0.97, p))
     } else {
       // MODO RELOJ: fases automáticas (preview suelto)
       const S = st.current
@@ -320,17 +369,33 @@ export function G1GpgpuField({
 
     // LOGO 3D — cristaliza con el polvo (mismo grupo/cámara → sin divergencia)
     const t = s.clock.elapsedTime
+    let logoVis = logoOp // opacidad REALMENTE visible del logo (con su inercia)
     if (logoMatRef.current) {
       const uo = logoMatRef.current.uniforms
       uo.uOpacity!.value += (logoOp - uo.uOpacity!.value) * (1 - Math.pow(0.02, dt))
       uo.uTime!.value = t
       uo.uShine!.value = 0.3
+      logoVis = uo.uOpacity!.value
     }
-    if (orbMatRef.current) {
-      orbMatRef.current.opacity += (logoOp * 0.95 - orbMatRef.current.opacity) * (1 - Math.pow(0.02, dt))
+    // AROS 3D — cada uno precesa en su propio plano; opacidad ATADA a la del logo
+    // (así aparecen/desaparecen exactamente igual que el logo, sin desfases).
+    for (let i = 0; i < RINGS.length; i++) {
+      const rc = RINGS[i]!
+      const mesh = ringMeshRefs.current[i]
+      const mat = ringMatRefs.current[i]
+      if (mesh) mesh.rotation.set(rc.tiltX, t * rc.prec, rc.tiltZ) // tilt fijo + precesión propia
+      if (mat) {
+        const uo = mat.uniforms
+        uo.uTime!.value = t
+        uo.uOpacity!.value = logoVis
+      }
     }
-    // vida: órbitas que giran suave, respiración del lockup
-    if (orbMeshRef.current) orbMeshRef.current.rotation.z = t * 0.06
+    // nodos (esferas): la misma opacidad del logo
+    for (let i = 0; i < nodeMatRefs.current.length; i++) {
+      const nm = nodeMatRefs.current[i]
+      if (nm) nm.uniforms.uOpacity!.value = logoVis
+    }
+    // vida: respiración sutil del lockup
     const breathe = 1 + Math.sin(t * 0.9) * 0.012
     if (logoMeshRef.current) logoMeshRef.current.scale.setScalar(breathe)
   })
@@ -338,26 +403,64 @@ export function G1GpgpuField({
   return (
     <group ref={grp}>
       <points geometry={sys.geo} material={sys.mat} frustumCulled={false} renderOrder={0} />
-      {orbitTex ? (
-        <mesh ref={orbMeshRef} position={[0, 0, -0.06]} renderOrder={1}>
-          <planeGeometry args={[LOGO_WORLD_W * 1.16, (LOGO_WORLD_W * 1.16) / orbAspect]} />
-          <meshBasicMaterial ref={orbMatRef} map={orbitTex} transparent opacity={0} depthWrite={false} depthTest={false} blending={THREE.AdditiveBlending} toneMapped={false} />
-        </mesh>
-      ) : null}
+      {/* LOGO — escribe profundidad (solo el cristal, por el discard) para que los
+          aros que pasan por detrás queden ocultos (weaving real). */}
       {logoTex ? (
-        <mesh ref={logoMeshRef} position={[0, 0, 0.04]} renderOrder={2}>
+        <mesh ref={logoMeshRef} position={[0, 0, 0]} renderOrder={1}>
           <planeGeometry args={[LOGO_WORLD_W, LOGO_WORLD_W / logoAspect]} />
           <shaderMaterial
             ref={logoMatRef}
             vertexShader={LOGO_VERT}
             fragmentShader={LOGO_FRAG}
             transparent
-            depthWrite={false}
-            depthTest={false}
+            depthWrite
+            depthTest
             uniforms={{ uMap: { value: logoTex }, uTime: { value: 0 }, uOpacity: { value: 0 }, uShine: { value: 0.3 } }}
           />
         </mesh>
       ) : null}
+
+      {/* AROS 3D — torus de cristal líquido, cada uno en su plano orbital, con
+          profundidad real (se testean contra la profundidad del logo). */}
+      {RINGS.map((rc, i) => {
+        const nodeBase = RINGS.slice(0, i).reduce((s, r) => s + r.nodes.length, 0)
+        return (
+          <mesh
+            key={i}
+            ref={(m) => { ringMeshRefs.current[i] = m }}
+            scale={[rc.r, rc.r, rc.r]}
+            renderOrder={2}
+          >
+            <torusGeometry args={[1, 0.05, 16, 300]} />
+            <shaderMaterial
+              ref={(m) => { ringMatRefs.current[i] = m as THREE.ShaderMaterial | null }}
+              vertexShader={RING_VERT}
+              fragmentShader={RING_FRAG}
+              transparent
+              depthWrite={false}
+              depthTest={false}
+              blending={THREE.AdditiveBlending}
+              uniforms={{ uColA: { value: new THREE.Color(rc.a) }, uColB: { value: new THREE.Color(rc.b) }, uTime: { value: 0 }, uOpacity: { value: 0 }, uSpeed: { value: rc.speed } }}
+            />
+            {/* NODOS — esferas de cristal que orbitan sobre el aro (hijas → heredan la órbita) */}
+            {rc.nodes.map((nd, k) => (
+              <mesh key={k} position={[Math.cos(nd.ang), Math.sin(nd.ang), 0]} scale={nd.s / rc.r} renderOrder={3}>
+                <sphereGeometry args={[1, 24, 24]} />
+                <shaderMaterial
+                  ref={(m) => { nodeMatRefs.current[nodeBase + k] = m as THREE.ShaderMaterial | null }}
+                  vertexShader={RING_VERT}
+                  fragmentShader={NODE_FRAG}
+                  transparent
+                  depthWrite={false}
+                  depthTest={false}
+                  blending={THREE.AdditiveBlending}
+                  uniforms={{ uCol: { value: new THREE.Color(nd.c) }, uOpacity: { value: 0 } }}
+                />
+              </mesh>
+            ))}
+          </mesh>
+        )
+      })}
     </group>
   )
 }

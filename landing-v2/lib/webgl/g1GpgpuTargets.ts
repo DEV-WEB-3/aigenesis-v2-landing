@@ -114,7 +114,9 @@ export function sampleLogoSilhouette(
   const sx = LOGO_WORLD_W / W // misma escala en X e Y → aspecto exacto del logo
   const xyz = new Float32Array(count * 3)
   for (let i = 0; i < count; i++) {
-    const j = (i % m) * 2
+    // distribuye las partículas por TODA la silueta (no solo los primeros m
+    // píxeles): con más píxeles que partículas, i%m dejaba medio logo vacío.
+    const j = (Math.floor((i / count) * m) % m) * 2
     xyz[i * 3] = (px[j]! - W / 2) * sx
     xyz[i * 3 + 1] = -(px[j + 1]! - H / 2) * sx
     xyz[i * 3 + 2] = (seeds[i]! - 0.5) * 0.32 // grosor volumétrico del polvo
