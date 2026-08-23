@@ -96,7 +96,8 @@ export function G1Narrative() {
 
   return (
     <div ref={wrapRef} className="relative w-full" style={{ height: '620vh' }}>
-      <div className="sticky top-0 h-[100svh] w-full overflow-hidden bg-genesis-void">
+      {/* stage FIJO al viewport (no sticky: el overflow-x del body rompe sticky) */}
+      <div className="fixed inset-0 z-0 h-[100svh] w-full overflow-hidden bg-genesis-void">
         {/* WEBGL persistente (continuous hero morph) */}
         <div className="absolute inset-0 z-0">
           <Canvas
