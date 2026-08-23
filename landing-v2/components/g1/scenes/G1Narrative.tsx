@@ -203,7 +203,7 @@ export function G1Narrative() {
         {/* ACTO 5 · CTA */}
         <div ref={(el) => { actRefs.current[5] = el }} className={actClass} style={{ opacity: 0, zIndex: 4 }}>
           <Eyebrow>El nacimiento de G1</Eyebrow>
-          <h2 className="mt-5 font-display text-[clamp(28px,5vw,56px)] font-extrabold tracking-tight text-genesis-text">Empezá con G1.</h2>
+          <h2 className="mt-5 font-display text-[clamp(28px,5vw,56px)] font-extrabold tracking-tight text-genesis-text">Empieza con G1.</h2>
           <div className="pointer-events-auto mt-7 flex flex-wrap justify-center gap-3">
             <PillCTA href="/ecosistema" variant="primary">Conocer el ecosistema →</PillCTA>
             <PillCTA href="/como-funciona" variant="ghost">Cómo funciona ↗</PillCTA>

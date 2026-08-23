@@ -63,6 +63,9 @@ export function G1Footer() {
               <span className="grid h-9 w-9 place-items-center rounded-[9px] font-display text-[16px] font-extrabold text-genesis-void" style={{ background: G1_GRADIENT, boxShadow: `0 0 22px -6px ${G1.violet}` }}>G1</span>
               <span className="font-display text-[16px] font-bold tracking-tight text-genesis-text">G1</span>
             </div>
+            <p className="mt-5 font-display text-[19px] font-bold leading-tight tracking-tight">
+              <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>Tres fuerzas. Un ecosistema.</span>
+            </p>
             <p className="mt-4 max-w-[42ch] text-[14px] leading-relaxed text-genesis-mist">
               G1 conecta comunidad, mercados, activos digitales y herramientas de pago dentro de la
               alianza Génesis × Aitech × TAG.
@@ -105,20 +108,40 @@ export function G1Footer() {
           </div>
         </div>
 
-        {/* credenciales atribuidas */}
-        <div className="mt-12">
-          <CredentialStrip />
-        </div>
-
-        {/* aviso de riesgo — compatible con la guarda de lenguaje */}
-        <div className="mt-10 rounded-2xl border p-5" style={{ borderColor: `${G1.amber}2e`, background: `${G1.amber}0a` }}>
-          <p className="font-mono text-[11px] uppercase tracking-[0.16em]" style={{ color: G1.amber }}>Aviso de riesgo</p>
-          <p className="mt-3 max-w-[80ch] text-[13.5px] leading-relaxed text-genesis-mist">
-            La información publicada tiene fines informativos y educativos. No es asesoría financiera,
-            legal ni fiscal. Los mercados y los activos digitales implican riesgos y pueden generar
-            pérdidas parciales o totales. G1 no administra el capital de las personas: cada quien revisa
-            los términos oficiales de cada plataforma, analiza los riesgos y decide de forma independiente.
-          </p>
+        {/* cápsula de cumplimiento — un solo cristal curvo suave: respaldo + aviso
+            juntos, en tono contenido (sin caja ámbar de alarma). Seguridad de la
+            comunidad intacta, estética premium. */}
+        <div
+          className="relative mt-12 overflow-hidden rounded-[28px] border p-[clamp(20px,3vw,34px)]"
+          style={{
+            borderColor: `${G1.cyan}14`,
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012))',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            boxShadow: 'inset 0 1px 0 0 rgba(255,255,255,0.06), 0 24px 60px -40px rgba(0,0,0,0.9)',
+          }}
+        >
+          {/* brillo superior del cristal */}
+          <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${G1.cyan}3a, transparent)` }} />
+          <div className="grid gap-x-12 gap-y-8 md:grid-cols-[1.15fr_1px_1fr] md:items-stretch">
+            {/* respaldo */}
+            <CredentialStrip bare />
+            {/* divisor hairline (solo desktop) */}
+            <span aria-hidden className="hidden md:block" style={{ background: `linear-gradient(180deg, transparent, ${G1.cyan}1f, transparent)` }} />
+            {/* aviso de riesgo — calmo, sin caja de alarma */}
+            <div>
+              <p className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.18em] text-genesis-mist">
+                <span aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ background: G1.amber, boxShadow: `0 0 8px ${G1.amber}` }} />
+                Aviso de riesgo
+              </p>
+              <p className="mt-4 max-w-[60ch] text-[13px] leading-relaxed text-genesis-mist">
+                La información publicada tiene fines informativos y educativos. No es asesoría financiera,
+                legal ni fiscal. Los mercados y los activos digitales implican riesgos y pueden generar
+                pérdidas parciales o totales. G1 no administra el capital de las personas: cada quien revisa
+                los términos oficiales de cada plataforma, analiza los riesgos y decide de forma independiente.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="mt-8 flex flex-col gap-4 border-t pt-6 sm:flex-row sm:items-center sm:justify-between" style={{ borderColor: `${G1.cyan}14` }}>

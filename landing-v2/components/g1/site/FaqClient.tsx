@@ -53,7 +53,7 @@ export function FaqClient() {
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Buscá tu pregunta…"
+                placeholder="Busca tu pregunta…"
                 className="w-full rounded-full bg-genesis-surface/50 py-3.5 pl-12 pr-4 text-[15px] text-genesis-text outline-none transition-colors placeholder:text-genesis-mist"
                 style={{ border: `1px solid ${G1.cyan}2e` }}
               />
@@ -78,7 +78,7 @@ export function FaqClient() {
                 <p className="px-5 pb-5 text-[14.5px] leading-relaxed text-genesis-mist">{p.respuesta}</p>
               </details>
             ))}
-            {resultados.length === 0 ? <p className="px-5 py-8 text-center text-[14px] text-genesis-mist">Sin resultados. Probá otras palabras o usá el asistente.</p> : null}
+            {resultados.length === 0 ? <p className="px-5 py-8 text-center text-[14px] text-genesis-mist">Sin resultados. Prueba otras palabras o usa el asistente.</p> : null}
           </div>
         </section>
       ) : (

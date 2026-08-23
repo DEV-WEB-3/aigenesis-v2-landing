@@ -9,19 +9,19 @@ import { G1, G1_GRADIENT } from '@/lib/design/g1'
 export const metadata: Metadata = {
   title: 'Cómo funciona G1',
   description:
-    'Cómo se participa en G1: te unís por la comunidad, accedés a las herramientas de la alianza y el AiG Token conecta todo. Material informativo, sin promesas de resultado.',
+    'Cómo se participa en G1: te unes por la comunidad, accedes a las herramientas de la alianza y el AiG Token conecta todo. Material informativo, sin promesas de resultado.',
 }
 
 const PASOS = [
   {
     n: '01',
-    t: 'Te unís por la comunidad',
-    d: 'Génesis es la puerta de entrada. Desde G-Pulse accedés a la comunidad, las membresías y tu cuenta.',
+    t: 'Te unes por la comunidad',
+    d: 'Génesis es la puerta de entrada. Desde G-Pulse accedes a la comunidad, las membresías y tu cuenta.',
     accent: G1.violet,
   },
   {
     n: '02',
-    t: 'Accedés a las herramientas',
+    t: 'Accedes a las herramientas',
     d: 'La alianza aporta la trilogía de mercado: Tag Markets (trading), Bit1 (exchange) y BixCard (tarjeta cripto).',
     accent: G1.cyan,
   },
@@ -90,7 +90,7 @@ export default function ComoFuncionaPage() {
             <p className="mt-3 max-w-[70ch] text-[14.5px] leading-relaxed text-genesis-mist">
               G1 no publica porcentajes de resultado, comisiones, apalancamiento ni premios de ningún
               plan. Esa información vive solo en los canales oficiales de cada producto y bajo la
-              responsabilidad de cada persona. Acá contamos <b className="text-genesis-text">qué es</b> y
+              responsabilidad de cada persona. Aquí contamos <b className="text-genesis-text">qué es</b> y
               <b className="text-genesis-text"> cómo se participa</b>, no cuánto se obtiene.
             </p>
           </div>

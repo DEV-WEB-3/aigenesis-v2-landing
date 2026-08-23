@@ -116,7 +116,7 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
       <section className="py-[clamp(40px,7vw,90px)] text-center">
         <SectionReveal>
           <h2 className="mx-auto max-w-[20ch] font-display text-[clamp(24px,3.6vw,40px)] font-bold tracking-tight">
-            Explorá el ecosistema.
+            Explora el ecosistema.
           </h2>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             <PillCTA href="/g1/ecosistema" variant="primary">Ver el ecosistema →</PillCTA>

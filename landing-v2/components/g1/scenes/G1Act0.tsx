@@ -87,7 +87,7 @@ export function G1Act0() {
 
       {/* señal de scroll */}
       <div className="pointer-events-none absolute inset-x-0 bottom-[5svh] z-[3] flex flex-col items-center gap-2">
-        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-genesis-mist">Desplazá</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-genesis-mist">Desliza</span>
         <span className="h-8 w-px animate-pulse bg-gradient-to-b from-genesis-mist to-transparent" />
       </div>
 

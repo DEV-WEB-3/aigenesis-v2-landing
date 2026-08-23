@@ -79,7 +79,7 @@ export default function ComunidadPage() {
             Eventos que impulsan la comunidad.
           </h2>
           <p className="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-genesis-mist">
-            Conectá, aprendé y crecé junto a la comunidad del ecosistema. Sesiones informativas y de
+            Conecta, aprende y crece junto a la comunidad del ecosistema. Sesiones informativas y de
             formación, en línea.
           </p>
         </SectionReveal>
@@ -139,7 +139,7 @@ export default function ComunidadPage() {
       <section className="py-[clamp(40px,7vw,90px)] text-center">
         <SectionReveal>
           <h2 className="mx-auto max-w-[22ch] font-display text-[clamp(24px,3.6vw,40px)] font-bold tracking-tight">
-            Empezá por la comunidad.
+            Empieza por la comunidad.
           </h2>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             <PillCTA href="https://g-pulse.aigenesis.io" variant="primary">Entrar a G-Pulse ↗</PillCTA>
