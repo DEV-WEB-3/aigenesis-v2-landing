@@ -3,6 +3,7 @@ import { Eyebrow } from '@/components/g1/Eyebrow'
 import { PillCTA } from '@/components/g1/PillCTA'
 import { SectionReveal } from '@/components/g1/site/SectionReveal'
 import { G1Aurora } from '@/components/g1/site/G1Aurora'
+import { GlassMedia } from '@/components/g1/site/GlassMedia'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 
 export const metadata: Metadata = {
@@ -64,6 +65,22 @@ export default function ComoFuncionaPage() {
             </SectionReveal>
           ))}
         </div>
+      </section>
+
+      {/* media destacada — liberada, con presencia propia */}
+      <section className="py-[clamp(32px,6vw,80px)]">
+        <SectionReveal>
+          <p className="text-center font-mono text-[12px] uppercase tracking-[0.24em]" style={{ color: G1.cyan }}>Las herramientas, en vivo</p>
+          <h2 className="mx-auto mt-4 max-w-[22ch] text-center font-display text-[clamp(24px,3.6vw,40px)] font-bold tracking-tight">
+            Trading, exchange y tarjeta — reales.
+          </h2>
+          <div className="mx-auto mt-9 max-w-4xl">
+            <GlassMedia motif="appDemo" ratio="16 / 9" />
+          </div>
+          <p className="mx-auto mt-5 max-w-[56ch] text-center text-[14px] leading-relaxed text-genesis-mist">
+            La plataforma de la alianza en acción. Material informativo.
+          </p>
+        </SectionReveal>
       </section>
 
       <section className="py-[clamp(24px,5vw,56px)]">

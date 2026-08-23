@@ -9,7 +9,7 @@ import { G1 } from '@/lib/design/g1'
  * (Aitech), self-hosteados en /public/g1/media, integrados a nuestra marca. En
  * reduced-motion muestra el póster estático.
  */
-export type MediaMotif = 'markets' | 'network' | 'card' | 'community' | 'token'
+export type MediaMotif = 'markets' | 'network' | 'card' | 'community' | 'token' | 'appDemo' | 'about' | 'formacion'
 
 const MEDIA: Record<MediaMotif, { v: string; p: string }> = {
   markets: { v: '/g1/media/trading.mp4', p: '/g1/media/trading.jpg' },
@@ -17,6 +17,9 @@ const MEDIA: Record<MediaMotif, { v: string; p: string }> = {
   card: { v: '/g1/media/bix.mp4', p: '/g1/media/bix.jpg' },
   community: { v: '/g1/media/comunidad.mp4', p: '/g1/media/comunidad.jpg' },
   token: { v: '/g1/media/ecosistema.mp4', p: '/g1/media/ecosistema.jpg' },
+  appDemo: { v: '/g1/media/aitech/app/mockup-trading.mp4', p: '/g1/media/aitech/app/bit1-app.jpeg' },
+  about: { v: '/g1/media/aitech/about/sobre-nosotros-principal.mp4', p: '/g1/media/aitech/about/ecosistema.jpg' },
+  formacion: { v: '/g1/media/formacion.mp4', p: '/g1/media/comunidad.jpg' },
 }
 
 export function GlassMedia({ motif, className, ratio = '16 / 9' }: { motif: MediaMotif; className?: string; ratio?: string }) {
