@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import SelectorIdioma from '@/components/i18n/SelectorIdioma'
+import { useT } from '@/context/IdiomaContext'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 
 /**
@@ -51,6 +53,7 @@ export function G1Header() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
+  const t = useT()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12)
@@ -105,7 +108,7 @@ export function G1Header() {
                 className="rounded-full px-3.5 py-2 font-mono text-[12.5px] uppercase tracking-[0.1em] transition-colors"
                 style={{ color: active ? G1.cyan : undefined }}
               >
-                <span className={active ? '' : 'text-genesis-mist hover:text-genesis-text'}>{n.label}</span>
+                <span className={active ? '' : 'text-genesis-mist hover:text-genesis-text'}>{t(n.label)}</span>
               </Link>
             )
           })}
@@ -128,6 +131,10 @@ export function G1Header() {
                 {p.icon}
               </a>
             ))}
+          </div>
+          {/* selector de idioma — español-first: arranca en ES, presente en toda la web */}
+          <div className="ml-0.5 hidden sm:block">
+            <SelectorIdioma compacto />
           </div>
           <button
             type="button"
@@ -158,9 +165,12 @@ export function G1Header() {
                 className="rounded-lg px-3 py-3 font-mono text-[13px] uppercase tracking-[0.1em]"
                 style={{ color: pathname === n.href ? G1.cyan : undefined }}
               >
-                <span className={pathname === n.href ? '' : 'text-genesis-text'}>{n.label}</span>
+                <span className={pathname === n.href ? '' : 'text-genesis-text'}>{t(n.label)}</span>
               </Link>
             ))}
+            <div className="mt-2 border-t pt-3" style={{ borderColor: `${G1.cyan}1f` }}>
+              <SelectorIdioma />
+            </div>
           </nav>
         </div>
       ) : null}
