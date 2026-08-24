@@ -81,7 +81,7 @@ export function G1Header() {
         <Link href="/g1" className="group flex items-center gap-2.5" aria-label="G1 · inicio">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/brand/g1/g1-monogram-128.webp"
+            src="/brand/g1/g1-monogram-v2-128.webp"
             alt="G1"
             className="h-9 w-auto transition-transform duration-300 group-hover:scale-[1.04]"
             style={{ filter: `drop-shadow(0 0 14px ${G1.violet}55)` }}

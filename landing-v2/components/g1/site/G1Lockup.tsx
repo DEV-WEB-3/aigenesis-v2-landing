@@ -18,7 +18,7 @@ function solveKepler(M: number, e: number): number {
   return E
 }
 
-// Elipses medidas sobre g1-orbits-1000.webp (1000×563) + asteroides por ruta.
+// Elipses medidas sobre g1-orbits-v2-1000.webp (1000×563) + asteroides por ruta.
 // `s` = diámetro de la esfera como fracción del ancho del lockup.
 const PATHS = [
   { cx: 522, cy: 332, a: 428, b: 112, phi: 0, speed: 0.4, ecc: 0.3, asts: [{ M0: 0.4, s: 0.05, c: G1.cyan }, { M0: 2.7, s: 0.028, c: G1.blue }, { M0: 4.7, s: 0.038, c: G1.cyan }] },
@@ -76,7 +76,7 @@ export function G1Lockup({
       <div className="pointer-events-none absolute left-1/2 top-1/2 w-[min(580px,128%)] max-w-none -translate-x-1/2 -translate-y-1/2" style={{ aspectRatio: '1000 / 563' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/brand/g1/g1-orbits-1000.webp"
+          src="/brand/g1/g1-orbits-v2-1000.webp"
           alt=""
           aria-hidden
           className="absolute inset-0 h-full w-full"
@@ -103,7 +103,7 @@ export function G1Lockup({
         {/* monograma — z 2: las esferas tejen delante (3) y detrás (1) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/brand/g1/g1-monogram-560.webp"
+          src="/brand/g1/g1-monogram-v2-560.webp"
           alt="G1"
           className={`absolute left-1/2 top-1/2 w-auto -translate-x-1/2 -translate-y-1/2 ${monoClass}`}
           style={{ zIndex: 2, filter: `drop-shadow(0 8px 34px ${G1.violet}77)` }}

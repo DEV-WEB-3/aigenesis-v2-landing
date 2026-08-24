@@ -311,7 +311,7 @@ export function G1GpgpuField({
   useEffect(() => {
     const loader = new THREE.TextureLoader()
     let alive = true
-    loader.load('/brand/g1/g1-monogram-560.webp', (t) => {
+    loader.load('/brand/g1/g1-monogram-v2-560.webp', (t) => {
       if (!alive) return
       t.colorSpace = THREE.SRGBColorSpace
       const img = t.image as HTMLImageElement
@@ -321,7 +321,7 @@ export function G1GpgpuField({
       const sil = sampleLogoSilhouette(img, sys.size, sys.data.seeds)
       if (sil) { (sys.g1Tex.image.data as unknown as Float32Array).set(sil); sys.g1Tex.needsUpdate = true }
     })
-    loader.load('/brand/g1/g1-orbits-1000.webp', (t) => {
+    loader.load('/brand/g1/g1-orbits-v2-1000.webp', (t) => {
       if (!alive) return
       t.colorSpace = THREE.SRGBColorSpace
       setOrbTex(t)

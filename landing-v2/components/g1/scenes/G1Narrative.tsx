@@ -171,11 +171,13 @@ export function G1Narrative() {
     const settle = () => {
       if (reduce || touch || jumpedRef.current) return
       const p = progressRef.current
-      if (p < 0.02 || p > 0.9) return // arranque y zona de aterrizaje: sin magnetismo
+      if (p < 0.02 || p > 0.93) return // arranque y zona de aterrizaje: sin magnetismo
       let best = CENTERS[0]!
       for (const c of CENTERS) if (Math.abs(c - p) < Math.abs(best - p)) best = c
       const d = Math.abs(best - p)
-      if (d < 0.012 || d > 0.075) return // ya está encuadrado, o demasiado lejos: no forzar
+      // 0.09 cubre la mitad del hueco más ancho entre actos (0.15) → ninguna
+      // zona muerta queda sin asentamiento.
+      if (d < 0.012 || d > 0.09) return // ya está encuadrado, o demasiado lejos: no forzar
       const wrap = wrapRef.current
       if (!wrap) return
       const top = wrap.getBoundingClientRect().top + window.scrollY
@@ -200,14 +202,13 @@ export function G1Narrative() {
   const actClass =
     'pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-[clamp(18px,4vw,46px)] text-center [text-shadow:0_2px_18px_rgba(2,4,10,0.95),0_0_46px_rgba(2,4,10,0.8)]'
   /*
-   * VELO DE LECTURA — sobre el campo de partículas y los cristales, la copia
-   * perdía contraste (reportado por el owner). Un degradado radial oscuro,
-   * centrado en el texto y disuelto en los bordes, devuelve la legibilidad sin
-   * tapar el show ni introducir una caja visible.
+   * PLACA DE LECTURA — la copia perdía contraste sobre las partículas. Un velo a
+   * pantalla completa lo arreglaba pero APAGABA EL LOGO (reportado por el owner),
+   * así que el velo va SOLO detrás del bloque de texto: se dimensiona con el
+   * contenido y se disuelve en los bordes. El logo nunca queda debajo.
    */
-  const scrim = (at: string) => ({
-    background: `radial-gradient(58% 46% at ${at}, rgba(2,4,10,0.82) 0%, rgba(2,4,10,0.55) 48%, rgba(2,4,10,0) 78%)`,
-  })
+  const plate =
+    'relative rounded-[28px] px-[clamp(20px,5vw,64px)] py-[clamp(14px,3vw,28px)] [background:radial-gradient(72%_78%_at_50%_50%,rgba(2,4,10,0.86)_0%,rgba(2,4,10,0.6)_52%,rgba(2,4,10,0)_80%)]'
 
   return (
     <div ref={wrapRef} className="relative w-full" style={{ height: '620vh' }}>
@@ -246,32 +247,40 @@ export function G1Narrative() {
             polvo sin divergencia. Ver Movida F2. */}
 
         {/* ACTO 0 */}
-        <div ref={(el) => { actRefs.current[0] = el }} className={actClass} style={{ opacity: 1, zIndex: 2, ...scrim('50% 50%') }}>
-          <Eyebrow>Génesis × Aitech × TAG</Eyebrow>
-          <h2 className="mt-6 font-display text-[clamp(30px,5.4vw,60px)] font-extrabold leading-[1.05] tracking-tight text-genesis-text">
+        <div ref={(el) => { actRefs.current[0] = el }} className={actClass} style={{ opacity: 1, zIndex: 2 }}>
+          <div className={plate}>
+            <Eyebrow>Génesis × Aitech × TAG</Eyebrow>
+            <h2 className="mt-6 font-display text-[clamp(30px,5.4vw,60px)] font-extrabold leading-[1.05] tracking-tight text-genesis-text">
             Todo empieza con<br /><span style={{ background: GRAD, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>una comunidad.</span>
-          </h2>
+            </h2>
+          </div>
         </div>
 
         {/* ACTO 1 · AITECH */}
-        <div ref={(el) => { actRefs.current[1] = el }} className={actClass} style={{ opacity: 0, zIndex: 2, ...scrim('50% 50%') }}>
-          <Eyebrow>Aitech △ · la tecnología</Eyebrow>
-          <h2 className="mt-5 font-display text-[clamp(26px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-tight text-genesis-text">Herramientas que ya funcionan.</h2>
-          <div className="mt-6 flex flex-wrap justify-center gap-2"><Pill>Educación</Pill><Pill>Tecnología</Pill><Pill>Comunidad</Pill></div>
+        <div ref={(el) => { actRefs.current[1] = el }} className={actClass} style={{ opacity: 0, zIndex: 2 }}>
+          <div className={plate}>
+            <Eyebrow>Aitech △ · la tecnología</Eyebrow>
+            <h2 className="mt-5 font-display text-[clamp(26px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-tight text-genesis-text">Herramientas que ya funcionan.</h2>
+            <div className="mt-6 flex flex-wrap justify-center gap-2"><Pill>Educación</Pill><Pill>Tecnología</Pill><Pill>Comunidad</Pill></div>
+          </div>
         </div>
 
         {/* ACTO 2 · TAG */}
-        <div ref={(el) => { actRefs.current[2] = el }} className={actClass} style={{ opacity: 0, zIndex: 2, ...scrim('50% 50%') }}>
-          <Eyebrow>TAG △ · el mercado</Eyebrow>
-          <h2 className="mt-5 font-display text-[clamp(26px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-tight text-genesis-text">Acceso real a los mercados.</h2>
-          <div className="mt-6 flex flex-wrap justify-center gap-2"><Pill>TagMarkets · broker</Pill><Pill>Bit1 · exchange</Pill><Pill>BIX · tarjeta</Pill></div>
+        <div ref={(el) => { actRefs.current[2] = el }} className={actClass} style={{ opacity: 0, zIndex: 2 }}>
+          <div className={plate}>
+            <Eyebrow>TAG △ · el mercado</Eyebrow>
+            <h2 className="mt-5 font-display text-[clamp(26px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-tight text-genesis-text">Acceso real a los mercados.</h2>
+            <div className="mt-6 flex flex-wrap justify-center gap-2"><Pill>TagMarkets · broker</Pill><Pill>Bit1 · exchange</Pill><Pill>BIX · tarjeta</Pill></div>
+          </div>
         </div>
 
         {/* ACTO 3 · GÉNESIS */}
-        <div ref={(el) => { actRefs.current[3] = el }} className={actClass} style={{ opacity: 0, zIndex: 2, ...scrim('50% 50%') }}>
-          <Eyebrow>Génesis △ · la comunidad</Eyebrow>
-          <h2 className="mt-5 font-display text-[clamp(26px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-tight text-genesis-text">La comunidad que las une.</h2>
-          <div className="mt-6 flex flex-wrap justify-center gap-2"><Pill>G-Pulse</Pill><Pill>AIG · token</Pill><Pill>G11 · Marketplace</Pill></div>
+        <div ref={(el) => { actRefs.current[3] = el }} className={actClass} style={{ opacity: 0, zIndex: 2 }}>
+          <div className={plate}>
+            <Eyebrow>Génesis △ · la comunidad</Eyebrow>
+            <h2 className="mt-5 font-display text-[clamp(26px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-tight text-genesis-text">La comunidad que las une.</h2>
+            <div className="mt-6 flex flex-wrap justify-center gap-2"><Pill>G-Pulse</Pill><Pill>AIG · token</Pill><Pill>G11 · Marketplace</Pill></div>
+          </div>
         </div>
 
         {/* ACTO 4 · FUSIÓN G1 — el logo lo lleva la capa de reveal; aquí solo el
@@ -279,21 +288,25 @@ export function G1Narrative() {
         <div
           ref={(el) => { actRefs.current[4] = el }}
           className="pointer-events-none absolute inset-0 flex flex-col items-center justify-end px-[clamp(18px,4vw,46px)] pb-[15vh] text-center drop-shadow-[0_2px_22px_rgba(2,4,10,0.92)]"
-          style={{ opacity: 0, zIndex: 3, ...scrim('50% 82%') }}
+          style={{ opacity: 0, zIndex: 3 }}
         >
-          <Eyebrow>El nacimiento de G1</Eyebrow>
-          <h2 className="mt-4 font-display text-[clamp(22px,3.6vw,40px)] font-bold tracking-tight text-genesis-text">Tu comunidad, con herramientas reales.</h2>
+          <div className={plate}>
+            <Eyebrow>El nacimiento de G1</Eyebrow>
+            <h2 className="mt-4 font-display text-[clamp(22px,3.6vw,40px)] font-bold tracking-tight text-genesis-text">Tu comunidad, con herramientas reales.</h2>
+          </div>
         </div>
 
         {/* ACTO 5 · CTA */}
-        <div ref={(el) => { actRefs.current[5] = el }} className={actClass} style={{ opacity: 0, zIndex: 4, ...scrim('50% 50%') }}>
-          <Eyebrow>El nacimiento de G1</Eyebrow>
-          <h2 className="mt-5 font-display text-[clamp(28px,5vw,56px)] font-extrabold tracking-tight text-genesis-text">Empieza con G1.</h2>
-          <div className="pointer-events-auto mt-7 flex flex-wrap justify-center gap-3">
+        <div ref={(el) => { actRefs.current[5] = el }} className={actClass} style={{ opacity: 0, zIndex: 4 }}>
+          <div className={plate}>
+            <Eyebrow>El nacimiento de G1</Eyebrow>
+            <h2 className="mt-5 font-display text-[clamp(28px,5vw,56px)] font-extrabold tracking-tight text-genesis-text">Empieza con G1.</h2>
+            <div className="pointer-events-auto mt-7 flex flex-wrap justify-center gap-3">
             <PillCTA href="/g1/ecosistema" variant="primary">Conocer el ecosistema →</PillCTA>
             <PillCTA href="/g1/como-funciona" variant="ghost">Cómo funciona ↗</PillCTA>
+            </div>
+            <div className="mt-6"><DisclaimerBar className="text-center" /></div>
           </div>
-          <div className="mt-6"><DisclaimerBar className="text-center" /></div>
         </div>
 
         {/* SEÑAL DE SCROLL — que se entienda desde el segundo cero que la
