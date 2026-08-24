@@ -41,22 +41,15 @@ const RING_VERT = /* glsl */ `
     gl_Position = projectionMatrix * mv;
   }
 `
-const RING_FRAG = /* glsl */ `
-  uniform vec3 uColA;
-  uniform vec3 uColB;
-  uniform float uTime;
+// ÓRBITAS — el asset 2D MISMO como plano texturizado: posición y ángulos
+// pixel-perfect e inmutables (exigencia del owner). Reusa LOGO_VERT (vUv).
+const ORB_FRAG = /* glsl */ `
+  uniform sampler2D uMap;
   uniform float uOpacity;
-  uniform float uSpeed;
   varying vec2 vUv;
-  varying float vFres;
   void main() {
-    vec3 base = mix(uColA, uColB, 0.5 + 0.5 * sin(vUv.x * 6.2831853));
-    // energía líquida que circula a lo largo del aro (uv.x recorre el anillo)
-    float flow = exp(-pow(sin(3.14159265 * (vUv.x * 3.0 - uTime * uSpeed)) * 2.1, 2.0));
-    // aro de cristal como el 2D: gradiente + realce fresnel + destello especular
-    float spec = pow(vFres, 4.0);
-    vec3 col = base * (0.5 + 0.6 * vFres) + spec * vec3(1.0) * 0.55 + flow * vec3(0.9, 0.95, 1.0) * 0.3;
-    gl_FragColor = vec4(col, 1.0);
+    vec4 t = texture2D(uMap, vUv);
+    gl_FragColor = vec4(t.rgb, t.a * uOpacity);
   }
 `
 
@@ -183,19 +176,26 @@ function solveKepler(M: number, e: number): number {
   return E
 }
 
-// Disposición tipo ÁTOMO como el logo 2D: una elipse ecuatorial (plana) + dos
-// diagonales (/ y \) que enmarcan el G1 SIN taparlo (centro abierto). Los aros
-// quedan casi FIJOS (precesión mínima = "rejuego" sutil); el movimiento lo dan los
-// ASTEROIDES que orbitan por ellos (Kepler). Así, al estacionar el logo, coincide
-// con el 2D. Kepler-3: el aro más chico gira más rápido.
-const RINGS = [
-  // ecuatorial (plana, la más ancha) — cian/azul
-  { r: 2.5, ecc: 0.16, tiltX: 1.5, tiltZ: 0.0, prec: 0.01, orb: 0.4, a: G1.cyan, b: G1.blue, nodes: [{ ang: 0.3, s: 0.09, c: G1.cyan }, { ang: 3.3, s: 0.06, c: G1.blue }] },
-  // diagonal / (elipse alta inclinada a la derecha) — violeta/magenta
-  { r: 2.05, ecc: 0.2, tiltX: 0.62, tiltZ: 0.88, prec: 0.016, orb: 0.62, a: G1.violet, b: G1.magenta, nodes: [{ ang: 1.4, s: 0.11, c: G1.violet }, { ang: 4.2, s: 0.05, c: G1.magenta }] },
-  // diagonal \ (elipse alta inclinada a la izquierda) — cian/violeta
-  { r: 2.05, ecc: 0.2, tiltX: 0.62, tiltZ: -0.88, prec: -0.016, orb: 0.56, a: G1.cyan, b: G1.violet, nodes: [{ ang: 2.4, s: 0.08, c: G1.amber }, { ang: 5.2, s: 0.06, c: G1.cyan }] },
+/**
+ * RUTAS ORBITALES — elipses MEDIDAS sobre el asset 2D (calibración por overlay
+ * en navegador, imagen 1000×563): los asteroides cabalgan EXACTAMENTE sobre los
+ * aros dibujados. `phi` en grados (sentido SVG, y hacia abajo).
+ *   flat  : (522,332)  a=428 b=112 φ=0     — elipse ecuatorial grande
+ *   azul  : (697,220)  a=269 b=82  φ=+24.6 — diagonal \ (tips verificados)
+ *   magenta:(565,235)  a=253 b=151 φ=−22   — diagonal / (aproximada)
+ */
+const PATHS = [
+  { cx: 522, cy: 332, a: 428, b: 112, phi: 0, speed: 0.4, ecc: 0.3, asts: [{ M0: 0.4, s: 0.1, c: G1.cyan }, { M0: 2.7, s: 0.055, c: G1.blue }, { M0: 4.7, s: 0.075, c: G1.cyan }] },
+  { cx: 697, cy: 220, a: 269, b: 82, phi: 24.6, speed: 0.62, ecc: 0.34, asts: [{ M0: 1.4, s: 0.11, c: G1.violet }, { M0: 4.2, s: 0.05, c: G1.magenta }] },
+  { cx: 565, cy: 235, a: 253, b: 151, phi: -22, speed: 0.52, ecc: 0.3, asts: [{ M0: 2.4, s: 0.08, c: G1.amber }] },
 ] as const
+
+// proporción del lockup 2D del hero: órbitas 580px de ancho vs monograma 220px
+const ORB_W = LOGO_WORLD_W * 2.636
+const ORB_H = ORB_W * 563 / 1000
+const PX = ORB_W / 1000 // mundo por píxel de la imagen de órbitas
+// escala base del conjunto (átomo completo ENMARCADO en el viewport de la fusión)
+const BASE_SCALE = 0.78
 
 type Phase = { key: string; target: 'orb' | 'g1' | 'field'; dur: number; bright: number }
 const PHASES: Phase[] = [
@@ -298,13 +298,13 @@ export function G1GpgpuField({
   // Texturas del logo (monograma cristal + órbitas) y muestreo de la SILUETA
   // hacia el target g1 → el polvo forma el logo EXACTO, alineado con el plano 3D.
   const [logoTex, setLogoTex] = useState<THREE.Texture | null>(null)
+  const [orbTex, setOrbTex] = useState<THREE.Texture | null>(null)
   const [logoAspect, setLogoAspect] = useState(995 / 560)
   const logoMatRef = useRef<THREE.ShaderMaterial>(null)
   const logoMeshRef = useRef<THREE.Mesh>(null)
-  const ringMeshRefs = useRef<Array<THREE.Mesh | null>>([])
-  const ringMatRefs = useRef<Array<THREE.ShaderMaterial | null>>([])
-  const nodeMatRefs = useRef<Array<THREE.ShaderMaterial | null>>([])
-  const nodeMeshRefs = useRef<Array<{ mesh: THREE.Mesh | null; baseAng: number; orb: number; ecc: number }>>([])
+  const orbMatRef = useRef<THREE.ShaderMaterial>(null)
+  const orbMeshRef = useRef<THREE.Mesh>(null)
+  const nodeMeshRefs = useRef<Array<{ mesh: THREE.Mesh | null; M0: number; speed: number; ecc: number; path: number }>>([])
   const coreMatRef = useRef<THREE.ShaderMaterial>(null)
   const coreMeshRef = useRef<THREE.Mesh>(null)
 
@@ -321,6 +321,11 @@ export function G1GpgpuField({
       const sil = sampleLogoSilhouette(img, sys.size, sys.data.seeds)
       if (sil) { (sys.g1Tex.image.data as unknown as Float32Array).set(sil); sys.g1Tex.needsUpdate = true }
     })
+    loader.load('/brand/g1/g1-orbits-1000.webp', (t) => {
+      if (!alive) return
+      t.colorSpace = THREE.SRGBColorSpace
+      setOrbTex(t)
+    })
     return () => { alive = false }
   }, [sys])
 
@@ -336,7 +341,7 @@ export function G1GpgpuField({
     }
   }, [sys])
 
-  useEffect(() => () => { logoTex?.dispose() }, [logoTex])
+  useEffect(() => () => { logoTex?.dispose(); orbTex?.dispose() }, [logoTex, orbTex])
 
   useFrame((s, dt) => {
     const u = sys.posVar.material.uniforms
@@ -413,7 +418,7 @@ export function G1GpgpuField({
       // ESTACIONAMIENTO: el logo sube y encoge hacia la cabeza (relevo al 2D del
       // hero de la página). Atado al scroll → smooth en ambos sentidos.
       grp.current.position.y = dockT * 1.55
-      grp.current.scale.setScalar(1 - dockT * 0.46)
+      grp.current.scale.setScalar(BASE_SCALE * (1 - dockT * 0.46))
     }
 
     // LOGO 3D — cristaliza con el polvo (mismo grupo/cámara → sin divergencia)
@@ -424,31 +429,26 @@ export function G1GpgpuField({
       uo.uTime!.value = t
       uo.uShine!.value = 0.3
     }
-    // AROS 3D — cada uno precesa en su propio plano; opacidad ATADA a la del logo
-    // (así aparecen/desaparecen exactamente igual que el logo, sin desfases).
-    for (let i = 0; i < RINGS.length; i++) {
-      const rc = RINGS[i]!
-      const mesh = ringMeshRefs.current[i]
-      const mat = ringMatRefs.current[i]
-      if (mesh) {
-        mesh.rotation.set(rc.tiltX, t * rc.prec, rc.tiltZ) // tilt fijo + precesión LENTA propia
-        mesh.scale.setScalar(rc.r * Math.max(0.0001, ringVis)) // fade por ESCALA (crece desde el centro)
-      }
-      if (mat) mat.uniforms.uTime!.value = t
-    }
-    // ASTEROIDES (esferas) — orbitan POR el aro: el scroll empuja el avance +
-    // una deriva lenta y medida (no libre). Kepler: cada aro con su velocidad.
+    // ÓRBITAS (plano 2D pixel-perfect): opacidad = ringVis; "rejuego" = respiración sutil
+    if (orbMatRef.current) orbMatRef.current.uniforms.uOpacity!.value += (ringVis - orbMatRef.current.uniforms.uOpacity!.value) * (1 - Math.pow(0.03, dt))
+    if (orbMeshRef.current) orbMeshRef.current.scale.setScalar(1 + Math.sin(t * 0.7) * 0.006)
+    // ASTEROIDES — cabalgan las elipses MEDIDAS del 2D con Kepler: el scroll
+    // empuja el avance + deriva lenta. z = sin(E) teje delante/detrás del logo.
     const scroll = progressRef ? Math.min(1, Math.max(0, progressRef.current)) : 0
+    const DEG = Math.PI / 180
     for (let i = 0; i < nodeMeshRefs.current.length; i++) {
       const nd = nodeMeshRefs.current[i]
-      if (nd?.mesh) {
-        // anomalía media M (lineal en scroll+tiempo) → Kepler → posición en la
-        // elipse con el FOCO en el G1: acelera cerca, frena lejos (2ª ley).
-        const M = nd.baseAng + (scroll * 5.5 + t * 0.16) * nd.orb
-        const E = solveKepler(M, nd.ecc)
-        const b = Math.sqrt(1 - nd.ecc * nd.ecc)
-        nd.mesh.position.set(Math.cos(E) - nd.ecc, b * Math.sin(E), 0)
-      }
+      if (!nd?.mesh) continue
+      const pa = PATHS[nd.path]!
+      const M = nd.M0 + (scroll * 5.5 + t * 0.16) * nd.speed
+      const E = solveKepler(M, nd.ecc)
+      const cE = Math.cos(E), sE = Math.sin(E)
+      const cph = Math.cos(pa.phi * DEG), sph = Math.sin(pa.phi * DEG)
+      // punto sobre la elipse en coords de IMAGEN (y hacia abajo) → local (y arriba)
+      const xi = pa.cx + pa.a * cE * cph - pa.b * sE * sph
+      const yi = pa.cy + pa.a * cE * sph + pa.b * sE * cph
+      nd.mesh.position.set((xi - 500) * PX, (281.5 - yi) * PX, sE * 0.3)
+      nd.mesh.scale.setScalar(Math.max(0.0001, ringVis) * (nd.mesh.userData.s as number))
     }
     // NÚCLEO-MISTERIO: pulsa y respira; se funde al revelarse el logo
     if (coreMatRef.current) {
@@ -497,44 +497,45 @@ export function G1GpgpuField({
         </mesh>
       ) : null}
 
-      {/* ÓRBITAS — cada una es un GRUPO-plano (tilt + precesión + escala/fade).
-          Dentro: el torus ELÍPTICO (foco en el G1) como campo, y los asteroides
-          que lo recorren con Kepler. El torus se escala (1, √(1−e²)) y se desplaza
-          (−e) para que el FOCO caiga en el origen del grupo = el G1. */}
-      {RINGS.map((rc, i) => {
-        const nodeBase = RINGS.slice(0, i).reduce((s, r) => s + r.nodes.length, 0)
-        const bAxis = Math.sqrt(1 - rc.ecc * rc.ecc)
-        return (
-          <group key={i} ref={(g) => { ringMeshRefs.current[i] = g as unknown as THREE.Mesh }} renderOrder={2}>
-            {/* el aro/campo: elipse con foco en el origen */}
-            <mesh scale={[1, bAxis, 1]} position={[-rc.ecc, 0, 0]} renderOrder={2}>
-              <torusGeometry args={[1, 0.02, 14, 320]} />
-              <shaderMaterial
-                ref={(m) => { ringMatRefs.current[i] = m as THREE.ShaderMaterial | null }}
-                vertexShader={RING_VERT}
-                fragmentShader={RING_FRAG}
-                uniforms={{ uColA: { value: new THREE.Color(rc.a) }, uColB: { value: new THREE.Color(rc.b) }, uTime: { value: 0 }, uOpacity: { value: 0 }, uSpeed: { value: rc.orb } }}
-              />
-            </mesh>
-            {/* asteroides — posición por Kepler (misma elipse, foco en el origen) */}
-            {rc.nodes.map((nd, k) => (
-              <mesh
-                key={k}
-                ref={(m) => { nodeMeshRefs.current[nodeBase + k] = { mesh: m, baseAng: nd.ang, orb: rc.orb, ecc: rc.ecc } }}
-                scale={nd.s / rc.r}
-                renderOrder={3}
-              >
-                <sphereGeometry args={[1, 20, 20]} />
-                <shaderMaterial
-                  ref={(m) => { nodeMatRefs.current[nodeBase + k] = m as THREE.ShaderMaterial | null }}
-                  vertexShader={RING_VERT}
-                  fragmentShader={NODE_FRAG}
-                  uniforms={{ uCol: { value: new THREE.Color(nd.c) } }}
-                />
-              </mesh>
-            ))}
-          </group>
-        )
+      {/* ÓRBITAS — el asset 2D como plano en la escena: posición y ángulos
+          IDÉNTICOS al diseño estático, garantizado. Detrás del logo. */}
+      {orbTex ? (
+        <mesh ref={orbMeshRef} position={[0, 0, -0.05]} renderOrder={4}>
+          <planeGeometry args={[ORB_W, ORB_H]} />
+          <shaderMaterial
+            ref={orbMatRef}
+            vertexShader={LOGO_VERT}
+            fragmentShader={ORB_FRAG}
+            transparent
+            depthWrite={false}
+            depthTest={false}
+            uniforms={{ uMap: { value: orbTex }, uOpacity: { value: 0 } }}
+          />
+        </mesh>
+      ) : null}
+
+      {/* ASTEROIDES — esferas de cristal sobre las elipses medidas del 2D;
+          opacas con depth → tejen delante/detrás del logo (que escribe depth). */}
+      {PATHS.map((pa, i) => {
+        const base = PATHS.slice(0, i).reduce((s2, p2) => s2 + p2.asts.length, 0)
+        return pa.asts.map((ast, k) => (
+          <mesh
+            key={`${i}-${k}`}
+            ref={(m) => {
+              if (m) m.userData.s = ast.s
+              nodeMeshRefs.current[base + k] = { mesh: m, M0: ast.M0, speed: pa.speed, ecc: pa.ecc, path: i }
+            }}
+            scale={ast.s}
+            renderOrder={6}
+          >
+            <sphereGeometry args={[1, 20, 20]} />
+            <shaderMaterial
+              vertexShader={RING_VERT}
+              fragmentShader={NODE_FRAG}
+              uniforms={{ uCol: { value: new THREE.Color(ast.c) } }}
+            />
+          </mesh>
+        ))
       })}
     </group>
   )
