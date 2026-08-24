@@ -386,7 +386,10 @@ export function G1GpgpuField({
       ringVis = ss(0.015, 0.06, p) * (0.88 + 0.12 * ss(0.5, 0.68, p)) * (1 - ss(0.96, 1.0, p))
       // NÚCLEO-MISTERIO: presente desde la entrada, se funde cuando el logo cristaliza
       coreVis = ss(0.02, 0.12, p) * (1 - ss(0.56, 0.68, p))
-      dockT = ss(0.8, 0.96, p) // sube y encoge hacia la cabeza ANTES de que entre la CTA
+      // ATERRIZAJE MEDIDO: el dock alcanza su estado FINAL en p=0.93 (el umbral
+      // del brinco) y lo SOSTIENE, para que el lockup 3D quede exactamente donde
+      // aparecerá el 2D de la página (medido en navegador: dy 54px, ratio 0.407).
+      dockT = ss(0.78, 0.93, p)
     } else {
       // MODO RELOJ: fases automáticas (preview suelto)
       const S = st.current
@@ -417,8 +420,10 @@ export function G1GpgpuField({
       grp.current.rotation.x += (-s.pointer.y * 0.1 - grp.current.rotation.x) * 0.04
       // ESTACIONAMIENTO: el logo sube y encoge hacia la cabeza (relevo al 2D del
       // hero de la página). Atado al scroll → smooth en ambos sentidos.
-      grp.current.position.y = dockT * 1.55
-      grp.current.scale.setScalar(BASE_SCALE * (1 - dockT * 0.46))
+      // valores derivados de la medición: en dockT=1 el lockup 3D coincide en
+      // posición y tamaño con el lockup 2D de la cabeza del contenido.
+      grp.current.position.y = dockT * 1.058
+      grp.current.scale.setScalar(BASE_SCALE * (1 - dockT * 0.4767))
     }
 
     // LOGO 3D — cristaliza con el polvo (mismo grupo/cámara → sin divergencia)
@@ -460,6 +465,24 @@ export function G1GpgpuField({
     // vida: respiración sutil del lockup
     const breathe = 1 + Math.sin(t * 0.9) * 0.012
     if (logoMeshRef.current) logoMeshRef.current.scale.setScalar(breathe)
+    // MEDICIÓN (dev): rect en pantalla del logo 3D, para alinear el aterrizaje
+    // con el logo 2D de la página. Se apaga en producción.
+    if (process.env.NODE_ENV !== 'production' && logoMeshRef.current) {
+      const m = logoMeshRef.current
+      const ws = m.getWorldScale(new THREE.Vector3()).x // incluye la escala del grupo
+      const half = new THREE.Vector3(LOGO_WORLD_W / 2, LOGO_WORLD_W / logoAspect / 2, 0).multiplyScalar(ws)
+      const c = m.getWorldPosition(new THREE.Vector3())
+      const a = c.clone().sub(half).project(s.camera)
+      const b2 = c.clone().add(half).project(s.camera)
+      const W = s.size.width, H = s.size.height
+      const x1 = (a.x * 0.5 + 0.5) * W, y1 = (1 - (a.y * 0.5 + 0.5)) * H
+      const x2 = (b2.x * 0.5 + 0.5) * W, y2 = (1 - (b2.y * 0.5 + 0.5)) * H
+      ;(window as unknown as { __logo3d?: unknown }).__logo3d = {
+        cx: Math.round((x1 + x2) / 2), cy: Math.round((y1 + y2) / 2),
+        w: Math.round(Math.abs(x2 - x1)), h: Math.round(Math.abs(y2 - y1)),
+        p: +(progressRef?.current ?? 0).toFixed(3),
+      }
+    }
   })
 
   return (

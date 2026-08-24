@@ -25,7 +25,9 @@ function ScrollCamera({ progressRef }: { progressRef: { current: number } }) {
     if (p < 0.12) z = 5.4 - (p / 0.12) * 0.6
     else if (p < 0.6) z = 4.8 - ((p - 0.12) / 0.48) * 0.5
     else if (p < 0.82) z = 4.3 + ((p - 0.6) / 0.22) * 0.4
-    else z = 4.7 + ((p - 0.82) / 0.18) * 0.9
+    // A partir de 0.93 la cámara SE DETIENE: el lockup ya está aterrizado y su
+    // tamaño en pantalla no debe derivar antes del relevo al 2D.
+    else z = 4.7 + ((Math.min(p, 0.93) - 0.82) / 0.18) * 0.9
     cam.position.z += (z - cam.position.z) * 0.06
     cam.lookAt(0, 0, 0)
   })
@@ -154,8 +156,41 @@ export function G1Narrative() {
     }
     window.addEventListener('wheel', onWheel, { passive: false })
 
+    /*
+     * ASENTAMIENTO MAGNÉTICO — el scrub queda LIBRE (el morph de partículas se
+     * ve completo, nunca se saltea). Solo cuando el usuario DEJA de desplazarse
+     * en una zona muerta entre actos, la escena se asienta sola en el punto
+     * dulce del acto más cercano, como una cámara que encuentra su encuadre.
+     * Nunca interrumpe mientras se desplaza. Off en táctil y reduced-motion.
+     */
+    const CENTERS = WIN.map(([a, b]) => (a + b) / 2)
+    let idle: number | undefined
+    let touch = false
+    const onTouch = () => { touch = true }
+    window.addEventListener('touchstart', onTouch, { passive: true })
+    const settle = () => {
+      if (reduce || touch || jumpedRef.current) return
+      const p = progressRef.current
+      if (p < 0.02 || p > 0.9) return // arranque y zona de aterrizaje: sin magnetismo
+      let best = CENTERS[0]!
+      for (const c of CENTERS) if (Math.abs(c - p) < Math.abs(best - p)) best = c
+      const d = Math.abs(best - p)
+      if (d < 0.012 || d > 0.075) return // ya está encuadrado, o demasiado lejos: no forzar
+      const wrap = wrapRef.current
+      if (!wrap) return
+      const top = wrap.getBoundingClientRect().top + window.scrollY
+      lenis.scrollTo(top + best * (wrap.offsetHeight - window.innerHeight), { duration: 0.75 })
+    }
+    const onScrollIdle = () => {
+      window.clearTimeout(idle)
+      idle = window.setTimeout(settle, 160)
+    }
+    lenis.on('scroll', onScrollIdle)
+
     return () => {
       window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('touchstart', onTouch)
+      window.clearTimeout(idle)
       trigger.kill()
       gsap.ticker.remove(ticker)
       lenis.destroy()
