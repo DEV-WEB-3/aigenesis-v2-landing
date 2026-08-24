@@ -26,9 +26,9 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
       <section className={`relative ${hero ? 'py-[clamp(48px,9vw,110px)]' : 'pt-[clamp(40px,7vw,90px)] pb-[clamp(24px,4vw,48px)]'} text-center`}>
         {hero ? <G1Aurora tint="brand" /> : null}
         <div className="relative z-10">
-        {hero ? (
-          <SectionReveal>
-            {/* lockup de marca — monograma de cristal sobre las órbitas */}
+        {/* lockup de marca — SIEMPRE en la cabeza (en la home es el logo que la
+            narrativa deja PARQUEADO aquí: continuidad 3D → 2D). */}
+        <SectionReveal>
             <div className="relative mx-auto mb-6 flex h-[clamp(150px,26vw,250px)] w-full max-w-[580px] items-center justify-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -46,8 +46,7 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
                 style={{ filter: `drop-shadow(0 8px 34px ${G1.violet}77)` }}
               />
             </div>
-          </SectionReveal>
-        ) : null}
+        </SectionReveal>
         <SectionReveal>
           <Eyebrow>Qué es G1</Eyebrow>
           {hero ? (

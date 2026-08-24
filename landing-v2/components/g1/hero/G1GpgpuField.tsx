@@ -189,12 +189,12 @@ function solveKepler(M: number, e: number): number {
 // ASTEROIDES que orbitan por ellos (Kepler). Así, al estacionar el logo, coincide
 // con el 2D. Kepler-3: el aro más chico gira más rápido.
 const RINGS = [
-  // ecuatorial (plana) — cian/azul
-  { r: 2.42, ecc: 0.16, tiltX: 1.44, tiltZ: 0.0, prec: 0.012, orb: 0.4, a: G1.cyan, b: G1.blue, nodes: [{ ang: 0.3, s: 0.09, c: G1.cyan }, { ang: 3.3, s: 0.06, c: G1.blue }] },
-  // diagonal / — violeta/magenta
-  { r: 2.02, ecc: 0.2, tiltX: 0.78, tiltZ: 0.6, prec: 0.018, orb: 0.62, a: G1.violet, b: G1.magenta, nodes: [{ ang: 1.4, s: 0.11, c: G1.violet }, { ang: 4.2, s: 0.05, c: G1.magenta }] },
-  // diagonal \ — cian/violeta
-  { r: 2.02, ecc: 0.2, tiltX: 0.78, tiltZ: -0.6, prec: -0.018, orb: 0.56, a: G1.cyan, b: G1.violet, nodes: [{ ang: 2.4, s: 0.08, c: G1.amber }, { ang: 5.2, s: 0.06, c: G1.cyan }] },
+  // ecuatorial (plana, la más ancha) — cian/azul
+  { r: 2.5, ecc: 0.16, tiltX: 1.5, tiltZ: 0.0, prec: 0.01, orb: 0.4, a: G1.cyan, b: G1.blue, nodes: [{ ang: 0.3, s: 0.09, c: G1.cyan }, { ang: 3.3, s: 0.06, c: G1.blue }] },
+  // diagonal / (elipse alta inclinada a la derecha) — violeta/magenta
+  { r: 2.05, ecc: 0.2, tiltX: 0.62, tiltZ: 0.88, prec: 0.016, orb: 0.62, a: G1.violet, b: G1.magenta, nodes: [{ ang: 1.4, s: 0.11, c: G1.violet }, { ang: 4.2, s: 0.05, c: G1.magenta }] },
+  // diagonal \ (elipse alta inclinada a la izquierda) — cian/violeta
+  { r: 2.05, ecc: 0.2, tiltX: 0.62, tiltZ: -0.88, prec: -0.016, orb: 0.56, a: G1.cyan, b: G1.violet, nodes: [{ ang: 2.4, s: 0.08, c: G1.amber }, { ang: 5.2, s: 0.06, c: G1.cyan }] },
 ] as const
 
 type Phase = { key: string; target: 'orb' | 'g1' | 'field'; dur: number; bright: number }
@@ -347,6 +347,7 @@ export function G1GpgpuField({
     let logoOp = 0 // opacidad del logo 3D (cristaliza en la fusión)
     let ringVis = 0 // aros/nodos: presentes DESDE la entrada (campo de gravedad)
     let coreVis = 0 // núcleo-misterio: presente temprano, se funde al revelarse el logo
+    let dockT = 0 // ESTACIONAMIENTO final: el logo sube y encoge hacia la cabeza
 
     if (progressRef) {
       // MODO SCROLL: el estado lo decide el progreso 0..1 del relato
@@ -380,6 +381,7 @@ export function G1GpgpuField({
       ringVis = ss(0.015, 0.06, p) * (0.88 + 0.12 * ss(0.5, 0.68, p)) * (1 - ss(0.96, 1.0, p))
       // NÚCLEO-MISTERIO: presente desde la entrada, se funde cuando el logo cristaliza
       coreVis = ss(0.02, 0.12, p) * (1 - ss(0.56, 0.68, p))
+      dockT = ss(0.8, 0.96, p) // sube y encoge hacia la cabeza ANTES de que entre la CTA
     } else {
       // MODO RELOJ: fases automáticas (preview suelto)
       const S = st.current
@@ -408,6 +410,10 @@ export function G1GpgpuField({
     if (grp.current) {
       grp.current.rotation.y += (s.pointer.x * 0.16 - grp.current.rotation.y) * 0.04
       grp.current.rotation.x += (-s.pointer.y * 0.1 - grp.current.rotation.x) * 0.04
+      // ESTACIONAMIENTO: el logo sube y encoge hacia la cabeza (relevo al 2D del
+      // hero de la página). Atado al scroll → smooth en ambos sentidos.
+      grp.current.position.y = dockT * 1.55
+      grp.current.scale.setScalar(1 - dockT * 0.46)
     }
 
     // LOGO 3D — cristaliza con el polvo (mismo grupo/cámara → sin divergencia)
