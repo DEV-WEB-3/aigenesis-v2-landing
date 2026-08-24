@@ -72,6 +72,23 @@ const NODE_FRAG = /* glsl */ `
   }
 `
 
+// NÚCLEO‑MISTERIO — el resplandor central que crea el campo de gravedad y que,
+// al final, revela el G1. Billboard radial que pulsa. Reusa LOGO_VERT (vUv).
+const CORE_FRAG = /* glsl */ `
+  uniform float uOpacity;
+  uniform float uTime;
+  varying vec2 vUv;
+  void main() {
+    float d = length(vUv - 0.5) * 2.0;
+    float core = exp(-d * d * 6.0) * 1.6;     // núcleo brillante y concentrado
+    float halo = exp(-d * 2.4) * 0.55;        // halo de gravedad
+    float pulse = 0.8 + 0.2 * sin(uTime * 1.5);
+    vec3 col = mix(vec3(0.6, 0.85, 1.0), vec3(0.78, 0.52, 1.0), 0.5 + 0.5 * sin(uTime * 0.35));
+    float a = (core + halo) * pulse * uOpacity;
+    gl_FragColor = vec4(col * a, a);
+  }
+`
+
 // colores firma de cada trilogía (Acto 1/2/3)
 const TINT_VIOLET = new THREE.Color(G1.violet)
 const TINT_CYAN = new THREE.Color(G1.cyan)
@@ -271,6 +288,8 @@ export function G1GpgpuField({
   const ringMeshRefs = useRef<Array<THREE.Mesh | null>>([])
   const ringMatRefs = useRef<Array<THREE.ShaderMaterial | null>>([])
   const nodeMatRefs = useRef<Array<THREE.ShaderMaterial | null>>([])
+  const coreMatRef = useRef<THREE.ShaderMaterial>(null)
+  const coreMeshRef = useRef<THREE.Mesh>(null)
 
   useEffect(() => {
     const loader = new THREE.TextureLoader()
@@ -309,6 +328,8 @@ export function G1GpgpuField({
     let tintAmt = 0
     let opMul = 1 // el polvo se atenúa cuando el logo real cristaliza encima
     let logoOp = 0 // opacidad del logo 3D (cristaliza en la fusión)
+    let ringVis = 0 // aros/nodos: presentes DESDE la entrada (campo de gravedad)
+    let coreVis = 0 // núcleo-misterio: presente temprano, se funde al revelarse el logo
 
     if (progressRef) {
       // MODO SCROLL: el estado lo decide el progreso 0..1 del relato
@@ -337,6 +358,11 @@ export function G1GpgpuField({
       // el logo cristaliza a la par que el polvo se asienta (cross-fade: dust →
       // crystal). Llega al máximo rápido y SOSTIENE toda la fusión.
       logoOp = ss(0.56, 0.65, p) * (1 - ss(0.9, 0.97, p))
+      // AROS/NODOS desde la entrada: fade-in 0.03→0.14 (al 45%), crescendo al 100%
+      // en la fusión (0.5→0.68), se retiran al final para el handoff.
+      ringVis = ss(0.04, 0.13, p) * (0.62 + 0.38 * ss(0.5, 0.68, p)) * (1 - ss(0.95, 1.0, p))
+      // NÚCLEO-MISTERIO: presente desde la entrada, se funde cuando el logo cristaliza
+      coreVis = ss(0.02, 0.12, p) * (1 - ss(0.56, 0.68, p))
     } else {
       // MODO RELOJ: fases automáticas (preview suelto)
       const S = st.current
@@ -369,13 +395,11 @@ export function G1GpgpuField({
 
     // LOGO 3D — cristaliza con el polvo (mismo grupo/cámara → sin divergencia)
     const t = s.clock.elapsedTime
-    let logoVis = logoOp // opacidad REALMENTE visible del logo (con su inercia)
     if (logoMatRef.current) {
       const uo = logoMatRef.current.uniforms
       uo.uOpacity!.value += (logoOp - uo.uOpacity!.value) * (1 - Math.pow(0.02, dt))
       uo.uTime!.value = t
       uo.uShine!.value = 0.3
-      logoVis = uo.uOpacity!.value
     }
     // AROS 3D — cada uno precesa en su propio plano; opacidad ATADA a la del logo
     // (así aparecen/desaparecen exactamente igual que el logo, sin desfases).
@@ -387,14 +411,21 @@ export function G1GpgpuField({
       if (mat) {
         const uo = mat.uniforms
         uo.uTime!.value = t
-        uo.uOpacity!.value = logoVis
+        uo.uOpacity!.value = ringVis
       }
     }
-    // nodos (esferas): la misma opacidad del logo
+    // nodos (esferas): presentes desde la entrada, como los aros
     for (let i = 0; i < nodeMatRefs.current.length; i++) {
       const nm = nodeMatRefs.current[i]
-      if (nm) nm.uniforms.uOpacity!.value = logoVis
+      if (nm) nm.uniforms.uOpacity!.value = ringVis
     }
+    // NÚCLEO-MISTERIO: pulsa y respira; se funde al revelarse el logo
+    if (coreMatRef.current) {
+      const co = coreMatRef.current.uniforms
+      co.uOpacity!.value += (coreVis - co.uOpacity!.value) * (1 - Math.pow(0.05, dt))
+      co.uTime!.value = t
+    }
+    if (coreMeshRef.current) coreMeshRef.current.scale.setScalar(1 + Math.sin(t * 1.5) * 0.08)
     // vida: respiración sutil del lockup
     const breathe = 1 + Math.sin(t * 0.9) * 0.012
     if (logoMeshRef.current) logoMeshRef.current.scale.setScalar(breathe)
@@ -403,6 +434,22 @@ export function G1GpgpuField({
   return (
     <group ref={grp}>
       <points geometry={sys.geo} material={sys.mat} frustumCulled={false} renderOrder={0} />
+
+      {/* NÚCLEO-MISTERIO — el resplandor central que crea el campo de gravedad y
+          que, al final, se revela como G1. Presente desde la entrada. */}
+      <mesh ref={coreMeshRef} position={[0, 0, -0.12]} renderOrder={0}>
+        <planeGeometry args={[2.8, 2.8]} />
+        <shaderMaterial
+          ref={coreMatRef}
+          vertexShader={LOGO_VERT}
+          fragmentShader={CORE_FRAG}
+          transparent
+          depthWrite={false}
+          depthTest={false}
+          blending={THREE.AdditiveBlending}
+          uniforms={{ uOpacity: { value: 0 }, uTime: { value: 0 } }}
+        />
+      </mesh>
       {/* LOGO — escribe profundidad (solo el cristal, por el discard) para que los
           aros que pasan por detrás queden ocultos (weaving real). */}
       {logoTex ? (
