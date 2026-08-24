@@ -53,8 +53,9 @@ const RING_FRAG = /* glsl */ `
     vec3 base = mix(uColA, uColB, 0.5 + 0.5 * sin(vUv.x * 6.2831853));
     // energía líquida que circula a lo largo del aro (uv.x recorre el anillo)
     float flow = exp(-pow(sin(3.14159265 * (vUv.x * 3.0 - uTime * uSpeed)) * 2.1, 2.0));
-    // vidrio glow OPACO (el fade se hace por escala) → bold a cualquier ángulo
-    vec3 col = base * (0.9 + 0.55 * vFres) + flow * vec3(0.95, 0.98, 1.0) * 0.55;
+    // CAMPO gravitacional: línea fina y tenue (opaca, el fade es por escala).
+    // No protagonista — solo insinúa la trayectoria de los asteroides.
+    vec3 col = base * (0.42 + 0.5 * vFres) + flow * vec3(0.9, 0.95, 1.0) * 0.35;
     gl_FragColor = vec4(col, 1.0);
   }
 `
@@ -172,10 +173,13 @@ const FRAG = /* glsl */ `
  * dirección y velocidad de precesión propia (signos opuestos) y su energía que
  * circula. NO giran todos igual; respetan profundidad (weaving con el logo).
  */
+// Los aros son el CAMPO gravitacional (líneas finas y tenues). Las ESFERAS
+// (asteroides) orbitan por ellos: son las que se mueven y dan el giro real.
+// Kepler: el aro más chico gira más rápido; el más grande, más lento.
 const RINGS = [
-  { r: 2.28, tiltX: 1.05, tiltZ: 0.16, prec: 0.11, speed: 0.5, a: G1.cyan, b: G1.blue, nodes: [{ ang: 0.4, s: 0.13, c: G1.cyan }, { ang: 3.7, s: 0.08, c: G1.blue }] },
-  { r: 1.98, tiltX: 0.6, tiltZ: -0.46, prec: -0.16, speed: -0.4, a: G1.violet, b: G1.magenta, nodes: [{ ang: 1.5, s: 0.15, c: G1.violet }] },
-  { r: 2.52, tiltX: 1.32, tiltZ: 0.72, prec: 0.08, speed: 0.64, a: G1.cyan, b: G1.violet, nodes: [{ ang: 2.4, s: 0.11, c: G1.amber }, { ang: 5.2, s: 0.09, c: G1.cyan }] },
+  { r: 2.1, tiltX: 1.05, tiltZ: 0.16, prec: 0.05, orb: 0.55, a: G1.cyan, b: G1.blue, nodes: [{ ang: 0.4, s: 0.1, c: G1.cyan }, { ang: 2.7, s: 0.055, c: G1.blue }, { ang: 4.7, s: 0.075, c: G1.cyan }] },
+  { r: 1.7, tiltX: 0.6, tiltZ: -0.46, prec: -0.06, orb: 0.72, a: G1.violet, b: G1.magenta, nodes: [{ ang: 1.5, s: 0.12, c: G1.violet }, { ang: 4.2, s: 0.05, c: G1.magenta }] },
+  { r: 2.42, tiltX: 1.32, tiltZ: 0.72, prec: 0.035, orb: 0.42, a: G1.cyan, b: G1.violet, nodes: [{ ang: 2.4, s: 0.085, c: G1.amber }, { ang: 5.2, s: 0.065, c: G1.cyan }, { ang: 0.9, s: 0.045, c: G1.violet }] },
 ] as const
 
 type Phase = { key: string; target: 'orb' | 'g1' | 'field'; dur: number; bright: number }
@@ -285,6 +289,7 @@ export function G1GpgpuField({
   const ringMeshRefs = useRef<Array<THREE.Mesh | null>>([])
   const ringMatRefs = useRef<Array<THREE.ShaderMaterial | null>>([])
   const nodeMatRefs = useRef<Array<THREE.ShaderMaterial | null>>([])
+  const nodeMeshRefs = useRef<Array<{ mesh: THREE.Mesh | null; baseAng: number; orb: number }>>([])
   const coreMatRef = useRef<THREE.ShaderMaterial>(null)
   const coreMeshRef = useRef<THREE.Mesh>(null)
 
@@ -405,10 +410,20 @@ export function G1GpgpuField({
       const mesh = ringMeshRefs.current[i]
       const mat = ringMatRefs.current[i]
       if (mesh) {
-        mesh.rotation.set(rc.tiltX, t * rc.prec, rc.tiltZ) // tilt fijo + precesión propia
+        mesh.rotation.set(rc.tiltX, t * rc.prec, rc.tiltZ) // tilt fijo + precesión LENTA propia
         mesh.scale.setScalar(rc.r * Math.max(0.0001, ringVis)) // fade por ESCALA (crece desde el centro)
       }
       if (mat) mat.uniforms.uTime!.value = t
+    }
+    // ASTEROIDES (esferas) — orbitan POR el aro: el scroll empuja el avance +
+    // una deriva lenta y medida (no libre). Kepler: cada aro con su velocidad.
+    const scroll = progressRef ? Math.min(1, Math.max(0, progressRef.current)) : 0
+    for (let i = 0; i < nodeMeshRefs.current.length; i++) {
+      const nd = nodeMeshRefs.current[i]
+      if (nd?.mesh) {
+        const ang = nd.baseAng + (scroll * 5.5 + t * 0.16) * nd.orb
+        nd.mesh.position.set(Math.cos(ang), Math.sin(ang), 0)
+      }
     }
     // NÚCLEO-MISTERIO: pulsa y respira; se funde al revelarse el logo
     if (coreMatRef.current) {
@@ -468,17 +483,23 @@ export function G1GpgpuField({
             scale={[rc.r, rc.r, rc.r]}
             renderOrder={2}
           >
-            <torusGeometry args={[1, 0.05, 18, 320]} />
+            <torusGeometry args={[1, 0.014, 12, 300]} />
             <shaderMaterial
               ref={(m) => { ringMatRefs.current[i] = m as THREE.ShaderMaterial | null }}
               vertexShader={RING_VERT}
               fragmentShader={RING_FRAG}
-              uniforms={{ uColA: { value: new THREE.Color(rc.a) }, uColB: { value: new THREE.Color(rc.b) }, uTime: { value: 0 }, uOpacity: { value: 0 }, uSpeed: { value: rc.speed } }}
+              uniforms={{ uColA: { value: new THREE.Color(rc.a) }, uColB: { value: new THREE.Color(rc.b) }, uTime: { value: 0 }, uOpacity: { value: 0 }, uSpeed: { value: rc.orb } }}
             />
             {/* NODOS — esferas de cristal que orbitan sobre el aro (hijas → heredan la órbita) */}
             {rc.nodes.map((nd, k) => (
-              <mesh key={k} position={[Math.cos(nd.ang), Math.sin(nd.ang), 0]} scale={nd.s / rc.r} renderOrder={3}>
-                <sphereGeometry args={[1, 24, 24]} />
+              <mesh
+                key={k}
+                ref={(m) => { nodeMeshRefs.current[nodeBase + k] = { mesh: m, baseAng: nd.ang, orb: rc.orb } }}
+                position={[Math.cos(nd.ang), Math.sin(nd.ang), 0]}
+                scale={nd.s / rc.r}
+                renderOrder={3}
+              >
+                <sphereGeometry args={[1, 20, 20]} />
                 <shaderMaterial
                   ref={(m) => { nodeMatRefs.current[nodeBase + k] = m as THREE.ShaderMaterial | null }}
                   vertexShader={RING_VERT}
