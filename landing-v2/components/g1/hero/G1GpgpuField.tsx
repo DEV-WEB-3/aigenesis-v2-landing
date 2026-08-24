@@ -53,9 +53,9 @@ const RING_FRAG = /* glsl */ `
     vec3 base = mix(uColA, uColB, 0.5 + 0.5 * sin(vUv.x * 6.2831853));
     // energía líquida que circula a lo largo del aro (uv.x recorre el anillo)
     float flow = exp(-pow(sin(3.14159265 * (vUv.x * 3.0 - uTime * uSpeed)) * 2.1, 2.0));
-    // CAMPO gravitacional: línea fina y tenue (opaca, el fade es por escala).
-    // No protagonista — solo insinúa la trayectoria de los asteroides.
-    vec3 col = base * (0.42 + 0.5 * vFres) + flow * vec3(0.9, 0.95, 1.0) * 0.35;
+    // aro de cristal como el 2D: gradiente + realce fresnel + destello especular
+    float spec = pow(vFres, 4.0);
+    vec3 col = base * (0.5 + 0.6 * vFres) + spec * vec3(1.0) * 0.55 + flow * vec3(0.9, 0.95, 1.0) * 0.3;
     gl_FragColor = vec4(col, 1.0);
   }
 `
@@ -183,13 +183,18 @@ function solveKepler(M: number, e: number): number {
   return E
 }
 
-// Los aros son el CAMPO gravitacional (ELIPSES finas y tenues con G1 en el FOCO).
-// Las ESFERAS (asteroides) orbitan por ellos con mecánica Kepler. Kepler-3: el aro
-// más chico (a menor) gira más rápido; el más grande, más lento.
+// Disposición tipo ÁTOMO como el logo 2D: una elipse ecuatorial (plana) + dos
+// diagonales (/ y \) que enmarcan el G1 SIN taparlo (centro abierto). Los aros
+// quedan casi FIJOS (precesión mínima = "rejuego" sutil); el movimiento lo dan los
+// ASTEROIDES que orbitan por ellos (Kepler). Así, al estacionar el logo, coincide
+// con el 2D. Kepler-3: el aro más chico gira más rápido.
 const RINGS = [
-  { r: 2.1, ecc: 0.32, tiltX: 1.05, tiltZ: 0.16, prec: 0.05, orb: 0.55, a: G1.cyan, b: G1.blue, nodes: [{ ang: 0.4, s: 0.1, c: G1.cyan }, { ang: 2.7, s: 0.055, c: G1.blue }, { ang: 4.7, s: 0.075, c: G1.cyan }] },
-  { r: 1.7, ecc: 0.42, tiltX: 0.6, tiltZ: -0.46, prec: -0.06, orb: 0.72, a: G1.violet, b: G1.magenta, nodes: [{ ang: 1.5, s: 0.12, c: G1.violet }, { ang: 4.2, s: 0.05, c: G1.magenta }] },
-  { r: 2.42, ecc: 0.26, tiltX: 1.32, tiltZ: 0.72, prec: 0.035, orb: 0.42, a: G1.cyan, b: G1.violet, nodes: [{ ang: 2.4, s: 0.085, c: G1.amber }, { ang: 5.2, s: 0.065, c: G1.cyan }, { ang: 0.9, s: 0.045, c: G1.violet }] },
+  // ecuatorial (plana) — cian/azul
+  { r: 2.42, ecc: 0.16, tiltX: 1.44, tiltZ: 0.0, prec: 0.012, orb: 0.4, a: G1.cyan, b: G1.blue, nodes: [{ ang: 0.3, s: 0.09, c: G1.cyan }, { ang: 3.3, s: 0.06, c: G1.blue }] },
+  // diagonal / — violeta/magenta
+  { r: 2.02, ecc: 0.2, tiltX: 0.78, tiltZ: 0.6, prec: 0.018, orb: 0.62, a: G1.violet, b: G1.magenta, nodes: [{ ang: 1.4, s: 0.11, c: G1.violet }, { ang: 4.2, s: 0.05, c: G1.magenta }] },
+  // diagonal \ — cian/violeta
+  { r: 2.02, ecc: 0.2, tiltX: 0.78, tiltZ: -0.6, prec: -0.018, orb: 0.56, a: G1.cyan, b: G1.violet, nodes: [{ ang: 2.4, s: 0.08, c: G1.amber }, { ang: 5.2, s: 0.06, c: G1.cyan }] },
 ] as const
 
 type Phase = { key: string; target: 'orb' | 'g1' | 'field'; dur: number; bright: number }
@@ -472,7 +477,7 @@ export function G1GpgpuField({
       {/* LOGO — escribe profundidad (solo el cristal, por el discard) para que los
           aros que pasan por detrás queden ocultos (weaving real). */}
       {logoTex ? (
-        <mesh ref={logoMeshRef} position={[0, 0, 0]} renderOrder={1}>
+        <mesh ref={logoMeshRef} position={[0, 0, 0]} renderOrder={5}>
           <planeGeometry args={[LOGO_WORLD_W, LOGO_WORLD_W / logoAspect]} />
           <shaderMaterial
             ref={logoMatRef}
@@ -497,7 +502,7 @@ export function G1GpgpuField({
           <group key={i} ref={(g) => { ringMeshRefs.current[i] = g as unknown as THREE.Mesh }} renderOrder={2}>
             {/* el aro/campo: elipse con foco en el origen */}
             <mesh scale={[1, bAxis, 1]} position={[-rc.ecc, 0, 0]} renderOrder={2}>
-              <torusGeometry args={[1, 0.014, 12, 300]} />
+              <torusGeometry args={[1, 0.02, 14, 320]} />
               <shaderMaterial
                 ref={(m) => { ringMatRefs.current[i] = m as THREE.ShaderMaterial | null }}
                 vertexShader={RING_VERT}
