@@ -51,6 +51,13 @@ const desdeEntorno = () => {
 const cred = existsSync(RUTA_CREDENCIALES)
   ? JSON.parse(readFileSync(RUTA_CREDENCIALES, 'utf8'))
   : desdeEntorno()
+/*
+ * SE LIMPIAN LOS VALORES. Un secreto de CI con un salto de línea al final —el
+ * accidente más común al copiarlo— llega intacto hasta `curl`, que responde
+ * «URL rejected: Malformed input to a URL function»: un mensaje que no menciona
+ * el espacio en blanco y manda a buscar el error donde no está. Pasó aquí.
+ */
+if (cred) for (const k of Object.keys(cred)) if (typeof cred[k] === 'string') cred[k] = cred[k].trim()
 if (!cred) {
   console.error(`No hay credenciales en ${RUTA_CREDENCIALES} ni en el entorno`)
   console.error('Formato del archivo (crear a mano, nunca en el repositorio):')
