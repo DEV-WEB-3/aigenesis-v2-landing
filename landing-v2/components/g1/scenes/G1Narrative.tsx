@@ -90,6 +90,7 @@ export function G1Narrative() {
   const [live, setLive] = useState(true)
   const liveRef = useRef(true)
   const jumpedRef = useRef(false)
+  const jumpRef = useRef({ active: false, t0: 0, startY: 0, targetY: 0 })
   const cueRef = useRef<HTMLDivElement>(null)
   const bloomRef = useRef<any>(null) // el ref del efecto se tipa como la clase; any evita el choque
   const caRef = useRef<any>(null)
@@ -115,7 +116,8 @@ export function G1Narrative() {
         const p = self.progress
         progressRef.current = p
         // al final del relato, el stage se funde y le entrega el fondo al ambiente persistente
-        if (stageRef.current) {
+        // durante el brinco manda el driver del aterrizaje (abajo), no el progreso
+        if (stageRef.current && !jumpRef.current.active) {
           const fade = 1 - smoothstep(0.9, 1.0, p)
           stageRef.current.style.opacity = String(fade)
           stageRef.current.style.pointerEvents = fade < 0.05 ? 'none' : 'auto'
@@ -144,6 +146,7 @@ export function G1Narrative() {
      * quedó parqueado en 2D (la cabeza del contenido). Un solo disparo, y solo
      * hacia abajo: subiendo, el relato se recorre normal (smooth en ambos).
      */
+    const JUMP_MS = 1500
     const onWheel = (e: WheelEvent) => {
       if (e.deltaY <= 0 || jumpedRef.current) return
       if (progressRef.current < 0.93) return
@@ -151,9 +154,41 @@ export function G1Narrative() {
       if (!next) return
       jumpedRef.current = true
       e.preventDefault()
-      lenis.scrollTo(next, { offset: -72, duration: 1.5 })
-      window.setTimeout(() => { jumpedRef.current = false }, 1800)
+      // el lockup 3D queda encendido y viaja; se funde recién sobre el final,
+      // cuando el 2D ya ocupa su lugar exacto → sin vacío en el medio.
+      const startY = window.scrollY
+      const targetY = Math.round(next.getBoundingClientRect().top + window.scrollY) - 72
+      jumpRef.current = { active: true, t0: performance.now(), startY, targetY }
+      if (!liveRef.current) { liveRef.current = true; setLive(true) }
+      // `easing` explícito: si la instancia usa `lerp`, Lenis IGNORA `duration`
+      // (medido: el viaje terminaba en ~0.6s) y el fundido quedaba desfasado.
+      lenis.scrollTo(targetY, {
+        duration: JUMP_MS / 1000,
+        easing: (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2),
+      })
+      window.setTimeout(() => { jumpedRef.current = false }, JUMP_MS + 400)
     }
+    /*
+     * DRIVER DEL ATERRIZAJE — el fundido se ata a la DISTANCIA recorrida, no a un
+     * cronómetro: así queda sincronizado con el viaje real pase lo que pase con
+     * la duración. La galaxia se sostiene entera más de la mitad del trayecto y
+     * se disuelve justo cuando el logo 2D ya ocupa su lugar → sin vacío.
+     */
+    const jumpTick = () => {
+      const j = jumpRef.current
+      if (!j.active || !stageRef.current) return
+      const span = j.targetY - j.startY
+      const prog = span === 0 ? 1 : Math.min(1, Math.max(0, (window.scrollY - j.startY) / span))
+      const timedOut = performance.now() - j.t0 > JUMP_MS + 600
+      if (prog >= 0.999 || timedOut) {
+        j.active = false
+        stageRef.current.style.opacity = '0'
+        stageRef.current.style.pointerEvents = 'none'
+        return
+      }
+      stageRef.current.style.opacity = String(1 - smoothstep(0.58, 0.98, prog))
+    }
+    gsap.ticker.add(jumpTick)
     window.addEventListener('wheel', onWheel, { passive: false })
 
     /*
@@ -194,6 +229,7 @@ export function G1Narrative() {
       window.removeEventListener('touchstart', onTouch)
       window.clearTimeout(idle)
       trigger.kill()
+      gsap.ticker.remove(jumpTick)
       gsap.ticker.remove(ticker)
       lenis.destroy()
     }

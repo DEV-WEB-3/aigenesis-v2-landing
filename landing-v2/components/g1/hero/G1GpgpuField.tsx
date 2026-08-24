@@ -380,10 +380,12 @@ export function G1GpgpuField({
       opMul = 1 - 0.86 * reveal
       // el logo cristaliza a la par que el polvo se asienta (cross-fade: dust →
       // crystal). Llega al máximo rápido y SOSTIENE toda la fusión.
-      logoOp = ss(0.56, 0.65, p) * (1 - ss(0.9, 0.97, p))
+      logoOp = ss(0.56, 0.65, p)
       // AROS/NODOS desde la entrada: fade-in 0.03→0.14 (al 45%), crescendo al 100%
       // en la fusión (0.5→0.68), se retiran al final para el handoff.
-      ringVis = ss(0.015, 0.06, p) * (0.88 + 0.12 * ss(0.5, 0.68, p)) * (1 - ss(0.96, 1.0, p))
+      // NO se apagan al final: el lockup queda encendido mientras el stage viaja
+      // hacia el relevo; quien lo funde es el cross-fade del brinco.
+      ringVis = ss(0.015, 0.06, p) * (0.88 + 0.12 * ss(0.5, 0.68, p))
       // NÚCLEO-MISTERIO: presente desde la entrada, se funde cuando el logo cristaliza
       coreVis = ss(0.02, 0.12, p) * (1 - ss(0.56, 0.68, p))
       // ATERRIZAJE MEDIDO: el dock alcanza su estado FINAL en p=0.93 (el umbral
