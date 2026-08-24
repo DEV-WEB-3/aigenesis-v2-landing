@@ -59,3 +59,6 @@ _shoot*.mjs
 _harvest.mjs
 _diag.mjs
 _media.mjs
+_verify.mjs
+_align.mjs
+_clean*.mjs
