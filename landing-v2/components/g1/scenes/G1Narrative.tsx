@@ -5,7 +5,7 @@ import { Canvas, useThree, useFrame } from '@react-three/fiber'
 import { EffectComposer, Bloom, ChromaticAberration, Noise, Vignette } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
 import type { BloomEffect, ChromaticAberrationEffect } from 'postprocessing'
-import { Vector2 } from 'three'
+import { Vector2, NoToneMapping as THREE_NoToneMapping } from 'three'
 import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -51,7 +51,11 @@ function ScrollPostDriver({
   useFrame((_s, dt) => {
     const p = progressRef.current
     // BLOOM: base tenue; sube SUAVE hacia la fusión (Acto 4) — glow elegante, sin flash
-    const bloomTarget = 0.42 + smoothstep(0.5, 0.7, p) * (1 - smoothstep(0.82, 0.92, p)) * 0.42
+    // ...y se ATENÚA en el aterrizaje: el glow del 3D no existe en el lockup 2D,
+    // así que sostenerlo hasta el relevo produce un salto de brillo (medido:
+    // +15 de luminancia). Bajarlo iguala los dos escenarios.
+    const bloomTarget = (0.42 + smoothstep(0.5, 0.7, p) * (1 - smoothstep(0.82, 0.92, p)) * 0.42)
+      * (1 - smoothstep(0.84, 0.94, p) * 0.62)
     // CHROMATIC ABERRATION: chispa SUTIL en la fusión (0.62) y en la disolución (0.85)
     const ca = 0.0004 + (bump(p, 0.62, 0.07) + bump(p, 0.85, 0.05)) * 0.0011
     const k = 1 - Math.pow(0.05, dt)
@@ -256,7 +260,7 @@ export function G1Narrative() {
             camera={{ position: [0, 0, 5.4], fov: 58 }}
             dpr={[1, 1.5]}
             frameloop={live ? 'always' : 'never'}
-            gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+            gl={{ antialias: true, alpha: true, powerPreference: 'high-performance', toneMapping: THREE_NoToneMapping }}
           >
             <G1ParticleSky count={6000} progressRef={progressRef} />
             <G1GpgpuField baseOpacity={0.82} progressRef={progressRef} />

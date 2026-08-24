@@ -480,7 +480,10 @@ export function G1GpgpuField({
       const nd = nodeMeshRefs.current[i]
       if (!nd?.mesh) continue
       const pa = PATHS[nd.path]!
-      const M = nd.M0 + (scroll * 5.5 + t * 0.16) * nd.speed
+      // MISMA fórmula y MISMO reloj que el lockup 2D (performance.now): si
+      // difieren, las esferas SALTAN de posición en el relevo. El scroll ya
+      // mueve todo lo demás (morph, cámara, aterrizaje).
+      const M = nd.M0 + (performance.now() / 1000) * 0.16 * nd.speed
       const E = solveKepler(M, nd.ecc)
       const cE = Math.cos(E), sE = Math.sin(E)
       const cph = Math.cos(pa.phi * DEG), sph = Math.sin(pa.phi * DEG)
@@ -526,7 +529,7 @@ export function G1GpgpuField({
 
       {/* NÚCLEO-MISTERIO — el resplandor central que crea el campo de gravedad y
           que, al final, se revela como G1. Presente desde la entrada. */}
-      <mesh ref={coreMeshRef} position={[0, 0, -0.12]} renderOrder={0}>
+      {<mesh ref={coreMeshRef} position={[0, 0, -0.12]} renderOrder={0}>
         <planeGeometry args={[2.8, 2.8]} />
         <shaderMaterial
           ref={coreMatRef}
@@ -537,7 +540,7 @@ export function G1GpgpuField({
           depthTest={false}
           uniforms={{ uOpacity: { value: 0 }, uTime: { value: 0 } }}
         />
-      </mesh>
+      </mesh>}
       {/* LOGO — escribe profundidad (solo el cristal, por el discard) para que los
           aros que pasan por detrás queden ocultos (weaving real). */}
       {logoTex ? (
