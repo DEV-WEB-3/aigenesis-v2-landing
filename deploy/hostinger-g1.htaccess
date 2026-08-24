@@ -1,0 +1,14 @@
+
+# ── SUBDOMINIO g1.aigenesis.io ────────────────────────────────────────────
+# Se añade al .htaccess que genera el export (que trae las cabeceras de
+# seguridad leídas de next.config.js). Vive versionado aquí y no escrito a mano
+# en el servidor: escrito allá, el siguiente despliegue lo borraría.
+#
+# La copia estática contiene la landing completa y G1 vive en /g1/. En este
+# subdominio la raíz DEBE ser G1, así que se redirige la portada. Es un
+# redirect (no un rewrite) porque los enlaces internos de la app apuntan a
+# /g1/*: reescribir dejaría la URL y los enlaces diciendo cosas distintas.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^$ /g1/ [R=302,L]
+</IfModule>

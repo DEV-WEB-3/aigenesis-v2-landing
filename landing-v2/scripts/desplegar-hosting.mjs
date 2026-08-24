@@ -36,10 +36,24 @@ const RUTA_CREDENCIALES = resolve(homedir(), '.hostinger', 'credenciales.json')
 const soloProbar = process.argv.includes('--probar')
 const simular = process.argv.includes('--simular')
 
-/* ── credenciales ──────────────────────────────────────────────────────── */
-if (!existsSync(RUTA_CREDENCIALES)) {
-  console.error(`No hay credenciales en ${RUTA_CREDENCIALES}`)
-  console.error('Formato esperado (crear a mano, nunca en el repositorio):')
+/* ── credenciales ──────────────────────────────────────────────────────────
+ * Dos orígenes, en este orden:
+ *   1. El archivo local del operador (uso a mano en su máquina).
+ *   2. Variables de entorno (uso en CI, donde no hay carpeta de usuario y el
+ *      secreto lo inyecta GitHub Actions).
+ * El entorno NO pisa al archivo: quien está sentado en la máquina manda.
+ */
+const desdeEntorno = () => {
+  const { HOSTINGER_FTP_HOST, HOSTINGER_FTP_USER, HOSTINGER_FTP_PASS, HOSTINGER_FTP_DIR } = process.env
+  if (!HOSTINGER_FTP_HOST || !HOSTINGER_FTP_USER || !HOSTINGER_FTP_PASS) return null
+  return { host: HOSTINGER_FTP_HOST, usuario: HOSTINGER_FTP_USER, clave: HOSTINGER_FTP_PASS, carpeta: HOSTINGER_FTP_DIR || '/' }
+}
+const cred = existsSync(RUTA_CREDENCIALES)
+  ? JSON.parse(readFileSync(RUTA_CREDENCIALES, 'utf8'))
+  : desdeEntorno()
+if (!cred) {
+  console.error(`No hay credenciales en ${RUTA_CREDENCIALES} ni en el entorno`)
+  console.error('Formato del archivo (crear a mano, nunca en el repositorio):')
   console.error(
     JSON.stringify(
       { host: 'ftp.tudominio.com', usuario: 'u123456789.despliegue', clave: '…', carpeta: '/public_html' },
@@ -47,9 +61,9 @@ if (!existsSync(RUTA_CREDENCIALES)) {
       2
     )
   )
+  console.error('En CI: HOSTINGER_FTP_HOST, HOSTINGER_FTP_USER, HOSTINGER_FTP_PASS, HOSTINGER_FTP_DIR')
   process.exit(1)
 }
-const cred = JSON.parse(readFileSync(RUTA_CREDENCIALES, 'utf8'))
 for (const campo of ['host', 'usuario', 'clave', 'carpeta']) {
   if (!cred[campo]) {
     console.error(`Falta "${campo}" en ${RUTA_CREDENCIALES}`)

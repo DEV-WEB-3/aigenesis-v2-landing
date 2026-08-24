@@ -1,0 +1,102 @@
+# DESPLIEGUE AUTOMÁTICO DE g1.aigenesis.io (copia estática en Hostinger)
+#
+# Por qué existe: la copia de Hostinger NO se actualiza sola. La regla del
+# proyecto dice que cada despliegue a producción o se re-exporta, o se apaga la
+# copia — si no, envejece en silencio y crea una segunda verdad. Este workflow
+# se encarga de la primera opción, para que nadie tenga que acordarse.
+#
+# Qué hace, en cada push a main que toque la landing:
+#   1. exporta el sitio estático (mismo comando que a mano: npm run exportar)
+#   2. le añade las reglas propias del subdominio al .htaccess
+#   3. lo sube por FTPS a la carpeta del subdominio
+#
+# SEGURIDAD — por qué FTP acotado y no la clave SSH de la cuenta:
+# este repositorio es PÚBLICO. La clave SSH abre TODA la cuenta de Hostinger
+# (WordPress, correo, bases de datos). Una cuenta FTP limitada a la carpeta del
+# subdominio, si se filtrara, sólo alcanza a esa carpeta. Se crea en
+# hPanel → Archivos → Cuentas FTP, acotada a la carpeta del subdominio.
+#
+# Secretos que espera (Settings → Secrets → Actions):
+#   HOSTINGER_FTP_HOST  ej. ftp.aigenesis.io
+#   HOSTINGER_FTP_USER  ej. u370080985.g1deploy
+#   HOSTINGER_FTP_PASS  la contraseña de esa cuenta acotada
+#   HOSTINGER_FTP_DIR   ej. /   (si la cuenta ya está acotada a la carpeta)
+#
+# Si los secretos no están, el workflow se salta el paso de subida en vez de
+# fallar: así el repositorio no queda en rojo por una credencial que todavía no
+# se creó.
+
+name: Desplegar g1.aigenesis.io (Hostinger)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'landing-v2/**'
+      - '.github/workflows/desplegar-hostinger-g1.yml'
+  workflow_dispatch: # también a mano, desde la pestaña Actions
+
+concurrency:
+  group: hostinger-g1
+  cancel-in-progress: true
+
+jobs:
+  desplegar:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: landing-v2
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: landing-v2/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Exportar el sitio estático
+        run: npm run exportar
+
+      - name: Reglas del subdominio en .htaccess
+        # El .htaccess lo genera el export a partir de next.config.js. Las
+        # reglas propias del subdominio (la raíz es G1) se añaden aquí, desde
+        # un archivo versionado: escribirlas en el servidor a mano las perdería
+        # en el siguiente despliegue.
+        run: cat ../deploy/hostinger-g1.htaccess >> out/.htaccess
+
+      - name: Comprobar el acceso FTP
+        id: acceso
+        env:
+          HOSTINGER_FTP_HOST: ${{ secrets.HOSTINGER_FTP_HOST }}
+          HOSTINGER_FTP_USER: ${{ secrets.HOSTINGER_FTP_USER }}
+          HOSTINGER_FTP_PASS: ${{ secrets.HOSTINGER_FTP_PASS }}
+          HOSTINGER_FTP_DIR: ${{ secrets.HOSTINGER_FTP_DIR }}
+        run: |
+          if [ -z "$HOSTINGER_FTP_HOST" ]; then
+            echo "Sin credenciales FTP: se omite la subida (esto NO es un fallo)."
+            echo "subir=no" >> "$GITHUB_OUTPUT"
+          else
+            node scripts/desplegar-hosting.mjs --probar
+            echo "subir=si" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Subir a Hostinger
+        if: steps.acceso.outputs.subir == 'si'
+        env:
+          HOSTINGER_FTP_HOST: ${{ secrets.HOSTINGER_FTP_HOST }}
+          HOSTINGER_FTP_USER: ${{ secrets.HOSTINGER_FTP_USER }}
+          HOSTINGER_FTP_PASS: ${{ secrets.HOSTINGER_FTP_PASS }}
+          HOSTINGER_FTP_DIR: ${{ secrets.HOSTINGER_FTP_DIR }}
+        run: node scripts/desplegar-hosting.mjs
+
+      - name: Verificar que el subdominio quedó vivo
+        if: steps.acceso.outputs.subir == 'si'
+        run: |
+          sleep 5
+          code=$(curl -sL -o /dev/null -w '%{http_code}' https://g1.aigenesis.io/g1/)
+          echo "g1.aigenesis.io/g1/ -> $code"
+          test "$code" = "200"
