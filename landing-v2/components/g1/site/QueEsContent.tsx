@@ -3,6 +3,7 @@ import { PillCTA } from '../PillCTA'
 import { SectionReveal } from './SectionReveal'
 import { G1Aurora } from './G1Aurora'
 import { G1Trilogy } from './G1Trilogy'
+import { G1Lockup } from './G1Lockup'
 import { Ferrofluid } from './Ferrofluid'
 import { GlassMedia } from './GlassMedia'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
@@ -26,26 +27,11 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
       <section className={`relative ${hero ? 'py-[clamp(48px,9vw,110px)]' : 'pt-[clamp(40px,7vw,90px)] pb-[clamp(24px,4vw,48px)]'} text-center`}>
         {hero ? <G1Aurora tint="brand" /> : null}
         <div className="relative z-10">
-        {/* lockup de marca — SIEMPRE en la cabeza (en la home es el logo que la
-            narrativa deja PARQUEADO aquí: continuidad 3D → 2D). */}
+        {/* lockup de marca VIVO — SIEMPRE en la cabeza (en la home es el logo que
+            la narrativa deja PARQUEADO aquí: continuidad 3D → 2D), con las
+            esferas flotantes orbitando las elipses medidas. */}
         <SectionReveal>
-            <div className="relative mx-auto mb-6 flex h-[clamp(150px,26vw,250px)] w-full max-w-[580px] items-center justify-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/brand/g1/g1-orbits-1000.webp"
-                alt=""
-                aria-hidden
-                className="pointer-events-none absolute left-1/2 top-1/2 w-[min(580px,128%)] max-w-none -translate-x-1/2 -translate-y-1/2 opacity-90"
-                style={{ filter: 'drop-shadow(0 0 46px rgba(0,245,255,0.22))' }}
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/brand/g1/g1-monogram-560.webp"
-                alt="G1"
-                className="relative h-[clamp(72px,13vw,124px)] w-auto"
-                style={{ filter: `drop-shadow(0 8px 34px ${G1.violet}77)` }}
-              />
-            </div>
+          <G1Lockup className="mb-6" />
         </SectionReveal>
         <SectionReveal>
           <Eyebrow>Qué es G1</Eyebrow>

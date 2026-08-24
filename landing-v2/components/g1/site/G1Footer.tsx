@@ -4,6 +4,7 @@ import { G1, G1_GRADIENT } from '@/lib/design/g1'
 import { DisclaimerBar } from '../DisclaimerBar'
 import { CredentialStrip } from '../CredentialStrip'
 import { SideRays } from './fx'
+import { G1Lockup } from './G1Lockup'
 import { OFFICIAL_SOCIAL } from '@/lib/official-links'
 
 /**
@@ -69,12 +70,9 @@ export function G1Footer() {
 
       <div className="mx-auto max-w-6xl px-[clamp(16px,4vw,40px)] py-[clamp(48px,7vw,72px)]">
         <div className="grid gap-x-8 gap-y-12 md:grid-cols-[1.6fr_1fr_1fr_1fr_1fr]">
-          {/* marca */}
+          {/* marca — logo VIVO con las esferas orbitando */}
           <div>
-            <div className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-[9px] font-display text-[16px] font-extrabold text-genesis-void" style={{ background: G1_GRADIENT, boxShadow: `0 0 22px -6px ${G1.violet}` }}>G1</span>
-              <span className="font-display text-[16px] font-bold tracking-tight text-genesis-text">G1</span>
-            </div>
+            <G1Lockup className="!mx-0 justify-start" heightClass="h-[150px]" monoClass="h-[64px]" maxW={300} />
             <p className="mt-5 font-display text-[19px] font-bold leading-tight tracking-tight">
               <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>Tres fuerzas. Un ecosistema.</span>
             </p>
