@@ -31,7 +31,7 @@ function rampG1(u: number, out: THREE.Color) {
 export function gpgpuSize(): number {
   if (typeof window === 'undefined') return 192
   const w = window.innerWidth
-  return w < 640 ? 128 : w < 1100 ? 192 : 256 // 16k / 36k / 65k
+  return w < 640 ? 96 : w < 1100 ? 144 : 192 // 9k / 20k / 36k (fluidez sin perder densidad visible)
 }
 
 function orbXYZ(n: number, R: number): Float32Array {

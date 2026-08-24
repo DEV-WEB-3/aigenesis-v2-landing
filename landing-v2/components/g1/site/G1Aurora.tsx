@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { G1 } from '@/lib/design/g1'
@@ -151,6 +151,17 @@ export function G1Aurora({
   const reduce =
     typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion:reduce)').matches
   const stops = TINTS[tint]
+  // PERF: solo renderiza cuando el hero está a la vista (fuera de pantalla, el
+  // frameloop se apaga y deja de consumir GPU).
+  const boxRef = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(true)
+  useEffect(() => {
+    const el = boxRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver((es) => setVisible(es[0]?.isIntersecting ?? true), { rootMargin: '120px' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
   if (reduce) {
     return (
       <div
@@ -161,8 +172,8 @@ export function G1Aurora({
     )
   }
   return (
-    <div aria-hidden className={`pointer-events-none absolute inset-y-0 left-1/2 w-screen -translate-x-1/2 ${className ?? ''}`}>
-      <Canvas gl={{ alpha: true, antialias: true, premultipliedAlpha: true }} dpr={[1, 1.75]} camera={{ position: [0, 0, 1] }}>
+    <div ref={boxRef} aria-hidden className={`pointer-events-none absolute inset-y-0 left-1/2 w-screen -translate-x-1/2 ${className ?? ''}`}>
+      <Canvas gl={{ alpha: true, antialias: true, premultipliedAlpha: true }} dpr={[1, 1.3]} frameloop={visible ? 'always' : 'never'} camera={{ position: [0, 0, 1] }}>
         <AuroraPlane stops={stops} amplitude={amplitude} blend={blend} speed={speed} />
       </Canvas>
     </div>

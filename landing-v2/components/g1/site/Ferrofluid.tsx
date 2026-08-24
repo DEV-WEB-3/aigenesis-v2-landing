@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { G1 } from '@/lib/design/g1'
@@ -250,6 +250,16 @@ export function Ferrofluid({
   flow?: [number, number]
   className?: string
 }) {
+  // PERF: pausa el frameloop cuando el cristal no está a la vista.
+  const boxRef = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(true)
+  useEffect(() => {
+    const el = boxRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver((es) => setVisible(es[0]?.isIntersecting ?? true), { rootMargin: '120px' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
   const reduce =
     typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion:reduce)').matches
   if (reduce) {
@@ -262,8 +272,8 @@ export function Ferrofluid({
     )
   }
   return (
-    <div aria-hidden className={`pointer-events-none absolute inset-0 ${className ?? ''}`}>
-      <Canvas gl={{ alpha: true, antialias: true, premultipliedAlpha: true }} dpr={[1, 1.75]} camera={{ position: [0, 0, 1] }}>
+    <div ref={boxRef} aria-hidden className={`pointer-events-none absolute inset-0 ${className ?? ''}`}>
+      <Canvas gl={{ alpha: true, antialias: true, premultipliedAlpha: true }} dpr={[1, 1.15]} frameloop={visible ? 'always' : 'never'} camera={{ position: [0, 0, 1] }}>
         <FerrofluidPlane colors={colors} speed={speed} scale={scale} turbulence={turbulence} fluidity={fluidity} rimWidth={rimWidth} sharpness={sharpness} shimmer={shimmer} glow={glow} opacity={opacity} flow={flow} />
       </Canvas>
     </div>
