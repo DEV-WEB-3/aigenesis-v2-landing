@@ -53,22 +53,19 @@ const RING_FRAG = /* glsl */ `
     vec3 base = mix(uColA, uColB, 0.5 + 0.5 * sin(vUv.x * 6.2831853));
     // energía líquida que circula a lo largo del aro (uv.x recorre el anillo)
     float flow = exp(-pow(sin(3.14159265 * (vUv.x * 3.0 - uTime * uSpeed)) * 2.1, 2.0));
-    // el tubo brilla (base) + realce de borde (fresnel) + energía que circula
-    vec3 col = base * (0.95 + 0.55 * vFres) + flow * vec3(0.86, 0.94, 1.0) * 0.9;
-    float a = (0.6 + 0.55 * vFres + flow * 0.5) * uOpacity;
-    gl_FragColor = vec4(col * a, a);
+    // vidrio glow OPACO (el fade se hace por escala) → bold a cualquier ángulo
+    vec3 col = base * (0.9 + 0.55 * vFres) + flow * vec3(0.95, 0.98, 1.0) * 0.55;
+    gl_FragColor = vec4(col, 1.0);
   }
 `
 
 // NODO — esfera de cristal (fresnel rim + núcleo). Reusa RING_VERT (vFres).
 const NODE_FRAG = /* glsl */ `
   uniform vec3 uCol;
-  uniform float uOpacity;
   varying float vFres;
   void main() {
-    vec3 col = uCol * (0.35 + 1.05 * vFres) + vec3(0.72, 0.86, 1.0) * pow(vFres, 3.0) * 0.7;
-    float a = (0.42 + 0.85 * vFres) * uOpacity;
-    gl_FragColor = vec4(col * a, a);
+    vec3 col = uCol * (0.9 + 0.9 * vFres) + vec3(0.72, 0.86, 1.0) * pow(vFres, 3.0) * 0.7;
+    gl_FragColor = vec4(col, 1.0);
   }
 `
 
@@ -84,8 +81,8 @@ const CORE_FRAG = /* glsl */ `
     float halo = exp(-d * 2.4) * 0.55;        // halo de gravedad
     float pulse = 0.8 + 0.2 * sin(uTime * 1.5);
     vec3 col = mix(vec3(0.6, 0.85, 1.0), vec3(0.78, 0.52, 1.0), 0.5 + 0.5 * sin(uTime * 0.35));
-    float a = (core + halo) * pulse * uOpacity;
-    gl_FragColor = vec4(col * a, a);
+    float a = clamp((core + halo) * pulse, 0.0, 1.0) * uOpacity;
+    gl_FragColor = vec4(col, a);
   }
 `
 
@@ -360,7 +357,7 @@ export function G1GpgpuField({
       logoOp = ss(0.56, 0.65, p) * (1 - ss(0.9, 0.97, p))
       // AROS/NODOS desde la entrada: fade-in 0.03→0.14 (al 45%), crescendo al 100%
       // en la fusión (0.5→0.68), se retiran al final para el handoff.
-      ringVis = ss(0.04, 0.13, p) * (0.62 + 0.38 * ss(0.5, 0.68, p)) * (1 - ss(0.95, 1.0, p))
+      ringVis = ss(0.015, 0.06, p) * (0.88 + 0.12 * ss(0.5, 0.68, p)) * (1 - ss(0.96, 1.0, p))
       // NÚCLEO-MISTERIO: presente desde la entrada, se funde cuando el logo cristaliza
       coreVis = ss(0.02, 0.12, p) * (1 - ss(0.56, 0.68, p))
     } else {
@@ -407,17 +404,11 @@ export function G1GpgpuField({
       const rc = RINGS[i]!
       const mesh = ringMeshRefs.current[i]
       const mat = ringMatRefs.current[i]
-      if (mesh) mesh.rotation.set(rc.tiltX, t * rc.prec, rc.tiltZ) // tilt fijo + precesión propia
-      if (mat) {
-        const uo = mat.uniforms
-        uo.uTime!.value = t
-        uo.uOpacity!.value = ringVis
+      if (mesh) {
+        mesh.rotation.set(rc.tiltX, t * rc.prec, rc.tiltZ) // tilt fijo + precesión propia
+        mesh.scale.setScalar(rc.r * Math.max(0.0001, ringVis)) // fade por ESCALA (crece desde el centro)
       }
-    }
-    // nodos (esferas): presentes desde la entrada, como los aros
-    for (let i = 0; i < nodeMatRefs.current.length; i++) {
-      const nm = nodeMatRefs.current[i]
-      if (nm) nm.uniforms.uOpacity!.value = ringVis
+      if (mat) mat.uniforms.uTime!.value = t
     }
     // NÚCLEO-MISTERIO: pulsa y respira; se funde al revelarse el logo
     if (coreMatRef.current) {
@@ -446,7 +437,6 @@ export function G1GpgpuField({
           transparent
           depthWrite={false}
           depthTest={false}
-          blending={THREE.AdditiveBlending}
           uniforms={{ uOpacity: { value: 0 }, uTime: { value: 0 } }}
         />
       </mesh>
@@ -478,15 +468,11 @@ export function G1GpgpuField({
             scale={[rc.r, rc.r, rc.r]}
             renderOrder={2}
           >
-            <torusGeometry args={[1, 0.05, 16, 300]} />
+            <torusGeometry args={[1, 0.05, 18, 320]} />
             <shaderMaterial
               ref={(m) => { ringMatRefs.current[i] = m as THREE.ShaderMaterial | null }}
               vertexShader={RING_VERT}
               fragmentShader={RING_FRAG}
-              transparent
-              depthWrite={false}
-              depthTest={false}
-              blending={THREE.AdditiveBlending}
               uniforms={{ uColA: { value: new THREE.Color(rc.a) }, uColB: { value: new THREE.Color(rc.b) }, uTime: { value: 0 }, uOpacity: { value: 0 }, uSpeed: { value: rc.speed } }}
             />
             {/* NODOS — esferas de cristal que orbitan sobre el aro (hijas → heredan la órbita) */}
@@ -497,11 +483,7 @@ export function G1GpgpuField({
                   ref={(m) => { nodeMatRefs.current[nodeBase + k] = m as THREE.ShaderMaterial | null }}
                   vertexShader={RING_VERT}
                   fragmentShader={NODE_FRAG}
-                  transparent
-                  depthWrite={false}
-                  depthTest={false}
-                  blending={THREE.AdditiveBlending}
-                  uniforms={{ uCol: { value: new THREE.Color(nd.c) }, uOpacity: { value: 0 } }}
+                  uniforms={{ uCol: { value: new THREE.Color(nd.c) } }}
                 />
               </mesh>
             ))}
