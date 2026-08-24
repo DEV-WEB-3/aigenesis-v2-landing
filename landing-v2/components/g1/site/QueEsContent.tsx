@@ -31,7 +31,7 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
             la narrativa deja PARQUEADO aquí: continuidad 3D → 2D), con las
             esferas flotantes orbitando las elipses medidas. */}
         <SectionReveal>
-          <G1Lockup className="mb-6" />
+          <G1Lockup className="mb-6" dockAnchor />
         </SectionReveal>
         <SectionReveal>
           <Eyebrow>Qué es G1</Eyebrow>

@@ -305,6 +305,7 @@ export function G1GpgpuField({
   const orbMatRef = useRef<THREE.ShaderMaterial>(null)
   const orbMeshRef = useRef<THREE.Mesh>(null)
   const nodeMeshRefs = useRef<Array<{ mesh: THREE.Mesh | null; M0: number; speed: number; ecc: number; path: number }>>([])
+  const dockCache = useRef({ key: '', cy: 0, w: 0, px: 0 })
   const coreMatRef = useRef<THREE.ShaderMaterial>(null)
   const coreMeshRef = useRef<THREE.Mesh>(null)
 
@@ -422,10 +423,42 @@ export function G1GpgpuField({
       grp.current.rotation.x += (-s.pointer.y * 0.1 - grp.current.rotation.x) * 0.04
       // ESTACIONAMIENTO: el logo sube y encoge hacia la cabeza (relevo al 2D del
       // hero de la página). Atado al scroll → smooth en ambos sentidos.
-      // valores derivados de la medición: en dockT=1 el lockup 3D coincide en
-      // posición y tamaño con el lockup 2D de la cabeza del contenido.
-      grp.current.position.y = dockT * 1.058
-      grp.current.scale.setScalar(BASE_SCALE * (1 - dockT * 0.4767))
+      /*
+       * ATERRIZAJE ADAPTATIVO — el destino se MIDE en el DOM (el lockup 2D de la
+       * cabeza, marcado con data-g1-dock) y se convierte a mundo con la cámara.
+       * Con números fijos coincidía solo en 1440×900: el 2D escala con el ANCHO
+       * (13vw) y el 3D con la ALTURA (fov) → divergía hasta 57px en otros
+       * tamaños (medido). Midiendo el destino, coincide en cualquier viewport.
+       */
+      let dockY = 1.058, dockScale = 0.408
+      const cam = s.camera as THREE.PerspectiveCamera
+      const key = `${s.size.width}x${s.size.height}`
+      const cache = dockCache.current
+      if (cache.key !== key || cache.px === 0) {
+        // El ancla es el CONTENEDOR del lockup: no tiene transform propio, así
+        // que su posición de LAYOUT (cadena de offsetTop) es inmune a la
+        // animación de entrada. Medir el <img> fallaba: su cadena mezcla el
+        // centrado estructural (-163px) con el desplazamiento de la animación
+        // (+24px) y no se pueden separar por getComputedStyle.
+        const dst = document.querySelector('[data-g1-dock]') as HTMLElement | null
+        const mono = dst?.querySelector('img[alt="G1"]') as HTMLElement | null
+        const narr = document.querySelector('div[style*="620vh"]') as HTMLElement | null
+        const next = narr?.nextElementSibling as HTMLElement | null
+        if (dst && mono && next) {
+          const docTop = (el: HTMLElement) => { let t = 0; let e: HTMLElement | null = el; while (e) { t += e.offsetTop; e = e.offsetParent as HTMLElement | null } return t }
+          cache.key = key
+          cache.cy = docTop(dst) + dst.offsetHeight / 2 - docTop(next) + 72 // 72 = offset del brinco
+          cache.w = mono.offsetWidth // offsetWidth: sin transform
+          cache.px = 1
+        }
+      }
+      if (cache.px === 1) {
+        const pxPerUnit = s.size.height / (2 * cam.position.z * Math.tan((cam.fov * Math.PI) / 360))
+        dockY = (s.size.height / 2 - cache.cy) / pxPerUnit
+        dockScale = cache.w / (LOGO_WORLD_W * pxPerUnit)
+      }
+      grp.current.position.y = dockT * dockY
+      grp.current.scale.setScalar(BASE_SCALE + (dockScale - BASE_SCALE) * dockT)
     }
 
     // LOGO 3D — cristaliza con el polvo (mismo grupo/cámara → sin divergencia)

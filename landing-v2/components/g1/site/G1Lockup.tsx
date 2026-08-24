@@ -34,8 +34,11 @@ export function G1Lockup({
   monoClass = 'h-[clamp(72px,13vw,124px)]',
   heightClass = 'h-[clamp(150px,26vw,250px)]',
   maxW = 580,
+  dockAnchor = false,
 }: {
   className?: string
+  /** Marca este lockup como el DESTINO del aterrizaje del logo 3D de la narrativa. */
+  dockAnchor?: boolean
   /** clase de altura del monograma */
   monoClass?: string
   /** clase de altura del contenedor */
@@ -71,7 +74,7 @@ export function G1Lockup({
   }, [])
 
   return (
-    <div ref={wrapRef} className={`relative mx-auto flex w-full items-center justify-center ${heightClass} ${className}`} style={{ maxWidth: maxW }}>
+    <div ref={wrapRef} {...(dockAnchor ? { 'data-g1-dock': '1' } : {})} className={`relative mx-auto flex w-full items-center justify-center ${heightClass} ${className}`} style={{ maxWidth: maxW }}>
       {/* órbitas — el asset 2D, la caja de referencia de las esferas */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 w-[min(580px,128%)] max-w-none -translate-x-1/2 -translate-y-1/2" style={{ aspectRatio: '1000 / 563' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
