@@ -96,6 +96,7 @@ export function G1Narrative() {
   const jumpedRef = useRef(false)
   const jumpRef = useRef({ active: false, t0: 0, startY: 0, targetY: 0 })
   const cueRef = useRef<HTMLDivElement>(null)
+  const contRef = useRef<HTMLDivElement>(null)
   const bloomRef = useRef<any>(null) // el ref del efecto se tipa como la clase; any evita el choque
   const caRef = useRef<any>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -119,22 +120,23 @@ export function G1Narrative() {
       onUpdate: (self) => {
         const p = self.progress
         progressRef.current = p
-        // al final del relato, el stage se funde y le entrega el fondo al ambiente persistente
-        // durante el brinco manda el driver del aterrizaje (abajo), no el progreso
-        if (stageRef.current && !jumpRef.current.active) {
-          const fade = 1 - smoothstep(0.9, 1.0, p)
-          stageRef.current.style.opacity = String(fade)
-          stageRef.current.style.pointerEvents = fade < 0.05 ? 'none' : 'auto'
-          // apaga/enciende el frameloop del canvas según se vea o no (perf)
-          const shouldLive = fade > 0.02
-          if (shouldLive !== liveRef.current) { liveRef.current = shouldLive; setLive(shouldLive) }
-        }
+        // el fundido del stage lo maneja `syncStage` (por distancia al aterrizaje)
         // la señal de scroll vive solo al principio: se apaga apenas arranca
         if (cueRef.current) cueRef.current.style.opacity = String(1 - smoothstep(0.004, 0.03, p))
+        // aviso de continuidad: entra con la CTA final del relato
+        if (contRef.current) {
+          const o = smoothstep(0.87, 0.94, p)
+          contRef.current.style.opacity = String(o)
+          contRef.current.style.display = o < 0.02 ? 'none' : 'flex'
+        }
         for (let i = 0; i < WIN.length; i++) {
           const [a, b] = WIN[i]!
           // 1 en el plateau, ramp de 0.04 en cada borde, 0 fuera de [a,b] → sin solape
-          const o = Math.min(1, Math.max(0, Math.min((p - a) / 0.04, (b - p) / 0.04)))
+          // el último acto NO se desvanece al final: sostiene la CTA durante el
+          // acople y se va junto con el stage (si no, quedaba un hueco sin texto).
+          const o = i === WIN.length - 1
+            ? Math.min(1, Math.max(0, (p - a) / 0.04))
+            : Math.min(1, Math.max(0, Math.min((p - a) / 0.04, (b - p) / 0.04)))
           const el = actRefs.current[i]
           if (el) {
             el.style.opacity = String(o)
@@ -150,6 +152,52 @@ export function G1Narrative() {
      * quedó parqueado en 2D (la cabeza del contenido). Un solo disparo, y solo
      * hacia abajo: subiendo, el relato se recorre normal (smooth en ambos).
      */
+    /*
+     * EL ACOPLE DE LOS DOS ESCENARIOS — auditoría forense sobre las capturas del
+     * owner. Al terminar el relato, el contenido arranca en el BORDE INFERIOR de
+     * la pantalla: quedan ~830 px en los que la galaxia ya se había apagado (el
+     * fundido colgaba del PROGRESO, que se agota ahí) y el lockup 2D todavía no
+     * había llegado. De ahí los dos síntomas de las capturas: primero DOS logos
+     * a distinta altura, después una pantalla VACÍA.
+     *
+     * Arreglo: el fundido cuelga de la DISTANCIA que falta para el aterrizaje.
+     * La galaxia se sostiene entera —tapando el contenido— mientras el lockup 2D
+     * sube por debajo, y sólo se disuelve en los últimos px, justo cuando ambos
+     * ocupan el MISMO lugar (verificado: dx 0, dy 0). Sirve igual con scroll
+     * manual que con el brinco, y es simétrico al volver hacia arriba.
+     */
+    const landingY = () => {
+      const next = wrapRef.current?.nextElementSibling as HTMLElement | null
+      return next ? next.getBoundingClientRect().top + window.scrollY - 72 : Infinity
+    }
+    const syncStage = () => {
+      const st = stageRef.current
+      if (!st) return
+      const d = landingY() - window.scrollY // px que faltan para el relevo
+      const fade = smoothstep(-30, 220, d) // galaxia: 1 lejos · 0 al llegar
+      /*
+       * La escena que LLEGA tampoco debe pisar a la que se va: el contenido entra
+       * en cruce con la galaxia en los últimos px (si no, se veían el CTA del
+       * relato y el titular de la página a la vez).
+       */
+      const next = wrapRef.current?.nextElementSibling as HTMLElement | null
+      if (next) next.style.opacity = String(1 - smoothstep(0, 240, d))
+      st.style.opacity = String(fade)
+      st.style.pointerEvents = fade < 0.05 ? 'none' : 'auto'
+      const shouldLive = fade > 0.02
+      if (shouldLive !== liveRef.current) { liveRef.current = shouldLive; setLive(shouldLive) }
+      /*
+       * EL RELEVO (idea del owner) — el lockup 2D NO sube a la vista: se mantiene
+       * OCULTO mientras la página se arrastra por debajo y sólo aparece en el
+       * punto exacto en el que debe continuar, que es donde el 3D está esperando.
+       * Así nunca hay dos logos: uno entrega y el otro sigue, y son el mismo.
+       */
+      const dock2d = document.querySelector('[data-g1-dock]') as HTMLElement | null
+      if (dock2d) dock2d.style.opacity = String(1 - smoothstep(0, 70, d))
+    }
+    lenis.on('scroll', syncStage)
+    syncStage()
+
     const JUMP_MS = 1500
     const onWheel = (e: WheelEvent) => {
       if (e.deltaY <= 0 || jumpedRef.current) return
@@ -172,26 +220,9 @@ export function G1Narrative() {
       })
       window.setTimeout(() => { jumpedRef.current = false }, JUMP_MS + 400)
     }
-    /*
-     * DRIVER DEL ATERRIZAJE — el fundido se ata a la DISTANCIA recorrida, no a un
-     * cronómetro: así queda sincronizado con el viaje real pase lo que pase con
-     * la duración. La galaxia se sostiene entera más de la mitad del trayecto y
-     * se disuelve justo cuando el logo 2D ya ocupa su lugar → sin vacío.
-     */
-    const jumpTick = () => {
-      const j = jumpRef.current
-      if (!j.active || !stageRef.current) return
-      const span = j.targetY - j.startY
-      const prog = span === 0 ? 1 : Math.min(1, Math.max(0, (window.scrollY - j.startY) / span))
-      const timedOut = performance.now() - j.t0 > JUMP_MS + 600
-      if (prog >= 0.999 || timedOut) {
-        j.active = false
-        stageRef.current.style.opacity = '0'
-        stageRef.current.style.pointerEvents = 'none'
-        return
-      }
-      stageRef.current.style.opacity = String(1 - smoothstep(0.58, 0.98, prog))
-    }
+    // el fundido durante el brinco ya lo cubre `syncStage` (mismo criterio de
+    // distancia), así que el brinco solo acelera el viaje.
+    const jumpTick = () => { if (jumpRef.current.active && performance.now() - jumpRef.current.t0 > JUMP_MS + 600) jumpRef.current.active = false }
     gsap.ticker.add(jumpTick)
     window.addEventListener('wheel', onWheel, { passive: false })
 
@@ -229,6 +260,11 @@ export function G1Narrative() {
     lenis.on('scroll', onScrollIdle)
 
     return () => {
+      // al desmontar, lockup y contenido vuelven a ser visibles (otras rutas los usan)
+      const d2 = document.querySelector('[data-g1-dock]') as HTMLElement | null
+      if (d2) d2.style.opacity = ''
+      const nx = wrapRef.current?.nextElementSibling as HTMLElement | null
+      if (nx) nx.style.opacity = ''
       window.removeEventListener('wheel', onWheel)
       window.removeEventListener('touchstart', onTouch)
       window.clearTimeout(idle)
@@ -347,6 +383,23 @@ export function G1Narrative() {
             </div>
             <div className="mt-6"><DisclaimerBar className="text-center" /></div>
           </div>
+        </div>
+
+        {/* SEÑAL DE CONTINUIDAD — al final del relato la escena se sostiene
+            esperando el relevo, y sin un aviso mucha gente cree que la página
+            termina ahí. Aparece con la CTA y se va con el propio stage. */}
+        <div
+          ref={contRef}
+          className="pointer-events-none absolute inset-x-0 bottom-[clamp(128px,19vh,200px)] z-[6] flex flex-col items-center gap-2"
+          style={{ opacity: 0, display: 'none' }}
+        >
+          <span className="font-mono text-[10.5px] uppercase tracking-[0.26em]" style={{ color: G1.cyan }}>
+            La web continúa · sigue bajando
+          </span>
+          <svg width="22" height="13" viewBox="0 0 22 13" fill="none" aria-hidden className="motion-safe:animate-[g1down_1.6s_ease-in-out_infinite]">
+            <path d="M2 2l9 8 9-8" stroke={G1.cyan} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <style>{`@keyframes g1down{0%,100%{transform:translateY(-3px);opacity:.55}50%{transform:translateY(3px);opacity:1}}`}</style>
         </div>
 
         {/* SEÑAL DE SCROLL — que se entienda desde el segundo cero que la
