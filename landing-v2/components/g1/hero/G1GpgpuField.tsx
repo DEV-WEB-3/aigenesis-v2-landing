@@ -173,13 +173,23 @@ const FRAG = /* glsl */ `
  * dirección y velocidad de precesión propia (signos opuestos) y su energía que
  * circula. NO giran todos igual; respetan profundidad (weaving con el logo).
  */
-// Los aros son el CAMPO gravitacional (líneas finas y tenues). Las ESFERAS
-// (asteroides) orbitan por ellos: son las que se mueven y dan el giro real.
-// Kepler: el aro más chico gira más rápido; el más grande, más lento.
+// KEPLER — resuelve la ecuación M = E − e·sinE (Newton, pocas iteraciones) para
+// obtener la anomalía excéntrica E. Con M lineal en el tiempo, el asteroide barre
+// áreas iguales en tiempos iguales (2ª ley): acelera en el periapsis, frena en el
+// apoapsis. Ese es el giro hiper-realista.
+function solveKepler(M: number, e: number): number {
+  let E = M
+  for (let i = 0; i < 5; i++) E = E - (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E))
+  return E
+}
+
+// Los aros son el CAMPO gravitacional (ELIPSES finas y tenues con G1 en el FOCO).
+// Las ESFERAS (asteroides) orbitan por ellos con mecánica Kepler. Kepler-3: el aro
+// más chico (a menor) gira más rápido; el más grande, más lento.
 const RINGS = [
-  { r: 2.1, tiltX: 1.05, tiltZ: 0.16, prec: 0.05, orb: 0.55, a: G1.cyan, b: G1.blue, nodes: [{ ang: 0.4, s: 0.1, c: G1.cyan }, { ang: 2.7, s: 0.055, c: G1.blue }, { ang: 4.7, s: 0.075, c: G1.cyan }] },
-  { r: 1.7, tiltX: 0.6, tiltZ: -0.46, prec: -0.06, orb: 0.72, a: G1.violet, b: G1.magenta, nodes: [{ ang: 1.5, s: 0.12, c: G1.violet }, { ang: 4.2, s: 0.05, c: G1.magenta }] },
-  { r: 2.42, tiltX: 1.32, tiltZ: 0.72, prec: 0.035, orb: 0.42, a: G1.cyan, b: G1.violet, nodes: [{ ang: 2.4, s: 0.085, c: G1.amber }, { ang: 5.2, s: 0.065, c: G1.cyan }, { ang: 0.9, s: 0.045, c: G1.violet }] },
+  { r: 2.1, ecc: 0.32, tiltX: 1.05, tiltZ: 0.16, prec: 0.05, orb: 0.55, a: G1.cyan, b: G1.blue, nodes: [{ ang: 0.4, s: 0.1, c: G1.cyan }, { ang: 2.7, s: 0.055, c: G1.blue }, { ang: 4.7, s: 0.075, c: G1.cyan }] },
+  { r: 1.7, ecc: 0.42, tiltX: 0.6, tiltZ: -0.46, prec: -0.06, orb: 0.72, a: G1.violet, b: G1.magenta, nodes: [{ ang: 1.5, s: 0.12, c: G1.violet }, { ang: 4.2, s: 0.05, c: G1.magenta }] },
+  { r: 2.42, ecc: 0.26, tiltX: 1.32, tiltZ: 0.72, prec: 0.035, orb: 0.42, a: G1.cyan, b: G1.violet, nodes: [{ ang: 2.4, s: 0.085, c: G1.amber }, { ang: 5.2, s: 0.065, c: G1.cyan }, { ang: 0.9, s: 0.045, c: G1.violet }] },
 ] as const
 
 type Phase = { key: string; target: 'orb' | 'g1' | 'field'; dur: number; bright: number }
@@ -289,7 +299,7 @@ export function G1GpgpuField({
   const ringMeshRefs = useRef<Array<THREE.Mesh | null>>([])
   const ringMatRefs = useRef<Array<THREE.ShaderMaterial | null>>([])
   const nodeMatRefs = useRef<Array<THREE.ShaderMaterial | null>>([])
-  const nodeMeshRefs = useRef<Array<{ mesh: THREE.Mesh | null; baseAng: number; orb: number }>>([])
+  const nodeMeshRefs = useRef<Array<{ mesh: THREE.Mesh | null; baseAng: number; orb: number; ecc: number }>>([])
   const coreMatRef = useRef<THREE.ShaderMaterial>(null)
   const coreMeshRef = useRef<THREE.Mesh>(null)
 
@@ -421,8 +431,12 @@ export function G1GpgpuField({
     for (let i = 0; i < nodeMeshRefs.current.length; i++) {
       const nd = nodeMeshRefs.current[i]
       if (nd?.mesh) {
-        const ang = nd.baseAng + (scroll * 5.5 + t * 0.16) * nd.orb
-        nd.mesh.position.set(Math.cos(ang), Math.sin(ang), 0)
+        // anomalía media M (lineal en scroll+tiempo) → Kepler → posición en la
+        // elipse con el FOCO en el G1: acelera cerca, frena lejos (2ª ley).
+        const M = nd.baseAng + (scroll * 5.5 + t * 0.16) * nd.orb
+        const E = solveKepler(M, nd.ecc)
+        const b = Math.sqrt(1 - nd.ecc * nd.ecc)
+        nd.mesh.position.set(Math.cos(E) - nd.ecc, b * Math.sin(E), 0)
       }
     }
     // NÚCLEO-MISTERIO: pulsa y respira; se funde al revelarse el logo
@@ -472,30 +486,30 @@ export function G1GpgpuField({
         </mesh>
       ) : null}
 
-      {/* AROS 3D — torus de cristal líquido, cada uno en su plano orbital, con
-          profundidad real (se testean contra la profundidad del logo). */}
+      {/* ÓRBITAS — cada una es un GRUPO-plano (tilt + precesión + escala/fade).
+          Dentro: el torus ELÍPTICO (foco en el G1) como campo, y los asteroides
+          que lo recorren con Kepler. El torus se escala (1, √(1−e²)) y se desplaza
+          (−e) para que el FOCO caiga en el origen del grupo = el G1. */}
       {RINGS.map((rc, i) => {
         const nodeBase = RINGS.slice(0, i).reduce((s, r) => s + r.nodes.length, 0)
+        const bAxis = Math.sqrt(1 - rc.ecc * rc.ecc)
         return (
-          <mesh
-            key={i}
-            ref={(m) => { ringMeshRefs.current[i] = m }}
-            scale={[rc.r, rc.r, rc.r]}
-            renderOrder={2}
-          >
-            <torusGeometry args={[1, 0.014, 12, 300]} />
-            <shaderMaterial
-              ref={(m) => { ringMatRefs.current[i] = m as THREE.ShaderMaterial | null }}
-              vertexShader={RING_VERT}
-              fragmentShader={RING_FRAG}
-              uniforms={{ uColA: { value: new THREE.Color(rc.a) }, uColB: { value: new THREE.Color(rc.b) }, uTime: { value: 0 }, uOpacity: { value: 0 }, uSpeed: { value: rc.orb } }}
-            />
-            {/* NODOS — esferas de cristal que orbitan sobre el aro (hijas → heredan la órbita) */}
+          <group key={i} ref={(g) => { ringMeshRefs.current[i] = g as unknown as THREE.Mesh }} renderOrder={2}>
+            {/* el aro/campo: elipse con foco en el origen */}
+            <mesh scale={[1, bAxis, 1]} position={[-rc.ecc, 0, 0]} renderOrder={2}>
+              <torusGeometry args={[1, 0.014, 12, 300]} />
+              <shaderMaterial
+                ref={(m) => { ringMatRefs.current[i] = m as THREE.ShaderMaterial | null }}
+                vertexShader={RING_VERT}
+                fragmentShader={RING_FRAG}
+                uniforms={{ uColA: { value: new THREE.Color(rc.a) }, uColB: { value: new THREE.Color(rc.b) }, uTime: { value: 0 }, uOpacity: { value: 0 }, uSpeed: { value: rc.orb } }}
+              />
+            </mesh>
+            {/* asteroides — posición por Kepler (misma elipse, foco en el origen) */}
             {rc.nodes.map((nd, k) => (
               <mesh
                 key={k}
-                ref={(m) => { nodeMeshRefs.current[nodeBase + k] = { mesh: m, baseAng: nd.ang, orb: rc.orb } }}
-                position={[Math.cos(nd.ang), Math.sin(nd.ang), 0]}
+                ref={(m) => { nodeMeshRefs.current[nodeBase + k] = { mesh: m, baseAng: nd.ang, orb: rc.orb, ecc: rc.ecc } }}
                 scale={nd.s / rc.r}
                 renderOrder={3}
               >
@@ -508,7 +522,7 @@ export function G1GpgpuField({
                 />
               </mesh>
             ))}
-          </mesh>
+          </group>
         )
       })}
     </group>
