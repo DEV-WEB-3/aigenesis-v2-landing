@@ -20,9 +20,9 @@
  *
  * Uso:  node scripts/probar-vivo-g1.mjs
  */
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { dirname, resolve } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 
 const raiz = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const BASE = process.argv[2] || 'https://g1.aigenesis.io'
@@ -111,7 +111,58 @@ if (rutas.length === 0) {
 }
 console.log(`  ${rutas.length} chunk(s) declarados por el HTML`)
 
-const cuerpos = await Promise.all(rutas.map((r) => bajar(BASE + r).catch(() => '')))
+/*
+ * LOS CHUNKS PEREZOSOS TAMBIÉN, O ESTO NO MIRA AL ASISTENTE.
+ *
+ * Aquí se bajaban SÓLO los chunks que el HTML declara. El asistente y su
+ * diccionario se cargan bajo demanda, así que su código no aparece en esa lista
+ * — y la guarda podía dar verde sin haber leído ni una línea de lo que estaba
+ * comprobando.
+ *
+ * Me pasó el 25-ago-2026: busqué el título traducido al portugués en los dos
+ * hosts, no apareció en ninguno, y estuve a punto de concluir que el despliegue
+ * había fallado. Estaba desplegado. Lo que fallaba era dónde miraba yo. Pedir
+ * el chunk por su nombre lo encontró al primer intento en ambos.
+ *
+ * Se resuelven desde el `out/` local: es el mismo build que se acaba de subir,
+ * así que sus nombres de archivo —con hash de contenido— son exactamente los que
+ * tiene que servir el host. Si un chunk local no está vivo, es que la subida
+ * quedó incompleta, y eso también hay que saberlo.
+ */
+const rutasPerezosas = []
+try {
+  const dir = resolve(raiz, 'out/_next/static/chunks')
+  const anda = (d) => {
+    for (const n of readdirSync(d, { withFileTypes: true })) {
+      const p = join(d, n.name)
+      if (n.isDirectory()) anda(p)
+      else if (n.name.endsWith('.js')) {
+        const rel = p.slice(resolve(raiz, 'out').length).split('\\').join('/')
+        if (!rutas.includes(rel)) rutasPerezosas.push(rel)
+      }
+    }
+  }
+  anda(dir)
+} catch {
+  console.log('  --   sin `out/` local: sólo se miran los chunks que declara el HTML')
+}
+if (rutasPerezosas.length) {
+  console.log(`  ${rutasPerezosas.length} chunk(s) más resueltos desde el build local`)
+}
+
+const todosLosChunks = [...rutas, ...rutasPerezosas]
+const cuerpos = await Promise.all(todosLosChunks.map((r) => bajar(BASE + r).catch(() => '')))
+const faltantes = cuerpos.filter((c) => c === '').length
+if (faltantes) {
+  /* Los nombres llevan hash de contenido, así que «no está» significa una de
+     dos cosas y conviene no confundirlas: o el host sirve OTRO build —lo dice
+     el sello, más abajo— o la subida de ÉSTE quedó a medias. */
+  console.log(
+    `  AVISO · ${faltantes} de ${todosLosChunks.length} chunk(s) del build local no se sirven.` +
+      '\n         Si el sello de abajo coincide, la subida quedó incompleta;' +
+      '\n         si no coincide, es que el host todavía tiene el build anterior.',
+  )
+}
 const todo = html + cuerpos.join('\n')
 const kb = Math.round(todo.length / 1024)
 console.log(`  ${kb} kB de JavaScript leídos\n`)
