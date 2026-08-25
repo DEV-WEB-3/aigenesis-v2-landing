@@ -52,6 +52,13 @@ function compilar(rutaRel, nombre, alias = {}) {
    aporta claves a la web G1, así que se deja fuera. */
 compilar('lib/i18n/diccionario.ts', 'diccionario.js')
 
+/* La lista DECLARADA de lo que no se traduce (marcas, tecnologías, títulos de
+   pieza). Se compila para poder distinguir «no lleva fila a propósito» de «se
+   me olvidó la fila»: sin ella, las dos cosas se ven exactamente igual. */
+compilar('lib/i18n/invariables.ts', 'invariables.js')
+const { INVARIABLES } = require_(join(salida, 'invariables.js'))
+const ES_INVARIABLE = (k) => INVARIABLES.has(k)
+
 /** El contexto de idioma, fijado a un idioma y montado sobre el diccionario real. */
 function stubIdioma(idioma) {
   writeFileSync(
@@ -199,11 +206,28 @@ comprobar('todas las claves de G1 traducen de verdad, no son copias', () => {
   }
   assert.ok(usadas.size > 40, 'sólo se hallaron ' + usadas.size + ' claves en uso: ¿cambió la forma?')
 
+  /*
+   * LAS CLAVES SIN FILA SE NOMBRAN, NO SE SALTAN.
+   *
+   * Aquí había `if (!fila) continue` y un resumen que decía «79 de 80 claves
+   * con traducción». Esa diferencia de uno se lee como un redondeo y no lo era:
+   * son las claves que `t()` pide y el diccionario no tiene, que se pintan en
+   * español en los once idiomas sin que nada avise.
+   *
+   * El `continue` estaba bien pensado —los nombres propios no llevan fila y no
+   * deben llevarla— pero mezclaba dos casos en el mismo silencio: «no se traduce
+   * a propósito» y «se me olvidó». La lista de `invariables.ts` existe justo
+   * para separarlos, así que se usa: lo declarado se salta, lo demás se enseña.
+   */
   const malas = []
+  const huerfanas = []
   let conTraduccion = 0
   for (const k of usadas) {
     const fila = tabla[k]
-    if (!fila) continue
+    if (!fila) {
+      if (!ES_INVARIABLE(k)) huerfanas.push(k)
+      continue
+    }
     conTraduccion++
     for (const idioma of ['ru', 'ar']) {
       if (!fila[idioma]) malas.push('falta ' + idioma + ': ' + k.slice(0, 44))
@@ -211,6 +235,14 @@ comprobar('todas las claves de G1 traducen de verdad, no son copias', () => {
     }
   }
   assert.deepEqual(malas, [], 'traducciones que no traducen:\n   ' + malas.join('\n   '))
+  assert.deepEqual(
+    huerfanas,
+    [],
+    'claves que G1 pide y el diccionario no tiene (se pintan en español\n' +
+      '   en los once idiomas). Si alguna es un nombre propio, va a\n' +
+      '   `lib/i18n/invariables.ts`; si no, le falta la fila:\n   · ' +
+      huerfanas.join('\n   · '),
+  )
   console.log(
     '       ' + conTraduccion + ' de ' + usadas.size + ' claves con traducción, comprobadas en ruso y árabe'
   )

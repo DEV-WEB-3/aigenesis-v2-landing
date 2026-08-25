@@ -5621,6 +5621,39 @@ export const DICCIONARIO: Record<string, Fila> = {
      respuesta en los once idiomas: quien lee en diagonal tiene que tropezarse
      con ella. Igual que «esa es la prueba real, no una captura de pantalla».
      ══════════════════════════════════════════════════════════════════ */
+  /*
+   * EL ESLOGAN DE LA ALIANZA — traducido, y es una decisión, no un descuido.
+   *
+   * Era la única clave que G1 pedía sin fila en el diccionario: se pintaba en
+   * español en los once idiomas, dentro de una página que ya está entera
+   * traducida. A un lector en ruso eso no se le lee como identidad, se le lee
+   * como un hueco.
+   *
+   * El criterio de `invariables.ts` decide el caso: entran nombres y marcas
+   * («G-Pulse», «BEP-20»), y NO entra «nada que un lector interprete como una
+   * frase». Esto son dos oraciones que describen algo — tres organizaciones,
+   * un ecosistema— así que se traduce.
+   *
+   * Se conserva la forma: dos frases cortas separadas por punto, sin conjunción.
+   * Ese ritmo es lo que hace que funcione como eslogan, y una versión que lo
+   * convierta en «Tres fuerzas y un ecosistema» pierde el contraste.
+   *
+   * REVERSIBLE EN UN PASO: si el owner prefiere el eslogan en español en todo el
+   * mundo —como una marca—, se borra esta fila y se añade la cadena a
+   * `INVARIABLES`. La guarda deja de pedirla y deja de avisar.
+   */
+  'Tres fuerzas. Un ecosistema.': {
+    en: 'Three forces. One ecosystem.',
+    pt: 'Três forças. Um ecossistema.',
+    fr: 'Trois forces. Un écosystème.',
+    ru: 'Три силы. Одна экосистема.',
+    sv: 'Tre krafter. Ett ekosystem.',
+    hr: 'Tri sile. Jedan ekosustav.',
+    ar: 'ثلاث قوى. نظام بيئي واحد.',
+    de: 'Drei Kräfte. Ein Ökosystem.',
+    sr: 'Три силе. Један екосистем.',
+    ur: 'تین قوتیں۔ ایک ایکو سسٹم۔',
+  },
   '¿Cuál es el contrato oficial del AiG Token?': {
     en: 'What is the official AiG Token contract?',
     pt: 'Qual é o contrato oficial do AiG Token?',
