@@ -85,6 +85,10 @@ export default function FichaEdicion({
      por el mismo camino que las preguntas del asistente. */
   const c = useCorpus()
   const [reproduciendo, setReproduciendo] = useState(false)
+  /* El motivo por el que el navegador se negó a reproducir, si se negó. Se
+     guarda para ENSEÑARLO: un reproductor que falla en silencio es
+     indistinguible de un archivo que no está. */
+  const [falloAlReproducir, setFalloAlReproducir] = useState<string | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   /*
@@ -118,6 +122,7 @@ export default function FichaEdicion({
      mientras el botón dice otra cosa: un fallo silencioso, de los peores. */
   useEffect(() => {
     setReproduciendo(false)
+    setFalloAlReproducir(null)
     videoRef.current?.pause()
     onVoz?.callar()
   }, [idioma, edicion.id, onVoz])
@@ -163,6 +168,34 @@ export default function FichaEdicion({
             }}
             onPause={() => onVoz?.callar()}
             onEnded={() => onVoz?.callar()}
+            /*
+             * `play()` no cubre todos los fallos. Los de RED y DECODIFICACIÓN
+             * llegan después, cuando el elemento ya empezó a cargar, y no
+             * rechazan la promesa: sólo disparan `error` en el elemento. Sin
+             * esto, un archivo que se corta a medio descargar deja la misma
+             * pantalla muda de antes. Se cuenta lo que el navegador dice.
+             */
+            onError={() => {
+              /*
+               * LOS NOMBRES DE LA ESPECIFICACIÓN, no una descripción mía.
+               *
+               * Primero puse «error de red», «no se pudo decodificar»… que es
+               * prosa española disfrazada de nombre técnico: ni se traduce (mala
+               * interfaz) ni se puede buscar (mal diagnóstico). Éstos son los
+               * nombres que define HTMLMediaElement.error, los mismos que salen
+               * en la consola y en cualquier búsqueda.
+               */
+              const codigo = videoRef.current?.error?.code
+              const nombres: Record<number, string> = {
+                1: 'MEDIA_ERR_ABORTED',
+                2: 'MEDIA_ERR_NETWORK',
+                3: 'MEDIA_ERR_DECODE',
+                4: 'MEDIA_ERR_SRC_NOT_SUPPORTED',
+              }
+              setReproduciendo(false)
+              onVoz?.callar()
+              setFalloAlReproducir(codigo ? nombres[codigo] ?? `MEDIA_ERR_${codigo}` : 'MEDIA_ERR')
+            }}
             className="block aspect-video w-full bg-genesis-void"
           />
         ) : (
@@ -185,9 +218,31 @@ export default function FichaEdicion({
         {src && !reproduciendo ? (
           <button
             type="button"
+            /*
+             * SI `play()` FALLA, TIENE QUE VERSE.
+             *
+             * Aquí ponía `void videoRef.current?.play()`. `play()` devuelve una
+             * promesa que RECHAZA en varios casos reales —política de
+             * reproducción del navegador, un formato que no puede decodificar,
+             * la red— y `void` la tiraba. El resultado en pantalla: se pulsa, el
+             * botón desaparece porque `reproduciendo` ya es `true`, y no pasa
+             * nada más. Ni error, ni botón, ni forma de volver a intentarlo.
+             *
+             * Es el peor tipo de fallo que puede tener un reproductor: idéntico
+             * a que el archivo no exista, y sin ninguna pista de cuál de los dos
+             * es. Ahora el botón vuelve y el motivo se enseña.
+             */
             onClick={() => {
+              setFalloAlReproducir(null)
               setReproduciendo(true)
-              void videoRef.current?.play()
+              const p = videoRef.current?.play()
+              if (p) {
+                p.catch((e: unknown) => {
+                  setReproduciendo(false)
+                  const err = e as { name?: string; message?: string }
+                  setFalloAlReproducir(err?.name || err?.message || 'error desconocido')
+                })
+              }
             }}
             aria-label={t('Reproducir')}
             className="absolute inset-0 grid place-items-center bg-genesis-void/30 transition-colors hover:bg-genesis-void/10"
@@ -198,6 +253,19 @@ export default function FichaEdicion({
               </svg>
             </span>
           </button>
+        ) : null}
+
+        {/* El motivo, encima del reproductor y no en un rincón: quien acaba de
+            pulsar sin resultado está mirando aquí. El texto explicativo se
+            traduce; el nombre técnico del fallo NO, porque es lo que sirve para
+            reportarlo y traducirlo lo volvería imposible de buscar. */}
+        {falloAlReproducir ? (
+          <p
+            role="status"
+            className="absolute inset-x-0 bottom-0 bg-genesis-void/85 px-3 py-2 text-center text-[11px] text-genesis-mist"
+          >
+            {t('El navegador no pudo reproducirlo')} — <span className="font-mono">{falloAlReproducir}</span>
+          </p>
         ) : null}
       </div>
 

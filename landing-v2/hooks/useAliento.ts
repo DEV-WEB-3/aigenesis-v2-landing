@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 /**
  * EL ALIENTO DE LA CONSOLA — un solo latido para todo el asistente.
@@ -217,5 +217,27 @@ export function useAliento(activo: boolean): Aliento {
     }
   }, [activo])
 
-  return { modo, escuchar, callar }
+  /*
+   * EL OBJETO TIENE QUE SER ESTABLE, NO SÓLO SUS FUNCIONES.
+   *
+   * Aquí ponía `return { modo, escuchar, callar }`. Las tres funciones son
+   * `useCallback` y no cambian nunca — pero el OBJETO que las envuelve se creaba
+   * nuevo en cada render. Quien lo recibe como prop ve una identidad distinta
+   * cada vez.
+   *
+   * Y `FichaEdicion` lo tiene en las dependencias del efecto que PAUSA el video:
+   *
+   *     useEffect(() => { setReproduciendo(false); videoRef.current?.pause() },
+   *               [idioma, edicion.id, onVoz])
+   *
+   * Ese efecto está para que cambiar de idioma rearme el reproductor. Con un
+   * `onVoz` que cambia de identidad sola, se dispara además cada vez que el
+   * asistente vuelve a pintarse por cualquier motivo —y tiene dieciséis estados—
+   * pausando un video que la persona está viendo. El síntoma no dice «pausa»:
+   * dice «no se reproduce», porque quien lo mira ve que se detiene solo.
+   *
+   * `useMemo` sobre funciones ya estables no ahorra trabajo: preserva IDENTIDAD,
+   * que es lo que consultan las dependencias.
+   */
+  return useMemo(() => ({ modo, escuchar, callar }), [modo, escuchar, callar])
 }

@@ -526,6 +526,58 @@ comprobar('el asistente sigue usando esta ficha, y por sus dos caminos', () => {
   assert.match(f, /coleccion === COLECCION_AULA/, 'la lista ya no distingue la colección del Aula')
 })
 
+comprobar('el texto de las ediciones existe en el diccionario', () => {
+  /*
+   * EL FALLO QUE ESTO ATRAPA, reportado por el owner el 25-ago-2026: «el idioma
+   * no cambia en los títulos de los videos».
+   *
+   * El cableado estaba BIEN — `FichaEdicion` pasa el título por `c()`. Lo que
+   * faltaba era la fila: sin clave en el diccionario, `c()` devuelve el español
+   * y lo declara como español. No falla nada, no avisa nada, y la ficha entera
+   * cambia de idioma menos su titular.
+   *
+   * Y era invisible por partida doble: `verify:i18n:g1` sólo miraba
+   * `components/g1` y `app/g1`, y su regla es «¿llama a t()?», que aquí no
+   * aplica porque estos textos se traducen por diccionario en el render. La
+   * guarda no falló: miraba otro sitio con otra regla.
+   *
+   * Aquí la regla correcta es la de pertenencia: ¿está el texto en el
+   * diccionario? Se comprueban título, resumen y rótulo de versión de cada
+   * edición — todo lo de `ediciones.ts` que acaba en pantalla.
+   */
+  /* Las claves se leen en sus TRES sintaxis. Una clave que sea identificador
+     válido va sin comillas (`Legal: {`), y buscar `'clave':` no la ve — eso me
+     produjo un falso positivo el mismo día que escribí esto. */
+  const fuente =
+    readFileSync(resolve(raiz, 'lib/i18n/diccionario.ts'), 'utf8') +
+    readFileSync(resolve(raiz, 'lib/i18n/diccionario-whitepaper.ts'), 'utf8')
+  const CLAVES = new Set()
+  for (const m of fuente.matchAll(/^\s{2}'((?:[^'\\]|\\.)+)':\s*\{/gm)) CLAVES.add(m[1])
+  for (const m of fuente.matchAll(/^\s{2}"((?:[^"\\]|\\.)+)":\s*\{/gm)) CLAVES.add(m[1])
+  for (const m of fuente.matchAll(/^\s{2}([A-Za-zÀ-ÿ_$][\w$À-ÿ]*):\s*\{/gm)) CLAVES.add(m[1])
+  const enDicc = (s) => CLAVES.has(s)
+  assert.ok(enDicc('Ecosistema'), 'control: no se leen las claves sin comillas')
+
+  const faltan = []
+  for (const ed of E.EDICIONES) {
+    for (const campo of ['titulo', 'resumen', 'version']) {
+      const txt = ed[campo]
+      if (typeof txt === 'string' && txt && !enDicc(txt)) {
+        faltan.push(`${ed.id} · ${campo}: «${txt.slice(0, 56)}»`)
+      }
+    }
+  }
+  assert.deepEqual(
+    faltan,
+    [],
+    'texto de ediciones.ts que se pintará en español en los once idiomas:\n   · ' +
+      faltan.join('\n   · '),
+  )
+  /* Control de instrumento: si la búsqueda no distingue, todo pasaría. */
+  assert.ok(!enDicc('esto-no-existe-en-el-diccionario'), 'control: la búsqueda da positivo en todo')
+  assert.ok(enDicc(E.EDICIONES[0].titulo), 'control: no encuentra un título que SÍ está')
+})
+
 console.log('')
 if (fallos.length) {
   console.error(`aula: ${fallos.length} comprobación(es) fallaron`)

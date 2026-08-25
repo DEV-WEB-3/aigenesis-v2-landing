@@ -5654,6 +5654,124 @@ export const DICCIONARIO: Record<string, Fila> = {
     sr: 'Три силе. Један екосистем.',
     ur: 'تین قوتیں۔ ایک ایکو سسٹم۔',
   },
+  /* ══════════════════════════════════════════════════════════════════
+     EL AULA · TÍTULOS, RESÚMENES Y RÓTULOS DE EDICIÓN
+
+     Reportado por el owner: «el idioma no cambia en los títulos de los videos».
+     Cierto. La ficha SÍ los pasa por `c()` —el cableado estaba bien— pero
+     ninguno era clave del diccionario, así que caían al español en los once
+     idiomas. Un fallo que no rompe nada y que sólo se ve mirando la pantalla en
+     otro alfabeto.
+
+     Y era estructuralmente invisible: `verify:i18n:g1` recorre `components/g1` y
+     `app/g1`. El Aula vive en `lib/soporte` y `components/soporte`, fuera de su
+     ámbito. La guarda no falló — nunca miró ahí.
+
+     DOS COSAS QUE NO SE TRADUCEN DENTRO DE ESTOS TEXTOS:
+     · «TAG Markets» y «AiGenesis» son nombres. Van igual en los once.
+     · «v5.0» es el rótulo de una versión de material publicado: identifica QUÉ
+       documento es. Traducirlo lo desconecta de la portada del PDF.
+     ══════════════════════════════════════════════════════════════════ */
+  /* Los rótulos de PROCEDENCIA de cada respuesta. Se pintaban en español junto a
+     un «Fuente:» ya traducido: media línea en cada idioma, que se lee como un
+     fallo de datos y no como una traducción que falta. */
+  'El navegador no pudo reproducirlo': {
+    en: 'The browser could not play it',
+    pt: 'O navegador não conseguiu reproduzir',
+    fr: 'Le navigateur n’a pas pu le lire',
+    ru: 'Браузер не смог воспроизвести',
+    sv: 'Webbläsaren kunde inte spela upp det',
+    hr: 'Preglednik ga nije mogao reproducirati',
+    ar: 'تعذّر على المتصفح تشغيله',
+    de: 'Der Browser konnte es nicht abspielen',
+    sr: 'Прегледач није могао да га репродукује',
+    ur: 'براؤزر اسے چلا نہیں سکا',
+  },
+  'la web oficial': {
+    en: 'the official site', pt: 'o site oficial', fr: 'le site officiel',
+    ru: 'официальный сайт', sv: 'den officiella webbplatsen', hr: 'službena stranica',
+    ar: 'الموقع الرسمي', de: 'die offizielle Website', sr: 'званични сајт',
+    ur: 'سرکاری ویب سائٹ',
+  },
+  'el equipo': {
+    en: 'the team', pt: 'a equipe', fr: 'l’équipe', ru: 'команда', sv: 'teamet',
+    hr: 'tim', ar: 'الفريق', de: 'das Team', sr: 'тим', ur: 'ٹیم',
+  },
+  'el código del producto': {
+    en: 'the product’s code', pt: 'o código do produto', fr: 'le code du produit',
+    ru: 'код продукта', sv: 'produktens kod', hr: 'kod proizvoda',
+    ar: 'شيفرة المنتج', de: 'der Code des Produkts', sr: 'код производа',
+    ur: 'پروڈکٹ کا کوڈ',
+  },
+  'el producto en vivo': {
+    en: 'the live product', pt: 'o produto ao vivo', fr: 'le produit en direct',
+    ru: 'работающий продукт', sv: 'produkten i drift', hr: 'proizvod uživo',
+    ar: 'المنتج الحيّ', de: 'das laufende Produkt', sr: 'производ уживо',
+    ur: 'لائیو پروڈکٹ',
+  },
+  'pendiente de confirmar con el equipo': {
+    en: 'pending confirmation with the team',
+    pt: 'pendente de confirmação com a equipe',
+    fr: 'en attente de confirmation avec l’équipe',
+    ru: 'ожидает подтверждения командой',
+    sv: 'väntar på bekräftelse från teamet',
+    hr: 'čeka potvrdu tima',
+    ar: 'بانتظار التأكيد من الفريق',
+    de: 'wartet auf Bestätigung durch das Team',
+    sr: 'чека потврду тима',
+    ur: 'ٹیم سے تصدیق باقی ہے',
+  },
+  'Cómo vincular tu cuenta de TAG Markets desde Génesis': {
+    en: 'How to link your TAG Markets account from Génesis',
+    pt: 'Como vincular sua conta TAG Markets a partir da Génesis',
+    fr: 'Comment lier ton compte TAG Markets depuis Génesis',
+    ru: 'Как привязать счёт TAG Markets из Génesis',
+    sv: 'Så länkar du ditt TAG Markets-konto från Génesis',
+    hr: 'Kako povezati svoj TAG Markets račun iz Génesisa',
+    ar: 'كيف تربط حسابك في TAG Markets من Génesis',
+    de: 'So verknüpfst du dein TAG-Markets-Konto von Génesis aus',
+    sr: 'Како повезати свој TAG Markets налог из Génesis-а',
+    ur: 'Génesis سے اپنا TAG Markets اکاؤنٹ کیسے منسلک کریں',
+  },
+  'Desde tu panel de AiGenesis: vincular la cuenta, verificar la identidad y activar el acceso.': {
+    en: 'From your AiGenesis panel: link the account, verify your identity and activate access.',
+    pt: 'Do seu painel AiGenesis: vincular a conta, verificar a identidade e ativar o acesso.',
+    fr: 'Depuis ton panneau AiGenesis : lier le compte, vérifier l’identité et activer l’accès.',
+    ru: 'Из панели AiGenesis: привязать счёт, подтвердить личность и активировать доступ.',
+    sv: 'Från din AiGenesis-panel: länka kontot, verifiera identiteten och aktivera åtkomsten.',
+    hr: 'Iz svoje AiGenesis ploče: povezati račun, provjeriti identitet i aktivirati pristup.',
+    ar: 'من لوحة AiGenesis: ربط الحساب، والتحقّق من الهوية، وتفعيل الوصول.',
+    de: 'Aus deinem AiGenesis-Panel: Konto verknüpfen, Identität prüfen und Zugang aktivieren.',
+    sr: 'Из своје AiGenesis табле: повезати налог, проверити идентитет и активирати приступ.',
+    ur: 'اپنے AiGenesis پینل سے: اکاؤنٹ منسلک کریں، شناخت کی تصدیق کریں اور رسائی فعال کریں۔',
+  },
+  'El plan de negocio': {
+    en: 'The business plan', pt: 'O plano de negócio', fr: 'Le plan d’affaires',
+    ru: 'Бизнес-план', sv: 'Affärsplanen', hr: 'Poslovni plan',
+    ar: 'خطة العمل', de: 'Der Geschäftsplan', sr: 'Пословни план', ur: 'کاروباری منصوبہ',
+  },
+  'La presentación completa, para mostrársela a alguien.': {
+    en: 'The full presentation, to show someone.',
+    pt: 'A apresentação completa, para mostrar a alguém.',
+    fr: 'La présentation complète, à montrer à quelqu’un.',
+    ru: 'Полная презентация — чтобы показать кому-то.',
+    sv: 'Hela presentationen, att visa för någon.',
+    hr: 'Cijela prezentacija, da je nekome pokažeš.',
+    ar: 'العرض التقديمي الكامل، لتعرضه على أحد.',
+    de: 'Die vollständige Präsentation, zum Zeigen.',
+    sr: 'Цела презентација, да је некоме покажеш.',
+    ur: 'مکمل پریزنٹیشن، کسی کو دکھانے کے لیے۔',
+  },
+  'Edición 1': {
+    en: 'Edition 1', pt: 'Edição 1', fr: 'Édition 1', ru: 'Выпуск 1', sv: 'Utgåva 1',
+    hr: 'Izdanje 1', ar: 'الإصدار 1', de: 'Ausgabe 1', sr: 'Издање 1', ur: 'ایڈیشن 1',
+  },
+  'Edición 2 · v5.0': {
+    en: 'Edition 2 · v5.0', pt: 'Edição 2 · v5.0', fr: 'Édition 2 · v5.0',
+    ru: 'Выпуск 2 · v5.0', sv: 'Utgåva 2 · v5.0', hr: 'Izdanje 2 · v5.0',
+    ar: 'الإصدار 2 · v5.0', de: 'Ausgabe 2 · v5.0', sr: 'Издање 2 · v5.0',
+    ur: 'ایڈیشن 2 · v5.0',
+  },
   '¿Cuál es el contrato oficial del AiG Token?': {
     en: 'What is the official AiG Token contract?',
     pt: 'Qual é o contrato oficial do AiG Token?',

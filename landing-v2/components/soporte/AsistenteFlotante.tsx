@@ -701,7 +701,11 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                   </h3>
                   {/* La trazabilidad que la referencia no tiene: de dónde sale. */}
                   <p className="mb-3 mt-1 text-[11px] text-genesis-mist">
-                    {t('Fuente')}: <span className="text-genesis-ion">{FUENTES[articulo.fuente]}</span>
+                    {/* El rótulo se traducía y su VALOR no: «Источник: la web
+                        oficial». Media línea en un idioma y media en otro es
+                        peor que dejarla entera en español — parece un fallo de
+                        datos, no una traducción que falta. */}
+                    {t('Fuente')}: <span className="text-genesis-ion">{t(FUENTES[articulo.fuente])}</span>
                   </p>
                   <p lang={corp(articulo.respuesta).lang} className="text-sm leading-relaxed text-genesis-mist">
                     {corp(articulo.respuesta).texto}
