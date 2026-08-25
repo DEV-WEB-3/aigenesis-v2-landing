@@ -161,7 +161,20 @@ export interface Edicion {
 /* ─────────────────────────  las ediciones  ───────────────────────── */
 
 /** Orden de presentación de los idiomas. El español primero porque es el origen. */
-export const ORDEN_IDIOMAS = ['es', 'en', 'pt', 'fr', 'ru', 'sv', 'hr', 'ar'] as const
+/*
+ * ALEMÁN Y SERBIO ENTRARON CON EL PLAN DE LA ALIANZA.
+ *
+ * Los subí en cinco idiomas —es, en, de, pt, sr— y la ficha anunciaba «3
+ * idiomas»: esta lista no los tenía, así que los dos PDF existían en el
+ * servidor y la barra de idiomas no podía ni ofrecerlos. Publicado e
+ * inalcanzable es lo mismo que no publicado, sólo que ocupa disco.
+ *
+ * El orden mezcla los dos catálogos a propósito: el material de AiGenesis vive
+ * en ocho idiomas y el de la alianza en cinco, y no coinciden. Un idioma sin
+ * material se enseña APAGADO en vez de ocultarse, así que ampliar la lista no
+ * miente sobre ninguna edición: enseña el hueco, que es información.
+ */
+export const ORDEN_IDIOMAS = ['es', 'en', 'pt', 'de', 'fr', 'ru', 'sv', 'hr', 'sr', 'ar'] as const
 
 /** El idioma en su propia lengua: es como lo busca quien lo necesita. */
 export const NOMBRE_IDIOMA: Readonly<Record<string, string>> = {
@@ -172,6 +185,8 @@ export const NOMBRE_IDIOMA: Readonly<Record<string, string>> = {
   ru: 'Русский',
   sv: 'Svenska',
   hr: 'Hrvatski',
+  de: 'Deutsch',
+  sr: 'Српски',
   ar: 'العربية',
 }
 
@@ -248,16 +263,29 @@ const PLAN: Edicion = {
       /* Anotado como `ArchivoPrensa` a propósito: `PRESS_V5` es `as const`, así que
          cada entrada tiene su tipo literal y sólo la árabe declara `rtl`. Leerlo
          sin ensanchar da un error de compilación en las otras siete. */
-      const doc: ArchivoPrensa = PRESS_V5[codigo]
+      /*
+       * `PRESS_V5` NO TIENE TODOS LOS IDIOMAS DE LA LISTA, y eso es normal desde
+       * que la lista sirve a dos catálogos distintos: el mazo de AiGenesis
+       * existe en ocho idiomas y el de la alianza en cinco, y no coinciden.
+       *
+       * Aquí se leía `PRESS_V5[codigo].archivo` a pelo. Al añadir alemán y
+       * serbio —que la alianza sí tiene y AiGenesis no— el módulo reventaba
+       * ENTERO al construirse: «Cannot read properties of undefined». No es un
+       * hueco que se pinta mal, es el asistente que no carga.
+       *
+       * Un idioma sin documento devuelve una pieza vacía, que es exactamente lo
+       * que la ficha sabe enseñar: apagado, y visible.
+       */
+      const doc: ArchivoPrensa | undefined = PRESS_V5[codigo as keyof typeof PRESS_V5]
       const v = VIDEO_PLAN[codigo]
       return [
         codigo,
         {
           video: v?.video ?? null,
           segundos: v?.segundos ?? null,
-          pdf: doc.archivo,
-          mb: doc.mb,
-          rtl: doc.rtl,
+          pdf: doc?.archivo,
+          mb: doc?.mb,
+          rtl: doc?.rtl,
         },
       ]
     })

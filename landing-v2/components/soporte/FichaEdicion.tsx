@@ -290,15 +290,38 @@ export default function FichaEdicion({
              arranca. La diferencia entre «no existe» y «está roto» es lo único
              que quien mira necesita saber. */
           <div className="flex aspect-video w-full flex-col items-center justify-center gap-1 px-6 text-center">
+            {/*
+              * «SIN VIDEO» NO ES «SIN NADA», Y DECIRLO IGUAL ES MENTIR.
+              *
+              * Aquí salía siempre «Todavía no hay edición en Español». En el
+              * plan de la alianza —que es un documento, no un video— eso se leía
+              * como que el material no existe en español, teniendo el PDF
+              * español justo debajo. El owner lo reportó tal cual.
+              *
+              * Son dos huecos distintos y la persona necesita distinguirlos:
+              * uno se arregla eligiendo otro idioma, el otro no se arregla
+              * porque no hay nada roto — esa edición simplemente se lee.
+              */}
             <span className="text-xl" aria-hidden>
-              🎬
+              {pieza?.pdf ? '📄' : '🎬'}
             </span>
-            <p className="text-xs text-genesis-mist">
-              {t('Todavía no hay edición en')} {NOMBRE_IDIOMA[idioma] ?? idioma}.
-            </p>
-            <p className="text-[11px] text-genesis-ghost">
-              {t('Elige otro idioma abajo o descarga el documento.')}
-            </p>
+            {pieza?.pdf ? (
+              <>
+                <p className="text-xs text-genesis-mist">{t('Esta edición es un documento, no un video.')}</p>
+                <p className="text-[11px] text-genesis-ghost">
+                  {t('Descárgalo abajo en el idioma que necesites.')}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-xs text-genesis-mist">
+                  {t('Todavía no hay edición en')} {NOMBRE_IDIOMA[idioma] ?? idioma}.
+                </p>
+                <p className="text-[11px] text-genesis-ghost">
+                  {t('Elige otro idioma abajo o descarga el documento.')}
+                </p>
+              </>
+            )}
           </div>
         )}
 

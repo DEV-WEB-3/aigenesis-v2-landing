@@ -5675,6 +5675,30 @@ export const DICCIONARIO: Record<string, Fila> = {
   /* Los rótulos de PROCEDENCIA de cada respuesta. Se pintaban en español junto a
      un «Fuente:» ya traducido: media línea en cada idioma, que se lee como un
      fallo de datos y no como una traducción que falta. */
+  'Esta edición es un documento, no un video.': {
+    en: 'This edition is a document, not a video.',
+    pt: 'Esta edição é um documento, não um vídeo.',
+    fr: 'Cette édition est un document, pas une vidéo.',
+    ru: 'Этот выпуск — документ, а не видео.',
+    sv: 'Den här utgåvan är ett dokument, inte en video.',
+    hr: 'Ovo izdanje je dokument, a ne videozapis.',
+    ar: 'هذا الإصدار مستند، وليس مقطع فيديو.',
+    de: 'Diese Ausgabe ist ein Dokument, kein Video.',
+    sr: 'Ово издање је документ, а не видео.',
+    ur: 'یہ ایڈیشن ایک دستاویز ہے، ویڈیو نہیں۔',
+  },
+  'Descárgalo abajo en el idioma que necesites.': {
+    en: 'Download it below in the language you need.',
+    pt: 'Baixe abaixo no idioma que precisar.',
+    fr: 'Télécharge-le ci-dessous dans la langue dont tu as besoin.',
+    ru: 'Скачай его ниже на нужном тебе языке.',
+    sv: 'Ladda ner det nedan på det språk du behöver.',
+    hr: 'Preuzmi ga ispod na jeziku koji trebaš.',
+    ar: 'نزّله في الأسفل باللغة التي تحتاجها.',
+    de: 'Lade es unten in der Sprache herunter, die du brauchst.',
+    sr: 'Преузми га испод на језику који ти треба.',
+    ur: 'اسے نیچے اپنی مطلوبہ زبان میں ڈاؤن لوڈ کریں۔',
+  },
   'El navegador no pudo reproducirlo': {
     en: 'The browser could not play it',
     pt: 'O navegador não conseguiu reproduzir',

@@ -275,10 +275,26 @@ comprobar('cada video declarado apunta a SU edición y SU idioma', () => {
 
 comprobar('el PDF se deriva de PRESS_V5 y no se copia', () => {
   const { PRESS_V5 } = require_(join(salida, 'official-links.js'))
+  /*
+   * `ORDEN_IDIOMAS` YA NO ES LA LISTA DE ESTA EDICIÓN. Sirve a dos catálogos: el
+   * mazo de AiGenesis existe en ocho idiomas y el de la alianza en cinco, y no
+   * coinciden. Recorrerla entera aquí daba «Cannot read properties of undefined»
+   * — el mismo fallo que tumbaba el módulo antes de arreglarlo.
+   *
+   * Se comprueban las dos direcciones, que juntas son la afirmación completa:
+   * lo que PRESS_V5 tiene se copia exacto, y lo que NO tiene no se inventa.
+   */
   for (const l of E.ORDEN_IDIOMAS) {
-    assert.equal(plan.piezas[l].pdf, PRESS_V5[l].archivo, `el PDF de ${l} no coincide con la fuente única`)
-    assert.equal(plan.piezas[l].mb, PRESS_V5[l].mb, `el peso de ${l} no coincide con la fuente única`)
+    const doc = PRESS_V5[l]
+    if (doc) {
+      assert.equal(plan.piezas[l].pdf, doc.archivo, `el PDF de ${l} no coincide con la fuente única`)
+      assert.equal(plan.piezas[l].mb, doc.mb, `el peso de ${l} no coincide con la fuente única`)
+    } else {
+      assert.equal(plan.piezas[l].pdf, undefined, `${l} no está en PRESS_V5 y aun así declara un PDF`)
+    }
   }
+  assert.ok(Object.keys(PRESS_V5).length < E.ORDEN_IDIOMAS.length,
+    'control: si PRESS_V5 pasa a tener todos los idiomas, la rama de arriba deja de probarse')
 })
 
 comprobar('duracionLegible no fabrica un 0:00 cuando no hay duración', () => {
@@ -398,7 +414,11 @@ comprobar('un idioma con documento pero SIN video sigue entregando algo', () => 
        la videoteca apagada estas cuatro se ven igual que las tres que sí tienen
        video, y la prueba no probaría nada. */
     const html = pintarOn('edicion-plan-de-negocio', l)
-    assert.match(html, /Todavía no hay edición en/, `${l}: no avisa de que falta el video`)
+    /* El texto cambió a propósito: una edición CON documento y sin video ya no
+       dice «no hay edición en tu idioma» —que era falso teniendo el PDF ahí
+       mismo— sino que es un documento. Se comprueba el mensaje que toca. */
+    assert.match(html, /Esta edición es un documento/, `${l}: no explica que el material es un documento`)
+    assert.doesNotMatch(html, /Todavía no hay edición en/, `${l}: dice que no hay material teniendo el PDF`)
     assert.match(html, /_v5\.0_/, `${l}: perdió el enlace de descarga por no tener video`)
     assert.doesNotMatch(html, /<video/, `${l}: pintó un reproductor sin archivo`)
   }
@@ -719,6 +739,39 @@ comprobar('el analizador de audio no puede congelar el video', () => {
   const iFuente = codigo.indexOf('createMediaElementSource')
   assert.ok(iGuarda !== -1 && iFuente !== -1, 'control: cambió la forma, rehacer esta comprobación')
   assert.ok(iGuarda < iFuente, 'la guarda quedó DESPUÉS de crear la fuente: no protege nada')
+})
+
+comprobar('la etiqueta de la lista no promete un video que no existe', () => {
+  /*
+   * EL FALLO: la lista mostraba «Video» junto a «El plan de negocio de la
+   * alianza», que es un PDF y no tiene ni un archivo de video en ningún idioma.
+   * Quien pulsa esperando un video encuentra un documento — la etiqueta le
+   * prometió otra cosa antes de entrar.
+   *
+   * Venía de que `MarcaVideo` sólo recibía `segundos` y, sin duración, caía a la
+   * palabra «Video» como relleno. Un valor por defecto que AFIRMA algo es peor
+   * que no poner nada: parece un dato.
+   *
+   * Ahora recibe la EDICIÓN y decide mirando si existe algún video. Se exige que
+   * siga siendo así, porque volver a pasarle sólo la duración devolvería el
+   * fallo sin romper nada.
+   */
+  const f = readFileSync(resolve(raiz, 'components/soporte/AsistenteFlotante.tsx'), 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+  assert.doesNotMatch(
+    f,
+    /<MarcaVideo\s+segundos=/,
+    'la etiqueta vuelve a recibir sólo la duración: dirá «Video» en una edición sin videos',
+  )
+  assert.match(f, /<MarcaVideo\s+edicion=/, 'la etiqueta no recibe la edición y no puede saber qué es')
+  assert.match(f, /hayAlgunVideo \? \(d \?\? 'Video'\) : 'PDF'/, 'la etiqueta ya no distingue video de documento')
+
+  /* Y el dato de fondo: que exista al menos una edición de cada clase. Sin eso
+     esta comprobación pasaría por no tener nada que distinguir. */
+  const conVideo = E.EDICIONES.filter((ed) => Object.values(ed.piezas).some((p) => p?.video))
+  const soloDoc = E.EDICIONES.filter((ed) => !Object.values(ed.piezas).some((p) => p?.video))
+  assert.ok(conVideo.length > 0, 'control: ninguna edición tiene video, esto no prueba nada')
+  assert.ok(soloDoc.length > 0, 'control: ninguna edición es sólo documento, esto no prueba nada')
 })
 
 comprobar('NINGÚN camino pinta el título de una edición sin traducir', () => {

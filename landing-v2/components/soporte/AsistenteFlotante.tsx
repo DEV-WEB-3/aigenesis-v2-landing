@@ -118,17 +118,36 @@ const PESTANA_DE: Record<Vista, 'inicio' | 'mensajes' | 'ayuda'> = {
  * relleno mentiría sobre algo que la persona usa para decidir si tiene tiempo
  * ahora; ausente es la verdad y no cuesta nada leerla.
  */
-function MarcaVideo({ segundos }: { segundos: number | null }) {
-  const d = duracionLegible(segundos)
+function MarcaVideo({ edicion, idioma }: { edicion: Edicion; idioma: string }) {
+  /*
+   * LA ETIQUETA DICE QUÉ ES, NO SUPONE QUE ES UN VIDEO.
+   *
+   * Aquí sólo entraba `segundos`, y sin duración se pintaba la palabra «Video».
+   * Con el plan de la alianza —que es un PDF y no tiene ni un archivo de video—
+   * la lista anunciaba «Video» junto al título. El owner pulsó esperando uno y
+   * encontró un documento: la etiqueta le había prometido otra cosa.
+   *
+   * Ahora se mira la EDICIÓN, no una pieza suelta: si no hay ningún video en
+   * ningún idioma, esto es material escrito y se dice.
+   */
+  const pieza = edicion.piezas[idioma]
+  const hayAlgunVideo = Object.values(edicion.piezas).some((p) => p?.video)
+  const d = duracionLegible(pieza?.segundos ?? null)
   /* En cian, no en el ámbar de G1: este asistente también vive en superficies
      Génesis, y el ámbar pertenece a G1. El cian es «detalle» en el sistema de
      tokens, que es exactamente el papel de esta marca. */
   return (
     <span className="inline-flex flex-none items-center gap-1 rounded border border-genesis-cyan/40 px-1.5 py-px text-[10px] uppercase tracking-wider text-genesis-cyan">
-      <svg viewBox="0 0 24 24" fill="currentColor" className="h-2 w-2" aria-hidden>
-        <path d="M8 5v14l11-7z" />
-      </svg>
-      {d ?? 'Video'}
+      {hayAlgunVideo ? (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="h-2 w-2" aria-hidden>
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="h-2 w-2" aria-hidden>
+          <path d="M6 2h7l5 5v15H6V2zm7 1.5V8h4.5L13 3.5z" />
+        </svg>
+      )}
+      {hayAlgunVideo ? (d ?? 'Video') : 'PDF'}
     </span>
   )
 }
@@ -477,7 +496,7 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                       className="flex w-full items-center gap-2.5 rounded-xl surface-card px-4 py-3 text-left transition-colors hover:border-genesis-ion"
                      
                     >
-                      <MarcaVideo segundos={e.piezas[idiomaInicial(e, idiomaUI)]?.segundos ?? null} />
+                      <MarcaVideo edicion={e} idioma={idiomaInicial(e, idiomaUI)} />
                       <span lang={corp(e.titulo).lang} className="min-w-0 text-[13px] text-genesis-text">{corp(e.titulo).texto}</span>
                       <span className="ml-auto text-genesis-ion">›</span>
                     </button>
@@ -629,7 +648,7 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                         onClick={() => abrirEdicion(e)}
                         className="flex w-full items-center gap-2.5 rounded-xl surface-card px-4 py-3 text-left transition-colors hover:border-genesis-ion"
                       >
-                        <MarcaVideo segundos={e.piezas[idiomaInicial(e, idiomaUI)]?.segundos ?? null} />
+                        <MarcaVideo edicion={e} idioma={idiomaInicial(e, idiomaUI)} />
                         <span className="min-w-0">
                           <span lang={corp(e.titulo).lang} className="block text-[13px] text-genesis-text">{corp(e.titulo).texto}</span>
                           <span lang={corp(e.resumen).lang} className="text-xs text-genesis-mist">{corp(e.resumen).texto}</span>
