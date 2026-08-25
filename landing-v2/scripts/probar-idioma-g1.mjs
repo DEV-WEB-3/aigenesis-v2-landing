@@ -190,6 +190,39 @@ comprobar('todas las claves de G1 traducen de verdad, no son copias', () => {
   )
 })
 
+comprobar('ninguna traducción tiene caracteres de un alfabeto ajeno', () => {
+  /*
+   * EL FALLO QUE ESTO ATRAPA, Y ME PASÓ.
+   *
+   * Escribiendo la respuesta rusa de «¿cuánto AIG me van a cobrar?» se me coló
+   * un ideograma chino en medio de una frase cirílica: «от单 итога». Compilaba,
+   * el diccionario estaba completo, las once casillas llenas, y ninguna
+   * comprobación lo veía. Sólo lo habría notado alguien que lee ruso.
+   *
+   * La forma de detectarlo sin saber los once idiomas es preguntar por el
+   * alfabeto: una frase en ruso no puede llevar un ideograma CJK, ni una en
+   * árabe puede llevar cirílico. Se comprueban los bloques que NO deberían
+   * aparecer nunca en ninguna de las once lenguas del diccionario.
+   */
+  const D = require_(join(salida, 'diccionario.js'))
+  const tabla = Object.assign({}, ...Object.values(D).filter((v) => v && typeof v === 'object'))
+  /* CJK, hangul, hiragana y katakana: ninguno de los once idiomas los usa. */
+  const AJENO = /[぀-ヿ㐀-䶿一-鿿가-힯]/
+  const sucias = []
+  for (const [clave, fila] of Object.entries(tabla)) {
+    if (!fila || typeof fila !== 'object') continue
+    for (const [idioma, texto] of Object.entries(fila)) {
+      if (typeof texto !== 'string') continue
+      const m = texto.match(AJENO)
+      if (m) sucias.push(`${idioma} «${m[0]}» en: ${clave.slice(0, 40)}`)
+    }
+  }
+  assert.deepEqual(sucias, [], 'caracteres de otro alfabeto:\n   ' + sucias.join('\n   '))
+  /* Control de instrumento: el detector tiene que morder de verdad. */
+  assert.match('от单 итога', AJENO, 'control: el detector de alfabetos ajenos no muerde')
+  assert.doesNotMatch('от общей суммы', AJENO, 'control: el detector marca el ruso legítimo')
+})
+
 console.log('')
 if (fallos.length) {
   console.error('idioma: ' + fallos.length + ' comprobación(es) fallaron')

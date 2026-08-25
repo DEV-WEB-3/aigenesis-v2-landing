@@ -3715,6 +3715,397 @@ export const DICCIONARIO: Record<string, Fila> = {
       ur: 'آپ کا پیسہ چار مختلف جگہوں پر ہو سکتا ہے، اور انہیں گڈمڈ کرنا «نہیں ملتا» کی سب سے عام وجہ ہے: ۱) آپ کا on-chain والٹ (جو آپ MetaMask سے چلاتے ہیں)؛ ۲) نظام کا اندرونی کریڈٹ؛ ۳) مارکیٹ پلیس لیکویڈیٹی (جو آپ نے P2P پر رکھی اور ابھی نکالی نہیں)؛ اور ۴) کلیم کے منتظر انعامات کا بیلنس۔ ہر ایک پینل میں الگ دکھتا ہے۔ اگر آپ نے لیکویڈیٹی رکھی تو وہ بیلنس والٹ سے نکل جاتا ہے جب تک آپ اسے واپس نہ لیں — یہ غائب نہیں ہوا، جگہ بدل گئی۔',
     },
 
+  /* ══════════════════════════════════════════════════════════════════
+     CORPUS · P2P (1 de 2)
+
+     Camino de dinero real: aquí alguien firma con MetaMask y mueve fondos. Dos
+     cosas se cuidaron por encima del resto:
+
+       · «NUNCA REPITAS EL DEPÓSITO» es la línea que evita perder dinero dos
+         veces. Traducida como una sugerencia deja de servir; va como lo que es,
+         una instrucción.
+       · Los 23,50 USD del valor interno del AIG se copian tal cual, y con su
+         contexto entero: NO es un precio de mercado y AIG no cotiza en ningún
+         exchange público. Recortar esa segunda mitad convertiría un dato en una
+         promesa.
+     ══════════════════════════════════════════════════════════════════ */
+  '¿Cómo funciona el P2P?': {
+    en: 'How does the P2P work?', pt: 'Como funciona o P2P?',
+    fr: 'Comment fonctionne le P2P ?', ru: 'Как работает P2P?',
+    sv: 'Hur fungerar P2P?', hr: 'Kako funkcionira P2P?',
+    ar: 'كيف يعمل الـ P2P؟', de: 'Wie funktioniert das P2P?',
+    sr: 'Како функционише P2P?', ur: 'P2P کیسے کام کرتا ہے؟',
+  },
+  'Es un tablón de comerciantes: cada fila es alguien que ya depositó liquidez, con su país, su rango de operación y cuántas transacciones lleva hechas. Filtras por país, moneda e importe, eliges la fila que te encaje y pulsas «Tomar». La operación se firma con MetaMask.':
+    {
+      en: 'It is a board of merchants: each row is someone who has already deposited liquidity, with their country, their operating range and how many transactions they have completed. You filter by country, currency and amount, pick the row that suits you and press “Take”. The operation is signed with MetaMask.',
+      pt: 'É um mural de comerciantes: cada linha é alguém que já depositou liquidez, com seu país, sua faixa de operação e quantas transações já fez. Você filtra por país, moeda e valor, escolhe a linha que lhe encaixa e clica em «Tomar». A operação é assinada com a MetaMask.',
+      fr: 'C’est un tableau de commerçants : chaque ligne est quelqu’un qui a déjà déposé de la liquidité, avec son pays, sa fourchette d’opération et le nombre de transactions réalisées. Tu filtres par pays, devise et montant, tu choisis la ligne qui te convient et tu appuies sur « Prendre ». L’opération se signe avec MetaMask.',
+      ru: 'Это доска торговцев: каждая строка — тот, кто уже внёс ликвидность, с его страной, диапазоном операций и количеством совершённых сделок. Ты фильтруешь по стране, валюте и сумме, выбираешь подходящую строку и жмёшь «Взять». Операция подписывается через MetaMask.',
+      sv: 'Det är en anslagstavla med handlare: varje rad är någon som redan lagt in likviditet, med land, handelsintervall och antal genomförda transaktioner. Du filtrerar på land, valuta och belopp, väljer den rad som passar och trycker ”Ta”. Transaktionen signeras med MetaMask.',
+      hr: 'To je ploča trgovaca: svaki redak je netko tko je već položio likvidnost, sa svojom zemljom, rasponom poslovanja i brojem obavljenih transakcija. Filtriraš po zemlji, valuti i iznosu, odabereš redak koji ti odgovara i pritisneš «Uzmi». Transakcija se potpisuje MetaMaskom.',
+      ar: 'إنها لوحة تجّار: كل صف هو شخص أودع سيولة بالفعل، مع بلده ونطاق تعاملاته وعدد المعاملات التي أنجزها. تُرشّح حسب البلد والعملة والمبلغ، تختار الصف المناسب وتضغط «أخذ». تُوقَّع العملية عبر MetaMask.',
+      de: 'Es ist ein Brett von Händlern: Jede Zeile ist jemand, der bereits Liquidität hinterlegt hat — mit Land, Handelsspanne und Anzahl abgeschlossener Transaktionen. Du filterst nach Land, Währung und Betrag, wählst die passende Zeile und drückst „Nehmen“. Der Vorgang wird mit MetaMask signiert.',
+      sr: 'То је табла трговаца: сваки ред је неко ко је већ положио ликвидност, са својом земљом, распоном пословања и бројем обављених трансакција. Филтрираш по земљи, валути и износу, одабереш ред који ти одговара и притиснеш «Узми». Трансакција се потписује MetaMask-ом.',
+      ur: 'یہ تاجروں کا بورڈ ہے: ہر قطار کوئی ایسا شخص ہے جس نے پہلے ہی لیکویڈیٹی جمع کی، اُس کے ملک، کاروبار کی حد اور کی گئی ٹرانزیکشنز کی تعداد کے ساتھ۔ آپ ملک، کرنسی اور رقم سے چھانتے ہیں، مناسب قطار چنتے ہیں اور «لیں» دباتے ہیں۔ عمل MetaMask سے دستخط ہوتا ہے۔',
+    },
+  '¿Cuánto vale un AIG?': {
+    en: 'How much is one AIG worth?', pt: 'Quanto vale um AIG?',
+    fr: 'Combien vaut un AIG ?', ru: 'Сколько стоит один AIG?',
+    sv: 'Vad är en AIG värd?', hr: 'Koliko vrijedi jedan AIG?',
+    ar: 'كم يساوي AIG واحد؟', de: 'Wie viel ist ein AIG wert?',
+    sr: 'Колико вреди један AIG?', ur: 'ایک AIG کی قیمت کیا ہے؟',
+  },
+  'AIG tiene un valor interno de referencia dentro del sistema — hoy 23,50 USD — que es el que usan el protocolo y la comunidad para operar entre sí. No es un precio de mercado abierto: AIG no cotiza en ningún exchange público, así que nadie puede prometerte que ese valor se sostenga fuera del ecosistema. En el P2P, cada comerciante publica su oferta alrededor de esa referencia.':
+    {
+      en: 'AIG has an internal reference value inside the system — currently 23.50 USD — which is what the protocol and the community use to operate among themselves. It is not an open-market price: AIG is not listed on any public exchange, so nobody can promise you that this value holds outside the ecosystem. On the P2P, each merchant publishes their offer around that reference.',
+      pt: 'O AIG tem um valor interno de referência dentro do sistema — hoje 23,50 USD — que é o usado pelo protocolo e pela comunidade para operar entre si. Não é um preço de mercado aberto: o AIG não é negociado em nenhuma exchange pública, então ninguém pode lhe prometer que esse valor se sustente fora do ecossistema. No P2P, cada comerciante publica sua oferta em torno dessa referência.',
+      fr: 'L’AIG a une valeur de référence interne au système — aujourd’hui 23,50 USD — utilisée par le protocole et la communauté pour opérer entre eux. Ce n’est pas un prix de marché ouvert : l’AIG n’est coté sur aucune plateforme publique, donc personne ne peut te promettre que cette valeur tienne en dehors de l’écosystème. Sur le P2P, chaque commerçant publie son offre autour de cette référence.',
+      ru: 'У AIG есть внутренняя справочная стоимость в системе — сегодня 23,50 USD — которую протокол и сообщество используют для операций между собой. Это не цена открытого рынка: AIG не торгуется ни на одной публичной бирже, поэтому никто не может обещать, что эта стоимость сохранится за пределами экосистемы. В P2P каждый торговец публикует своё предложение вокруг этого ориентира.',
+      sv: 'AIG har ett internt referensvärde i systemet — i dag 23,50 USD — som protokollet och gemenskapen använder sinsemellan. Det är inget öppet marknadspris: AIG är inte noterad på någon publik börs, så ingen kan lova dig att värdet håller utanför ekosystemet. På P2P publicerar varje handlare sitt erbjudande kring den referensen.',
+      hr: 'AIG ima internu referentnu vrijednost unutar sustava — danas 23,50 USD — koju protokol i zajednica koriste za međusobno poslovanje. To nije cijena otvorenog tržišta: AIG nije uvršten ni na jednoj javnoj burzi, pa ti nitko ne može obećati da će se ta vrijednost održati izvan ekosustava. Na P2P-u svaki trgovac objavljuje svoju ponudu oko te reference.',
+      ar: 'لـ AIG قيمة مرجعية داخلية ضمن النظام — اليوم 23.50 دولارًا — يستخدمها البروتوكول والمجتمع للتعامل فيما بينهم. ليست سعر سوق مفتوح: AIG غير مُدرج في أي منصة عامة، لذا لا يستطيع أحد أن يعدك بأن تصمد هذه القيمة خارج النظام البيئي. في الـ P2P ينشر كل تاجر عرضه حول تلك المرجعية.',
+      de: 'AIG hat einen internen Referenzwert im System — heute 23,50 USD —, den Protokoll und Community nutzen, um untereinander zu handeln. Es ist kein offener Marktpreis: AIG ist an keiner öffentlichen Börse gelistet, also kann dir niemand versprechen, dass dieser Wert außerhalb des Ökosystems hält. Im P2P veröffentlicht jeder Händler sein Angebot rund um diese Referenz.',
+      sr: 'AIG има интерну референтну вредност унутар система — данас 23,50 USD — коју протокол и заједница користе за међусобно пословање. То није цена отвореног тржишта: AIG није уврштен ни на једној јавној берзи, па ти нико не може обећати да ће се та вредност одржати изван екосистема. На P2P-у сваки трговац објављује своју понуду око те референце.',
+      ur: 'AIG کی نظام کے اندر ایک اندرونی حوالہ قیمت ہے — آج 23.50 USD — جسے پروٹوکول اور کمیونٹی آپس میں لین دین کے لیے استعمال کرتے ہیں۔ یہ کھلی منڈی کی قیمت نہیں: AIG کسی عوامی ایکسچینج پر درج نہیں، اس لیے کوئی آپ سے وعدہ نہیں کر سکتا کہ یہ قیمت ایکو سسٹم سے باہر قائم رہے گی۔ P2P پر ہر تاجر اپنی پیشکش اسی حوالے کے گرد شائع کرتا ہے۔',
+    },
+  '¿Cómo publico liquidez para vender en el P2P?': {
+    en: 'How do I publish liquidity to sell on the P2P?',
+    pt: 'Como publico liquidez para vender no P2P?',
+    fr: 'Comment publier de la liquidité pour vendre sur le P2P ?',
+    ru: 'Как выставить ликвидность, чтобы продавать в P2P?',
+    sv: 'Hur publicerar jag likviditet för att sälja på P2P?',
+    hr: 'Kako objaviti likvidnost za prodaju na P2P-u?',
+    ar: 'كيف أنشر سيولة للبيع في الـ P2P؟',
+    de: 'Wie stelle ich Liquidität ein, um im P2P zu verkaufen?',
+    sr: 'Како да објавим ликвидност за продају на P2P-у?',
+    ur: 'P2P پر بیچنے کے لیے لیکویڈیٹی کیسے شائع کروں؟',
+  },
+  'En P2P → Mi Perfil → Liquidez Marketplace → «Depositar liquidez». Pasos: 1) Necesitas sesión activa, MetaMask en red BSC y saldo real de USDT o AIG (esto mueve dinero de verdad). 2) Elige token (solo USDT o AIG) e importe. 3) «Depositar con MetaMask» y firma. 4) Al confirmarse en cadena verás «Depósito registrado» con el hash. A partir de ahí sales publicado en el libro. Si no se refleja en un rato, repórtalo con el hash — nunca repitas el depósito, movería el dinero otra vez.':
+    {
+      en: 'Go to P2P → My Profile → Marketplace Liquidity → “Deposit liquidity”. Steps: 1) You need an active session, MetaMask on the BSC network and real USDT or AIG balance (this moves real money). 2) Choose the token (only USDT or AIG) and the amount. 3) “Deposit with MetaMask” and sign. 4) Once confirmed on chain you will see “Deposit registered” with the hash. From then on you appear in the book. If it does not show up after a while, report it with the hash — never repeat the deposit, it would move the money again.',
+      pt: 'Em P2P → Meu Perfil → Liquidez Marketplace → «Depositar liquidez». Passos: 1) Você precisa de sessão ativa, MetaMask na rede BSC e saldo real de USDT ou AIG (isto move dinheiro de verdade). 2) Escolha o token (apenas USDT ou AIG) e o valor. 3) «Depositar com MetaMask» e assine. 4) Ao confirmar em cadeia verá «Depósito registrado» com o hash. A partir daí você sai publicado no livro. Se não refletir em algum tempo, reporte com o hash — nunca repita o depósito, moveria o dinheiro outra vez.',
+      fr: 'Dans P2P → Mon Profil → Liquidité Marketplace → « Déposer de la liquidité ». Étapes : 1) Il te faut une session active, MetaMask sur le réseau BSC et un solde réel d’USDT ou d’AIG (cela déplace de l’argent réel). 2) Choisis le jeton (uniquement USDT ou AIG) et le montant. 3) « Déposer avec MetaMask » et signe. 4) Une fois confirmé en chaîne, tu verras « Dépôt enregistré » avec le hachage. À partir de là, tu es publié dans le carnet. Si rien ne s’affiche au bout d’un moment, signale-le avec le hachage — ne répète jamais le dépôt, cela déplacerait l’argent une seconde fois.',
+      ru: 'P2P → Мой профиль → Ликвидность маркетплейса → «Внести ликвидность». Шаги: 1) Нужна активная сессия, MetaMask в сети BSC и реальный баланс USDT или AIG (это двигает настоящие деньги). 2) Выбери токен (только USDT или AIG) и сумму. 3) «Внести через MetaMask» и подпиши. 4) После подтверждения в сети увидишь «Депозит зарегистрирован» с хешем. С этого момента ты в книге заявок. Если через время ничего не появилось, сообщи с хешем — никогда не повторяй депозит, деньги уйдут второй раз.',
+      sv: 'Gå till P2P → Min Profil → Marketplace-likviditet → ”Sätt in likviditet”. Steg: 1) Du behöver aktiv session, MetaMask på BSC-nätet och verkligt saldo i USDT eller AIG (detta flyttar riktiga pengar). 2) Välj token (endast USDT eller AIG) och belopp. 3) ”Sätt in med MetaMask” och signera. 4) När det bekräftats på kedjan ser du ”Insättning registrerad” med hashen. Därefter syns du i orderboken. Syns inget efter en stund, rapportera med hashen — upprepa aldrig insättningen, det skulle flytta pengarna igen.',
+      hr: 'U P2P → Moj profil → Likvidnost tržnice → «Položi likvidnost». Koraci: 1) Trebaš aktivnu sesiju, MetaMask na BSC mreži i stvarno stanje USDT-a ili AIG-a (ovo pomiče pravi novac). 2) Odaberi token (samo USDT ili AIG) i iznos. 3) «Položi s MetaMaskom» i potpiši. 4) Kad se potvrdi na lancu vidjet ćeš «Polog zabilježen» s hashom. Od tada si objavljen u knjizi. Ako se ne prikaže nakon nekog vremena, prijavi s hashom — nikad ne ponavljaj polog, novac bi otišao ponovno.',
+      ar: 'من P2P ← ملفي ← سيولة السوق ← «إيداع سيولة». الخطوات: ١) تحتاج جلسة نشطة، و MetaMask على شبكة BSC، ورصيدًا حقيقيًا من USDT أو AIG (هذا يحرّك مالًا حقيقيًا). ٢) اختر الرمز (USDT أو AIG فقط) والمبلغ. ٣) «إيداع عبر MetaMask» ووقّع. ٤) عند التأكيد على السلسلة سترى «تم تسجيل الإيداع» مع الـ hash. من حينها تظهر في السجل. إذا لم ينعكس بعد فترة، أبلغ مع الـ hash — لا تكرّر الإيداع أبدًا، فذلك يحرّك المال مرة أخرى.',
+      de: 'Unter P2P → Mein Profil → Marketplace-Liquidität → „Liquidität einzahlen“. Schritte: 1) Du brauchst eine aktive Sitzung, MetaMask im BSC-Netz und echtes USDT- oder AIG-Guthaben (das bewegt echtes Geld). 2) Wähle den Token (nur USDT oder AIG) und den Betrag. 3) „Mit MetaMask einzahlen“ und signieren. 4) Nach der Bestätigung on chain siehst du „Einzahlung registriert“ mit dem Hash. Ab da erscheinst du im Orderbuch. Zeigt sich nach einer Weile nichts, melde es mit dem Hash — wiederhole die Einzahlung niemals, das würde das Geld erneut bewegen.',
+      sr: 'У P2P → Мој профил → Ликвидност маркетплејса → «Положи ликвидност». Кораци: 1) Треба ти активна сесија, MetaMask на BSC мрежи и стварно стање USDT-а или AIG-а (ово помера прави новац). 2) Одабери токен (само USDT или AIG) и износ. 3) «Положи са MetaMask-ом» и потпиши. 4) Кад се потврди на ланцу видећеш «Полог забележен» са hash-ом. Од тада си објављен у књизи. Ако се не прикаже након неког времена, пријави са hash-ом — никад не понављај полог, новац би отишао поново.',
+      ur: 'P2P ← میرا پروفائل ← مارکیٹ پلیس لیکویڈیٹی ← «لیکویڈیٹی جمع کریں»۔ مراحل: ۱) فعال سیشن، BSC نیٹ ورک پر MetaMask اور USDT یا AIG کا حقیقی بیلنس چاہیے (یہ اصل پیسہ ہلاتا ہے)۔ ۲) ٹوکن (صرف USDT یا AIG) اور رقم چنیں۔ ۳) «MetaMask سے جمع کریں» اور دستخط کریں۔ ۴) چین پر تصدیق ہونے پر «ڈپازٹ درج ہوا» hash کے ساتھ نظر آئے گا۔ اس کے بعد آپ بُک میں شائع ہو جاتے ہیں۔ اگر کچھ دیر بعد ظاہر نہ ہو تو hash کے ساتھ اطلاع دیں — ڈپازٹ کبھی نہ دہرائیں، پیسہ دوبارہ نکل جائے گا۔',
+    },
+  '¿Cómo retiro mi liquidez del P2P? Retiré y no veo la wallet': {
+    en: 'How do I withdraw my P2P liquidity? I withdrew and the wallet did not open',
+    pt: 'Como retiro minha liquidez do P2P? Retirei e não vejo a carteira',
+    fr: 'Comment retirer ma liquidité du P2P ? J’ai retiré et le portefeuille ne s’ouvre pas',
+    ru: 'Как вывести ликвидность из P2P? Я вывел, а кошелёк не открылся',
+    sv: 'Hur tar jag ut min P2P-likviditet? Jag tog ut och plånboken öppnades inte',
+    hr: 'Kako povući svoju likvidnost s P2P-a? Povukao sam i novčanik se nije otvorio',
+    ar: 'كيف أسحب سيولتي من الـ P2P؟ سحبت ولم تظهر المحفظة',
+    de: 'Wie hebe ich meine P2P-Liquidität ab? Ich habe abgehoben und die Wallet ging nicht auf',
+    sr: 'Како да повучем своју ликвидност са P2P-а? Повукао сам и новчаник се није отворио',
+    ur: 'میں اپنی P2P لیکویڈیٹی کیسے نکالوں؟ میں نے نکالی اور والٹ نہیں کھلا',
+  },
+  'En P2P → Mi Perfil → Liquidez Marketplace → «Retirar». Elige entre tu liquidez en USDT o en AIG, confirma cuál y cuánto, y pulsa «Confirmar retiro». DATO CLAVE: este paso NO abre MetaMask ni pide firma —la propia pantalla lo dice—. Que no aparezca la cartera no significa que no se envió: es una SOLICITUD que PAI procesa después, devolviendo los fondos a tu wallet registrada. Entre la solicitud y la llegada hay una espera que la interfaz no controla. No lo repitas: comprueba el estado antes.':
+    {
+      en: 'Go to P2P → My Profile → Marketplace Liquidity → “Withdraw”. Choose between your USDT or AIG liquidity, confirm which and how much, and press “Confirm withdrawal”. KEY POINT: this step does NOT open MetaMask and does not ask for a signature — the screen itself says so. The wallet not appearing does not mean it was not sent: it is a REQUEST that PAI processes afterwards, returning the funds to your registered wallet. Between the request and the arrival there is a wait the interface does not control. Do not repeat it: check the status first.',
+      pt: 'Em P2P → Meu Perfil → Liquidez Marketplace → «Retirar». Escolha entre sua liquidez em USDT ou em AIG, confirme qual e quanto, e clique em «Confirmar retirada». DADO-CHAVE: este passo NÃO abre a MetaMask nem pede assinatura — a própria tela diz isso. A carteira não aparecer não significa que não foi enviado: é uma SOLICITAÇÃO que a PAI processa depois, devolvendo os fundos à sua carteira registrada. Entre a solicitação e a chegada há uma espera que a interface não controla. Não repita: verifique o estado antes.',
+      fr: 'Dans P2P → Mon Profil → Liquidité Marketplace → « Retirer ». Choisis entre ta liquidité en USDT ou en AIG, confirme laquelle et combien, puis appuie sur « Confirmer le retrait ». POINT CLÉ : cette étape n’ouvre PAS MetaMask et ne demande pas de signature — l’écran le dit lui-même. Que le portefeuille n’apparaisse pas ne veut pas dire que ça n’a pas été envoyé : c’est une DEMANDE que PAI traite ensuite, en renvoyant les fonds vers ton portefeuille enregistré. Entre la demande et l’arrivée, il y a une attente que l’interface ne contrôle pas. Ne recommence pas : vérifie d’abord l’état.',
+      ru: 'P2P → Мой профиль → Ликвидность маркетплейса → «Вывести». Выбери ликвидность в USDT или в AIG, подтверди что и сколько, и нажми «Подтвердить вывод». ВАЖНО: этот шаг НЕ открывает MetaMask и не просит подписи — экран сам об этом пишет. То, что кошелёк не появился, не значит, что вывод не отправлен: это ЗАЯВКА, которую PAI обрабатывает потом, возвращая средства на твой зарегистрированный кошелёк. Между заявкой и поступлением есть ожидание, которое интерфейс не контролирует. Не повторяй: сначала проверь статус.',
+      sv: 'Gå till P2P → Min Profil → Marketplace-likviditet → ”Ta ut”. Välj mellan din likviditet i USDT eller AIG, bekräfta vilken och hur mycket, och tryck ”Bekräfta uttag”. VIKTIGT: det här steget öppnar INTE MetaMask och begär ingen signatur — skärmen säger det själv. Att plånboken inte dyker upp betyder inte att det inte skickades: det är en BEGÄRAN som PAI behandlar efteråt och skickar tillbaka medlen till din registrerade plånbok. Mellan begäran och ankomst finns en väntan som gränssnittet inte styr. Upprepa inte: kolla statusen först.',
+      hr: 'U P2P → Moj profil → Likvidnost tržnice → «Povuci». Odaberi između svoje likvidnosti u USDT-u ili AIG-u, potvrdi koju i koliko, pa pritisni «Potvrdi povlačenje». KLJUČNO: ovaj korak NE otvara MetaMask i ne traži potpis — sam zaslon to kaže. To što se novčanik ne pojavi ne znači da nije poslano: to je ZAHTJEV koji PAI obrađuje poslije, vraćajući sredstva na tvoj registrirani novčanik. Između zahtjeva i dolaska postoji čekanje koje sučelje ne kontrolira. Nemoj ponavljati: prvo provjeri status.',
+      ar: 'من P2P ← ملفي ← سيولة السوق ← «سحب». اختر بين سيولتك بالـ USDT أو AIG، أكّد أيها وكم، ثم اضغط «تأكيد السحب». نقطة أساسية: هذه الخطوة لا تفتح MetaMask ولا تطلب توقيعًا — الشاشة نفسها تقول ذلك. عدم ظهور المحفظة لا يعني أنه لم يُرسل: إنه طلب تعالجه PAI لاحقًا، مُعيدةً الأموال إلى محفظتك المسجّلة. بين الطلب والوصول انتظار لا تتحكم به الواجهة. لا تكرّره: تحقّق من الحالة أولًا.',
+      de: 'Unter P2P → Mein Profil → Marketplace-Liquidität → „Abheben“. Wähle zwischen deiner Liquidität in USDT oder AIG, bestätige welche und wie viel, und drücke „Abhebung bestätigen“. WICHTIG: Dieser Schritt öffnet MetaMask NICHT und verlangt keine Signatur — der Bildschirm sagt es selbst. Dass die Wallet nicht erscheint, heißt nicht, dass nichts gesendet wurde: Es ist ein ANTRAG, den PAI danach bearbeitet und die Mittel an deine registrierte Wallet zurückschickt. Zwischen Antrag und Eingang liegt eine Wartezeit, die die Oberfläche nicht steuert. Wiederhole es nicht: prüfe zuerst den Status.',
+      sr: 'У P2P → Мој профил → Ликвидност маркетплејса → «Повуци». Одабери између своје ликвидности у USDT-у или AIG-у, потврди коју и колико, па притисни «Потврди повлачење». КЉУЧНО: овај корак НЕ отвара MetaMask и не тражи потпис — сам екран то каже. То што се новчаник не појави не значи да није послато: то је ЗАХТЕВ који PAI обрађује после, враћајући средства на твој регистровани новчаник. Између захтева и доласка постоји чекање које интерфејс не контролише. Немој понављати: прво провери статус.',
+      ur: 'P2P ← میرا پروفائل ← مارکیٹ پلیس لیکویڈیٹی ← «نکالیں»۔ اپنی USDT یا AIG لیکویڈیٹی میں سے چنیں، تصدیق کریں کون سی اور کتنی، پھر «نکالنے کی تصدیق» دبائیں۔ اہم بات: یہ مرحلہ MetaMask نہیں کھولتا اور نہ دستخط مانگتا ہے — اسکرین خود یہ کہتی ہے۔ والٹ کا نہ کھلنا اس کا مطلب نہیں کہ بھیجا نہیں گیا: یہ ایک درخواست ہے جسے PAI بعد میں پروسیس کرتی ہے اور رقم آپ کے رجسٹرڈ والٹ میں واپس بھیجتی ہے۔ درخواست اور آمد کے درمیان انتظار ہے جو انٹرفیس کے قابو میں نہیں۔ دہرائیں نہیں: پہلے حالت دیکھیں۔',
+    },
+
+  /* ══════════════════════════════════════════════════════════════════
+     CORPUS · P2P (2 de 2)
+
+     La distinción que hay que preservar aquí es entre «lo arreglas tú» y «no
+     hay nada que puedas hacer». El P2P las confunde con facilidad: una sesión
+     caducada se resuelve saliendo y volviendo a entrar; una caída del servicio
+     de libro, no. Traducirlas igual manda a alguien a repetir un gesto inútil
+     durante media hora.
+     ══════════════════════════════════════════════════════════════════ */
+  'El P2P me pide iniciar sesión aunque ya estoy dentro': {
+    en: 'The P2P asks me to sign in although I am already logged in',
+    pt: 'O P2P me pede para entrar mesmo eu já estando dentro',
+    fr: 'Le P2P me demande de me connecter alors que je le suis déjà',
+    ru: 'P2P просит войти, хотя я уже внутри',
+    sv: 'P2P ber mig logga in fast jag redan är inloggad',
+    hr: 'P2P traži prijavu iako sam već unutra',
+    ar: 'الـ P2P يطلب مني تسجيل الدخول رغم أنني داخل بالفعل',
+    de: 'Das P2P verlangt eine Anmeldung, obwohl ich schon drin bin',
+    sr: 'P2P тражи пријаву иако сам већ унутра',
+    ur: 'P2P مجھ سے لاگ اِن مانگتا ہے حالانکہ میں پہلے ہی اندر ہوں',
+  },
+  'Puede pasar: el P2P usa una credencial adicional a la de la aplicación, y si esa caduca aparece «Inicia sesión en Genesis para operar en el P2P.» aunque el resto funcione. Cerrar sesión y volver a entrar la regenera. Si en cambio ves que el servicio de libro no está disponible, eso es una caída del servicio y no hay nada que puedas arreglar desde tu cuenta.':
+    {
+      en: 'It can happen: the P2P uses a credential additional to the app’s, and if that one expires you see “Sign in to Genesis to trade on the P2P.” even though everything else works. Signing out and back in regenerates it. If instead you see that the order-book service is unavailable, that is a service outage and there is nothing you can fix from your account.',
+      pt: 'Pode acontecer: o P2P usa uma credencial adicional à do aplicativo, e se ela expira aparece «Entre na Genesis para operar no P2P.» mesmo que o resto funcione. Sair e entrar de novo a regenera. Se, em vez disso, você vir que o serviço de livro não está disponível, isso é uma queda do serviço e não há nada que você possa consertar pela sua conta.',
+      fr: 'Cela peut arriver : le P2P utilise un identifiant supplémentaire à celui de l’application, et s’il expire, tu vois « Connecte-toi à Genesis pour opérer sur le P2P. » même si le reste fonctionne. Se déconnecter puis se reconnecter le régénère. Si en revanche tu vois que le service de carnet est indisponible, c’est une panne du service et il n’y a rien que tu puisses corriger depuis ton compte.',
+      ru: 'Так бывает: P2P использует дополнительный к приложению доступ, и если он истёк, появляется «Войдите в Genesis, чтобы торговать в P2P», хотя остальное работает. Выход и повторный вход его обновляет. Если же видишь, что сервис книги заявок недоступен, это сбой сервиса, и со своей стороны исправить нечего.',
+      sv: 'Det kan hända: P2P använder en extra inloggning utöver appens, och om den går ut visas ”Logga in på Genesis för att handla på P2P.” trots att allt annat fungerar. Logga ut och in igen så förnyas den. Ser du i stället att orderbokstjänsten inte är tillgänglig är det ett driftavbrott, och det finns inget du kan åtgärda från ditt konto.',
+      hr: 'Može se dogoditi: P2P koristi dodatnu vjerodajnicu uz onu aplikacije, i ako ona istekne pojavi se «Prijavi se u Genesis za trgovanje na P2P-u.» iako sve ostalo radi. Odjava i ponovna prijava je obnavlja. Ako pak vidiš da usluga knjige nije dostupna, to je pad usluge i sa svog računa ne možeš ništa popraviti.',
+      ar: 'قد يحدث: يستخدم الـ P2P بيانات اعتماد إضافية غير الخاصة بالتطبيق، وإذا انتهت صلاحيتها يظهر «سجّل الدخول إلى Genesis للتداول في P2P.» رغم أن الباقي يعمل. تسجيل الخروج ثم الدخول يجدّدها. أما إن رأيت أن خدمة السجل غير متاحة، فذلك انقطاع في الخدمة ولا يوجد ما يمكنك إصلاحه من حسابك.',
+      de: 'Das kann passieren: Das P2P nutzt eine zusätzliche Berechtigung zur App-Anmeldung, und läuft diese ab, erscheint „Melde dich bei Genesis an, um im P2P zu handeln.“, obwohl der Rest funktioniert. Abmelden und wieder anmelden erneuert sie. Siehst du dagegen, dass der Orderbuch-Dienst nicht verfügbar ist, ist das ein Ausfall des Dienstes und von deinem Konto aus gibt es nichts zu reparieren.',
+      sr: 'Може се догодити: P2P користи додатну акредитацију уз ону апликације, и ако она истекне појави се «Пријави се у Genesis за трговање на P2P-у.» иако све остало ради. Одјава и поновна пријава је обнавља. Ако пак видиш да услуга књиге није доступна, то је пад услуге и са свог налога не можеш ништа поправити.',
+      ur: 'ایسا ہو سکتا ہے: P2P ایپ کے علاوہ ایک اضافی کریڈنشل استعمال کرتا ہے، اور اگر وہ ختم ہو جائے تو «P2P پر لین دین کے لیے Genesis میں لاگ اِن کریں۔» آتا ہے حالانکہ باقی سب چلتا ہے۔ لاگ آؤٹ کر کے دوبارہ لاگ اِن کرنے سے وہ بن جاتا ہے۔ لیکن اگر آپ دیکھیں کہ بُک سروس دستیاب نہیں، تو یہ سروس کی بندش ہے اور آپ اپنے اکاؤنٹ سے کچھ ٹھیک نہیں کر سکتے۔',
+    },
+  'Quiero vender AIG en el P2P y no me deja publicar': {
+    en: 'I want to sell AIG on the P2P and it will not let me publish',
+    pt: 'Quero vender AIG no P2P e não me deixa publicar',
+    fr: 'Je veux vendre de l’AIG sur le P2P et il ne me laisse pas publier',
+    ru: 'Хочу продать AIG в P2P, но публиковать не даёт',
+    sv: 'Jag vill sälja AIG på P2P men får inte publicera',
+    hr: 'Želim prodati AIG na P2P-u, a ne da mi objaviti',
+    ar: 'أريد بيع AIG في الـ P2P ولا يسمح لي بالنشر',
+    de: 'Ich will AIG im P2P verkaufen und es lässt mich nicht veröffentlichen',
+    sr: 'Желим да продам AIG на P2P-у, а не да ми да објавим',
+    ur: 'میں P2P پر AIG بیچنا چاہتا ہوں اور شائع نہیں کرنے دیتا',
+  },
+  'Para aparecer en el libro hay que ser comerciante, y para eso hay que depositar liquidez antes: Mi Perfil → activar perfil de comerciante → Depositar liquidez con MetaMask en red BEP20, en USDT o en AIG. Cuando el saldo queda acreditado, tu fila aparece en el libro. Para recuperar los fondos, mismo panel: Retirar.':
+    {
+      en: 'To appear in the book you have to be a merchant, and for that you must deposit liquidity first: My Profile → activate merchant profile → Deposit liquidity with MetaMask on the BEP20 network, in USDT or AIG. Once the balance is credited, your row appears in the book. To get the funds back, same panel: Withdraw.',
+      pt: 'Para aparecer no livro é preciso ser comerciante, e para isso é preciso depositar liquidez antes: Meu Perfil → ativar perfil de comerciante → Depositar liquidez com MetaMask na rede BEP20, em USDT ou em AIG. Quando o saldo é creditado, sua linha aparece no livro. Para recuperar os fundos, mesmo painel: Retirar.',
+      fr: 'Pour apparaître dans le carnet, il faut être commerçant, et pour cela il faut d’abord déposer de la liquidité : Mon Profil → activer le profil commerçant → Déposer de la liquidité avec MetaMask sur le réseau BEP20, en USDT ou en AIG. Une fois le solde crédité, ta ligne apparaît dans le carnet. Pour récupérer les fonds, même panneau : Retirer.',
+      ru: 'Чтобы попасть в книгу заявок, нужно быть торговцем, а для этого сначала внести ликвидность: Мой профиль → включить профиль торговца → Внести ликвидность через MetaMask в сети BEP20, в USDT или AIG. Как только баланс зачислен, твоя строка появляется в книге. Чтобы вернуть средства — та же панель: Вывести.',
+      sv: 'För att synas i orderboken måste du vara handlare, och för det måste du först sätta in likviditet: Min Profil → aktivera handlarprofil → Sätt in likviditet med MetaMask på BEP20-nätet, i USDT eller AIG. När saldot är krediterat syns din rad i boken. För att få tillbaka medlen, samma panel: Ta ut.',
+      hr: 'Da bi se pojavio u knjizi treba biti trgovac, a za to treba prije položiti likvidnost: Moj profil → aktiviraj profil trgovca → Položi likvidnost s MetaMaskom na BEP20 mreži, u USDT-u ili AIG-u. Kad se stanje pripiše, tvoj redak se pojavi u knjizi. Za povrat sredstava, ista ploča: Povuci.',
+      ar: 'لتظهر في السجل يجب أن تكون تاجرًا، ولذلك عليك إيداع سيولة أولًا: ملفي ← تفعيل ملف التاجر ← إيداع سيولة عبر MetaMask على شبكة BEP20، بالـ USDT أو AIG. عندما يُقيَّد الرصيد، يظهر صفّك في السجل. لاسترجاع الأموال، اللوحة نفسها: سحب.',
+      de: 'Um im Orderbuch zu erscheinen, musst du Händler sein — und dafür zuerst Liquidität einzahlen: Mein Profil → Händlerprofil aktivieren → Liquidität mit MetaMask im BEP20-Netz einzahlen, in USDT oder AIG. Sobald das Guthaben gutgeschrieben ist, erscheint deine Zeile im Buch. Zum Zurückholen der Mittel dasselbe Panel: Abheben.',
+      sr: 'Да би се појавио у књизи треба бити трговац, а за то треба пре тога положити ликвидност: Мој профил → активирај профил трговца → Положи ликвидност са MetaMask-ом на BEP20 мрежи, у USDT-у или AIG-у. Кад се стање припише, твој ред се појави у књизи. За повраћај средстава, иста табла: Повуци.',
+      ur: 'بُک میں آنے کے لیے تاجر ہونا ضروری ہے، اور اس کے لیے پہلے لیکویڈیٹی جمع کرنی ہوتی ہے: میرا پروفائل ← تاجر پروفائل فعال کریں ← BEP20 نیٹ ورک پر MetaMask سے USDT یا AIG میں لیکویڈیٹی جمع کریں۔ جب بیلنس درج ہو جائے، آپ کی قطار بُک میں آ جاتی ہے۔ رقم واپس لینے کے لیے وہی پینل: نکالیں۔',
+    },
+  '¿Quién decide el precio en el P2P?': {
+    en: 'Who decides the price on the P2P?', pt: 'Quem decide o preço no P2P?',
+    fr: 'Qui décide le prix sur le P2P ?', ru: 'Кто определяет цену в P2P?',
+    sv: 'Vem bestämmer priset på P2P?', hr: 'Tko određuje cijenu na P2P-u?',
+    ar: 'من يحدّد السعر في الـ P2P؟', de: 'Wer bestimmt den Preis im P2P?',
+    sr: 'Ко одређује цену на P2P-у?', ur: 'P2P پر قیمت کون طے کرتا ہے؟',
+  },
+  'Cada comerciante pone el suyo. La pantalla muestra un precio sugerido y una banda para que las ofertas sean comparables entre sí, y dentro de ese rango cada uno publica lo que quiere. No es una referencia de mercado abierto: es el rango que la propia interfaz propone.':
+    {
+      en: 'Each merchant sets their own. The screen shows a suggested price and a band so that offers are comparable with each other, and within that range each one publishes what they want. It is not an open-market reference: it is the range the interface itself proposes.',
+      pt: 'Cada comerciante põe o seu. A tela mostra um preço sugerido e uma faixa para que as ofertas sejam comparáveis entre si, e dentro desse intervalo cada um publica o que quiser. Não é uma referência de mercado aberto: é a faixa que a própria interface propõe.',
+      fr: 'Chaque commerçant fixe le sien. L’écran affiche un prix suggéré et une fourchette pour que les offres soient comparables entre elles, et dans cette plage chacun publie ce qu’il veut. Ce n’est pas une référence de marché ouvert : c’est la plage que l’interface elle-même propose.',
+      ru: 'Каждый торговец ставит свою. Экран показывает рекомендуемую цену и диапазон, чтобы предложения можно было сравнивать между собой, и внутри этого диапазона каждый публикует что хочет. Это не ориентир открытого рынка: это диапазон, который предлагает сам интерфейс.',
+      sv: 'Varje handlare sätter sitt eget. Skärmen visar ett föreslaget pris och ett intervall så att erbjudandena går att jämföra, och inom det intervallet publicerar var och en vad hen vill. Det är ingen referens från en öppen marknad: det är intervallet som gränssnittet självt föreslår.',
+      hr: 'Svaki trgovac postavlja svoju. Zaslon prikazuje predloženu cijenu i raspon kako bi ponude bile usporedive, a unutar tog raspona svatko objavljuje što želi. To nije referenca otvorenog tržišta: to je raspon koji predlaže samo sučelje.',
+      ar: 'كل تاجر يضع سعره. تعرض الشاشة سعرًا مقترحًا ونطاقًا كي تكون العروض قابلة للمقارنة، وضمن ذلك النطاق ينشر كل واحد ما يشاء. ليست مرجعية سوق مفتوح: إنه النطاق الذي تقترحه الواجهة نفسها.',
+      de: 'Jeder Händler setzt seinen eigenen. Der Bildschirm zeigt einen Vorschlagspreis und ein Band, damit die Angebote untereinander vergleichbar sind, und innerhalb dieser Spanne veröffentlicht jeder, was er will. Es ist keine Referenz eines offenen Marktes: Es ist die Spanne, die die Oberfläche selbst vorschlägt.',
+      sr: 'Сваки трговац поставља своју. Екран приказује предложену цену и распон како би понуде биле упоредиве, а унутар тог распона свако објављује шта жели. То није референца отвореног тржишта: то је распон који предлаже само сучеље.',
+      ur: 'ہر تاجر اپنی قیمت رکھتا ہے۔ اسکرین ایک تجویز کردہ قیمت اور ایک حد دکھاتی ہے تاکہ پیشکشیں آپس میں موازنے کے قابل ہوں، اور اُس حد کے اندر ہر کوئی جو چاہے شائع کرتا ہے۔ یہ کھلی منڈی کا حوالہ نہیں: یہ وہ حد ہے جو خود انٹرفیس تجویز کرتا ہے۔',
+    },
+  '¿Cómo sé de quién comprar?': {
+    en: 'How do I know who to buy from?', pt: 'Como sei de quem comprar?',
+    fr: 'Comment savoir à qui acheter ?', ru: 'Как понять, у кого покупать?',
+    sv: 'Hur vet jag av vem jag ska köpa?', hr: 'Kako znam od koga kupiti?',
+    ar: 'كيف أعرف ممّن أشتري؟', de: 'Woher weiß ich, bei wem ich kaufe?',
+    sr: 'Како да знам од кога да купим?', ur: 'مجھے کیسے پتہ چلے کہ کس سے خریدوں؟',
+  },
+  'Cada fila muestra el alias del anunciante, su país y cuántas transacciones lleva hechas — ésa es la información con la que se elige. También puedes filtrar por país, por moneda y por importe mínimo y máximo, para ver sólo lo que te encaja.':
+    {
+      en: 'Each row shows the advertiser’s alias, their country and how many transactions they have completed — that is the information you choose with. You can also filter by country, by currency and by minimum and maximum amount, to see only what suits you.',
+      pt: 'Cada linha mostra o apelido do anunciante, seu país e quantas transações já fez — essa é a informação com a qual se escolhe. Você também pode filtrar por país, por moeda e por valor mínimo e máximo, para ver só o que lhe encaixa.',
+      fr: 'Chaque ligne affiche l’alias de l’annonceur, son pays et le nombre de transactions réalisées — c’est l’information sur laquelle on choisit. Tu peux aussi filtrer par pays, par devise et par montant minimum et maximum, pour ne voir que ce qui te convient.',
+      ru: 'В каждой строке видно псевдоним объявителя, его страну и сколько сделок он совершил — по этому и выбирают. Ещё можно фильтровать по стране, валюте и минимальной и максимальной сумме, чтобы видеть только подходящее.',
+      sv: 'Varje rad visar annonsörens alias, land och antal genomförda transaktioner — det är informationen man väljer utifrån. Du kan också filtrera på land, valuta och minsta och största belopp, för att bara se det som passar.',
+      hr: 'Svaki redak prikazuje nadimak oglašivača, njegovu zemlju i broj obavljenih transakcija — to je podatak po kojem se bira. Možeš i filtrirati po zemlji, valuti te najmanjem i najvećem iznosu, da vidiš samo ono što ti odgovara.',
+      ar: 'يعرض كل صف اسم المعلن المستعار وبلده وعدد المعاملات التي أنجزها — وهذه هي المعلومة التي يُختار على أساسها. يمكنك أيضًا الترشيح حسب البلد والعملة والحد الأدنى والأقصى للمبلغ، لترى ما يناسبك فقط.',
+      de: 'Jede Zeile zeigt das Pseudonym des Anbieters, sein Land und wie viele Transaktionen er abgeschlossen hat — danach wählt man aus. Du kannst außerdem nach Land, Währung sowie Mindest- und Höchstbetrag filtern, um nur das zu sehen, was zu dir passt.',
+      sr: 'Сваки ред приказује надимак оглашивача, његову земљу и број обављених трансакција — то је податак по коме се бира. Можеш и филтрирати по земљи, валути те најмањем и највећем износу, да видиш само оно што ти одговара.',
+      ur: 'ہر قطار مشتہر کا عرف، اُس کا ملک اور کی گئی ٹرانزیکشنز کی تعداد دکھاتی ہے — اسی معلومات پر انتخاب ہوتا ہے۔ آپ ملک، کرنسی اور کم سے کم و زیادہ سے زیادہ رقم سے بھی چھان سکتے ہیں تاکہ صرف اپنے مطابق دیکھیں۔',
+    },
+  '¿Cómo compro o tomo una oferta en el P2P?': {
+    en: 'How do I buy or take an offer on the P2P?',
+    pt: 'Como compro ou tomo uma oferta no P2P?',
+    fr: 'Comment acheter ou prendre une offre sur le P2P ?',
+    ru: 'Как купить или взять предложение в P2P?',
+    sv: 'Hur köper eller tar jag ett erbjudande på P2P?',
+    hr: 'Kako kupiti ili uzeti ponudu na P2P-u?',
+    ar: 'كيف أشتري أو آخذ عرضًا في الـ P2P؟',
+    de: 'Wie kaufe oder nehme ich ein Angebot im P2P?',
+    sr: 'Како да купим или узмем понуду на P2P-у?',
+    ur: 'میں P2P پر کیسے خریدوں یا پیشکش لوں؟',
+  },
+  'En P2P → Marketplace, pulsa «Tomar» en la fila que te interese. Antes de operar, mira el alias, el país y el número de transacciones del anunciante: es la única señal de confianza que da la pantalla. Necesitas sesión activa y MetaMask con fondos en la red correcta. El paso final es firmar la transferencia; lo que viene después es solo avisar al servidor de que ya pagaste. Si sale «No se pudo resolver el ID del comerciante», recarga el libro P2P — se arregla recargando, no reintentando a ciegas.':
+    {
+      en: 'Go to P2P → Marketplace and press “Take” on the row you want. Before trading, look at the advertiser’s alias, country and number of transactions: it is the only trust signal the screen gives. You need an active session and MetaMask with funds on the correct network. The final step is signing the transfer; what comes after is just telling the server that you have paid. If “Could not resolve the merchant ID” appears, reload the P2P book — it is fixed by reloading, not by retrying blindly.',
+      pt: 'Em P2P → Marketplace, clique em «Tomar» na linha que lhe interessa. Antes de operar, veja o apelido, o país e o número de transações do anunciante: é o único sinal de confiança que a tela oferece. Você precisa de sessão ativa e MetaMask com fundos na rede correta. O passo final é assinar a transferência; o que vem depois é só avisar ao servidor de que você já pagou. Se aparecer «Não foi possível resolver o ID do comerciante», recarregue o livro P2P — resolve-se recarregando, não tentando às cegas.',
+      fr: 'Dans P2P → Marketplace, appuie sur « Prendre » sur la ligne qui t’intéresse. Avant d’opérer, regarde l’alias, le pays et le nombre de transactions de l’annonceur : c’est le seul signal de confiance que donne l’écran. Il te faut une session active et MetaMask avec des fonds sur le bon réseau. La dernière étape est de signer le transfert ; ce qui suit consiste seulement à prévenir le serveur que tu as payé. Si « Impossible de résoudre l’ID du commerçant » apparaît, recharge le carnet P2P — cela se corrige en rechargeant, pas en réessayant à l’aveugle.',
+      ru: 'P2P → Marketplace, нажми «Взять» на нужной строке. Перед сделкой посмотри псевдоним, страну и число сделок объявителя: это единственный сигнал доверия, который даёт экран. Нужна активная сессия и MetaMask со средствами в правильной сети. Последний шаг — подписать перевод; дальше только уведомление сервера, что ты заплатил. Если появится «Не удалось определить ID торговца», перезагрузи книгу P2P — это лечится перезагрузкой, а не слепыми повторами.',
+      sv: 'Gå till P2P → Marketplace och tryck ”Ta” på raden du vill ha. Innan du handlar, titta på annonsörens alias, land och antal transaktioner: det är den enda förtroendesignal skärmen ger. Du behöver aktiv session och MetaMask med medel på rätt nätverk. Sista steget är att signera överföringen; det som kommer sedan är bara att meddela servern att du betalat. Om ”Kunde inte hitta handlarens ID” visas, ladda om P2P-boken — det löses genom omladdning, inte genom blinda omförsök.',
+      hr: 'U P2P → Marketplace pritisni «Uzmi» na retku koji te zanima. Prije trgovanja pogledaj nadimak, zemlju i broj transakcija oglašivača: to je jedini signal povjerenja koji zaslon daje. Trebaš aktivnu sesiju i MetaMask sa sredstvima na ispravnoj mreži. Zadnji korak je potpisati prijenos; ono što slijedi samo je obavijest poslužitelju da si platio. Ako se pojavi «Nije bilo moguće razriješiti ID trgovca», ponovno učitaj P2P knjigu — rješava se osvježavanjem, ne slijepim pokušajima.',
+      ar: 'من P2P ← Marketplace اضغط «أخذ» على الصف الذي يهمك. قبل التعامل، انظر إلى اسم المعلن المستعار وبلده وعدد معاملاته: هذه هي إشارة الثقة الوحيدة التي تعطيها الشاشة. تحتاج جلسة نشطة و MetaMask برصيد على الشبكة الصحيحة. الخطوة الأخيرة هي توقيع التحويل؛ وما يليها مجرد إبلاغ الخادم بأنك دفعت. إذا ظهر «تعذّر تحديد معرّف التاجر»، أعد تحميل سجل الـ P2P — يُحلّ بإعادة التحميل، لا بإعادة المحاولة عشوائيًا.',
+      de: 'Unter P2P → Marketplace drückst du „Nehmen“ in der Zeile, die dich interessiert. Sieh dir vor dem Handeln Pseudonym, Land und Transaktionszahl des Anbieters an: Das ist das einzige Vertrauenssignal, das der Bildschirm liefert. Du brauchst eine aktive Sitzung und MetaMask mit Guthaben im richtigen Netz. Der letzte Schritt ist die Signatur der Überweisung; danach wird dem Server nur mitgeteilt, dass du bezahlt hast. Erscheint „Händler-ID konnte nicht aufgelöst werden“, lade das P2P-Buch neu — das behebt man durch Neuladen, nicht durch blindes Wiederholen.',
+      sr: 'У P2P → Marketplace притисни «Узми» на реду који те занима. Пре трговања погледај надимак, земљу и број трансакција оглашивача: то је једини сигнал поверења који екран даје. Треба ти активна сесија и MetaMask са средствима на исправној мрежи. Последњи корак је потписати пренос; оно што следи само је обавештење серверу да си платио. Ако се појави «Није било могуће разрешити ID трговца», поново учитај P2P књигу — решава се освежавањем, не слепим покушајима.',
+      ur: 'P2P ← Marketplace میں، جس قطار میں دلچسپی ہو اُس پر «لیں» دبائیں۔ لین دین سے پہلے مشتہر کا عرف، ملک اور ٹرانزیکشنز کی تعداد دیکھیں: اسکرین کا یہی واحد اعتماد کا اشارہ ہے۔ فعال سیشن اور درست نیٹ ورک پر رقم کے ساتھ MetaMask چاہیے۔ آخری مرحلہ ٹرانسفر پر دستخط ہے؛ اس کے بعد صرف سرور کو بتانا ہے کہ آپ نے ادائیگی کر دی۔ اگر «تاجر کی ID حل نہ ہو سکی» آئے تو P2P بُک دوبارہ لوڈ کریں — یہ ری لوڈ سے ٹھیک ہوتا ہے، اندھا دھند دوبارہ کوشش سے نہیں۔',
+    },
+
+  /* ══════════════════════════════════════════════════════════════════
+     CORPUS · PAGAR
+
+     La frase que más dinero salva de esta categoría es la de la red: «enviar
+     desde otra cadena manda los fondos a un sitio del que no se recuperan». No
+     admite suavizarse al traducir — no es un aviso, es una advertencia, y la
+     diferencia son fondos perdidos.
+
+     `BSC` y `DUAL (AIG + USDT)` van tal cual: son el nombre de una red y el de
+     un modo de pago que la persona tiene que reconocer en la caja.
+     ══════════════════════════════════════════════════════════════════ */
+  '¿Cómo puedo pagar?': {
+    en: 'How can I pay?', pt: 'Como posso pagar?', fr: 'Comment puis-je payer ?',
+    ru: 'Как я могу оплатить?', sv: 'Hur kan jag betala?', hr: 'Kako mogu platiti?',
+    ar: 'كيف يمكنني الدفع؟', de: 'Wie kann ich bezahlen?',
+    sr: 'Како могу да платим?', ur: 'میں کیسے ادائیگی کر سکتا ہوں؟',
+  },
+  'Ahora mismo hay dos formas, las dos con wallet conectada: DUAL, que es una parte en AIG y el resto en USDT; y USDT solo, sin AIG. No hace falta elegir nada más — en la caja aparecen esas dos y se paga en la red BSC.':
+    {
+      en: 'Right now there are two ways, both with a connected wallet: DUAL, which is part in AIG and the rest in USDT; and USDT only, without AIG. Nothing else to choose — those two appear at checkout and payment happens on the BSC network.',
+      pt: 'Agora mesmo há duas formas, ambas com carteira conectada: DUAL, que é uma parte em AIG e o resto em USDT; e USDT sozinho, sem AIG. Não é preciso escolher mais nada — no caixa aparecem essas duas e se paga na rede BSC.',
+      fr: 'Actuellement il y a deux façons, toutes deux avec portefeuille connecté : DUAL, une partie en AIG et le reste en USDT ; et USDT seul, sans AIG. Rien d’autre à choisir — ces deux options apparaissent au paiement et se règlent sur le réseau BSC.',
+      ru: 'Сейчас есть два способа, оба с подключённым кошельком: DUAL — часть в AIG, остальное в USDT; и только USDT, без AIG. Больше ничего выбирать не нужно — эти два варианта появляются на кассе, оплата идёт в сети BSC.',
+      sv: 'Just nu finns två sätt, båda med ansluten plånbok: DUAL, som är en del i AIG och resten i USDT; och enbart USDT, utan AIG. Inget mer att välja — de två visas i kassan och betalningen sker på BSC-nätet.',
+      hr: 'Trenutačno postoje dva načina, oba s povezanim novčanikom: DUAL, dio u AIG-u a ostatak u USDT-u; i samo USDT, bez AIG-a. Ništa se više ne bira — ta se dva pojavljuju na blagajni i plaća se na BSC mreži.',
+      ar: 'حاليًا هناك طريقتان، كلتاهما بمحفظة متصلة: DUAL، أي جزء بالـ AIG والباقي بالـ USDT؛ و USDT فقط، دون AIG. لا شيء آخر تختاره — تظهر هاتان في صفحة الدفع والسداد يتم على شبكة BSC.',
+      de: 'Derzeit gibt es zwei Wege, beide mit verbundener Wallet: DUAL — ein Teil in AIG, der Rest in USDT; und nur USDT, ohne AIG. Mehr ist nicht zu wählen — diese beiden erscheinen an der Kasse und bezahlt wird im BSC-Netz.',
+      sr: 'Тренутно постоје два начина, оба са повезаним новчаником: DUAL, део у AIG-у а остатак у USDT-у; и само USDT, без AIG-а. Ништа се више не бира — та два се појављују на каси и плаћа се на BSC мрежи.',
+      ur: 'اِس وقت دو طریقے ہیں، دونوں جُڑے ہوئے والٹ کے ساتھ: DUAL، جس میں کچھ حصہ AIG اور باقی USDT؛ اور صرف USDT، بغیر AIG کے۔ اور کچھ نہیں چننا — یہی دو چیک آؤٹ پر آتے ہیں اور ادائیگی BSC نیٹ ورک پر ہوتی ہے۔',
+    },
+  '¿En qué red tengo que pagar?': {
+    en: 'Which network do I have to pay on?', pt: 'Em que rede tenho que pagar?',
+    fr: 'Sur quel réseau dois-je payer ?', ru: 'В какой сети нужно платить?',
+    sv: 'Vilket nätverk ska jag betala på?', hr: 'Na kojoj mreži moram platiti?',
+    ar: 'على أي شبكة يجب أن أدفع؟', de: 'In welchem Netzwerk muss ich bezahlen?',
+    sr: 'На којој мрежи морам да платим?', ur: 'مجھے کس نیٹ ورک پر ادائیگی کرنی ہے؟',
+  },
+  'En BSC. Antes de confirmar, comprueba que tu wallet está en esa red: enviar desde otra cadena manda los fondos a un sitio del que no se recuperan.':
+    {
+      en: 'On BSC. Before confirming, check that your wallet is on that network: sending from another chain sends the funds somewhere they cannot be recovered from.',
+      pt: 'Na BSC. Antes de confirmar, verifique se sua carteira está nessa rede: enviar de outra cadeia manda os fundos para um lugar de onde não se recuperam.',
+      fr: 'Sur BSC. Avant de confirmer, vérifie que ton portefeuille est sur ce réseau : envoyer depuis une autre chaîne expédie les fonds là d’où on ne les récupère pas.',
+      ru: 'В BSC. Перед подтверждением проверь, что кошелёк в этой сети: отправка из другой цепочки уводит средства туда, откуда их не вернуть.',
+      sv: 'På BSC. Innan du bekräftar, kontrollera att din plånbok är på det nätverket: att skicka från en annan kedja skickar medlen dit de inte går att få tillbaka från.',
+      hr: 'Na BSC-u. Prije potvrde provjeri je li tvoj novčanik na toj mreži: slanje s drugog lanca šalje sredstva na mjesto odakle se ne mogu vratiti.',
+      ar: 'على BSC. قبل التأكيد، تأكّد أن محفظتك على تلك الشبكة: الإرسال من سلسلة أخرى يُرسل الأموال إلى مكان لا تُسترجع منه.',
+      de: 'Auf BSC. Prüfe vor dem Bestätigen, ob deine Wallet in diesem Netz ist: von einer anderen Chain zu senden schickt die Mittel an einen Ort, von dem sie nicht zurückzuholen sind.',
+      sr: 'На BSC-у. Пре потврде провери да ли је твој новчаник на тој мрежи: слање са другог ланца шаље средства на место одакле се не могу вратити.',
+      ur: 'BSC پر۔ تصدیق سے پہلے دیکھیں کہ آپ کا والٹ اُسی نیٹ ورک پر ہے: کسی اور چین سے بھیجنا رقم ایسی جگہ بھیج دیتا ہے جہاں سے واپس نہیں آتی۔',
+    },
+  '¿Puedo pagar con tarjeta?': {
+    en: 'Can I pay by card?', pt: 'Posso pagar com cartão?',
+    fr: 'Puis-je payer par carte ?', ru: 'Можно ли заплатить картой?',
+    sv: 'Kan jag betala med kort?', hr: 'Mogu li platiti karticom?',
+    ar: 'هل يمكنني الدفع بالبطاقة؟', de: 'Kann ich mit Karte bezahlen?',
+    sr: 'Могу ли да платим картицом?', ur: 'کیا میں کارڈ سے ادائیگی کر سکتا ہوں؟',
+  },
+  'Esta temporada no se ofrece el pago con tarjeta. Se paga desde tu wallet: DUAL (AIG + USDT) o USDT solo, y sin wallet conectada no se puede completar la compra. Si en algún momento se habilita otra forma de pago, se anunciará por los canales oficiales.':
+    {
+      en: 'Card payment is not offered this season. You pay from your wallet: DUAL (AIG + USDT) or USDT only, and without a connected wallet the purchase cannot be completed. If another payment method is enabled at some point, it will be announced through the official channels.',
+      pt: 'Nesta temporada não se oferece pagamento com cartão. Paga-se pela sua carteira: DUAL (AIG + USDT) ou USDT sozinho, e sem carteira conectada não é possível concluir a compra. Se em algum momento outra forma de pagamento for habilitada, será anunciada pelos canais oficiais.',
+      fr: 'Le paiement par carte n’est pas proposé cette saison. On paie depuis ton portefeuille : DUAL (AIG + USDT) ou USDT seul, et sans portefeuille connecté l’achat ne peut pas être finalisé. Si un autre moyen de paiement est activé un jour, il sera annoncé par les canaux officiels.',
+      ru: 'В этом сезоне оплата картой не предлагается. Платят из кошелька: DUAL (AIG + USDT) или только USDT, а без подключённого кошелька покупку завершить нельзя. Если когда-нибудь появится другой способ оплаты, об этом объявят по официальным каналам.',
+      sv: 'Kortbetalning erbjuds inte den här säsongen. Du betalar från din plånbok: DUAL (AIG + USDT) eller enbart USDT, och utan ansluten plånbok går köpet inte att slutföra. Om ett annat betalsätt aktiveras vid något tillfälle meddelas det via de officiella kanalerna.',
+      hr: 'Ove sezone plaćanje karticom nije dostupno. Plaća se iz tvog novčanika: DUAL (AIG + USDT) ili samo USDT, a bez povezanog novčanika kupnja se ne može dovršiti. Ako se nekad omogući drugi način plaćanja, objavit će se putem službenih kanala.',
+      ar: 'الدفع بالبطاقة غير متاح هذا الموسم. الدفع يتم من محفظتك: DUAL ‏(AIG + USDT) أو USDT فقط، وبدون محفظة متصلة لا يمكن إتمام الشراء. إذا فُعِّلت طريقة دفع أخرى في وقت ما، سيُعلن عنها عبر القنوات الرسمية.',
+      de: 'In dieser Saison wird keine Kartenzahlung angeboten. Bezahlt wird aus deiner Wallet: DUAL (AIG + USDT) oder nur USDT — ohne verbundene Wallet lässt sich der Kauf nicht abschließen. Wenn irgendwann eine andere Zahlungsart freigeschaltet wird, wird das über die offiziellen Kanäle angekündigt.',
+      sr: 'Ове сезоне плаћање картицом није доступно. Плаћа се из твог новчаника: DUAL (AIG + USDT) или само USDT, а без повезаног новчаника куповина се не може довршити. Ако се некад омогући други начин плаћања, објавиће се путем званичних канала.',
+      ur: 'اس سیزن میں کارڈ سے ادائیگی دستیاب نہیں۔ ادائیگی آپ کے والٹ سے ہوتی ہے: DUAL (AIG + USDT) یا صرف USDT، اور جُڑے والٹ کے بغیر خریداری مکمل نہیں ہو سکتی۔ اگر کبھی کوئی اور طریقہ فعال ہوا تو سرکاری چینلز پر اعلان ہوگا۔',
+    },
+  'En DUAL, ¿cuánto AIG me van a cobrar?': {
+    en: 'With DUAL, how much AIG will I be charged?',
+    pt: 'No DUAL, quanto AIG vão me cobrar?',
+    fr: 'En DUAL, combien d’AIG vais-je payer ?',
+    ru: 'В DUAL сколько с меня спишут AIG?',
+    sv: 'Med DUAL, hur mycket AIG dras det?',
+    hr: 'Kod DUAL-a, koliko AIG-a će mi naplatiti?',
+    ar: 'في DUAL، كم AIG سيُخصم مني؟',
+    de: 'Wie viel AIG wird mir bei DUAL berechnet?',
+    sr: 'Код DUAL-а, колико AIG-а ће ми наплатити?',
+    ur: 'DUAL میں مجھ سے کتنا AIG لیا جائے گا؟',
+  },
+  'Cada producto aporta su propia parte en AIG, así que la cantidad depende de lo que lleves en el carrito y no de un porcentaje único aplicado al total. La cifra exacta en AIG y en USDT se ve en la caja antes de confirmar: si algo no cuadra ahí, no confirmes.':
+    {
+      en: 'Each product contributes its own AIG share, so the amount depends on what you have in the cart and not on a single percentage applied to the total. The exact figure in AIG and in USDT is shown at checkout before you confirm: if something does not add up there, do not confirm.',
+      pt: 'Cada produto aporta sua própria parte em AIG, então a quantidade depende do que você levar no carrinho e não de uma porcentagem única aplicada ao total. A cifra exata em AIG e em USDT aparece no caixa antes de confirmar: se algo não bater ali, não confirme.',
+      fr: 'Chaque produit apporte sa propre part en AIG, donc le montant dépend de ce que tu as dans le panier et non d’un pourcentage unique appliqué au total. Le chiffre exact en AIG et en USDT s’affiche au paiement avant de confirmer : si quelque chose ne colle pas là, ne confirme pas.',
+      ru: 'Каждый товар даёт свою долю в AIG, поэтому сумма зависит от содержимого корзины, а не от единого процента от общей суммы. Точная цифра в AIG и в USDT видна на кассе до подтверждения: если там что-то не сходится — не подтверждай.',
+      sv: 'Varje produkt bidrar med sin egen AIG-andel, så beloppet beror på vad du har i varukorgen och inte på en enda procentsats av totalen. Den exakta siffran i AIG och USDT visas i kassan innan du bekräftar: stämmer något inte där, bekräfta inte.',
+      hr: 'Svaki proizvod donosi svoj udio u AIG-u, pa iznos ovisi o tome što nosiš u košarici, a ne o jedinstvenom postotku na ukupno. Točan iznos u AIG-u i USDT-u vidi se na blagajni prije potvrde: ako se ondje nešto ne slaže, nemoj potvrditi.',
+      ar: 'كل منتج يساهم بحصته من AIG، فالمقدار يعتمد على ما في سلّتك لا على نسبة واحدة تُطبَّق على الإجمالي. الرقم الدقيق بالـ AIG وبالـ USDT يظهر في صفحة الدفع قبل التأكيد: إن لم يتطابق شيء هناك، فلا تؤكّد.',
+      de: 'Jedes Produkt steuert seinen eigenen AIG-Anteil bei, der Betrag hängt also davon ab, was im Warenkorb liegt, und nicht von einem einzigen Prozentsatz auf die Summe. Die genaue Zahl in AIG und in USDT steht vor dem Bestätigen an der Kasse: Wenn dort etwas nicht stimmt, bestätige nicht.',
+      sr: 'Сваки производ доноси свој удео у AIG-у, па износ зависи од тога шта носиш у корпи, а не од јединственог процента на укупно. Тачан износ у AIG-у и USDT-у види се на каси пре потврде: ако се тамо нешто не слаже, немој потврдити.',
+      ur: 'ہر پروڈکٹ اپنا AIG حصہ ڈالتا ہے، اس لیے مقدار اس پر منحصر ہے کہ کارٹ میں کیا ہے، نہ کہ کل پر لگنے والے ایک فیصد پر۔ AIG اور USDT میں درست عدد تصدیق سے پہلے چیک آؤٹ پر نظر آتا ہے: اگر وہاں کچھ نہ ملے تو تصدیق نہ کریں۔',
+    },
+  'No me aparece la opción de pagar con AIG': {
+    en: 'The option to pay with AIG does not appear',
+    pt: 'Não aparece a opção de pagar com AIG',
+    fr: 'L’option de payer en AIG n’apparaît pas',
+    ru: 'Не появляется опция оплаты в AIG',
+    sv: 'Alternativet att betala med AIG visas inte',
+    hr: 'Ne pojavljuje mi se opcija plaćanja AIG-om',
+    ar: 'لا يظهر لي خيار الدفع بالـ AIG',
+    de: 'Die Option, mit AIG zu bezahlen, erscheint nicht',
+    sr: 'Не појављује ми се опција плаћања AIG-ом',
+    ur: 'مجھے AIG سے ادائیگی کا آپشن نظر نہیں آتا',
+  },
+  'Comprueba primero que tienes la wallet conectada: sin ella no se muestra ninguna forma de pago. Si está conectada y aun así sólo ves USDT, es por el carrito — cuánto AIG admite cada artículo lo define el propio producto, no tu cuenta.':
+    {
+      en: 'First check that your wallet is connected: without it no payment method is shown at all. If it is connected and you still only see USDT, it is because of the cart — how much AIG each item accepts is defined by the product itself, not by your account.',
+      pt: 'Verifique primeiro se a carteira está conectada: sem ela não se mostra nenhuma forma de pagamento. Se estiver conectada e mesmo assim você só vir USDT, é pelo carrinho — quanto AIG cada item admite é definido pelo próprio produto, não pela sua conta.',
+      fr: 'Vérifie d’abord que ton portefeuille est connecté : sans lui, aucun moyen de paiement ne s’affiche. S’il est connecté et que tu ne vois que de l’USDT, c’est à cause du panier — la part d’AIG que chaque article accepte est définie par le produit lui-même, pas par ton compte.',
+      ru: 'Сначала проверь, подключён ли кошелёк: без него не показывается ни один способ оплаты. Если подключён, а ты всё равно видишь только USDT, дело в корзине — сколько AIG принимает каждый товар, определяет сам товар, а не твой аккаунт.',
+      sv: 'Kontrollera först att plånboken är ansluten: utan den visas inget betalsätt alls. Är den ansluten och du ändå bara ser USDT beror det på varukorgen — hur mycket AIG varje artikel tar emot bestäms av produkten själv, inte av ditt konto.',
+      hr: 'Prvo provjeri je li novčanik povezan: bez njega se ne prikazuje nijedan način plaćanja. Ako jest povezan, a i dalje vidiš samo USDT, razlog je košarica — koliko AIG-a prihvaća svaki artikl određuje sam proizvod, ne tvoj račun.',
+      ar: 'تحقّق أولًا من أن محفظتك متصلة: بدونها لا تظهر أي طريقة دفع. وإذا كانت متصلة وما زلت ترى USDT فقط، فالسبب السلّة — مقدار AIG الذي يقبله كل صنف يحدّده المنتج نفسه، لا حسابك.',
+      de: 'Prüfe zuerst, ob deine Wallet verbunden ist: ohne sie wird gar keine Zahlungsart angezeigt. Ist sie verbunden und du siehst trotzdem nur USDT, liegt es am Warenkorb — wie viel AIG jeder Artikel akzeptiert, legt das Produkt selbst fest, nicht dein Konto.',
+      sr: 'Прво провери да ли је новчаник повезан: без њега се не приказује ниједан начин плаћања. Ако јесте повезан, а и даље видиш само USDT, разлог је корпа — колико AIG-а прихвата сваки артикал одређује сам производ, не твој налог.',
+      ur: 'پہلے دیکھیں کہ آپ کا والٹ جُڑا ہے: اُس کے بغیر کوئی طریقۂ ادائیگی نہیں دکھتا۔ اگر جُڑا ہے اور پھر بھی صرف USDT نظر آتا ہے تو وجہ کارٹ ہے — ہر شے کتنا AIG قبول کرتی ہے یہ خود پروڈکٹ طے کرتا ہے، آپ کا اکاؤنٹ نہیں۔',
+    },
+  '¿El envío está incluido en el precio?': {
+    en: 'Is shipping included in the price?', pt: 'O frete está incluído no preço?',
+    fr: 'La livraison est-elle incluse dans le prix ?', ru: 'Доставка включена в цену?',
+    sv: 'Ingår frakten i priset?', hr: 'Je li dostava uključena u cijenu?',
+    ar: 'هل الشحن مشمول في السعر؟', de: 'Ist der Versand im Preis enthalten?',
+    sr: 'Да ли је достава укључена у цену?', ur: 'کیا ترسیل قیمت میں شامل ہے؟',
+  },
+  'El total que ves en la caja es el que se cobra, con el envío ya dentro. El envío internacional depende del destino, así que el importe puede cambiar según el país que indiques — pero se ve antes de pagar, no después.':
+    {
+      en: 'The total you see at checkout is what gets charged, with shipping already included. International shipping depends on the destination, so the amount can change according to the country you enter — but you see it before paying, not after.',
+      pt: 'O total que você vê no caixa é o que se cobra, com o frete já incluído. O frete internacional depende do destino, então o valor pode mudar conforme o país que você indicar — mas se vê antes de pagar, não depois.',
+      fr: 'Le total que tu vois au paiement est celui qui est débité, livraison comprise. La livraison internationale dépend de la destination, le montant peut donc changer selon le pays indiqué — mais tu le vois avant de payer, pas après.',
+      ru: 'Итог, который ты видишь на кассе, — это то, что спишется, доставка уже внутри. Международная доставка зависит от направления, поэтому сумма может меняться в зависимости от указанной страны — но её видно до оплаты, а не после.',
+      sv: 'Totalen du ser i kassan är den som dras, med frakten redan inräknad. Internationell frakt beror på destinationen, så beloppet kan ändras efter vilket land du anger — men du ser det före betalning, inte efter.',
+      hr: 'Ukupno što vidiš na blagajni je ono što se naplaćuje, s dostavom već uključenom. Međunarodna dostava ovisi o odredištu, pa se iznos može mijenjati prema zemlji koju navedeš — ali vidi se prije plaćanja, ne poslije.',
+      ar: 'الإجمالي الذي تراه في صفحة الدفع هو ما يُخصم، والشحن مشمول فيه. الشحن الدولي يعتمد على الوجهة، فقد يتغيّر المبلغ حسب البلد الذي تحدّده — لكنه يظهر قبل الدفع لا بعده.',
+      de: 'Die Summe, die du an der Kasse siehst, wird abgebucht — der Versand ist bereits enthalten. Internationaler Versand hängt vom Ziel ab, der Betrag kann sich also je nach angegebenem Land ändern — aber du siehst ihn vor dem Bezahlen, nicht danach.',
+      sr: 'Укупно што видиш на каси је оно што се наплаћује, са доставом већ укљученом. Међународна достава зависи од одредишта, па се износ може мењати према земљи коју наведеш — али види се пре плаћања, не после.',
+      ur: 'چیک آؤٹ پر جو کل نظر آتا ہے وہی وصول ہوتا ہے، ترسیل اُس میں شامل ہے۔ بین الاقوامی ترسیل منزل پر منحصر ہے، اس لیے رقم آپ کے بتائے ملک کے مطابق بدل سکتی ہے — مگر یہ ادائیگی سے پہلے دکھتی ہے، بعد میں نہیں۔',
+    },
+  '¿Cuántos pasos tiene la compra?': {
+    en: 'How many steps does the purchase take?', pt: 'Quantos passos tem a compra?',
+    fr: 'Combien d’étapes comporte l’achat ?', ru: 'Сколько шагов в покупке?',
+    sv: 'Hur många steg har köpet?', hr: 'Koliko koraka ima kupnja?',
+    ar: 'كم خطوة تستغرق عملية الشراء؟', de: 'Wie viele Schritte hat der Kauf?',
+    sr: 'Колико корака има куповина?', ur: 'خریداری کے کتنے مراحل ہیں؟',
+  },
+  'Dos. Primero la dirección de envío —queda guardada para próximas compras— y después la forma de pago. El envío ya va incluido en el total, así que no aparece ningún cargo extra al final.':
+    {
+      en: 'Two. First the shipping address — it is saved for future purchases — and then the payment method. Shipping is already included in the total, so no extra charge appears at the end.',
+      pt: 'Dois. Primeiro o endereço de entrega — fica salvo para próximas compras — e depois a forma de pagamento. O frete já vai incluído no total, então não aparece nenhum encargo extra no final.',
+      fr: 'Deux. D’abord l’adresse de livraison — elle est enregistrée pour les prochains achats — puis le moyen de paiement. La livraison est déjà incluse dans le total, donc aucun frais supplémentaire n’apparaît à la fin.',
+      ru: 'Два. Сначала адрес доставки — он сохраняется для следующих покупок — потом способ оплаты. Доставка уже включена в итог, поэтому в конце никаких дополнительных списаний не появляется.',
+      sv: 'Två. Först leveransadressen — den sparas till kommande köp — och sedan betalsättet. Frakten ingår redan i totalen, så ingen extra avgift dyker upp på slutet.',
+      hr: 'Dva. Prvo adresa dostave — sprema se za sljedeće kupnje — a zatim način plaćanja. Dostava je već uključena u ukupno, pa se na kraju ne pojavljuje nikakav dodatni trošak.',
+      ar: 'خطوتان. أولًا عنوان الشحن — يُحفظ للمشتريات القادمة — ثم طريقة الدفع. الشحن مشمول أصلًا في الإجمالي، فلا تظهر أي رسوم إضافية في النهاية.',
+      de: 'Zwei. Zuerst die Lieferadresse — sie wird für künftige Käufe gespeichert — und dann die Zahlungsart. Der Versand ist bereits in der Summe enthalten, am Ende kommt also keine Zusatzgebühr dazu.',
+      sr: 'Два. Прво адреса доставе — чува се за следеће куповине — а затим начин плаћања. Достава је већ укључена у укупно, па се на крају не појављује никакав додатни трошак.',
+      ur: 'دو۔ پہلے ترسیل کا پتہ — یہ اگلی خریداریوں کے لیے محفوظ ہو جاتا ہے — اور پھر ادائیگی کا طریقہ۔ ترسیل کل میں شامل ہے، اس لیے آخر میں کوئی اضافی چارج نہیں آتا۔',
+    },
+
   /* ── el Aula: el material grabado dentro del asistente ─────────────
      OJO CON «Idioma del material»: es lo único que separa el idioma de la
      INTERFAZ del idioma del ARCHIVO. Traducido flojo —«Idioma», a secas— la
