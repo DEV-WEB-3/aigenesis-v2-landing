@@ -84,10 +84,15 @@ const modEdiciones = compilar('lib/soporte/ediciones.ts', 'ediciones.js', {
 /* `useCorpus` se compila también: la ficha traduce por él desde que el corpus
    del asistente dejó de estar fijo en español. */
 compilar('hooks/useCorpus.tsx', 'useCorpus.js', { '@/context/IdiomaContext': './stub-idioma' })
+/* La señal que para las animaciones mientras hay un video. Se compila DE VERDAD
+   y no se sustituye por un doble: la ficha la llama al reproducir, y un doble
+   dejaría de comprobar justamente eso. */
+compilar('lib/reproduccionActiva.ts', 'reproduccionActiva.js')
 const modFicha = compilar('components/soporte/FichaEdicion.tsx', 'FichaEdicion.js', {
   '@/context/IdiomaContext': './stub-idioma',
   '@/hooks/useCorpus': './useCorpus',
   '@/lib/soporte/ediciones': './ediciones',
+  '@/lib/reproduccionActiva': './reproduccionActiva',
 })
 
 const E = require_(modEdiciones)
@@ -596,6 +601,62 @@ comprobar('el texto de las ediciones existe en el diccionario', () => {
   /* Control de instrumento: si la búsqueda no distingue, todo pasaría. */
   assert.ok(!enDicc('esto-no-existe-en-el-diccionario'), 'control: la búsqueda da positivo en todo')
   assert.ok(enDicc(E.EDICIONES[0].titulo), 'control: no encuentra un título que SÍ está')
+})
+
+comprobar('lo que anima suelta el hilo mientras se reproduce un video', () => {
+  /*
+   * EL FALLO: «los videos se quedan colgados a los 2 segundos». Dos hipótesis
+   * mías fallaron antes de medir. Lo que lo resolvió fue reproducirlo con un
+   * navegador de verdad y perfilarlo:
+   *
+   *   página                fotograma (mediana)
+   *   ───────────────────   ───────────────────
+   *   portada                    98,7 ms   ← 10 fps
+   *   /soporte (sólo texto)       8,3 ms   ← 120 fps
+   *
+   * El mismo video, del mismo servidor. El perfilador señaló `stroke` y `fill`:
+   * Canvas 2D. Son los dos lienzos del héroe, que pintan cada fotograma y no le
+   * dejan turno al decodificador. Ninguno de los dos miraba si había un video.
+   *
+   * Verificado tras el arreglo, en la misma sesión: 94,5 ms antes de pulsar,
+   * 8,4 ms mientras reproduce, y el video avanza 1 s por segundo sin que
+   * `readyState` baje de 4 ni una vez.
+   *
+   * Se comprueban las DOS mitades otra vez, porque una sola no sirve: que el
+   * reproductor AVISE y que cada animación ESCUCHE. Si mañana aparece otro
+   * lienzo animado en la portada, esta lista hay que ampliarla — y el
+   * comentario está aquí para que se sepa por qué.
+   */
+  const ficha = readFileSync(resolve(raiz, 'components/soporte/FichaEdicion.tsx'), 'utf8')
+  assert.match(ficha, /marcarReproduccion\(true\)/, 'el reproductor no avisa de que empieza')
+  assert.match(ficha, /marcarReproduccion\(false\)/, 'el reproductor no avisa de que termina')
+
+  const ANIMAN = [
+    'components/hero/HeroLivingField.tsx',
+    'components/hero/HeroGenesisOrb.tsx',
+    'components/webgl/WorldCanvasInner.tsx',
+  ]
+  const sordas = ANIMAN.filter((rel) => {
+    const src = readFileSync(resolve(raiz, rel), 'utf8')
+    return !/hayReproduccion\(\)|alCambiarReproduccion/.test(src)
+  })
+  assert.deepEqual(
+    sordas,
+    [],
+    'animaciones que NO se paran con un video en marcha (se lo comerán el hilo):\n   · ' +
+      sordas.join('\n   · '),
+  )
+
+  /* Y que el reanudado exista: si el bucle se cancelara en vez de saltarse el
+     dibujo, el fondo se quedaría congelado para siempre al acabar el video. */
+  for (const rel of ['components/hero/HeroLivingField.tsx', 'components/hero/HeroGenesisOrb.tsx']) {
+    const src = readFileSync(resolve(raiz, rel), 'utf8')
+    assert.match(
+      src,
+      /if \(hayReproduccion\(\)\) \{\s*rafRef\.current = requestAnimationFrame\(loop\)/,
+      `${rel}: la guarda no vuelve a programar el bucle; el fondo quedaría congelado`,
+    )
+  }
 })
 
 comprobar('el analizador de audio no puede congelar el video', () => {

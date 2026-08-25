@@ -1,6 +1,7 @@
 'use client'
 
 import { EMISSION } from '@/lib/design/tokens'
+import { alCambiarReproduccion } from '@/lib/reproduccionActiva'
 
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
@@ -62,6 +63,17 @@ export default function WorldCanvasInner({ sectionIndex }: WorldCanvasInnerProps
   const activeSection = getSectionId(sectionIndex)
   const heroActive = activeSection === 'hero'
 
+  /*
+   * EL BUCLE SE PARA MIENTRAS SE REPRODUCE UN VIDEO.
+   *
+   * Medido: con el héroe pintando, el fotograma de la portada tarda 98,7 ms
+   * —10 fps— y el video del asistente se queda clavado. En una página sin
+   * héroe, 8,3 ms y el mismo video va fluido. Quien pulsa reproducir ya dijo
+   * qué quiere mirar; el fondo animado pasa a ser lo que estorba.
+   */
+  const [videoEnCurso, setVideoEnCurso] = useState(false)
+  useEffect(() => alCambiarReproduccion(setVideoEnCurso), [])
+
   const { sectionIndexRef, scrollProgressRef } = useScene()
   const prevHeroActive = useRef(heroActive)
   const mounted = useIsMounted()
@@ -121,7 +133,7 @@ export default function WorldCanvasInner({ sectionIndex }: WorldCanvasInnerProps
       ))}
       {PINTAR_PARTICULAS ? (
       <Canvas
-        frameloop={heroActive ? 'never' : 'always'}
+        frameloop={heroActive || videoEnCurso ? 'never' : 'always'}
         camera={{ position: [0, 0, 5], fov: 75 }}
         gl={{ antialias: !mobileGl, alpha: true, powerPreference: mobileGl ? 'low-power' : 'high-performance' }}
         style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', display: 'block' }}

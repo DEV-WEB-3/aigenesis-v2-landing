@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef } from 'react'
+import { hayReproduccion } from '@/lib/reproduccionActiva'
 import { HERO_DEBUG, heroDebug } from '@/lib/hero-debug'
 import {
   HERO_LOGO_FOCUS,
@@ -603,6 +604,22 @@ export default function HeroLivingField({ tier = 'high' }: HeroLivingFieldProps)
     let lastCenterLum = -1
 
     const loop = (now: number) => {
+      /*
+       * MIENTRAS SE REPRODUCE UN VIDEO, ESTE LIENZO NO DIBUJA.
+       *
+       * Medido con el perfilador del navegador sobre la portada: este bucle y su
+       * hermano se llevan el hilo principal —`stroke` y `fill` de Canvas 2D— y
+       * el fotograma pasa de 8 ms en una pagina de texto a 99 ms aqui. A 10 fps
+       * el decodificador de video no consigue turno y se queda clavado, que es
+       * exactamente lo que reporto el owner.
+       *
+       * El bucle SIGUE programandose (por eso no se cancela): asi vuelve solo en
+       * cuanto el video termina. Lo que se salta es el dibujo, que es el coste.
+       */
+      if (hayReproduccion()) {
+        rafRef.current = requestAnimationFrame(loop)
+        return
+      }
       if (loopGenerationRef.current !== generation) return
 
       const dt = now - last

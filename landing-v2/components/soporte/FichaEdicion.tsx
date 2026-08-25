@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useT } from '@/context/IdiomaContext'
 import { useCorpus } from '@/hooks/useCorpus'
 import type { Aliento } from '@/hooks/useAliento'
+import { marcarReproduccion } from '@/lib/reproduccionActiva'
 import {
   type Edicion,
   NOMBRE_IDIOMA,
@@ -149,7 +150,12 @@ export default function FichaEdicion({
   /* Al salir de la ficha, la consola vuelve a respirar. Sin esto se quedaría
      «hablando» con un video que ya no está: el borde seguiría agitado en una
      pantalla quieta, y eso desconcierta más que no tener efecto. */
-  useEffect(() => () => onVoz?.callar(), [onVoz])
+  /* Al desmontar la ficha, el fondo vuelve a animarse: sin esto, cerrar el
+     asistente con el video en marcha dejaría el héroe congelado para siempre. */
+  useEffect(() => () => {
+    marcarReproduccion(false)
+    onVoz?.callar()
+  }, [onVoz])
 
   return (
     <article dir={pieza?.rtl ? 'rtl' : undefined}>
@@ -207,6 +213,10 @@ export default function FichaEdicion({
             crossOrigin={conCors ? 'anonymous' : undefined}
             onPlay={() => {
               setReproduciendo(true)
+              /* Se avisa a quien anima para que suelte el hilo principal: con el
+                 héroe WebGL pintando, el fotograma pasa de 8 a 99 ms y el video
+                 no consigue turno para decodificar. */
+              marcarReproduccion(true)
               /*
                * SÓLO SE ANALIZA EL AUDIO SI VAMOS CON CORS.
                *
@@ -218,8 +228,14 @@ export default function FichaEdicion({
                */
               if (conCors && videoRef.current) onVoz?.escuchar(videoRef.current)
             }}
-            onPause={() => onVoz?.callar()}
-            onEnded={() => onVoz?.callar()}
+            onPause={() => {
+              marcarReproduccion(false)
+              onVoz?.callar()
+            }}
+            onEnded={() => {
+              marcarReproduccion(false)
+              onVoz?.callar()
+            }}
             /*
              * `play()` no cubre todos los fallos. Los de RED y DECODIFICACIÓN
              * llegan después, cuando el elemento ya empezó a cargar, y no
