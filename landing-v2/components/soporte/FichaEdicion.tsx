@@ -207,7 +207,16 @@ export default function FichaEdicion({
             crossOrigin={conCors ? 'anonymous' : undefined}
             onPlay={() => {
               setReproduciendo(true)
-              if (videoRef.current) onVoz?.escuchar(videoRef.current)
+              /*
+               * SÓLO SE ANALIZA EL AUDIO SI VAMOS CON CORS.
+               *
+               * En el camino de respaldo el elemento es de otro origen SIN
+               * `crossOrigin`, o sea «contaminado»: meterlo en el grafo de Web
+               * Audio no devuelve silencio al analizador, devuelve silencio al
+               * ALTAVOZ. El video se vería perfecto y no se oiría nada, que es
+               * un fallo peor que no tener efecto — y más difícil de atribuir.
+               */
+              if (conCors && videoRef.current) onVoz?.escuchar(videoRef.current)
             }}
             onPause={() => onVoz?.callar()}
             onEnded={() => onVoz?.callar()}
@@ -295,6 +304,11 @@ export default function FichaEdicion({
              * es. Ahora el botón vuelve y el motivo se enseña.
              */
             onClick={() => {
+              /* PRIMERO el audio, y aquí dentro: éste es el único momento en
+                 que el navegador concede arrancar un AudioContext. Hacerlo
+                 luego, en `onPlay`, lo dejaba suspendido — y un video
+                 enganchado a un contexto suspendido se queda clavado. */
+              onVoz?.preparar()
               setFalloAlReproducir(null)
               setReproduciendo(true)
               const p = videoRef.current?.play()

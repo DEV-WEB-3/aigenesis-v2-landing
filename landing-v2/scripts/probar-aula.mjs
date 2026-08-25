@@ -598,6 +598,91 @@ comprobar('el texto de las ediciones existe en el diccionario', () => {
   assert.ok(enDicc(E.EDICIONES[0].titulo), 'control: no encuentra un título que SÍ está')
 })
 
+comprobar('el analizador de audio no puede congelar el video', () => {
+  /*
+   * EL FALLO: los videos arrancaban y se quedaban clavados a los dos segundos.
+   *
+   * `createMediaElementSource(el)` no «escucha» un elemento: le ARRANCA la
+   * salida de audio y la mete en el grafo. Si ese grafo pertenece a un
+   * AudioContext SUSPENDIDO, el elemento deja de avanzar — sin error, sin
+   * excepción, sin nada en la consola. Y nacía suspendido casi siempre, porque
+   * se llamaba desde `onPlay`, que es un evento de medio y no un gesto.
+   *
+   * Se exigen las TRES condiciones que lo impiden, porque quitar cualquiera
+   * devuelve el cuelgue:
+   *   1. El contexto se prepara en el CLIC (donde el navegador lo concede).
+   *   2. `escuchar` no engancha nada si el contexto no está corriendo.
+   *   3. No se engancha en el camino sin CORS: ahí el elemento está contaminado
+   *      y el grafo silenciaría el ALTAVOZ, no sólo el analizador.
+   */
+  const hook = readFileSync(resolve(raiz, 'hooks/useAliento.ts'), 'utf8')
+  const ficha = readFileSync(resolve(raiz, 'components/soporte/FichaEdicion.tsx'), 'utf8')
+
+  assert.match(ficha, /onVoz\?\.preparar\(\)/, 'el clic no prepara el audio: nacerá suspendido')
+  assert.match(
+    hook,
+    /if \(ctx\.state !== 'running'\)[\s\S]{0,200}?return/,
+    'falta la guarda: engancharía el video a un contexto suspendido y lo congelaría',
+  )
+  assert.match(
+    ficha,
+    /if \(conCors && videoRef\.current\) onVoz\?\.escuchar/,
+    'se engancharía el analizador en el camino sin CORS y el video quedaría mudo',
+  )
+
+  /*
+   * Y EL ORDEN IMPORTA: la guarda tiene que estar ANTES de crear la fuente.
+   *
+   * Se compara sobre el CÓDIGO, con los comentarios fuera. La primera versión
+   * de esto buscaba en el archivo entero y falló nada más escribirla: el
+   * comentario que explica el fallo NOMBRA `createMediaElementSource`, y esa
+   * mención aparece antes que la guarda. Mi propia explicación disparaba la
+   * alarma sobre el código que explicaba.
+   */
+  const codigo = hook.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/\/\/.*$/gm, ' ')
+  const iGuarda = codigo.indexOf("ctx.state !== 'running'")
+  const iFuente = codigo.indexOf('createMediaElementSource')
+  assert.ok(iGuarda !== -1 && iFuente !== -1, 'control: cambió la forma, rehacer esta comprobación')
+  assert.ok(iGuarda < iFuente, 'la guarda quedó DESPUÉS de crear la fuente: no protege nada')
+})
+
+comprobar('NINGÚN camino pinta el título de una edición sin traducir', () => {
+  /*
+   * EL FALLO QUE ESTO ATRAPA, y que ya cometí con esta misma tanda.
+   *
+   * Añadí las filas al diccionario, comprobé que existían, comprobé que la
+   * FICHA las usaba, y di el asunto por cerrado. El owner abrió el asistente en
+   * portugués y los dos títulos seguían en español — porque la LISTA es otro
+   * camino, y ahí se pintaba `{e.titulo}` en crudo. Tres veces, en dos
+   * pantallas distintas.
+   *
+   * Que la traducción exista no significa que alguien la pida. Una fila de
+   * diccionario que nadie consulta y una fila que no existe se ven EXACTAMENTE
+   * igual en pantalla, y la guarda anterior sólo miraba la primera mitad.
+   *
+   * Aquí se exige lo otro: que en el asistente no quede ni un `{e.titulo}` o
+   * `{e.resumen}` suelto. Si aparece una pantalla nueva que los pinte en crudo,
+   * esto lo dice antes de que lo diga el owner.
+   */
+  const f = readFileSync(resolve(raiz, 'components/soporte/AsistenteFlotante.tsx'), 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+  const crudos = [...f.matchAll(/\{\s*(e\.(?:titulo|resumen))\s*\}/g)].map((m) => m[1])
+  assert.deepEqual(
+    crudos,
+    [],
+    'se pintan en crudo, sin pasar por el traductor del corpus:\n   · ' + crudos.join('\n   · '),
+  )
+  /* Control de instrumento: el detector tiene que morder de verdad. */
+  const detecta = (s) => /\{\s*e\.(?:titulo|resumen)\s*\}/.test(s)
+  assert.ok(detecta('<span>{e.titulo}</span>'), 'control: no detecta el render en crudo')
+  assert.ok(detecta('{ e.resumen }'), 'control: no detecta con espacios')
+  assert.ok(!detecta('{corp(e.titulo).texto}'), 'control: marca el render ya traducido')
+
+  /* Y que la ficha siga traduciendo el suyo, que es el otro camino. */
+  const ficha = readFileSync(resolve(raiz, 'components/soporte/FichaEdicion.tsx'), 'utf8')
+  assert.match(ficha, /c\(edicion\.titulo\)\.texto/, 'la ficha dejó de traducir el título')
+})
+
 comprobar('cada portal enseña SU plan de negocio, y el asistente lo usa', () => {
   /*
    * LA REGLA DEL OWNER (25-ago-2026): en aigenesis.io se enseña la presentación

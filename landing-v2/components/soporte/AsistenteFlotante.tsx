@@ -478,7 +478,7 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                      
                     >
                       <MarcaVideo segundos={e.piezas[idiomaInicial(e, idiomaUI)]?.segundos ?? null} />
-                      <span className="min-w-0 text-[13px] text-genesis-text">{e.titulo}</span>
+                      <span lang={corp(e.titulo).lang} className="min-w-0 text-[13px] text-genesis-text">{corp(e.titulo).texto}</span>
                       <span className="ml-auto text-genesis-ion">›</span>
                     </button>
                   ))}
@@ -631,8 +631,8 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                       >
                         <MarcaVideo segundos={e.piezas[idiomaInicial(e, idiomaUI)]?.segundos ?? null} />
                         <span className="min-w-0">
-                          <span className="block text-[13px] text-genesis-text">{e.titulo}</span>
-                          <span className="text-xs text-genesis-mist">{e.resumen}</span>
+                          <span lang={corp(e.titulo).lang} className="block text-[13px] text-genesis-text">{corp(e.titulo).texto}</span>
+                          <span lang={corp(e.resumen).lang} className="text-xs text-genesis-mist">{corp(e.resumen).texto}</span>
                         </span>
                         <span className="ml-auto text-genesis-ion">›</span>
                       </button>

@@ -74,6 +74,13 @@ export interface Aliento {
   escuchar: (el: HTMLMediaElement) => void
   /** Vuelve a respirar en calma. */
   callar: () => void
+  /**
+   * Crea y arranca el contexto de audio DENTRO del gesto del usuario.
+   * Se llama desde el clic de reproducir, no desde `onPlay`: un contexto
+   * creado fuera de un gesto nace suspendido, y enganchar un video a un
+   * contexto suspendido lo CONGELA.
+   */
+  preparar: () => void
 }
 
 export function useAliento(activo: boolean): Aliento {
@@ -99,6 +106,28 @@ export function useAliento(activo: boolean): Aliento {
     analizadorRef.current = null
   }, [])
 
+  /**
+   * PREPARAR EL AUDIO DENTRO DEL GESTO DEL USUARIO.
+   *
+   * Un `AudioContext` creado fuera de un gesto nace SUSPENDIDO, y `resume()`
+   * fuera de un gesto puede no concederse. Llamando a esto desde el `onClick`
+   * del botón de reproducir, el contexto nace y arranca donde el navegador sí
+   * lo permite — antes de que haya ningún video que enganchar.
+   */
+  const preparar = useCallback(() => {
+    try {
+      const Ctor =
+        window.AudioContext ??
+        (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
+      if (!Ctor) return
+      const ctx = ctxRef.current ?? new Ctor()
+      ctxRef.current = ctx
+      if (ctx.state !== 'running') void ctx.resume()
+    } catch {
+      /* Sin audio no se hace nada: el efecto se degrada, el video no se toca. */
+    }
+  }, [])
+
   const escuchar = useCallback((el: HTMLMediaElement) => {
     modoRef.current = 'hablando'
     /* Ya enganchado antes: se reutiliza el analizador. Volver a crear la fuente
@@ -111,7 +140,36 @@ export function useAliento(activo: boolean): Aliento {
       if (!Ctor) return
       const ctx = ctxRef.current ?? new Ctor()
       ctxRef.current = ctx
-      void ctx.resume()
+      /*
+       * ═══════════════════════════════════════════════════════════════════
+       * SI EL CONTEXTO NO ESTÁ CORRIENDO, NO SE TOCA EL VIDEO. NUNCA.
+       *
+       * Esto congeló los videos en producción el 25-ago-2026: arrancaban y se
+       * quedaban clavados a los dos segundos.
+       *
+       * `createMediaElementSource(el)` no «escucha» el elemento: le ARRANCA la
+       * salida de audio y la mete en el grafo. Si el grafo pertenece a un
+       * contexto suspendido, el elemento deja de avanzar. No falla, no lanza
+       * nada, no aparece en la consola: se queda quieto.
+       *
+       * Y aquí nacía suspendido casi siempre, porque esto se llama desde
+       * `onPlay` —un evento de medio, NO un gesto del usuario—, y un
+       * `AudioContext` creado fuera de un gesto nace suspendido.
+       *
+       * Antes no se veía porque el CORS bloqueaba el video y nunca se llegaba a
+       * `onPlay`. Al arreglar el CORS, el siguiente defecto quedó al aire: un
+       * arreglo no revela lo que arregla, revela lo que tapaba.
+       *
+       * `preparar()` se llama ahora desde el clic; si aun así no está corriendo,
+       * se renuncia al analizador. El borde deja de respirar. El video se ve,
+       * que es lo único que no es negociable.
+       * ═══════════════════════════════════════════════════════════════════
+       */
+      if (ctx.state !== 'running') {
+        void ctx.resume()
+        analizadorRef.current = null
+        return
+      }
       const fuente = ctx.createMediaElementSource(el)
       const an = ctx.createAnalyser()
       an.fftSize = 1024
@@ -239,5 +297,5 @@ export function useAliento(activo: boolean): Aliento {
    * `useMemo` sobre funciones ya estables no ahorra trabajo: preserva IDENTIDAD,
    * que es lo que consultan las dependencias.
    */
-  return useMemo(() => ({ modo, escuchar, callar }), [modo, escuchar, callar])
+  return useMemo(() => ({ modo, escuchar, callar, preparar }), [modo, escuchar, callar, preparar])
 }
