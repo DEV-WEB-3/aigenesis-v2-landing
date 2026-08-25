@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
+import { partir, pegarMarca, useCorpus } from '@/hooks/useCorpus'
 import { G1 } from '@/lib/design/g1'
 import { Eyebrow } from '../Eyebrow'
 import { PillCTA } from '../PillCTA'
@@ -45,6 +46,12 @@ export function G1HeroShell({
   bloomIntensity?: number
   label: string
 }) {
+  const c = useCorpus()
+  const titular = c('Tu comunidad,|con herramientas reales.')
+  const [arriba, abajo] = partir(titular.texto)
+  const entrada = c(
+    'Trading, exchange y tarjeta cripto de la alianza, con la usabilidad del AiG Token.'
+  )
   const [mounted, setMounted] = useState(false)
   const reduce =
     typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion:reduce)').matches
@@ -102,8 +109,8 @@ export function G1HeroShell({
         />
         <div className="mx-auto max-w-3xl text-center">
           <Eyebrow>Génesis × Aitech × TAG</Eyebrow>
-          <h1 className="mt-5 font-display text-[clamp(34px,6.4vw,72px)] font-extrabold leading-[1.02] tracking-tight text-genesis-text">
-            Tu comunidad,
+          <h1 lang={titular.lang} className="mt-5 font-display text-[clamp(34px,6.4vw,72px)] font-extrabold leading-[1.02] tracking-tight text-genesis-text">
+            {arriba}
             <br />
             <span
               style={{
@@ -113,15 +120,15 @@ export function G1HeroShell({
                 color: 'transparent',
               }}
             >
-              con herramientas reales.
+              {abajo}
             </span>
           </h1>
-          <p className="mx-auto mt-5 max-w-[56ch] text-[clamp(14px,2vw,17px)] leading-relaxed text-genesis-mist">
-            Trading, exchange y tarjeta cripto de la alianza, con la usabilidad del AiG&nbsp;Token.
+          <p lang={entrada.lang} className="mx-auto mt-5 max-w-[56ch] text-[clamp(14px,2vw,17px)] leading-relaxed text-genesis-mist">
+            {pegarMarca(entrada.texto)}
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <PillCTA href="/ecosistema" variant="primary">Conocer el ecosistema →</PillCTA>
-            <PillCTA href="/como-funciona" variant="ghost">Cómo funciona ↗</PillCTA>
+            <PillCTA href="/ecosistema" variant="primary">{c('Conocer el ecosistema').texto} →</PillCTA>
+            <PillCTA href="/como-funciona" variant="ghost">{c('Cómo funciona').texto} ↗</PillCTA>
           </div>
           <div className="mt-5">
             <DisclaimerBar className="text-center" />

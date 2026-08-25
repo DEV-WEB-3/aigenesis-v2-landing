@@ -25,7 +25,9 @@
     "desplegar": "node scripts/desplegar-ssh.mjs",
     "desplegar:simular": "node scripts/desplegar-ssh.mjs --simular",
     "desplegar:hosting": "node scripts/desplegar-hosting.mjs",
-    "desplegar:probar": "node scripts/desplegar-hosting.mjs --probar"
+    "desplegar:probar": "node scripts/desplegar-hosting.mjs --probar",
+    "verify:i18n:g1": "node scripts/extraer-i18n.mjs --guarda",
+    "verify:idioma:g1": "node scripts/probar-idioma-g1.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^9.122.0",

@@ -21,6 +21,7 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
 import * as THREE from 'three'
 import { buildGenesisLogoMaskPoints } from '@/lib/trust/GenesisLogoMaskSampler'
+import { partir, pegarMarca, useCorpus } from '@/hooks/useCorpus'
 import { G1 } from '@/lib/design/g1'
 import { Eyebrow } from './Eyebrow'
 import { PillCTA } from './PillCTA'
@@ -175,6 +176,14 @@ function Poster() {
 }
 
 export function G1Hero() {
+  const c = useCorpus()
+  /* La frase entera es UNA clave y la barra la pone cada traducción: así el
+     degradado cae donde el idioma quiera, no donde cayó en español. */
+  const titular = c('Tu comunidad,|con herramientas reales.')
+  const [arriba, abajo] = partir(titular.texto)
+  const entrada = c(
+    'Trading, exchange y tarjeta cripto de la alianza, con la usabilidad del AiG Token. Una comunidad global que se une al ecosistema.'
+  )
   const [mounted, setMounted] = useState(false)
   const [phaseLabel, setPhaseLabel] = useState<string>(PHASES[0].label)
   const [count, setCount] = useState(3600)
@@ -223,9 +232,10 @@ export function G1Hero() {
       {/* copy */}
       <div className="absolute inset-x-0 bottom-[11svh] z-[2] px-[clamp(18px,4vw,46px)]">
         <div className="mx-auto max-w-3xl text-center">
+          {/* La marca no se traduce: son tres nombres propios. */}
           <Eyebrow className="justify-center">Génesis × Aitech × TAG</Eyebrow>
-          <h1 className="mt-5 font-display text-[clamp(34px,6.4vw,74px)] font-extrabold leading-[1.02] tracking-tight text-genesis-text">
-            Tu comunidad,
+          <h1 lang={titular.lang} className="mt-5 font-display text-[clamp(34px,6.4vw,74px)] font-extrabold leading-[1.02] tracking-tight text-genesis-text">
+            {arriba}
             <br />
             <span
               style={{
@@ -235,15 +245,15 @@ export function G1Hero() {
                 color: 'transparent',
               }}
             >
-              con herramientas reales.
+              {abajo}
             </span>
           </h1>
-          <p className="mx-auto mt-5 max-w-[58ch] text-[clamp(14.5px,2vw,18px)] leading-relaxed text-genesis-mist">
-            Trading, exchange y tarjeta cripto de la alianza, con la usabilidad del AiG&nbsp;Token. Una comunidad global que se une al ecosistema.
+          <p lang={entrada.lang} className="mx-auto mt-5 max-w-[58ch] text-[clamp(14.5px,2vw,18px)] leading-relaxed text-genesis-mist">
+            {pegarMarca(entrada.texto)}
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <PillCTA href="/ecosistema" variant="primary">Conocer el ecosistema →</PillCTA>
-            <PillCTA href="/como-funciona" variant="ghost">Cómo funciona ↗</PillCTA>
+            <PillCTA href="/ecosistema" variant="primary">{c('Conocer el ecosistema').texto} →</PillCTA>
+            <PillCTA href="/como-funciona" variant="ghost">{c('Cómo funciona').texto} ↗</PillCTA>
           </div>
           <div className="mt-6">
             <DisclaimerBar className="text-center" />

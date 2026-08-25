@@ -1,3 +1,6 @@
+'use client'
+
+import { conEnfasis, partir, pegarMarca, useCorpus } from '@/hooks/useCorpus'
 import { Eyebrow } from '../Eyebrow'
 import { PillCTA } from '../PillCTA'
 import { SectionReveal } from './SectionReveal'
@@ -21,6 +24,18 @@ const ENTIDADES = [
 ]
 
 export function QueEsContent({ hero = true }: { hero?: boolean }) {
+  const c = useCorpus()
+  const titular = c('La marca de|la alianza.')
+  const [arriba, abajo] = partir(titular.texto)
+  /* Frase entera con `**` marcando lo destacado: quien traduce ve la oración
+     completa y decide qué palabras resalta en SU idioma. Trocearla en seis
+     claves la habría hecho intraducible. */
+  const token = c(
+    'El AiG Token es el hilo que conecta la comunidad con las herramientas de la alianza. Dentro del ecosistema se usa en formato **DUAL (AIG + USDT)**, para dar liquidez y acceso a los productos. Es material informativo: no es asesoría financiera y la participación es voluntaria y con riesgos.'
+  )
+  const entrada = c(
+    'G1 es la puerta a un ecosistema donde una **comunidad** se encuentra con **herramientas financieras reales** —trading, exchange y tarjeta cripto— con la usabilidad del **AiG Token**. Nace de la unión de tres fuerzas: **comunidad**, **tecnología** y **finanzas**.'
+  )
   return (
     <div className="mx-auto max-w-6xl px-[clamp(16px,4vw,40px)]">
       {/* arranque del contenido — con figura "fusión" en la ruta standalone */}
@@ -34,27 +49,23 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
           <G1Lockup className="mb-6" dockAnchor />
         </SectionReveal>
         <SectionReveal>
-          <Eyebrow>Qué es G1</Eyebrow>
+          <Eyebrow>{c('Qué es G1').texto}</Eyebrow>
           {hero ? (
-            <h1 className="mx-auto mt-6 max-w-[18ch] font-display text-[clamp(34px,6.2vw,68px)] font-extrabold leading-[1.04] tracking-tight">
-              La marca de{' '}
-              <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>la alianza.</span>
+            <h1 lang={titular.lang} className="mx-auto mt-6 max-w-[18ch] font-display text-[clamp(34px,6.2vw,68px)] font-extrabold leading-[1.04] tracking-tight">
+              {arriba}{' '}
+              <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>{abajo}</span>
             </h1>
           ) : (
-            <h2 className="mx-auto mt-5 max-w-[18ch] font-display text-[clamp(28px,4.6vw,52px)] font-extrabold leading-[1.05] tracking-tight">
-              La marca de{' '}
-              <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>la alianza.</span>
+            <h2 lang={titular.lang} className="mx-auto mt-5 max-w-[18ch] font-display text-[clamp(28px,4.6vw,52px)] font-extrabold leading-[1.05] tracking-tight">
+              {arriba}{' '}
+              <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>{abajo}</span>
             </h2>
           )}
-          <p className="mx-auto mt-6 max-w-[62ch] text-[clamp(15px,2vw,18px)] leading-relaxed text-genesis-mist">
-            G1 es la puerta a un ecosistema donde una <b className="text-genesis-text">comunidad</b> se
-            encuentra con <b className="text-genesis-text">herramientas financieras reales</b> —trading,
-            exchange y tarjeta cripto— con la usabilidad del <b className="text-genesis-text">AiG&nbsp;Token</b>.
-            Nace de la unión de tres fuerzas: <b className="text-genesis-text">comunidad</b>,
-            <b className="text-genesis-text"> tecnología</b> y <b className="text-genesis-text">finanzas</b>.
+          <p lang={entrada.lang} className="mx-auto mt-6 max-w-[62ch] text-[clamp(15px,2vw,18px)] leading-relaxed text-genesis-mist">
+            {conEnfasis(pegarMarca(entrada.texto))}
           </p>
           <p className="mx-auto mt-6 font-display text-[clamp(18px,2.6vw,26px)] font-bold tracking-tight">
-            <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>Tres fuerzas. Un ecosistema.</span>
+            <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>{c('Tres fuerzas. Un ecosistema.').texto}</span>
           </p>
         </SectionReveal>
         </div>
@@ -67,9 +78,9 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
           {ENTIDADES.map((e, i) => (
             <SectionReveal key={e.n} delay={i * 0.08}>
               <div className="h-full rounded-2xl border border-genesis-ghost/50 bg-genesis-surface/40 p-6">
-                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-genesis-mist">{e.k}</p>
+                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-genesis-mist">{c(e.k).texto}</p>
                 <h3 className="mt-2 font-display text-[22px] font-bold tracking-tight">{e.n}</h3>
-                <p className="mt-3 text-[14.5px] leading-relaxed text-genesis-mist">{e.d}</p>
+                <p className="mt-3 text-[14.5px] leading-relaxed text-genesis-mist">{c(e.d).texto}</p>
               </div>
             </SectionReveal>
           ))}
@@ -83,7 +94,7 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
             <GlassMedia motif="community" ratio="16 / 9" />
           </div>
           <p className="mx-auto mt-5 max-w-[56ch] text-center text-[14px] leading-relaxed text-genesis-mist">
-            Una comunidad internacional unida por herramientas reales. Material informativo.
+            {c('Una comunidad internacional unida por herramientas reales. Material informativo.').texto}
           </p>
         </SectionReveal>
       </section>
@@ -98,22 +109,19 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
             <span aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(8,11,18,0.92) 0%, rgba(8,11,18,0.8) 30%, rgba(8,11,18,0.4) 62%, rgba(8,11,18,0.12) 100%)' }} />
             <div className="relative z-10 grid gap-8 md:grid-cols-[1.3fr_1fr] md:items-center">
               <div>
-                <Eyebrow>El AiG Token, con uso real</Eyebrow>
+                <Eyebrow>{c('El AiG Token, con uso real').texto}</Eyebrow>
                 <h2 className="mt-4 font-display text-[clamp(22px,3.2vw,34px)] font-bold tracking-tight">
-                  Un token con usabilidad, no una promesa.
+                  {c('Un token con usabilidad, no una promesa.').texto}
                 </h2>
-                <p className="mt-4 max-w-[54ch] text-[15px] leading-relaxed text-genesis-mist">
-                  El AiG Token es el hilo que conecta la comunidad con las herramientas de la alianza.
-                  Dentro del ecosistema se usa en formato <b className="text-genesis-text">DUAL (AIG + USDT)</b>,
-                  para dar liquidez y acceso a los productos. Es material informativo: no es asesoría
-                  financiera y la participación es voluntaria y con riesgos.
+                <p lang={token.lang} className="mt-4 max-w-[54ch] text-[15px] leading-relaxed text-genesis-mist">
+                  {conEnfasis(pegarMarca(token.texto))}
                 </p>
               </div>
               <div className="grid gap-3">
                 {['Comunidad que se une', 'Herramientas reales (trading · exchange · tarjeta)', 'Usabilidad DUAL del AiG Token'].map((t) => (
                   <div key={t} className="flex items-start gap-3 rounded-xl border border-genesis-ghost/40 bg-genesis-void/40 p-4">
                     <span className="mt-1 h-2 w-2 flex-none rounded-full" style={{ background: G1.cyan }} />
-                    <span className="text-[14px] text-genesis-text">{t}</span>
+                    <span lang={c(t).lang} className="text-[14px] text-genesis-text">{c(t).texto}</span>
                   </div>
                 ))}
               </div>
@@ -126,12 +134,12 @@ export function QueEsContent({ hero = true }: { hero?: boolean }) {
       <section className="py-[clamp(40px,7vw,90px)] text-center">
         <SectionReveal>
           <h2 className="mx-auto max-w-[20ch] font-display text-[clamp(24px,3.6vw,40px)] font-bold tracking-tight">
-            Explora el ecosistema.
+            {c('Explora el ecosistema.').texto}
           </h2>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <PillCTA href="/g1/ecosistema" variant="primary">Ver el ecosistema →</PillCTA>
-            <PillCTA href="/g1/como-funciona" variant="ghost">Cómo funciona ↗</PillCTA>
-            <PillCTA href="/g1/faq" variant="ghost">Preguntas frecuentes ↗</PillCTA>
+            <PillCTA href="/g1/ecosistema" variant="primary">{c('Ver el ecosistema').texto} →</PillCTA>
+            <PillCTA href="/g1/como-funciona" variant="ghost">{c('Cómo funciona').texto} ↗</PillCTA>
+            <PillCTA href="/g1/faq" variant="ghost">{c('Preguntas frecuentes').texto} ↗</PillCTA>
           </div>
         </SectionReveal>
       </section>

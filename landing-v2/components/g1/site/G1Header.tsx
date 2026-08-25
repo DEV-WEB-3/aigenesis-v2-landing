@@ -101,13 +101,13 @@ export function G1Header() {
             href={REGISTER_URL}
             target="_blank"
             rel="noopener noreferrer"
-            title="Regístrate en el Portal IBO de Génesis"
-            aria-label="Regístrate en el Portal IBO de Génesis"
+            title={t('Regístrate en el Portal IBO de Génesis')}
+            aria-label={t('Regístrate en el Portal IBO de Génesis')}
             className="hidden items-center gap-2 rounded-full px-4 py-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-genesis-text transition-colors hover:text-white sm:inline-flex"
             style={{ border: `1px solid ${G1.cyan}33`, background: 'rgba(255,255,255,0.03)' }}
           >
             {IconRegister}
-            Regístrate
+            {t('Regístrate')}
           </a>
           {/* Ingresar — CTA principal, va al Portal IBO de Génesis */}
           <BorderGlow rounded="rounded-full" className="hidden sm:inline-flex">
@@ -116,8 +116,8 @@ export function G1Header() {
                 href={IBO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                title="Ingresar al Portal IBO de Génesis"
-                aria-label="Ingresar al Portal IBO de Génesis"
+                title={t('Ingresar al Portal IBO de Génesis')}
+                aria-label={t('Ingresar al Portal IBO de Génesis')}
                 className="inline-flex items-center gap-2 rounded-full px-4 py-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-genesis-void"
                 style={{ background: G1_GRADIENT }}
               >
@@ -168,7 +168,7 @@ export function G1Header() {
                 href={IBO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Ingresar al Portal IBO de Génesis"
+                aria-label={t('Ingresar al Portal IBO de Génesis')}
                 className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-3 font-mono text-[13px] font-semibold uppercase tracking-[0.12em] text-genesis-void"
                 style={{ background: G1_GRADIENT }}
               >
@@ -179,7 +179,7 @@ export function G1Header() {
                 href={REGISTER_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Regístrate en el Portal IBO de Génesis"
+                aria-label={t('Regístrate en el Portal IBO de Génesis')}
                 className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-3 font-mono text-[13px] uppercase tracking-[0.1em] text-genesis-text"
                 style={{ border: `1px solid ${G1.cyan}2e`, background: 'rgba(255,255,255,0.03)' }}
               >

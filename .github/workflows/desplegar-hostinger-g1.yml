@@ -66,6 +66,18 @@ jobs:
       - name: Comprobar el diccionario y el lenguaje
         run: npm run verify:i18n && npm run verify:lenguaje
 
+      # Esta es la que ve el hueco que las otras no: texto VISIBLE que nunca
+      # llama a t(). Un archivo entero en español pasa `verify:i18n` en verde
+      # porque no hay ninguna entrada de diccionario incompleta.
+      - name: Comprobar que no queda texto sin traducir en G1
+        run: npm run verify:i18n:g1
+
+      # Y la que cierra el círculo: pinta la misma pantalla en español, ruso
+      # y árabe y exige que salga distinta. Las anteriores pueden estar en
+      # verde con la pantalla entera en español.
+      - name: Comprobar que la web cambia de idioma de verdad
+        run: npm run verify:idioma:g1
+
       - name: Exportar el sitio estático
         run: npm run exportar
 

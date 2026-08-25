@@ -3,15 +3,27 @@
 import { useMemo, useState } from 'react'
 import { TODAS_LAS_PREGUNTAS } from '@/lib/soporte/buscar'
 import type { Pregunta } from '@/lib/soporte/tipos'
+import { partir, useCorpus } from '@/hooks/useCorpus'
 import { Eyebrow } from '../Eyebrow'
 import { SectionReveal } from './SectionReveal'
 import { G1Aurora } from './G1Aurora'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 
+/**
+ * Las colecciones que se muestran en el índice público.
+ *
+ * Son las MISMAS categorías del corpus del asistente, así que su traducción
+ * sirve en los dos sitios: el índice de las FAQ y la pestaña «Ayuda». Una sola
+ * entrada de diccionario cubre las dos superficies.
+ */
 const PUBLICAS = ['Alianza Aitech', 'Token AiG', 'Sobre Genesis', 'Sobre G-Pulse', 'Membresía G-Pulse', 'Sobre Gevy', 'Credenciales', 'Acceso']
 const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 
 export function FaqClient() {
+  const c = useCorpus()
+  const titular = c('Lo que|conviene saber.')
+  const [arriba, abajo] = partir(titular.texto)
+  const vacio = c('Sin resultados. Prueba otras palabras o usa el asistente.')
   const [q, setQ] = useState('')
   const [activeCat, setActiveCat] = useState<string | null>(null)
   const grupos = useMemo(() => {
@@ -40,10 +52,10 @@ export function FaqClient() {
       <section className="relative py-[clamp(44px,8vw,90px)] text-center">
         <G1Aurora tint="calm" />
         <SectionReveal className="relative z-10">
-          <Eyebrow>Preguntas frecuentes</Eyebrow>
-          <h1 className="mx-auto mt-6 max-w-[16ch] font-display text-[clamp(32px,5.6vw,60px)] font-extrabold leading-[1.04] tracking-tight">
-            Lo que{' '}
-            <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>conviene saber.</span>
+          <Eyebrow>{c('Preguntas frecuentes').texto}</Eyebrow>
+          <h1 lang={titular.lang} className="mx-auto mt-6 max-w-[16ch] font-display text-[clamp(32px,5.6vw,60px)] font-extrabold leading-[1.04] tracking-tight">
+            {arriba}{' '}
+            <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>{abajo}</span>
           </h1>
           <div className="mx-auto mt-8 max-w-xl">
             <div className="relative">
@@ -53,7 +65,7 @@ export function FaqClient() {
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Busca tu pregunta…"
+                placeholder={c('Busca tu pregunta…').texto}
                 className="w-full rounded-full bg-genesis-surface/50 py-3.5 pl-12 pr-4 text-[15px] text-genesis-text outline-none transition-colors placeholder:text-genesis-mist"
                 style={{ border: `1px solid ${G1.cyan}2e` }}
               />
@@ -78,7 +90,7 @@ export function FaqClient() {
                 <p className="px-5 pb-5 text-[14.5px] leading-relaxed text-genesis-mist">{p.respuesta}</p>
               </details>
             ))}
-            {resultados.length === 0 ? <p className="px-5 py-8 text-center text-[14px] text-genesis-mist">Sin resultados. Prueba otras palabras o usa el asistente.</p> : null}
+            {resultados.length === 0 ? <p lang={vacio.lang} className="px-5 py-8 text-center text-[14px] text-genesis-mist">{vacio.texto}</p> : null}
           </div>
         </section>
       ) : (
@@ -86,7 +98,7 @@ export function FaqClient() {
           <div className="grid gap-8 lg:grid-cols-[230px_1fr]">
             {/* ÍNDICE — filtro (trae la categoría al usuario, no salta) */}
             <aside className="lg:sticky lg:top-24 lg:self-start">
-              <p className="mb-4 font-mono text-[12px] uppercase tracking-[0.2em]" style={{ color: G1.amber }}>Índice</p>
+              <p className="mb-4 font-mono text-[12px] uppercase tracking-[0.2em]" style={{ color: G1.amber }}>{c('Índice').texto}</p>
               <nav className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-x-visible lg:pb-0">
                 {grupos.map((g) => {
                   const on = (activeCat ?? grupos[0]?.categoria) === g.categoria
@@ -100,7 +112,7 @@ export function FaqClient() {
                     >
                       <span aria-hidden className="pointer-events-none absolute -right-5 -top-5 h-12 w-12 rounded-full blur-2xl transition-opacity" style={{ background: G1.cyan, opacity: on ? 0.55 : 0.2 }} />
                       <span className="whitespace-nowrap text-[13.5px] font-semibold lg:whitespace-normal" style={{ color: on ? G1.cyan : undefined }}>
-                        <span className={on ? '' : 'text-genesis-text'}>{g.categoria}</span>
+                        <span lang={c(g.categoria).lang} className={on ? '' : 'text-genesis-text'}>{c(g.categoria).texto}</span>
                       </span>
                       <span className="flex-none font-mono text-[11px] text-genesis-mist">{g.items.length}</span>
                     </button>
@@ -116,7 +128,7 @@ export function FaqClient() {
                 if (!g) return null
                 return (
                   <div>
-                    <p className="mb-3 font-mono text-[12px] uppercase tracking-[0.18em]" style={{ color: G1.cyan }}>{g.categoria}</p>
+                    <p className="mb-3 font-mono text-[12px] uppercase tracking-[0.18em]" style={{ color: G1.cyan }} lang={c(g.categoria).lang}>{c(g.categoria).texto}</p>
                     <div className="overflow-hidden rounded-2xl border border-genesis-ghost/50 bg-genesis-surface/30">
                       {g.items.map((p) => (
                         <details key={p.id} className="group border-b border-genesis-ghost/30 last:border-b-0">

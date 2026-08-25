@@ -1,5 +1,6 @@
 'use client'
 
+import { partir, useCorpus } from '@/hooks/useCorpus'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 import { SectionReveal } from './SectionReveal'
 import { AllianceAccordion } from './AllianceAccordion'
@@ -16,6 +17,11 @@ import { AllianceAccordion } from './AllianceAccordion'
  * tecnología; Aitech = adopción y comunidad global; TAG = finanzas.
  */
 export function G1Trilogy() {
+  const c = useCorpus()
+  /* Frase entera con barra: en español el énfasis cae al final, en otros idiomas
+     no tiene por qué. La traducción decide dónde. */
+  const titular = c('Tres fuerzas que convergen en|un solo núcleo.')
+  const [arriba, abajo] = partir(titular.texto)
   return (
     <div
       className="relative overflow-hidden rounded-[28px] border p-[clamp(24px,4vw,52px)]"
@@ -33,10 +39,10 @@ export function G1Trilogy() {
       <span aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px]" style={{ background: `radial-gradient(circle, ${G1.violet}26, ${G1.cyan}14 45%, transparent 72%)` }} />
 
       <SectionReveal>
-        <p className="relative text-center font-mono text-[12px] uppercase tracking-[0.24em]" style={{ color: G1.amber }}>La alianza</p>
-        <h3 className="relative mx-auto mt-3 max-w-[26ch] text-center font-display text-[clamp(22px,3.4vw,34px)] font-bold tracking-tight">
-          Tres fuerzas que convergen en{' '}
-          <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>un solo núcleo</span>.
+        <p lang={c('La alianza').lang} className="relative text-center font-mono text-[12px] uppercase tracking-[0.24em]" style={{ color: G1.amber }}>{c('La alianza').texto}</p>
+        <h3 lang={titular.lang} className="relative mx-auto mt-3 max-w-[26ch] text-center font-display text-[clamp(22px,3.4vw,34px)] font-bold tracking-tight">
+          {arriba}{' '}
+          <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>{abajo}</span>
         </h3>
       </SectionReveal>
 
@@ -46,12 +52,12 @@ export function G1Trilogy() {
 
       <p className="relative mt-11 text-center font-mono text-[11px] uppercase tracking-[0.28em] text-genesis-mist">
         <span style={{ color: G1.cyan }}>G1</span>
-        <span className="mx-2 text-genesis-ghost">·</span>Una visión
-        <span className="mx-2 text-genesis-ghost">·</span>Una red
-        <span className="mx-2 text-genesis-ghost">·</span>Un ecosistema
+        <span className="mx-2 text-genesis-ghost">·</span>{c('Una visión').texto}
+        <span className="mx-2 text-genesis-ghost">·</span>{c('Una red').texto}
+        <span className="mx-2 text-genesis-ghost">·</span>{c('Un ecosistema').texto}
       </p>
       <p className="relative mt-2 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-genesis-ghost">
-        Powered by Génesis × Aitech × TAG
+        {c('Powered by').texto} Génesis × Aitech × TAG
       </p>
     </div>
   )

@@ -9,6 +9,7 @@ import { Vector2, NoToneMapping as THREE_NoToneMapping } from 'three'
 import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { partir, useCorpus } from '@/hooks/useCorpus'
 import { G1 } from '@/lib/design/g1'
 import { G1GpgpuField } from '../hero/G1GpgpuField'
 import { G1ParticleSky } from './G1ParticleSky'
@@ -87,6 +88,11 @@ const WIN: [number, number][] = [
 ]
 
 export function G1Narrative() {
+  const c = useCorpus()
+  /* El titular del acto 0 va partido por el degradado: una sola clave, y la
+     traducción decide dónde cae el énfasis. */
+  const acto0 = c('Todo empieza con|una comunidad.')
+  const [a0, b0] = partir(acto0.texto)
   const progressRef = useRef(0)
   // El canvas de la narrativa (65k partículas + postFX) es lo más caro de la
   // página. Cuando el relato termina y el stage se funde, se APAGA el frameloop:
@@ -327,7 +333,7 @@ export function G1Narrative() {
           <div className={plate}>
             <Eyebrow>Génesis × Aitech × TAG</Eyebrow>
             <h2 className="mt-6 font-display text-[clamp(30px,5.4vw,60px)] font-extrabold leading-[1.05] tracking-tight text-genesis-text">
-            Todo empieza con<br /><span style={{ background: GRAD, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>una comunidad.</span>
+            {a0}<br /><span style={{ background: GRAD, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>{b0}</span>
             </h2>
           </div>
         </div>
@@ -335,17 +341,17 @@ export function G1Narrative() {
         {/* ACTO 1 · AITECH */}
         <div ref={(el) => { actRefs.current[1] = el }} className={actClass} style={{ opacity: 0, zIndex: 2 }}>
           <div className={plate}>
-            <Eyebrow>Aitech △ · la tecnología</Eyebrow>
-            <h2 className="mt-5 font-display text-[clamp(26px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-tight text-genesis-text">Herramientas que ya funcionan.</h2>
-            <div className="mt-6 flex flex-wrap justify-center gap-2"><Pill>Educación</Pill><Pill>Tecnología</Pill><Pill>Comunidad</Pill></div>
+            <Eyebrow>{c('Aitech △ · la tecnología').texto}</Eyebrow>
+            <h2 className="mt-5 font-display text-[clamp(26px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-tight text-genesis-text">{c('Herramientas que ya funcionan.').texto}</h2>
+            <div className="mt-6 flex flex-wrap justify-center gap-2"><Pill>{c('Educación').texto}</Pill><Pill>{c('Tecnología').texto}</Pill><Pill>{c('Comunidad').texto}</Pill></div>
           </div>
         </div>
 
         {/* ACTO 2 · TAG */}
         <div ref={(el) => { actRefs.current[2] = el }} className={actClass} style={{ opacity: 0, zIndex: 2 }}>
           <div className={plate}>
-            <Eyebrow>TAG △ · el mercado</Eyebrow>
-            <h2 className="mt-5 font-display text-[clamp(26px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-tight text-genesis-text">Acceso real a los mercados.</h2>
+            <Eyebrow>{c('TAG △ · el mercado').texto}</Eyebrow>
+            <h2 className="mt-5 font-display text-[clamp(26px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-tight text-genesis-text">{c('Acceso real a los mercados.').texto}</h2>
             <div className="mt-6 flex flex-wrap justify-center gap-2"><Pill>TagMarkets · broker</Pill><Pill>Bit1 · exchange</Pill><Pill>BIX · tarjeta</Pill></div>
           </div>
         </div>
@@ -353,8 +359,8 @@ export function G1Narrative() {
         {/* ACTO 3 · GÉNESIS */}
         <div ref={(el) => { actRefs.current[3] = el }} className={actClass} style={{ opacity: 0, zIndex: 2 }}>
           <div className={plate}>
-            <Eyebrow>Génesis △ · la comunidad</Eyebrow>
-            <h2 className="mt-5 font-display text-[clamp(26px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-tight text-genesis-text">La comunidad que las une.</h2>
+            <Eyebrow>{c('Génesis △ · la comunidad').texto}</Eyebrow>
+            <h2 className="mt-5 font-display text-[clamp(26px,4.6vw,52px)] font-extrabold leading-[1.06] tracking-tight text-genesis-text">{c('La comunidad que las une.').texto}</h2>
             <div className="mt-6 flex flex-wrap justify-center gap-2"><Pill>G-Pulse</Pill><Pill>AIG · token</Pill><Pill>G11 · Marketplace</Pill></div>
           </div>
         </div>
@@ -367,8 +373,8 @@ export function G1Narrative() {
           style={{ opacity: 0, zIndex: 3 }}
         >
           <div className={plate}>
-            <Eyebrow>El nacimiento de G1</Eyebrow>
-            <h2 className="mt-4 font-display text-[clamp(22px,3.6vw,40px)] font-bold tracking-tight text-genesis-text">Tu comunidad, con herramientas reales.</h2>
+            <Eyebrow>{c('El nacimiento de G1').texto}</Eyebrow>
+            <h2 className="mt-4 font-display text-[clamp(22px,3.6vw,40px)] font-bold tracking-tight text-genesis-text">{c('Tu comunidad, con herramientas reales.').texto}</h2>
           </div>
         </div>
 
@@ -376,10 +382,10 @@ export function G1Narrative() {
         <div ref={(el) => { actRefs.current[5] = el }} className={actClass} style={{ opacity: 0, zIndex: 4 }}>
           <div className={plate}>
             <Eyebrow>El nacimiento de G1</Eyebrow>
-            <h2 className="mt-5 font-display text-[clamp(28px,5vw,56px)] font-extrabold tracking-tight text-genesis-text">Empieza con G1.</h2>
+            <h2 className="mt-5 font-display text-[clamp(28px,5vw,56px)] font-extrabold tracking-tight text-genesis-text">{c('Empieza con G1.').texto}</h2>
             <div className="pointer-events-auto mt-7 flex flex-wrap justify-center gap-3">
-            <PillCTA href="/g1/ecosistema" variant="primary">Conocer el ecosistema →</PillCTA>
-            <PillCTA href="/g1/como-funciona" variant="ghost">Cómo funciona ↗</PillCTA>
+            <PillCTA href="/g1/ecosistema" variant="primary">{c('Conocer el ecosistema').texto} →</PillCTA>
+            <PillCTA href="/g1/como-funciona" variant="ghost">{c('Cómo funciona').texto} ↗</PillCTA>
             </div>
             <div className="mt-6"><DisclaimerBar className="text-center" /></div>
           </div>
@@ -394,7 +400,7 @@ export function G1Narrative() {
           style={{ opacity: 0, display: 'none' }}
         >
           <span className="font-mono text-[10.5px] uppercase tracking-[0.26em]" style={{ color: G1.cyan }}>
-            La web continúa · sigue bajando
+            {c('La web continúa · sigue bajando').texto}
           </span>
           <svg width="22" height="13" viewBox="0 0 22 13" fill="none" aria-hidden className="motion-safe:animate-[g1down_1.6s_ease-in-out_infinite]">
             <path d="M2 2l9 8 9-8" stroke={G1.cyan} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -409,7 +415,7 @@ export function G1Narrative() {
           className="pointer-events-none absolute inset-x-0 bottom-[clamp(18px,4vh,42px)] z-[6] flex flex-col items-center gap-2.5 transition-opacity duration-500"
         >
           <span className="font-mono text-[10.5px] uppercase tracking-[0.28em] text-genesis-mist">
-            Desplázate para vivir la experiencia
+            {c('Desplázate para vivir la experiencia').texto}
           </span>
           <span
             className="relative grid h-9 w-[22px] place-items-start justify-center rounded-full pt-1.5"

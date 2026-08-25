@@ -1905,6 +1905,1094 @@ export const DICCIONARIO: Record<string, Fila> = {
     ur: 'ایکو سسٹم دیکھیں',
   },
 
+  /* ══════════════════════════════════════════════════════════════════
+     LA WEB DE G1 — el pie, el descargo y las credenciales.
+
+     Presentes en TODAS las páginas, así que es la tanda que más cambia por
+     cadena traducida.
+
+     LOS NOMBRES PROPIOS NO ESTÁN AQUÍ Y ES DELIBERADO: «Tag Markets»,
+     «Bit1», «BixCard», «G-Pulse», «Gevy», «AiG Token», «Lloyd's of London»,
+     «FSC Mauritius» identifican entidades y productos. Un nombre traducido
+     deja de ser el nombre, y quien quiera verificar una licencia en su
+     registro ya no la encuentra. Se traduce lo que DESCRIBE, no lo que
+     IDENTIFICA.
+
+     AVISO SOBRE LAS LÍNEAS DE RIESGO: «no es asesoría financiera» y el
+     descargo de credenciales tienen peso jurídico. Están traducidas con
+     cuidado y conviene que alguien las revise por idioma antes de darlas
+     por definitivas. Se dejan traducidas y no en español porque un aviso
+     que quien lo lee no entiende no protege a nadie.
+     ══════════════════════════════════════════════════════════════════ */
+  'Informativo · no es asesoría financiera · participación voluntaria y con riesgos.': {
+    en: 'Informational · not financial advice · voluntary participation, with risks.',
+    pt: 'Informativo · não é assessoria financeira · participação voluntária e com riscos.',
+    fr: 'À titre informatif · pas un conseil financier · participation volontaire et à risques.',
+    ru: 'Информационно · не финансовая консультация · участие добровольное и сопряжено с рисками.',
+    sv: 'Informativt · inte finansiell rådgivning · frivilligt deltagande, med risker.',
+    hr: 'Informativno · nije financijski savjet · sudjelovanje je dobrovoljno i nosi rizike.',
+    ar: 'لأغراض إعلامية · ليست استشارة مالية · المشاركة طوعية وتنطوي على مخاطر.',
+    de: 'Informativ · keine Finanzberatung · freiwillige Teilnahme, mit Risiken.',
+    sr: 'Информативно · није финансијски савет · учешће је добровољно и носи ризике.',
+    ur: 'معلوماتی · مالی مشورہ نہیں · شرکت رضاکارانہ اور خطرات کے ساتھ۔',
+  },
+  'La información publicada tiene fines informativos y educativos. No es asesoría financiera, legal ni fiscal. Los mercados y los activos digitales implican riesgos y pueden generar pérdidas parciales o totales. G1 no administra el capital de las personas: cada quien revisa los términos oficiales de cada plataforma, analiza los riesgos y decide de forma independiente.':
+    {
+      en: 'The information published here is for informational and educational purposes. It is not financial, legal or tax advice. Markets and digital assets carry risk and may lead to partial or total loss. G1 does not manage anyone’s capital: each person reviews the official terms of each platform, weighs the risks and decides independently.',
+      pt: 'As informações publicadas têm fins informativos e educativos. Não são assessoria financeira, jurídica nem fiscal. Os mercados e os ativos digitais implicam riscos e podem gerar perdas parciais ou totais. A G1 não administra o capital das pessoas: cada um revisa os termos oficiais de cada plataforma, analisa os riscos e decide de forma independente.',
+      fr: 'Les informations publiées ont une finalité informative et éducative. Elles ne constituent ni un conseil financier, ni juridique, ni fiscal. Les marchés et les actifs numériques comportent des risques et peuvent entraîner des pertes partielles ou totales. G1 ne gère pas le capital des personnes : chacun consulte les conditions officielles de chaque plateforme, évalue les risques et décide de façon indépendante.',
+      ru: 'Опубликованная информация носит информационный и образовательный характер. Это не финансовая, юридическая или налоговая консультация. Рынки и цифровые активы сопряжены с рисками и могут привести к частичным или полным потерям. G1 не управляет капиталом людей: каждый сам изучает официальные условия каждой платформы, оценивает риски и принимает решение самостоятельно.',
+      sv: 'Informationen som publiceras här är av informativ och utbildande karaktär. Den utgör inte finansiell, juridisk eller skatterådgivning. Marknader och digitala tillgångar innebär risker och kan leda till partiella eller totala förluster. G1 förvaltar inte någons kapital: var och en läser de officiella villkoren för varje plattform, bedömer riskerna och beslutar självständigt.',
+      hr: 'Objavljene informacije služe u informativne i obrazovne svrhe. Nisu financijski, pravni ni porezni savjet. Tržišta i digitalna imovina nose rizike i mogu dovesti do djelomičnih ili potpunih gubitaka. G1 ne upravlja ničijim kapitalom: svatko pregledava službene uvjete svake platforme, procjenjuje rizike i odlučuje samostalno.',
+      ar: 'المعلومات المنشورة لأغراض إعلامية وتعليمية. وهي ليست استشارة مالية أو قانونية أو ضريبية. تنطوي الأسواق والأصول الرقمية على مخاطر وقد تؤدي إلى خسائر جزئية أو كاملة. لا تدير G1 رأس مال الأشخاص: كل شخص يراجع الشروط الرسمية لكل منصة، ويقيّم المخاطر، ويقرر باستقلالية.',
+      de: 'Die hier veröffentlichten Informationen dienen der Information und Bildung. Sie sind keine Finanz-, Rechts- oder Steuerberatung. Märkte und digitale Vermögenswerte bergen Risiken und können zu teilweisen oder vollständigen Verlusten führen. G1 verwaltet kein Kapital von Personen: Jede Person prüft die offiziellen Bedingungen jeder Plattform, wägt die Risiken ab und entscheidet eigenständig.',
+      sr: 'Објављене информације служе у информативне и образовне сврхе. Нису финансијски, правни ни порески савет. Тржишта и дигитална имовина носе ризике и могу довести до делимичних или потпуних губитака. G1 не управља ничијим капиталом: свако прегледа званичне услове сваке платформе, процењује ризике и одлучује самостално.',
+      ur: 'شائع کردہ معلومات معلوماتی اور تعلیمی مقاصد کے لیے ہیں۔ یہ مالی، قانونی یا ٹیکس مشورہ نہیں ہیں۔ مارکیٹیں اور ڈیجیٹل اثاثے خطرات رکھتے ہیں اور جزوی یا مکمل نقصان کا سبب بن سکتے ہیں۔ G1 کسی کے سرمائے کا انتظام نہیں کرتا: ہر شخص خود ہر پلیٹ فارم کی سرکاری شرائط دیکھتا ہے، خطرات کا جائزہ لیتا ہے اور آزادانہ فیصلہ کرتا ہے۔',
+    },
+  'Respaldo — según la documentación oficial de cada entidad': {
+    en: 'Backing — per each entity’s official documentation',
+    pt: 'Respaldo — conforme a documentação oficial de cada entidade',
+    fr: 'Garanties — selon la documentation officielle de chaque entité',
+    ru: 'Обеспечение — согласно официальной документации каждой организации',
+    sv: 'Stöd — enligt varje enhets officiella dokumentation',
+    hr: 'Podrška — prema službenoj dokumentaciji svakog subjekta',
+    ar: 'الدعم — وفقًا للوثائق الرسمية لكل جهة',
+    de: 'Absicherung — laut offizieller Dokumentation der jeweiligen Stelle',
+    sr: 'Подршка — према званичној документацији сваког субјекта',
+    ur: 'پشت پناہی — ہر ادارے کی سرکاری دستاویزات کے مطابق',
+  },
+  'Génesis muestra estas credenciales de terceros y enlaza a su fuente. No las certifica.': {
+    en: 'Génesis displays these third-party credentials and links to their source. It does not certify them.',
+    pt: 'A Génesis exibe estas credenciais de terceiros e remete à sua fonte. Não as certifica.',
+    fr: 'Génesis présente ces accréditations de tiers et renvoie à leur source. Elle ne les certifie pas.',
+    ru: 'Génesis показывает эти сторонние документы и ссылается на их источник. Она их не заверяет.',
+    sv: 'Génesis visar dessa tredjepartsintyg och länkar till källan. Vi intygar dem inte.',
+    hr: 'Génesis prikazuje ove vjerodajnice trećih strana i povezuje na njihov izvor. Ne potvrđuje ih.',
+    ar: 'تعرض Génesis اعتمادات الأطراف الثالثة هذه وتحيل إلى مصدرها. وهي لا تصادق عليها.',
+    de: 'Génesis zeigt diese Nachweise Dritter und verlinkt auf deren Quelle. Sie zertifiziert sie nicht.',
+    sr: 'Génesis приказује ове акредитиве трећих страна и повезује на њихов извор. Не потврђује их.',
+    ur: 'Génesis یہ فریقِ ثالث کی اسناد دکھاتا ہے اور ان کے ماخذ سے منسلک کرتا ہے۔ ان کی تصدیق نہیں کرتا۔',
+  },
+  'Credenciales de la alianza': {
+    en: 'Alliance credentials', pt: 'Credenciais da aliança', fr: 'Accréditations de l’alliance',
+    ru: 'Документы альянса', sv: 'Alliansens meriter', hr: 'Vjerodajnice saveza',
+    ar: 'اعتمادات التحالف', de: 'Nachweise der Allianz',
+    sr: 'Акредитиви савеза', ur: 'اتحاد کی اسناد',
+  },
+  'comunidad / ecosistema': {
+    en: 'community / ecosystem', pt: 'comunidade / ecossistema', fr: 'communauté / écosystème',
+    ru: 'сообщество / экосистема', sv: 'gemenskap / ekosystem', hr: 'zajednica / ekosustav',
+    ar: 'مجتمع / نظام بيئي', de: 'Community / Ökosystem',
+    sr: 'заједница / екосистем', ur: 'کمیونٹی / ایکو سسٹم',
+  },
+  bróker: {
+    en: 'broker', pt: 'corretora', fr: 'courtier', ru: 'брокер', sv: 'mäklare',
+    hr: 'broker', ar: 'وسيط', de: 'Broker', sr: 'брокер', ur: 'بروکر',
+  },
+  'fondo de cobertura': {
+    en: 'coverage fund', pt: 'fundo de cobertura', fr: 'fonds de couverture',
+    ru: 'фонд покрытия', sv: 'täckningsfond', hr: 'fond pokrića',
+    ar: 'صندوق تغطية', de: 'Deckungsfonds', sr: 'фонд покрића', ur: 'کوریج فنڈ',
+  },
+  'exchange (Bit1)': {
+    en: 'exchange (Bit1)', pt: 'exchange (Bit1)', fr: 'plateforme d’échange (Bit1)',
+    ru: 'биржа (Bit1)', sv: 'börs (Bit1)', hr: 'burza (Bit1)',
+    ar: 'منصة تداول (Bit1)', de: 'Börse (Bit1)', sr: 'берза (Bit1)', ur: 'ایکسچینج (Bit1)',
+  },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LA WEB DE G1 — titulares, secciones y contenido de página.
+
+     LA BARRA `|` PARTE EL TITULAR y cada idioma decide dónde. En español el
+     énfasis del degradado cae al final; en alemán o en árabe no tiene por qué.
+     Guardar dos claves —una por trozo— habría pintado el degradado sobre la
+     palabra equivocada.
+
+     LOS `**` MARCAN EL ÉNFASIS dentro de una frase. La alternativa era trocear
+     el párrafo por cada `<b>`, y nadie puede traducir «se encuentra con» sin
+     ver el resto de la oración.
+
+     LOS NOMBRES PROPIOS NO ESTÁN AQUÍ: «Tag Markets», «Bit1», «BixCard»,
+     «G-Pulse», «Gevy», «AiG Token», «Génesis», «Aitech», «Lloyd's of London»,
+     «FSC Mauritius». Al no tener entrada, `t()` devuelve el original — que es
+     exactamente lo que debe verse.
+     ══════════════════════════════════════════════════════════════════ */
+  'Tu comunidad,|con herramientas reales.': {
+    en: 'Your community,|with real tools.', pt: 'Sua comunidade,|com ferramentas reais.',
+    fr: 'Ta communauté,|avec de vrais outils.', ru: 'Твоё сообщество,|с реальными инструментами.',
+    sv: 'Din gemenskap,|med riktiga verktyg.', hr: 'Tvoja zajednica,|sa stvarnim alatima.',
+    ar: 'مجتمعك،|بأدوات حقيقية.', de: 'Deine Community,|mit echten Werkzeugen.',
+    sr: 'Твоја заједница,|са стварним алатима.', ur: 'آپ کی کمیونٹی،|حقیقی اوزاروں کے ساتھ۔',
+  },
+  'Tu comunidad, con herramientas reales.': {
+    en: 'Your community, with real tools.', pt: 'Sua comunidade, com ferramentas reais.',
+    fr: 'Ta communauté, avec de vrais outils.', ru: 'Твоё сообщество, с реальными инструментами.',
+    sv: 'Din gemenskap, med riktiga verktyg.', hr: 'Tvoja zajednica, sa stvarnim alatima.',
+    ar: 'مجتمعك، بأدوات حقيقية.', de: 'Deine Community, mit echten Werkzeugen.',
+    sr: 'Твоја заједница, са стварним алатима.', ur: 'آپ کی کمیونٹی، حقیقی اوزاروں کے ساتھ۔',
+  },
+  'Trading, exchange y tarjeta cripto de la alianza, con la usabilidad del AiG Token. Una comunidad global que se une al ecosistema.':
+    {
+      en: 'Trading, exchange and crypto card from the alliance, with the AiG Token’s usability. A global community joining the ecosystem.',
+      pt: 'Trading, exchange e cartão cripto da aliança, com a usabilidade do AiG Token. Uma comunidade global que se une ao ecossistema.',
+      fr: 'Trading, échange et carte crypto de l’alliance, avec l’utilité du AiG Token. Une communauté mondiale qui rejoint l’écosystème.',
+      ru: 'Трейдинг, биржа и криптокарта альянса — с применимостью AiG Token. Глобальное сообщество, присоединяющееся к экосистеме.',
+      sv: 'Handel, börs och kryptokort från alliansen, med AiG Tokens användbarhet. En global gemenskap som ansluter sig till ekosystemet.',
+      hr: 'Trgovanje, burza i kripto kartica saveza, uz upotrebljivost AiG Tokena. Globalna zajednica koja se pridružuje ekosustavu.',
+      ar: 'التداول والمنصة وبطاقة التشفير من التحالف، مع قابلية استخدام AiG Token. مجتمع عالمي ينضم إلى النظام البيئي.',
+      de: 'Trading, Börse und Krypto-Karte der Allianz, mit der Nutzbarkeit des AiG Token. Eine globale Community, die sich dem Ökosystem anschließt.',
+      sr: 'Трговање, берза и крипто картица савеза, уз употребљивост AiG Token-а. Глобална заједница која се придружује екосистему.',
+      ur: 'اتحاد کی ٹریڈنگ، ایکسچینج اور کرپٹو کارڈ، AiG Token کی افادیت کے ساتھ۔ ایک عالمی کمیونٹی جو ایکو سسٹم میں شامل ہو رہی ہے۔',
+    },
+  'Trading, exchange y tarjeta cripto de la alianza, con la usabilidad del AiG Token.': {
+    en: 'Trading, exchange and crypto card from the alliance, with the AiG Token’s usability.',
+    pt: 'Trading, exchange e cartão cripto da aliança, com a usabilidade do AiG Token.',
+    fr: 'Trading, échange et carte crypto de l’alliance, avec l’utilité du AiG Token.',
+    ru: 'Трейдинг, биржа и криптокарта альянса — с применимостью AiG Token.',
+    sv: 'Handel, börs och kryptokort från alliansen, med AiG Tokens användbarhet.',
+    hr: 'Trgovanje, burza i kripto kartica saveza, uz upotrebljivost AiG Tokena.',
+    ar: 'التداول والمنصة وبطاقة التشفير من التحالف، مع قابلية استخدام AiG Token.',
+    de: 'Trading, Börse und Krypto-Karte der Allianz, mit der Nutzbarkeit des AiG Token.',
+    sr: 'Трговање, берза и крипто картица савеза, уз употребљивост AiG Token-а.',
+    ur: 'اتحاد کی ٹریڈنگ، ایکسچینج اور کرپٹو کارڈ، AiG Token کی افادیت کے ساتھ۔',
+  },
+  'Conocer el ecosistema': {
+    en: 'Explore the ecosystem', pt: 'Conhecer o ecossistema', fr: 'Découvrir l’écosystème',
+    ru: 'Узнать об экосистеме', sv: 'Utforska ekosystemet', hr: 'Upoznaj ekosustav',
+    ar: 'تعرّف على النظام البيئي', de: 'Das Ökosystem entdecken',
+    sr: 'Упознај екосистем', ur: 'ایکو سسٹم جانیں',
+  },
+  /* `Ver el ecosistema` ya existe más arriba (línea ~1901). */
+  'Explora el ecosistema.': {
+    en: 'Explore the ecosystem.', pt: 'Explore o ecossistema.', fr: 'Explore l’écosystème.',
+    ru: 'Исследуй экосистему.', sv: 'Utforska ekosystemet.', hr: 'Istraži ekosustav.',
+    ar: 'استكشف النظام البيئي.', de: 'Erkunde das Ökosystem.',
+    sr: 'Истражи екосистем.', ur: 'ایکو سسٹم دریافت کریں۔',
+  },
+  'La comunidad': {
+    en: 'The community', pt: 'A comunidade', fr: 'La communauté', ru: 'Сообщество',
+    sv: 'Gemenskapen', hr: 'Zajednica', ar: 'المجتمع', de: 'Die Community',
+    sr: 'Заједница', ur: 'کمیونٹی',
+  },
+
+  /* ── «Qué es G1» ─────────────────────────────────────────────────── */
+  'La marca de|la alianza.': {
+    en: 'The brand of|the alliance.', pt: 'A marca da|aliança.', fr: 'La marque de|l’alliance.',
+    ru: 'Бренд|альянса.', sv: 'Alliansens|varumärke.', hr: 'Brand|saveza.',
+    ar: 'علامة|التحالف.', de: 'Die Marke der|Allianz.', sr: 'Бренд|савеза.', ur: 'اتحاد کا|برانڈ۔',
+  },
+  'G1 es la puerta a un ecosistema donde una **comunidad** se encuentra con **herramientas financieras reales** —trading, exchange y tarjeta cripto— con la usabilidad del **AiG Token**. Nace de la unión de tres fuerzas: **comunidad**, **tecnología** y **finanzas**.':
+    {
+      en: 'G1 is the door to an ecosystem where a **community** meets **real financial tools** — trading, exchange and a crypto card — with the usability of the **AiG Token**. It is born from three forces coming together: **community**, **technology** and **finance**.',
+      pt: 'A G1 é a porta para um ecossistema onde uma **comunidade** encontra **ferramentas financeiras reais** — trading, exchange e cartão cripto — com a usabilidade do **AiG Token**. Nasce da união de três forças: **comunidade**, **tecnologia** e **finanças**.',
+      fr: 'G1 est la porte d’un écosystème où une **communauté** rencontre de **vrais outils financiers** — trading, échange et carte crypto — avec l’utilité du **AiG Token**. Elle naît de l’union de trois forces : **communauté**, **technologie** et **finance**.',
+      ru: 'G1 — это дверь в экосистему, где **сообщество** встречается с **реальными финансовыми инструментами** — трейдингом, биржей и криптокартой — при применимости **AiG Token**. Она рождается из союза трёх сил: **сообщества**, **технологии** и **финансов**.',
+      sv: 'G1 är dörren till ett ekosystem där en **gemenskap** möter **riktiga finansiella verktyg** — handel, börs och kryptokort — med **AiG Tokens** användbarhet. Den föds ur tre krafter som förenas: **gemenskap**, **teknik** och **finans**.',
+      hr: 'G1 su vrata u ekosustav u kojem **zajednica** susreće **stvarne financijske alate** — trgovanje, burzu i kripto karticu — uz upotrebljivost **AiG Tokena**. Rađa se iz spoja triju sila: **zajednice**, **tehnologije** i **financija**.',
+      ar: 'G1 هي البوابة إلى نظام بيئي يلتقي فيه **مجتمع** بـ**أدوات مالية حقيقية** — تداول ومنصة وبطاقة تشفير — مع قابلية استخدام **AiG Token**. تولد من اتحاد ثلاث قوى: **المجتمع** و**التقنية** و**التمويل**.',
+      de: 'G1 ist die Tür zu einem Ökosystem, in dem eine **Community** auf **echte Finanzwerkzeuge** trifft — Trading, Börse und Krypto-Karte — mit der Nutzbarkeit des **AiG Token**. Sie entsteht aus dem Zusammenschluss dreier Kräfte: **Community**, **Technologie** und **Finanzen**.',
+      sr: 'G1 су врата у екосистем у којем **заједница** сусреће **стварне финансијске алате** — трговање, берзу и крипто картицу — уз употребљивост **AiG Token-а**. Рађа се из споја три силе: **заједнице**, **технологије** и **финансија**.',
+      ur: 'G1 ایک ایکو سسٹم کا دروازہ ہے جہاں ایک **کمیونٹی** **حقیقی مالیاتی اوزاروں** سے ملتی ہے — ٹریڈنگ، ایکسچینج اور کرپٹو کارڈ — **AiG Token** کی افادیت کے ساتھ۔ یہ تین قوتوں کے اتحاد سے جنم لیتا ہے: **کمیونٹی**، **ٹیکنالوجی** اور **فنانس**۔',
+    },
+  'Tres fuerzas que convergen en|un solo núcleo.': {
+    en: 'Three forces converging into|a single core.', pt: 'Três forças que convergem em|um só núcleo.',
+    fr: 'Trois forces qui convergent en|un seul noyau.', ru: 'Три силы, сходящиеся в|одно ядро.',
+    sv: 'Tre krafter som möts i|en enda kärna.', hr: 'Tri sile koje se spajaju u|jednu jezgru.',
+    ar: 'ثلاث قوى تلتقي في|نواة واحدة.', de: 'Drei Kräfte, die zu|einem Kern zusammenfinden.',
+    sr: 'Три силе које се спајају у|једно језгро.', ur: 'تین قوتیں جو|ایک مرکز میں ملتی ہیں۔',
+  },
+  'La alianza': {
+    en: 'The alliance', pt: 'A aliança', fr: 'L’alliance', ru: 'Альянс', sv: 'Alliansen',
+    hr: 'Savez', ar: 'التحالف', de: 'Die Allianz', sr: 'Савез', ur: 'اتحاد',
+  },
+  'Una visión': {
+    en: 'One vision', pt: 'Uma visão', fr: 'Une vision', ru: 'Одно видение', sv: 'En vision',
+    hr: 'Jedna vizija', ar: 'رؤية واحدة', de: 'Eine Vision', sr: 'Једна визија', ur: 'ایک وژن',
+  },
+  'Una red': {
+    en: 'One network', pt: 'Uma rede', fr: 'Un réseau', ru: 'Одна сеть', sv: 'Ett nätverk',
+    hr: 'Jedna mreža', ar: 'شبكة واحدة', de: 'Ein Netzwerk', sr: 'Једна мрежа', ur: 'ایک نیٹ ورک',
+  },
+  'Un ecosistema': {
+    en: 'One ecosystem', pt: 'Um ecossistema', fr: 'Un écosystème', ru: 'Одна экосистема',
+    sv: 'Ett ekosystem', hr: 'Jedan ekosustav', ar: 'نظام بيئي واحد', de: 'Ein Ökosystem',
+    sr: 'Један екосистем', ur: 'ایک ایکو سسٹم',
+  },
+  'Powered by': {
+    en: 'Powered by', pt: 'Powered by', fr: 'Propulsé par', ru: 'При поддержке',
+    sv: 'Drivs av', hr: 'Pokreće', ar: 'مدعوم من', de: 'Ermöglicht durch',
+    sr: 'Покреће', ur: 'تعاون سے',
+  },
+  'Comunidad + tecnología': {
+    en: 'Community + technology', pt: 'Comunidade + tecnologia', fr: 'Communauté + technologie',
+    ru: 'Сообщество + технологии', sv: 'Gemenskap + teknik', hr: 'Zajednica + tehnologija',
+    ar: 'مجتمع + تقنية', de: 'Community + Technologie',
+    sr: 'Заједница + технологија', ur: 'کمیونٹی + ٹیکنالوجی',
+  },
+  'Adopción y comunidad global': {
+    en: 'Adoption and global community', pt: 'Adoção e comunidade global',
+    fr: 'Adoption et communauté mondiale', ru: 'Внедрение и глобальное сообщество',
+    sv: 'Spridning och global gemenskap', hr: 'Prihvaćanje i globalna zajednica',
+    ar: 'التبني والمجتمع العالمي', de: 'Verbreitung und globale Community',
+    sr: 'Прихватање и глобална заједница', ur: 'اپنانا اور عالمی کمیونٹی',
+  },
+  Finanzas: {
+    en: 'Finance', pt: 'Finanças', fr: 'Finance', ru: 'Финансы', sv: 'Finans',
+    hr: 'Financije', ar: 'التمويل', de: 'Finanzen', sr: 'Финансије', ur: 'فنانس',
+  },
+  'La comunidad que se une y aporta su propia tecnología: G-Pulse, marketplace, el AiG Token y blockchain. Es la que da usabilidad y liquidez al ecosistema.':
+    {
+      en: 'The community that joins and brings its own technology: G-Pulse, marketplace, the AiG Token and blockchain. It is what gives the ecosystem usability and liquidity.',
+      pt: 'A comunidade que se une e traz sua própria tecnologia: G-Pulse, marketplace, o AiG Token e blockchain. É ela que dá usabilidade e liquidez ao ecossistema.',
+      fr: 'La communauté qui rejoint et apporte sa propre technologie : G-Pulse, marketplace, le AiG Token et la blockchain. C’est elle qui donne à l’écosystème son utilité et sa liquidité.',
+      ru: 'Сообщество, которое присоединяется и приносит собственную технологию: G-Pulse, маркетплейс, AiG Token и блокчейн. Именно оно даёт экосистеме применимость и ликвидность.',
+      sv: 'Gemenskapen som ansluter sig och bidrar med egen teknik: G-Pulse, marknadsplats, AiG Token och blockkedja. Det är den som ger ekosystemet användbarhet och likviditet.',
+      hr: 'Zajednica koja se pridružuje i donosi vlastitu tehnologiju: G-Pulse, tržnicu, AiG Token i blockchain. Ona daje ekosustavu upotrebljivost i likvidnost.',
+      ar: 'المجتمع الذي ينضم ويقدّم تقنيته الخاصة: G-Pulse والسوق و AiG Token والبلوكشين. وهو ما يمنح النظام البيئي قابلية الاستخدام والسيولة.',
+      de: 'Die Community, die sich anschließt und ihre eigene Technologie einbringt: G-Pulse, Marktplatz, den AiG Token und Blockchain. Sie verleiht dem Ökosystem Nutzbarkeit und Liquidität.',
+      sr: 'Заједница која се придружује и доноси властиту технологију: G-Pulse, маркетплејс, AiG Token и блокчејн. Она даје екосистему употребљивост и ликвидност.',
+      ur: 'وہ کمیونٹی جو شامل ہوتی ہے اور اپنی ٹیکنالوجی لاتی ہے: G-Pulse، مارکیٹ پلیس، AiG Token اور بلاک چین۔ یہی ایکو سسٹم کو افادیت اور لیکویڈیٹی دیتی ہے۔',
+    },
+  'La comunidad internacional de Aitech One: educación, liderazgo y expansión que acercan la tecnología a las personas.':
+    {
+      en: 'The international Aitech One community: education, leadership and outreach that bring technology closer to people.',
+      pt: 'A comunidade internacional da Aitech One: educação, liderança e expansão que aproximam a tecnologia das pessoas.',
+      fr: 'La communauté internationale d’Aitech One : formation, leadership et expansion qui rapprochent la technologie des gens.',
+      ru: 'Международное сообщество Aitech One: обучение, лидерство и расширение, которые приближают технологию к людям.',
+      sv: 'Aitech Ones internationella gemenskap: utbildning, ledarskap och expansion som för tekniken närmare människor.',
+      hr: 'Međunarodna zajednica Aitech One: edukacija, vodstvo i širenje koji približavaju tehnologiju ljudima.',
+      ar: 'مجتمع Aitech One الدولي: التعليم والقيادة والتوسّع التي تقرّب التقنية من الناس.',
+      de: 'Die internationale Aitech-One-Community: Bildung, Führung und Expansion, die Technologie näher zu den Menschen bringen.',
+      sr: 'Међународна заједница Aitech One: едукација, вођство и ширење који приближавају технологију људима.',
+      ur: 'Aitech One کی بین الاقوامی کمیونٹی: تعلیم، قیادت اور توسیع جو ٹیکنالوجی کو لوگوں کے قریب لاتی ہے۔',
+    },
+  'La infraestructura financiera de la alianza: Tag Markets (trading), Bit1 (exchange) y BixCard (tarjeta Visa cripto).':
+    {
+      en: 'The alliance’s financial infrastructure: Tag Markets (trading), Bit1 (exchange) and BixCard (crypto Visa card).',
+      pt: 'A infraestrutura financeira da aliança: Tag Markets (trading), Bit1 (exchange) e BixCard (cartão Visa cripto).',
+      fr: 'L’infrastructure financière de l’alliance : Tag Markets (trading), Bit1 (échange) et BixCard (carte Visa crypto).',
+      ru: 'Финансовая инфраструктура альянса: Tag Markets (трейдинг), Bit1 (биржа) и BixCard (криптокарта Visa).',
+      sv: 'Alliansens finansiella infrastruktur: Tag Markets (handel), Bit1 (börs) och BixCard (krypto-Visakort).',
+      hr: 'Financijska infrastruktura saveza: Tag Markets (trgovanje), Bit1 (burza) i BixCard (kripto Visa kartica).',
+      ar: 'البنية المالية للتحالف: Tag Markets (تداول) و Bit1 (منصة) و BixCard (بطاقة Visa للتشفير).',
+      de: 'Die Finanzinfrastruktur der Allianz: Tag Markets (Trading), Bit1 (Börse) und BixCard (Krypto-Visa-Karte).',
+      sr: 'Финансијска инфраструктура савеза: Tag Markets (трговање), Bit1 (берза) и BixCard (крипто Visa картица).',
+      ur: 'اتحاد کا مالیاتی ڈھانچہ: Tag Markets (ٹریڈنگ)، Bit1 (ایکسچینج) اور BixCard (کرپٹو ویزا کارڈ)۔',
+    },
+  'Una comunidad internacional unida por herramientas reales. Material informativo.': {
+    en: 'An international community united by real tools. Informational material.',
+    pt: 'Uma comunidade internacional unida por ferramentas reais. Material informativo.',
+    fr: 'Une communauté internationale unie par de vrais outils. Document d’information.',
+    ru: 'Международное сообщество, объединённое реальными инструментами. Информационный материал.',
+    sv: 'En internationell gemenskap förenad av riktiga verktyg. Informationsmaterial.',
+    hr: 'Međunarodna zajednica ujedinjena stvarnim alatima. Informativni materijal.',
+    ar: 'مجتمع دولي يوحّده امتلاك أدوات حقيقية. مادة إعلامية.',
+    de: 'Eine internationale Community, vereint durch echte Werkzeuge. Informationsmaterial.',
+    sr: 'Међународна заједница уједињена стварним алатима. Информативни материјал.',
+    ur: 'ایک بین الاقوامی کمیونٹی جو حقیقی اوزاروں سے جڑی ہے۔ معلوماتی مواد۔',
+  },
+  'El AiG Token, con uso real': {
+    en: 'The AiG Token, with real use', pt: 'O AiG Token, com uso real',
+    fr: 'Le AiG Token, avec un usage réel', ru: 'AiG Token — с реальным применением',
+    sv: 'AiG Token, med verklig användning', hr: 'AiG Token, sa stvarnom primjenom',
+    ar: 'AiG Token باستخدام حقيقي', de: 'Der AiG Token, mit echtem Nutzen',
+    sr: 'AiG Token, са стварном применом', ur: 'AiG Token، حقیقی استعمال کے ساتھ',
+  },
+  'Un token con usabilidad, no una promesa.': {
+    en: 'A token with usability, not a promise.', pt: 'Um token com usabilidade, não uma promessa.',
+    fr: 'Un jeton avec une utilité, pas une promesse.', ru: 'Токен с применимостью, а не обещание.',
+    sv: 'En token med användbarhet, inte ett löfte.', hr: 'Token s upotrebljivošću, a ne obećanje.',
+    ar: 'رمز بقابلية استخدام، لا وعد.', de: 'Ein Token mit Nutzbarkeit, kein Versprechen.',
+    sr: 'Токен са употребљивошћу, а не обећање.', ur: 'ایک ٹوکن جو افادیت رکھتا ہے، وعدہ نہیں۔',
+  },
+  'El AiG Token es el hilo que conecta la comunidad con las herramientas de la alianza. Dentro del ecosistema se usa en formato **DUAL (AIG + USDT)**, para dar liquidez y acceso a los productos. Es material informativo: no es asesoría financiera y la participación es voluntaria y con riesgos.':
+    {
+      en: 'The AiG Token is the thread that connects the community to the alliance’s tools. Inside the ecosystem it is used in **DUAL (AIG + USDT)** format, to provide liquidity and access to the products. This is informational material: it is not financial advice, and participation is voluntary and carries risk.',
+      pt: 'O AiG Token é o fio que conecta a comunidade às ferramentas da aliança. Dentro do ecossistema é usado no formato **DUAL (AIG + USDT)**, para dar liquidez e acesso aos produtos. É material informativo: não é assessoria financeira e a participação é voluntária e com riscos.',
+      fr: 'Le AiG Token est le fil qui relie la communauté aux outils de l’alliance. Dans l’écosystème, il s’utilise au format **DUAL (AIG + USDT)**, pour apporter liquidité et accès aux produits. Document d’information : ce n’est pas un conseil financier et la participation est volontaire et comporte des risques.',
+      ru: 'AiG Token — нить, связывающая сообщество с инструментами альянса. Внутри экосистемы он используется в формате **DUAL (AIG + USDT)**, чтобы давать ликвидность и доступ к продуктам. Это информационный материал: не финансовая консультация; участие добровольное и сопряжено с рисками.',
+      sv: 'AiG Token är tråden som kopplar gemenskapen till alliansens verktyg. Inom ekosystemet används den i **DUAL-format (AIG + USDT)**, för att ge likviditet och tillgång till produkterna. Detta är informationsmaterial: inte finansiell rådgivning, och deltagandet är frivilligt och innebär risker.',
+      hr: 'AiG Token je nit koja povezuje zajednicu s alatima saveza. Unutar ekosustava koristi se u **DUAL formatu (AIG + USDT)**, kako bi dao likvidnost i pristup proizvodima. Ovo je informativni materijal: nije financijski savjet, a sudjelovanje je dobrovoljno i nosi rizike.',
+      ar: 'AiG Token هو الخيط الذي يربط المجتمع بأدوات التحالف. داخل النظام البيئي يُستخدم بصيغة **DUAL ‏(AIG + USDT)** لتوفير السيولة والوصول إلى المنتجات. هذه مادة إعلامية: ليست استشارة مالية، والمشاركة طوعية وتنطوي على مخاطر.',
+      de: 'Der AiG Token ist der Faden, der die Community mit den Werkzeugen der Allianz verbindet. Im Ökosystem wird er im **DUAL-Format (AIG + USDT)** verwendet, um Liquidität und Zugang zu den Produkten zu schaffen. Dies ist Informationsmaterial: keine Finanzberatung; die Teilnahme ist freiwillig und mit Risiken verbunden.',
+      sr: 'AiG Token је нит која повезује заједницу са алатима савеза. Унутар екосистема користи се у **DUAL формату (AIG + USDT)**, да би дао ликвидност и приступ производима. Ово је информативни материјал: није финансијски савет, а учешће је добровољно и носи ризике.',
+      ur: 'AiG Token وہ دھاگہ ہے جو کمیونٹی کو اتحاد کے اوزاروں سے جوڑتا ہے۔ ایکو سسٹم کے اندر یہ **DUAL (AIG + USDT)** فارمیٹ میں استعمال ہوتا ہے تاکہ لیکویڈیٹی اور مصنوعات تک رسائی ملے۔ یہ معلوماتی مواد ہے: مالی مشورہ نہیں، اور شرکت رضاکارانہ اور خطرات کے ساتھ ہے۔',
+    },
+  'Comunidad que se une': {
+    en: 'A community that joins', pt: 'Comunidade que se une', fr: 'Une communauté qui se rassemble',
+    ru: 'Сообщество, которое объединяется', sv: 'En gemenskap som förenas',
+    hr: 'Zajednica koja se okuplja', ar: 'مجتمع يتّحد', de: 'Eine Community, die sich verbindet',
+    sr: 'Заједница која се окупља', ur: 'ایک کمیونٹی جو جڑتی ہے',
+  },
+  'Herramientas reales (trading · exchange · tarjeta)': {
+    en: 'Real tools (trading · exchange · card)', pt: 'Ferramentas reais (trading · exchange · cartão)',
+    fr: 'De vrais outils (trading · échange · carte)', ru: 'Реальные инструменты (трейдинг · биржа · карта)',
+    sv: 'Riktiga verktyg (handel · börs · kort)', hr: 'Stvarni alati (trgovanje · burza · kartica)',
+    ar: 'أدوات حقيقية (تداول · منصة · بطاقة)', de: 'Echte Werkzeuge (Trading · Börse · Karte)',
+    sr: 'Стварни алати (трговање · берза · картица)', ur: 'حقیقی اوزار (ٹریڈنگ · ایکسچینج · کارڈ)',
+  },
+  'Usabilidad DUAL del AiG Token': {
+    en: 'DUAL usability of the AiG Token', pt: 'Usabilidade DUAL do AiG Token',
+    fr: 'Utilité DUAL du AiG Token', ru: 'DUAL-применимость AiG Token',
+    sv: 'DUAL-användbarhet för AiG Token', hr: 'DUAL upotrebljivost AiG Tokena',
+    ar: 'استخدام DUAL لـ AiG Token', de: 'DUAL-Nutzbarkeit des AiG Token',
+    sr: 'DUAL употребљивост AiG Token-а', ur: 'AiG Token کی DUAL افادیت',
+  },
+
+  /* ── la narrativa, los actos ─────────────────────────────────────── */
+  'Todo empieza con|una comunidad.': {
+    en: 'It all begins with|a community.', pt: 'Tudo começa com|uma comunidade.',
+    fr: 'Tout commence par|une communauté.', ru: 'Всё начинается с|сообщества.',
+    sv: 'Allt börjar med|en gemenskap.', hr: 'Sve počinje sa|zajednicom.',
+    ar: 'كل شيء يبدأ من|مجتمع.', de: 'Alles beginnt mit|einer Community.',
+    sr: 'Све почиње са|заједницом.', ur: 'سب کچھ شروع ہوتا ہے|ایک کمیونٹی سے۔',
+  },
+  'Aitech △ · la tecnología': {
+    en: 'Aitech △ · technology', pt: 'Aitech △ · a tecnologia', fr: 'Aitech △ · la technologie',
+    ru: 'Aitech △ · технология', sv: 'Aitech △ · tekniken', hr: 'Aitech △ · tehnologija',
+    ar: 'Aitech △ · التقنية', de: 'Aitech △ · die Technologie',
+    sr: 'Aitech △ · технологија', ur: 'Aitech △ · ٹیکنالوجی',
+  },
+  'TAG △ · el mercado': {
+    en: 'TAG △ · the market', pt: 'TAG △ · o mercado', fr: 'TAG △ · le marché',
+    ru: 'TAG △ · рынок', sv: 'TAG △ · marknaden', hr: 'TAG △ · tržište',
+    ar: 'TAG △ · السوق', de: 'TAG △ · der Markt', sr: 'TAG △ · тржиште', ur: 'TAG △ · مارکیٹ',
+  },
+  'Génesis △ · la comunidad': {
+    en: 'Génesis △ · the community', pt: 'Génesis △ · a comunidade', fr: 'Génesis △ · la communauté',
+    ru: 'Génesis △ · сообщество', sv: 'Génesis △ · gemenskapen', hr: 'Génesis △ · zajednica',
+    ar: 'Génesis △ · المجتمع', de: 'Génesis △ · die Community',
+    sr: 'Génesis △ · заједница', ur: 'Génesis △ · کمیونٹی',
+  },
+  'Herramientas que ya funcionan.': {
+    en: 'Tools that already work.', pt: 'Ferramentas que já funcionam.',
+    fr: 'Des outils qui fonctionnent déjà.', ru: 'Инструменты, которые уже работают.',
+    sv: 'Verktyg som redan fungerar.', hr: 'Alati koji već rade.',
+    ar: 'أدوات تعمل بالفعل.', de: 'Werkzeuge, die bereits funktionieren.',
+    sr: 'Алати који већ раде.', ur: 'وہ اوزار جو پہلے سے کام کرتے ہیں۔',
+  },
+  'Acceso real a los mercados.': {
+    en: 'Real access to the markets.', pt: 'Acesso real aos mercados.',
+    fr: 'Un accès réel aux marchés.', ru: 'Реальный доступ к рынкам.',
+    sv: 'Verklig tillgång till marknaderna.', hr: 'Stvaran pristup tržištima.',
+    ar: 'وصول حقيقي إلى الأسواق.', de: 'Echter Zugang zu den Märkten.',
+    sr: 'Стваран приступ тржиштима.', ur: 'مارکیٹوں تک حقیقی رسائی۔',
+  },
+  'La comunidad que las une.': {
+    en: 'The community that unites them.', pt: 'A comunidade que as une.',
+    fr: 'La communauté qui les réunit.', ru: 'Сообщество, которое их объединяет.',
+    sv: 'Gemenskapen som förenar dem.', hr: 'Zajednica koja ih spaja.',
+    ar: 'المجتمع الذي يجمعها.', de: 'Die Community, die sie verbindet.',
+    sr: 'Заједница која их спаја.', ur: 'وہ کمیونٹی جو انہیں جوڑتی ہے۔',
+  },
+  'El nacimiento de G1': {
+    en: 'The birth of G1', pt: 'O nascimento da G1', fr: 'La naissance de G1',
+    ru: 'Рождение G1', sv: 'G1:s födelse', hr: 'Rođenje G1', ar: 'ولادة G1',
+    de: 'Die Geburt von G1', sr: 'Рођење G1', ur: 'G1 کی پیدائش',
+  },
+  'Empieza con G1.': {
+    en: 'Start with G1.', pt: 'Comece com a G1.', fr: 'Commence avec G1.',
+    ru: 'Начни с G1.', sv: 'Börja med G1.', hr: 'Počni s G1.', ar: 'ابدأ مع G1.',
+    de: 'Fang mit G1 an.', sr: 'Почни са G1.', ur: 'G1 سے شروع کریں۔',
+  },
+  'Desplázate para vivir la experiencia': {
+    en: 'Scroll to live the experience', pt: 'Role para viver a experiência',
+    fr: 'Fais défiler pour vivre l’expérience', ru: 'Прокрути, чтобы прожить этот опыт',
+    sv: 'Skrolla för att uppleva det', hr: 'Pomiči se da doživiš iskustvo',
+    ar: 'مرّر لتعيش التجربة', de: 'Scrolle, um es zu erleben',
+    sr: 'Померај да доживиш искуство', ur: 'تجربہ محسوس کرنے کے لیے سکرول کریں',
+  },
+  'La web continúa · sigue bajando': {
+    en: 'The site continues · keep scrolling', pt: 'O site continua · continue rolando',
+    fr: 'Le site continue · continue de défiler', ru: 'Сайт продолжается · листай дальше',
+    sv: 'Sidan fortsätter · fortsätt skrolla', hr: 'Stranica se nastavlja · nastavi listati',
+    ar: 'الموقع يستمر · تابع التمرير', de: 'Die Seite geht weiter · weiter scrollen',
+    sr: 'Страница се наставља · настави да листаш', ur: 'ویب سائٹ جاری ہے · سکرول کرتے رہیں',
+  },
+
+  /* ── «Cómo funciona» ─────────────────────────────────────────────── */
+  'Participar en G1 es un recorrido de tres pasos. Es material informativo: no es asesoría financiera y la participación es voluntaria y con riesgos.':
+    {
+      en: 'Taking part in G1 is a three-step path. This is informational material: it is not financial advice, and participation is voluntary and carries risk.',
+      pt: 'Participar da G1 é um percurso de três passos. É material informativo: não é assessoria financeira e a participação é voluntária e com riscos.',
+      fr: 'Participer à G1 se fait en trois étapes. Document d’information : ce n’est pas un conseil financier et la participation est volontaire et comporte des risques.',
+      ru: 'Участие в G1 — это путь из трёх шагов. Информационный материал: не финансовая консультация; участие добровольное и сопряжено с рисками.',
+      sv: 'Att delta i G1 är en resa i tre steg. Detta är informationsmaterial: inte finansiell rådgivning, och deltagandet är frivilligt och innebär risker.',
+      hr: 'Sudjelovanje u G1 put je od tri koraka. Ovo je informativni materijal: nije financijski savjet, a sudjelovanje je dobrovoljno i nosi rizike.',
+      ar: 'المشاركة في G1 مسار من ثلاث خطوات. هذه مادة إعلامية: ليست استشارة مالية، والمشاركة طوعية وتنطوي على مخاطر.',
+      de: 'Bei G1 mitzumachen ist ein Weg in drei Schritten. Dies ist Informationsmaterial: keine Finanzberatung; die Teilnahme ist freiwillig und mit Risiken verbunden.',
+      sr: 'Учешће у G1 је пут од три корака. Ово је информативни материјал: није финансијски савет, а учешће је добровољно и носи ризике.',
+      ur: 'G1 میں شرکت تین مراحل کا سفر ہے۔ یہ معلوماتی مواد ہے: مالی مشورہ نہیں، اور شرکت رضاکارانہ اور خطرات کے ساتھ ہے۔',
+    },
+  'Te unes por la comunidad': {
+    en: 'You join through the community', pt: 'Você entra pela comunidade',
+    fr: 'Tu rejoins par la communauté', ru: 'Ты присоединяешься через сообщество',
+    sv: 'Du ansluter via gemenskapen', hr: 'Pridružuješ se preko zajednice',
+    ar: 'تنضم عبر المجتمع', de: 'Du kommst über die Community dazu',
+    sr: 'Придружујеш се преко заједнице', ur: 'آپ کمیونٹی کے ذریعے شامل ہوتے ہیں',
+  },
+  'Génesis es la puerta de entrada. Desde G-Pulse accedes a la comunidad, las membresías y tu cuenta.':
+    {
+      en: 'Génesis is the way in. From G-Pulse you reach the community, the memberships and your account.',
+      pt: 'A Génesis é a porta de entrada. A partir do G-Pulse você acessa a comunidade, as assinaturas e sua conta.',
+      fr: 'Génesis est la porte d’entrée. Depuis G-Pulse tu accèdes à la communauté, aux abonnements et à ton compte.',
+      ru: 'Génesis — это вход. Из G-Pulse ты попадаешь в сообщество, к подпискам и своему аккаунту.',
+      sv: 'Génesis är ingången. Från G-Pulse når du gemenskapen, medlemskapen och ditt konto.',
+      hr: 'Génesis su ulazna vrata. Iz G-Pulsea pristupaš zajednici, članstvima i svom računu.',
+      ar: 'Génesis هي بوابة الدخول. من G-Pulse تصل إلى المجتمع والعضويات وحسابك.',
+      de: 'Génesis ist der Eingang. Von G-Pulse aus erreichst du die Community, die Mitgliedschaften und dein Konto.',
+      sr: 'Génesis су улазна врата. Из G-Pulse-а приступаш заједници, чланствима и свом налогу.',
+      ur: 'Génesis داخلے کا دروازہ ہے۔ G-Pulse سے آپ کمیونٹی، ممبرشپس اور اپنے اکاؤنٹ تک پہنچتے ہیں۔',
+    },
+  'Accedes a las herramientas': {
+    en: 'You get access to the tools', pt: 'Você acessa as ferramentas',
+    fr: 'Tu accèdes aux outils', ru: 'Ты получаешь доступ к инструментам',
+    sv: 'Du får tillgång till verktygen', hr: 'Pristupaš alatima',
+    ar: 'تصل إلى الأدوات', de: 'Du erhältst Zugang zu den Werkzeugen',
+    sr: 'Приступаш алатима', ur: 'آپ اوزاروں تک رسائی پاتے ہیں',
+  },
+  'La alianza aporta la trilogía de mercado: Tag Markets (trading), Bit1 (exchange) y BixCard (tarjeta cripto).':
+    {
+      en: 'The alliance brings the market trilogy: Tag Markets (trading), Bit1 (exchange) and BixCard (crypto card).',
+      pt: 'A aliança traz a trilogia de mercado: Tag Markets (trading), Bit1 (exchange) e BixCard (cartão cripto).',
+      fr: 'L’alliance apporte la trilogie de marché : Tag Markets (trading), Bit1 (échange) et BixCard (carte crypto).',
+      ru: 'Альянс приносит рыночную трилогию: Tag Markets (трейдинг), Bit1 (биржа) и BixCard (криптокарта).',
+      sv: 'Alliansen bidrar med marknadstrilogin: Tag Markets (handel), Bit1 (börs) och BixCard (kryptokort).',
+      hr: 'Savez donosi tržišnu trilogiju: Tag Markets (trgovanje), Bit1 (burza) i BixCard (kripto kartica).',
+      ar: 'يقدّم التحالف ثلاثية السوق: Tag Markets (تداول) و Bit1 (منصة) و BixCard (بطاقة تشفير).',
+      de: 'Die Allianz bringt die Markt-Trilogie: Tag Markets (Trading), Bit1 (Börse) und BixCard (Krypto-Karte).',
+      sr: 'Савез доноси тржишну трилогију: Tag Markets (трговање), Bit1 (берза) и BixCard (крипто картица).',
+      ur: 'اتحاد مارکیٹ کی تینوں پیشکشیں لاتا ہے: Tag Markets (ٹریڈنگ)، Bit1 (ایکسچینج) اور BixCard (کرپٹو کارڈ)۔',
+    },
+  'El AiG Token conecta todo': {
+    en: 'The AiG Token connects it all', pt: 'O AiG Token conecta tudo',
+    fr: 'Le AiG Token relie le tout', ru: 'AiG Token связывает всё',
+    sv: 'AiG Token kopplar ihop allt', hr: 'AiG Token povezuje sve',
+    ar: 'AiG Token يربط كل شيء', de: 'Der AiG Token verbindet alles',
+    sr: 'AiG Token повезује све', ur: 'AiG Token سب کچھ جوڑتا ہے',
+  },
+  'El token de utilidad se usa en formato DUAL (AIG + USDT) para dar liquidez y acceso dentro del ecosistema.':
+    {
+      en: 'The utility token is used in DUAL format (AIG + USDT) to provide liquidity and access inside the ecosystem.',
+      pt: 'O token de utilidade é usado no formato DUAL (AIG + USDT) para dar liquidez e acesso dentro do ecossistema.',
+      fr: 'Le jeton d’utilité s’utilise au format DUAL (AIG + USDT) pour apporter liquidité et accès au sein de l’écosystème.',
+      ru: 'Утилитарный токен используется в формате DUAL (AIG + USDT), чтобы давать ликвидность и доступ внутри экосистемы.',
+      sv: 'Nyttotoken används i DUAL-format (AIG + USDT) för att ge likviditet och tillgång inom ekosystemet.',
+      hr: 'Uporabni token koristi se u DUAL formatu (AIG + USDT) kako bi dao likvidnost i pristup unutar ekosustava.',
+      ar: 'يُستخدم رمز المنفعة بصيغة DUAL ‏(AIG + USDT) لتوفير السيولة والوصول داخل النظام البيئي.',
+      de: 'Der Utility-Token wird im DUAL-Format (AIG + USDT) genutzt, um innerhalb des Ökosystems Liquidität und Zugang zu schaffen.',
+      sr: 'Употребни токен користи се у DUAL формату (AIG + USDT) да би дао ликвидност и приступ унутар екосистема.',
+      ur: 'یوٹیلیٹی ٹوکن DUAL فارمیٹ (AIG + USDT) میں استعمال ہوتا ہے تاکہ ایکو سسٹم کے اندر لیکویڈیٹی اور رسائی ملے۔',
+    },
+  'Las herramientas, en vivo': {
+    en: 'The tools, live', pt: 'As ferramentas, ao vivo', fr: 'Les outils, en direct',
+    ru: 'Инструменты, вживую', sv: 'Verktygen, live', hr: 'Alati, uživo',
+    ar: 'الأدوات، مباشرة', de: 'Die Werkzeuge, live', sr: 'Алати, уживо', ur: 'اوزار، براہِ راست',
+  },
+  'Trading, exchange y tarjeta — reales.': {
+    en: 'Trading, exchange and card — real.', pt: 'Trading, exchange e cartão — reais.',
+    fr: 'Trading, échange et carte — réels.', ru: 'Трейдинг, биржа и карта — настоящие.',
+    sv: 'Handel, börs och kort — på riktigt.', hr: 'Trgovanje, burza i kartica — stvarni.',
+    ar: 'تداول ومنصة وبطاقة — حقيقية.', de: 'Trading, Börse und Karte — echt.',
+    sr: 'Трговање, берза и картица — стварни.', ur: 'ٹریڈنگ، ایکسچینج اور کارڈ — حقیقی۔',
+  },
+  'Trading, exchange y tarjeta.': {
+    en: 'Trading, exchange and card.', pt: 'Trading, exchange e cartão.',
+    fr: 'Trading, échange et carte.', ru: 'Трейдинг, биржа и карта.',
+    sv: 'Handel, börs och kort.', hr: 'Trgovanje, burza i kartica.',
+    ar: 'تداول ومنصة وبطاقة.', de: 'Trading, Börse und Karte.',
+    sr: 'Трговање, берза и картица.', ur: 'ٹریڈنگ، ایکسچینج اور کارڈ۔',
+  },
+  'La plataforma de la alianza en acción. Material informativo.': {
+    en: 'The alliance’s platform in action. Informational material.',
+    pt: 'A plataforma da aliança em ação. Material informativo.',
+    fr: 'La plateforme de l’alliance en action. Document d’information.',
+    ru: 'Платформа альянса в действии. Информационный материал.',
+    sv: 'Alliansens plattform i praktiken. Informationsmaterial.',
+    hr: 'Platforma saveza na djelu. Informativni materijal.',
+    ar: 'منصة التحالف أثناء العمل. مادة إعلامية.',
+    de: 'Die Plattform der Allianz in Aktion. Informationsmaterial.',
+    sr: 'Платформа савеза на делу. Информативни материјал.',
+    ur: 'اتحاد کا پلیٹ فارم عمل میں۔ معلوماتی مواد۔',
+  },
+  'Lo que esta página no dice': {
+    en: 'What this page does not say', pt: 'O que esta página não diz',
+    fr: 'Ce que cette page ne dit pas', ru: 'Чего эта страница не говорит',
+    sv: 'Vad den här sidan inte säger', hr: 'Što ova stranica ne govori',
+    ar: 'ما لا تقوله هذه الصفحة', de: 'Was diese Seite nicht sagt',
+    sr: 'Шта ова страница не говори', ur: 'یہ صفحہ کیا نہیں کہتا',
+  },
+  'G1 no publica porcentajes de resultado, comisiones, apalancamiento ni premios de ningún plan. Esa información vive solo en los canales oficiales de cada producto y bajo la responsabilidad de cada persona. Aquí contamos **qué es** y **cómo se participa**, no cuánto se obtiene.':
+    {
+      en: 'G1 does not publish performance percentages, fees, leverage or rewards of any plan. That information lives only in each product’s official channels, under each person’s own responsibility. Here we tell **what it is** and **how to take part**, not how much you get.',
+      pt: 'A G1 não publica percentuais de resultado, comissões, alavancagem nem prêmios de nenhum plano. Essa informação existe apenas nos canais oficiais de cada produto e sob a responsabilidade de cada pessoa. Aqui contamos **o que é** e **como se participa**, não quanto se obtém.',
+      fr: 'G1 ne publie ni pourcentages de résultat, ni commissions, ni effet de levier, ni primes d’aucun plan. Cette information n’existe que dans les canaux officiels de chaque produit, sous la responsabilité de chacun. Ici nous disons **ce que c’est** et **comment participer**, pas combien on obtient.',
+      ru: 'G1 не публикует проценты доходности, комиссии, кредитное плечо или бонусы какого-либо плана. Эта информация есть только в официальных каналах каждого продукта и под ответственность каждого. Здесь мы рассказываем, **что это** и **как участвовать**, а не сколько получишь.',
+      sv: 'G1 publicerar inga resultatprocent, avgifter, hävstång eller belöningar för någon plan. Den informationen finns endast i varje produkts officiella kanaler och under var och ens eget ansvar. Här berättar vi **vad det är** och **hur man deltar**, inte hur mycket man får.',
+      hr: 'G1 ne objavljuje postotke prinosa, naknade, polugu ni nagrade bilo kojeg plana. Te informacije postoje samo u službenim kanalima svakog proizvoda i na odgovornost svake osobe. Ovdje govorimo **što je to** i **kako se sudjeluje**, a ne koliko se dobiva.',
+      ar: 'لا تنشر G1 نسب نتائج أو عمولات أو رافعة مالية أو مكافآت لأي خطة. تلك المعلومات موجودة فقط في القنوات الرسمية لكل منتج وعلى مسؤولية كل شخص. هنا نوضّح **ما هو** و**كيف تُشارك**، لا كم تحصل.',
+      de: 'G1 veröffentlicht keine Ergebnisprozente, Gebühren, Hebel oder Prämien irgendeines Plans. Diese Informationen gibt es nur in den offiziellen Kanälen jedes Produkts und in der Verantwortung jeder Person. Hier erzählen wir, **was es ist** und **wie man teilnimmt**, nicht wie viel man bekommt.',
+      sr: 'G1 не објављује проценте приноса, накнаде, полугу ни награде било ког плана. Те информације постоје само у званичним каналима сваког производа и на одговорност сваке особе. Овде говоримо **шта је то** и **како се учествује**, а не колико се добија.',
+      ur: 'G1 کسی بھی پلان کے نتائج کے فیصد، فیس، لیوریج یا انعامات شائع نہیں کرتا۔ یہ معلومات صرف ہر پروڈکٹ کے سرکاری چینلز میں ہیں اور ہر شخص کی اپنی ذمہ داری پر۔ یہاں ہم بتاتے ہیں کہ **یہ کیا ہے** اور **شرکت کیسے ہوتی ہے**، یہ نہیں کہ کتنا ملتا ہے۔',
+    },
+
+  /* ── «Ecosistema» ────────────────────────────────────────────────── */
+  'Una comunidad,|herramientas reales.': {
+    en: 'One community,|real tools.', pt: 'Uma comunidade,|ferramentas reais.',
+    fr: 'Une communauté,|de vrais outils.', ru: 'Одно сообщество,|реальные инструменты.',
+    sv: 'En gemenskap,|riktiga verktyg.', hr: 'Jedna zajednica,|stvarni alati.',
+    ar: 'مجتمع واحد،|أدوات حقيقية.', de: 'Eine Community,|echte Werkzeuge.',
+    sr: 'Једна заједница,|стварни алати.', ur: 'ایک کمیونٹی،|حقیقی اوزار۔',
+  },
+  'La alianza aporta el acceso a los mercados; Génesis aporta la comunidad y la usabilidad del AiG Token. Todo lo que integra el ecosistema, en un solo lugar.':
+    {
+      en: 'The alliance brings access to the markets; Génesis brings the community and the AiG Token’s usability. Everything the ecosystem holds, in one place.',
+      pt: 'A aliança traz o acesso aos mercados; a Génesis traz a comunidade e a usabilidade do AiG Token. Tudo o que integra o ecossistema, em um só lugar.',
+      fr: 'L’alliance apporte l’accès aux marchés ; Génesis apporte la communauté et l’utilité du AiG Token. Tout ce qui compose l’écosystème, au même endroit.',
+      ru: 'Альянс даёт доступ к рынкам; Génesis даёт сообщество и применимость AiG Token. Всё, из чего состоит экосистема, в одном месте.',
+      sv: 'Alliansen ger tillgång till marknaderna; Génesis ger gemenskapen och AiG Tokens användbarhet. Allt som ekosystemet rymmer, på ett ställe.',
+      hr: 'Savez donosi pristup tržištima; Génesis donosi zajednicu i upotrebljivost AiG Tokena. Sve što čini ekosustav, na jednom mjestu.',
+      ar: 'يوفّر التحالف الوصول إلى الأسواق؛ وتوفّر Génesis المجتمع وقابلية استخدام AiG Token. كل ما يتكوّن منه النظام البيئي، في مكان واحد.',
+      de: 'Die Allianz bringt den Zugang zu den Märkten; Génesis bringt die Community und die Nutzbarkeit des AiG Token. Alles, was das Ökosystem ausmacht, an einem Ort.',
+      sr: 'Савез доноси приступ тржиштима; Génesis доноси заједницу и употребљивост AiG Token-а. Све што чини екосистем, на једном месту.',
+      ur: 'اتحاد مارکیٹوں تک رسائی دیتا ہے؛ Génesis کمیونٹی اور AiG Token کی افادیت دیتا ہے۔ ایکو سسٹم کا سب کچھ، ایک ہی جگہ۔',
+    },
+  'La trilogía de mercado · TAG': {
+    en: 'The market trilogy · TAG', pt: 'A trilogia de mercado · TAG',
+    fr: 'La trilogie de marché · TAG', ru: 'Рыночная трилогия · TAG',
+    sv: 'Marknadstrilogin · TAG', hr: 'Tržišna trilogija · TAG',
+    ar: 'ثلاثية السوق · TAG', de: 'Die Markt-Trilogie · TAG',
+    sr: 'Тржишна трилогија · TAG', ur: 'مارکیٹ کی تینوں · TAG',
+  },
+  'La comunidad · Génesis': {
+    en: 'The community · Génesis', pt: 'A comunidade · Génesis', fr: 'La communauté · Génesis',
+    ru: 'Сообщество · Génesis', sv: 'Gemenskapen · Génesis', hr: 'Zajednica · Génesis',
+    ar: 'المجتمع · Génesis', de: 'Die Community · Génesis',
+    sr: 'Заједница · Génesis', ur: 'کمیونٹی · Génesis',
+  },
+  'El motor de la comunidad.': {
+    en: 'The community’s engine.', pt: 'O motor da comunidade.', fr: 'Le moteur de la communauté.',
+    ru: 'Двигатель сообщества.', sv: 'Gemenskapens motor.', hr: 'Motor zajednice.',
+    ar: 'محرّك المجتمع.', de: 'Der Motor der Community.',
+    sr: 'Мотор заједнице.', ur: 'کمیونٹی کا انجن۔',
+  },
+  '¿Cómo se participa?': {
+    en: 'How do you take part?', pt: 'Como se participa?', fr: 'Comment participer ?',
+    ru: 'Как принять участие?', sv: 'Hur deltar man?', hr: 'Kako se sudjeluje?',
+    ar: 'كيف تُشارك؟', de: 'Wie nimmt man teil?', sr: 'Како се учествује?', ur: 'شرکت کیسے کی جائے؟',
+  },
+  'TAG · trading': {
+    en: 'TAG · trading', pt: 'TAG · trading', fr: 'TAG · trading', ru: 'TAG · трейдинг',
+    sv: 'TAG · handel', hr: 'TAG · trgovanje', ar: 'TAG · تداول', de: 'TAG · Trading',
+    sr: 'TAG · трговање', ur: 'TAG · ٹریڈنگ',
+  },
+  'TAG · exchange': {
+    en: 'TAG · exchange', pt: 'TAG · exchange', fr: 'TAG · échange', ru: 'TAG · биржа',
+    sv: 'TAG · börs', hr: 'TAG · burza', ar: 'TAG · منصة', de: 'TAG · Börse',
+    sr: 'TAG · берза', ur: 'TAG · ایکسچینج',
+  },
+  'TAG · tarjeta': {
+    en: 'TAG · card', pt: 'TAG · cartão', fr: 'TAG · carte', ru: 'TAG · карта',
+    sv: 'TAG · kort', hr: 'TAG · kartica', ar: 'TAG · بطاقة', de: 'TAG · Karte',
+    sr: 'TAG · картица', ur: 'TAG · کارڈ',
+  },
+  'Génesis · panel': {
+    en: 'Génesis · dashboard', pt: 'Génesis · painel', fr: 'Génesis · tableau de bord',
+    ru: 'Génesis · панель', sv: 'Génesis · panel', hr: 'Génesis · ploča',
+    ar: 'Génesis · لوحة', de: 'Génesis · Panel', sr: 'Génesis · табла', ur: 'Génesis · پینل',
+  },
+  'Génesis · marca hija': {
+    en: 'Génesis · sister brand', pt: 'Génesis · marca filha', fr: 'Génesis · marque sœur',
+    ru: 'Génesis · дочерний бренд', sv: 'Génesis · systervarumärke', hr: 'Génesis · sestrinski brand',
+    ar: 'Génesis · علامة فرعية', de: 'Génesis · Tochtermarke',
+    sr: 'Génesis · сестрински бренд', ur: 'Génesis · ذیلی برانڈ',
+  },
+  'Génesis · token': {
+    en: 'Génesis · token', pt: 'Génesis · token', fr: 'Génesis · jeton', ru: 'Génesis · токен',
+    sv: 'Génesis · token', hr: 'Génesis · token', ar: 'Génesis · رمز', de: 'Génesis · Token',
+    sr: 'Génesis · токен', ur: 'Génesis · ٹوکن',
+  },
+  'Bróker de trading sistemático: acceso a los mercados con herramientas profesionales de la alianza.':
+    {
+      en: 'Systematic trading broker: access to the markets with the alliance’s professional tools.',
+      pt: 'Corretora de trading sistemático: acesso aos mercados com ferramentas profissionais da aliança.',
+      fr: 'Courtier de trading systématique : accès aux marchés avec les outils professionnels de l’alliance.',
+      ru: 'Брокер системного трейдинга: доступ к рынкам с профессиональными инструментами альянса.',
+      sv: 'Mäklare för systematisk handel: tillgång till marknaderna med alliansens professionella verktyg.',
+      hr: 'Broker sustavnog trgovanja: pristup tržištima uz profesionalne alate saveza.',
+      ar: 'وسيط تداول منهجي: وصول إلى الأسواق بأدوات التحالف الاحترافية.',
+      de: 'Broker für systematisches Trading: Zugang zu den Märkten mit den professionellen Werkzeugen der Allianz.',
+      sr: 'Брокер системског трговања: приступ тржиштима уз професионалне алате савеза.',
+      ur: 'سسٹمیٹک ٹریڈنگ بروکر: اتحاد کے پیشہ ورانہ اوزاروں کے ساتھ مارکیٹوں تک رسائی۔',
+    },
+  'Exchange de activos digitales para comprar, vender y custodiar cripto dentro del ecosistema.': {
+    en: 'Digital asset exchange to buy, sell and hold crypto inside the ecosystem.',
+    pt: 'Exchange de ativos digitais para comprar, vender e custodiar cripto dentro do ecossistema.',
+    fr: 'Plateforme d’actifs numériques pour acheter, vendre et conserver des cryptos dans l’écosystème.',
+    ru: 'Биржа цифровых активов, чтобы покупать, продавать и хранить крипто внутри экосистемы.',
+    sv: 'Börs för digitala tillgångar där du köper, säljer och förvarar krypto inom ekosystemet.',
+    hr: 'Burza digitalne imovine za kupnju, prodaju i čuvanje kripta unutar ekosustava.',
+    ar: 'منصة أصول رقمية لشراء العملات المشفّرة وبيعها وحفظها داخل النظام البيئي.',
+    de: 'Börse für digitale Vermögenswerte zum Kaufen, Verkaufen und Verwahren von Krypto im Ökosystem.',
+    sr: 'Берза дигиталне имовине за куповину, продају и чување крипта унутар екосистема.',
+    ur: 'ڈیجیٹل اثاثوں کا ایکسچینج تاکہ ایکو سسٹم کے اندر کرپٹو خریدیں، بیچیں اور محفوظ رکھیں۔',
+  },
+  'Tarjeta Visa respaldada por cripto para usar tus activos en el día a día.': {
+    en: 'A crypto-backed Visa card to use your assets day to day.',
+    pt: 'Cartão Visa lastreado em cripto para usar seus ativos no dia a dia.',
+    fr: 'Carte Visa adossée à la crypto pour utiliser tes actifs au quotidien.',
+    ru: 'Карта Visa с криптообеспечением, чтобы пользоваться активами каждый день.',
+    sv: 'Ett Visakort med kryptotäckning för att använda dina tillgångar i vardagen.',
+    hr: 'Visa kartica pokrivena kriptom za svakodnevnu upotrebu tvoje imovine.',
+    ar: 'بطاقة Visa مدعومة بالعملات المشفّرة لاستخدام أصولك يوميًا.',
+    de: 'Eine krypto-gedeckte Visa-Karte, um deine Werte im Alltag zu nutzen.',
+    sr: 'Visa картица покривена криптом за свакодневну употребу твоје имовине.',
+    ur: 'کرپٹو سے سپورٹ شدہ ویزا کارڈ تاکہ روزمرہ میں اپنے اثاثے استعمال کریں۔',
+  },
+  'El panel de la comunidad: membresías, actividad y el acceso a tu cuenta.': {
+    en: 'The community dashboard: memberships, activity and access to your account.',
+    pt: 'O painel da comunidade: assinaturas, atividade e o acesso à sua conta.',
+    fr: 'Le tableau de bord de la communauté : abonnements, activité et accès à ton compte.',
+    ru: 'Панель сообщества: подписки, активность и доступ к твоему аккаунту.',
+    sv: 'Gemenskapens panel: medlemskap, aktivitet och åtkomst till ditt konto.',
+    hr: 'Ploča zajednice: članstva, aktivnost i pristup tvom računu.',
+    ar: 'لوحة المجتمع: العضويات والنشاط والوصول إلى حسابك.',
+    de: 'Das Community-Panel: Mitgliedschaften, Aktivität und Zugang zu deinem Konto.',
+    sr: 'Табла заједнице: чланства, активност и приступ твом налогу.',
+    ur: 'کمیونٹی کا پینل: ممبرشپس، سرگرمی اور آپ کے اکاؤنٹ تک رسائی۔',
+  },
+  'Marca hija de Génesis, con su propia identidad bilingüe dentro del ecosistema.': {
+    en: 'A Génesis sister brand, with its own bilingual identity inside the ecosystem.',
+    pt: 'Marca filha da Génesis, com sua própria identidade bilíngue dentro do ecossistema.',
+    fr: 'Marque sœur de Génesis, avec sa propre identité bilingue au sein de l’écosystème.',
+    ru: 'Дочерний бренд Génesis со своей двуязычной идентичностью внутри экосистемы.',
+    sv: 'Systervarumärke till Génesis, med en egen tvåspråkig identitet inom ekosystemet.',
+    hr: 'Sestrinski brand Génesisa, s vlastitim dvojezičnim identitetom unutar ekosustava.',
+    ar: 'علامة فرعية من Génesis، بهوية ثنائية اللغة خاصة بها داخل النظام البيئي.',
+    de: 'Tochtermarke von Génesis, mit eigener zweisprachiger Identität im Ökosystem.',
+    sr: 'Сестрински бренд Génesis-а, са сопственим двојезичним идентитетом унутар екосистема.',
+    ur: 'Génesis کا ذیلی برانڈ، ایکو سسٹم کے اندر اپنی دو لسانی شناخت کے ساتھ۔',
+  },
+  'El token de utilidad del ecosistema, usado en formato DUAL (AIG + USDT) para dar liquidez y acceso.':
+    {
+      en: 'The ecosystem’s utility token, used in DUAL format (AIG + USDT) to provide liquidity and access.',
+      pt: 'O token de utilidade do ecossistema, usado no formato DUAL (AIG + USDT) para dar liquidez e acesso.',
+      fr: 'Le jeton d’utilité de l’écosystème, utilisé au format DUAL (AIG + USDT) pour apporter liquidité et accès.',
+      ru: 'Утилитарный токен экосистемы, используемый в формате DUAL (AIG + USDT) для ликвидности и доступа.',
+      sv: 'Ekosystemets nyttotoken, använd i DUAL-format (AIG + USDT) för att ge likviditet och tillgång.',
+      hr: 'Uporabni token ekosustava, korišten u DUAL formatu (AIG + USDT) za likvidnost i pristup.',
+      ar: 'رمز المنفعة للنظام البيئي، يُستخدم بصيغة DUAL ‏(AIG + USDT) لتوفير السيولة والوصول.',
+      de: 'Der Utility-Token des Ökosystems, im DUAL-Format (AIG + USDT) für Liquidität und Zugang.',
+      sr: 'Употребни токен екосистема, коришћен у DUAL формату (AIG + USDT) за ликвидност и приступ.',
+      ur: 'ایکو سسٹم کا یوٹیلیٹی ٹوکن، DUAL فارمیٹ (AIG + USDT) میں لیکویڈیٹی اور رسائی کے لیے۔',
+    },
+
+  /* ── «Comunidad» ─────────────────────────────────────────────────── */
+  'La comunidad que|las une.': {
+    en: 'The community that|unites them.', pt: 'A comunidade que|as une.',
+    fr: 'La communauté qui|les réunit.', ru: 'Сообщество, которое|их объединяет.',
+    sv: 'Gemenskapen som|förenar dem.', hr: 'Zajednica koja|ih spaja.',
+    ar: 'المجتمع الذي|يجمعها.', de: 'Die Community, die|sie verbindet.',
+    sr: 'Заједница која|их спаја.', ur: 'وہ کمیونٹی جو|انہیں جوڑتی ہے۔',
+  },
+  'Génesis es el punto de entrada: la comunidad que reúne a las personas y les da un lugar para aprender, encontrarse y participar del ecosistema.':
+    {
+      en: 'Génesis is the entry point: the community that brings people together and gives them a place to learn, meet and take part in the ecosystem.',
+      pt: 'A Génesis é o ponto de entrada: a comunidade que reúne as pessoas e lhes dá um lugar para aprender, encontrar-se e participar do ecossistema.',
+      fr: 'Génesis est le point d’entrée : la communauté qui rassemble les gens et leur offre un lieu pour apprendre, se rencontrer et participer à l’écosystème.',
+      ru: 'Génesis — точка входа: сообщество, которое собирает людей и даёт им место, чтобы учиться, встречаться и участвовать в экосистеме.',
+      sv: 'Génesis är ingångspunkten: gemenskapen som samlar människor och ger dem en plats att lära, mötas och delta i ekosystemet.',
+      hr: 'Génesis je ulazna točka: zajednica koja okuplja ljude i daje im mjesto za učenje, susrete i sudjelovanje u ekosustavu.',
+      ar: 'Génesis هي نقطة الدخول: المجتمع الذي يجمع الناس ويمنحهم مكانًا للتعلّم واللقاء والمشاركة في النظام البيئي.',
+      de: 'Génesis ist der Einstiegspunkt: die Community, die Menschen zusammenbringt und ihnen einen Ort gibt, zu lernen, sich zu treffen und am Ökosystem teilzuhaben.',
+      sr: 'Génesis је улазна тачка: заједница која окупља људе и даје им место за учење, сусрете и учешће у екосистему.',
+      ur: 'Génesis داخلے کا مقام ہے: وہ کمیونٹی جو لوگوں کو اکٹھا کرتی ہے اور انہیں سیکھنے، ملنے اور ایکو سسٹم میں شریک ہونے کی جگہ دیتی ہے۔',
+    },
+  Encuentro: {
+    en: 'Gathering', pt: 'Encontro', fr: 'Rencontre', ru: 'Встреча', sv: 'Träff',
+    hr: 'Susret', ar: 'لقاء', de: 'Treffen', sr: 'Сусрет', ur: 'اجتماع',
+  },
+  'El programa de formación de la comunidad: aprender el ecosistema y sus herramientas desde la base.':
+    {
+      en: 'The community’s training programme: learning the ecosystem and its tools from the ground up.',
+      pt: 'O programa de formação da comunidade: aprender o ecossistema e suas ferramentas desde a base.',
+      fr: 'Le programme de formation de la communauté : apprendre l’écosystème et ses outils depuis la base.',
+      ru: 'Обучающая программа сообщества: изучение экосистемы и её инструментов с основ.',
+      sv: 'Gemenskapens utbildningsprogram: lär dig ekosystemet och dess verktyg från grunden.',
+      hr: 'Program obrazovanja zajednice: učenje ekosustava i njegovih alata od temelja.',
+      ar: 'برنامج تدريب المجتمع: تعلّم النظام البيئي وأدواته من الأساس.',
+      de: 'Das Ausbildungsprogramm der Community: das Ökosystem und seine Werkzeuge von Grund auf lernen.',
+      sr: 'Програм образовања заједнице: учење екосистема и његових алата од темеља.',
+      ur: 'کمیونٹی کا تربیتی پروگرام: ایکو سسٹم اور اس کے اوزار بنیاد سے سیکھنا۔',
+    },
+  'Encuentros de la comunidad —presenciales y en línea— para conectar, compartir y crecer juntos.': {
+    en: 'Community gatherings — in person and online — to connect, share and grow together.',
+    pt: 'Encontros da comunidade — presenciais e on-line — para conectar, compartilhar e crescer juntos.',
+    fr: 'Rencontres de la communauté — en présentiel et en ligne — pour se connecter, partager et grandir ensemble.',
+    ru: 'Встречи сообщества — очные и онлайн — чтобы знакомиться, делиться и расти вместе.',
+    sv: 'Gemenskapens träffar — på plats och online — för att knyta kontakter, dela och växa tillsammans.',
+    hr: 'Susreti zajednice — uživo i online — za povezivanje, dijeljenje i zajednički rast.',
+    ar: 'لقاءات المجتمع — حضوريًا وعبر الإنترنت — للتواصل والمشاركة والنمو معًا.',
+    de: 'Community-Treffen — vor Ort und online — um sich zu vernetzen, zu teilen und gemeinsam zu wachsen.',
+    sr: 'Сусрети заједнице — уживо и онлајн — за повезивање, дељење и заједнички раст.',
+    ur: 'کمیونٹی کے اجتماعات — بالمشافہ اور آن لائن — جڑنے، بانٹنے اور مل کر بڑھنے کے لیے۔',
+  },
+  'La red de referentes que sostiene y acompaña a la comunidad en su recorrido.': {
+    en: 'The network of mentors that supports and accompanies the community along the way.',
+    pt: 'A rede de referências que sustenta e acompanha a comunidade em seu percurso.',
+    fr: 'Le réseau de référents qui soutient et accompagne la communauté tout au long du parcours.',
+    ru: 'Сеть наставников, которая поддерживает и сопровождает сообщество на пути.',
+    sv: 'Nätverket av förebilder som stöttar och följer gemenskapen på vägen.',
+    hr: 'Mreža mentora koja podupire i prati zajednicu na njezinu putu.',
+    ar: 'شبكة المرشدين التي تسند المجتمع وترافقه في مساره.',
+    de: 'Das Netzwerk von Mentoren, das die Community auf ihrem Weg trägt und begleitet.',
+    sr: 'Мрежа ментора која подржава и прати заједницу на њеном путу.',
+    ur: 'رہنماؤں کا وہ نیٹ ورک جو کمیونٹی کو سہارا دیتا اور ساتھ چلتا ہے۔',
+  },
+  Eventos: {
+    en: 'Events', pt: 'Eventos', fr: 'Événements', ru: 'События', sv: 'Evenemang',
+    hr: 'Događaji', ar: 'الفعاليات', de: 'Veranstaltungen', sr: 'Догађаји', ur: 'ایونٹس',
+  },
+  'Eventos que impulsan la comunidad.': {
+    en: 'Events that move the community forward.', pt: 'Eventos que impulsionam a comunidade.',
+    fr: 'Des événements qui font avancer la communauté.', ru: 'События, которые двигают сообщество.',
+    sv: 'Evenemang som driver gemenskapen framåt.', hr: 'Događaji koji pokreću zajednicu.',
+    ar: 'فعاليات تدفع المجتمع إلى الأمام.', de: 'Veranstaltungen, die die Community voranbringen.',
+    sr: 'Догађаји који покрећу заједницу.', ur: 'وہ ایونٹس جو کمیونٹی کو آگے بڑھاتے ہیں۔',
+  },
+  'Conecta, aprende y crece junto a la comunidad del ecosistema. Sesiones informativas y de formación, en línea.':
+    {
+      en: 'Connect, learn and grow alongside the ecosystem’s community. Informational and training sessions, online.',
+      pt: 'Conecte-se, aprenda e cresça junto com a comunidade do ecossistema. Sessões informativas e de formação, on-line.',
+      fr: 'Connecte-toi, apprends et grandis avec la communauté de l’écosystème. Sessions d’information et de formation, en ligne.',
+      ru: 'Знакомься, учись и расти вместе с сообществом экосистемы. Информационные и обучающие сессии, онлайн.',
+      sv: 'Knyt kontakter, lär dig och väx tillsammans med ekosystemets gemenskap. Informations- och utbildningspass, online.',
+      hr: 'Poveži se, uči i rasti zajedno sa zajednicom ekosustava. Informativne i edukativne sesije, online.',
+      ar: 'تواصل وتعلّم وانمُ مع مجتمع النظام البيئي. جلسات إعلامية وتدريبية عبر الإنترنت.',
+      de: 'Vernetze dich, lerne und wachse gemeinsam mit der Community des Ökosystems. Info- und Schulungssitzungen, online.',
+      sr: 'Повежи се, учи и расти заједно са заједницом екосистема. Информативне и едукативне сесије, онлајн.',
+      ur: 'ایکو سسٹم کی کمیونٹی کے ساتھ جڑیں، سیکھیں اور بڑھیں۔ آن لائن معلوماتی اور تربیتی سیشنز۔',
+    },
+  'Formación sobre productos del ecosistema': {
+    en: 'Training on the ecosystem’s products', pt: 'Formação sobre produtos do ecossistema',
+    fr: 'Formation sur les produits de l’écosystème', ru: 'Обучение по продуктам экосистемы',
+    sv: 'Utbildning om ekosystemets produkter', hr: 'Edukacija o proizvodima ekosustava',
+    ar: 'تدريب على منتجات النظام البيئي', de: 'Schulung zu den Produkten des Ökosystems',
+    sr: 'Едукација о производима екосистема', ur: 'ایکو سسٹم کی مصنوعات پر تربیت',
+  },
+  'Sesión práctica sobre Tag Markets, Bit1 y BixCard: qué son y cómo se usan.': {
+    en: 'Hands-on session on Tag Markets, Bit1 and BixCard: what they are and how to use them.',
+    pt: 'Sessão prática sobre Tag Markets, Bit1 e BixCard: o que são e como se usam.',
+    fr: 'Session pratique sur Tag Markets, Bit1 et BixCard : ce que c’est et comment s’en servir.',
+    ru: 'Практическая сессия по Tag Markets, Bit1 и BixCard: что это и как этим пользоваться.',
+    sv: 'Praktiskt pass om Tag Markets, Bit1 och BixCard: vad de är och hur de används.',
+    hr: 'Praktična sesija o Tag Marketsu, Bit1 i BixCardu: što su i kako se koriste.',
+    ar: 'جلسة عملية حول Tag Markets و Bit1 و BixCard: ما هي وكيف تُستخدم.',
+    de: 'Praxissitzung zu Tag Markets, Bit1 und BixCard: was sie sind und wie man sie nutzt.',
+    sr: 'Практична сесија о Tag Markets-у, Bit1 и BixCard-у: шта су и како се користе.',
+    ur: 'Tag Markets، Bit1 اور BixCard پر عملی سیشن: یہ کیا ہیں اور کیسے استعمال ہوتے ہیں۔',
+  },
+  'Presentación de la alianza': {
+    en: 'Introducing the alliance', pt: 'Apresentação da aliança', fr: 'Présentation de l’alliance',
+    ru: 'Презентация альянса', sv: 'Presentation av alliansen', hr: 'Predstavljanje saveza',
+    ar: 'التعريف بالتحالف', de: 'Vorstellung der Allianz', sr: 'Представљање савеза', ur: 'اتحاد کا تعارف',
+  },
+  'Sesión informativa sobre G1 y la alianza Génesis × Aitech × TAG.': {
+    en: 'Information session on G1 and the Génesis × Aitech × TAG alliance.',
+    pt: 'Sessão informativa sobre a G1 e a aliança Génesis × Aitech × TAG.',
+    fr: 'Session d’information sur G1 et l’alliance Génesis × Aitech × TAG.',
+    ru: 'Информационная сессия о G1 и альянсе Génesis × Aitech × TAG.',
+    sv: 'Informationspass om G1 och alliansen Génesis × Aitech × TAG.',
+    hr: 'Informativna sesija o G1 i savezu Génesis × Aitech × TAG.',
+    ar: 'جلسة تعريفية حول G1 وتحالف Génesis × Aitech × TAG.',
+    de: 'Infositzung zu G1 und der Allianz Génesis × Aitech × TAG.',
+    sr: 'Информативна сесија о G1 и савезу Génesis × Aitech × TAG.',
+    ur: 'G1 اور Génesis × Aitech × TAG اتحاد پر معلوماتی سیشن۔',
+  },
+  'Encuentro de la comunidad': {
+    en: 'Community gathering', pt: 'Encontro da comunidade', fr: 'Rencontre de la communauté',
+    ru: 'Встреча сообщества', sv: 'Gemenskapsträff', hr: 'Susret zajednice',
+    ar: 'لقاء المجتمع', de: 'Community-Treffen', sr: 'Сусрет заједнице', ur: 'کمیونٹی اجتماع',
+  },
+  'Novedades del ecosistema y espacio para conectar con la comunidad.': {
+    en: 'Ecosystem news and space to connect with the community.',
+    pt: 'Novidades do ecossistema e espaço para conectar-se com a comunidade.',
+    fr: 'Actualités de l’écosystème et espace pour échanger avec la communauté.',
+    ru: 'Новости экосистемы и пространство для общения с сообществом.',
+    sv: 'Nyheter från ekosystemet och utrymme att knyta kontakt med gemenskapen.',
+    hr: 'Novosti ekosustava i prostor za povezivanje sa zajednicom.',
+    ar: 'مستجدات النظام البيئي ومساحة للتواصل مع المجتمع.',
+    de: 'Neuigkeiten aus dem Ökosystem und Raum, um sich mit der Community zu vernetzen.',
+    sr: 'Новости екосистема и простор за повезивање са заједницом.',
+    ur: 'ایکو سسٹم کی خبریں اور کمیونٹی سے جڑنے کی جگہ۔',
+  },
+  Online: {
+    en: 'Online', pt: 'On-line', fr: 'En ligne', ru: 'Онлайн', sv: 'Online',
+    hr: 'Online', ar: 'عبر الإنترنت', de: 'Online', sr: 'Онлајн', ur: 'آن لائن',
+  },
+  'Online · Latinoamérica': {
+    en: 'Online · Latin America', pt: 'On-line · América Latina', fr: 'En ligne · Amérique latine',
+    ru: 'Онлайн · Латинская Америка', sv: 'Online · Latinamerika', hr: 'Online · Latinska Amerika',
+    ar: 'عبر الإنترنت · أمريكا اللاتينية', de: 'Online · Lateinamerika',
+    sr: 'Онлајн · Латинска Америка', ur: 'آن لائن · لاطینی امریکہ',
+  },
+  'Online · Global': {
+    en: 'Online · Global', pt: 'On-line · Global', fr: 'En ligne · Mondial',
+    ru: 'Онлайн · Глобально', sv: 'Online · Globalt', hr: 'Online · Globalno',
+    ar: 'عبر الإنترنت · عالميًا', de: 'Online · Weltweit', sr: 'Онлајн · Глобално', ur: 'آن لائن · عالمی',
+  },
+  'Cada lunes': {
+    en: 'Every Monday', pt: 'Toda segunda-feira', fr: 'Chaque lundi', ru: 'Каждый понедельник',
+    sv: 'Varje måndag', hr: 'Svakog ponedjeljka', ar: 'كل يوم اثنين', de: 'Jeden Montag',
+    sr: 'Сваког понедељка', ur: 'ہر پیر',
+  },
+  'Martes y jueves': {
+    en: 'Tuesdays and Thursdays', pt: 'Terças e quintas', fr: 'Mardis et jeudis',
+    ru: 'Вторник и четверг', sv: 'Tisdagar och torsdagar', hr: 'Utorkom i četvrtkom',
+    ar: 'الثلاثاء والخميس', de: 'Dienstags und donnerstags',
+    sr: 'Уторком и четвртком', ur: 'منگل اور جمعرات',
+  },
+  'Cada miércoles': {
+    en: 'Every Wednesday', pt: 'Toda quarta-feira', fr: 'Chaque mercredi', ru: 'Каждую среду',
+    sv: 'Varje onsdag', hr: 'Svake srijede', ar: 'كل يوم أربعاء', de: 'Jeden Mittwoch',
+    sr: 'Сваке среде', ur: 'ہر بدھ',
+  },
+  '13:00 · hora de Santo Domingo': {
+    en: '13:00 · Santo Domingo time', pt: '13:00 · horário de Santo Domingo',
+    fr: '13h00 · heure de Saint-Domingue', ru: '13:00 · время Санто-Доминго',
+    sv: '13:00 · Santo Domingo-tid', hr: '13:00 · po vremenu Santo Dominga',
+    ar: '13:00 · بتوقيت سانتو دومينغو', de: '13:00 Uhr · Zeit von Santo Domingo',
+    sr: '13:00 · по времену Санто Доминга', ur: '13:00 · سانتو ڈومنگو کا وقت',
+  },
+  '09:00 · hora de Santo Domingo': {
+    en: '09:00 · Santo Domingo time', pt: '09:00 · horário de Santo Domingo',
+    fr: '09h00 · heure de Saint-Domingue', ru: '09:00 · время Санто-Доминго',
+    sv: '09:00 · Santo Domingo-tid', hr: '09:00 · po vremenu Santo Dominga',
+    ar: '09:00 · بتوقيت سانتو دومينغو', de: '09:00 Uhr · Zeit von Santo Domingo',
+    sr: '09:00 · по времену Санто Доминга', ur: '09:00 · سانتو ڈومنگو کا وقت',
+  },
+  '19:00 · hora de Santo Domingo': {
+    en: '19:00 · Santo Domingo time', pt: '19:00 · horário de Santo Domingo',
+    fr: '19h00 · heure de Saint-Domingue', ru: '19:00 · время Санто-Доминго',
+    sv: '19:00 · Santo Domingo-tid', hr: '19:00 · po vremenu Santo Dominga',
+    ar: '19:00 · بتوقيت سانتو دومينغو', de: '19:00 Uhr · Zeit von Santo Domingo',
+    sr: '19:00 · по времену Санто Доминга', ur: '19:00 · سانتو ڈومنگو کا وقت',
+  },
+  Momentos: {
+    en: 'Moments', pt: 'Momentos', fr: 'Moments', ru: 'Моменты', sv: 'Ögonblick',
+    hr: 'Trenuci', ar: 'لحظات', de: 'Momente', sr: 'Тренуци', ur: 'لمحات',
+  },
+  'La comunidad, en persona.': {
+    en: 'The community, in person.', pt: 'A comunidade, presencialmente.',
+    fr: 'La communauté, en personne.', ru: 'Сообщество, вживую.',
+    sv: 'Gemenskapen, på plats.', hr: 'Zajednica, uživo.',
+    ar: 'المجتمع، وجهًا لوجه.', de: 'Die Community, persönlich.',
+    sr: 'Заједница, уживо.', ur: 'کمیونٹی، بالمشافہ۔',
+  },
+  'Empieza por la comunidad.': {
+    en: 'Start with the community.', pt: 'Comece pela comunidade.',
+    fr: 'Commence par la communauté.', ru: 'Начни с сообщества.',
+    sv: 'Börja med gemenskapen.', hr: 'Počni od zajednice.',
+    ar: 'ابدأ من المجتمع.', de: 'Fang bei der Community an.',
+    sr: 'Почни од заједнице.', ur: 'کمیونٹی سے شروع کریں۔',
+  },
+  'Entrar a G-Pulse': {
+    en: 'Enter G-Pulse', pt: 'Entrar no G-Pulse', fr: 'Entrer dans G-Pulse',
+    ru: 'Войти в G-Pulse', sv: 'Gå in i G-Pulse', hr: 'Uđi u G-Pulse',
+    ar: 'الدخول إلى G-Pulse', de: 'Zu G-Pulse', sr: 'Уђи у G-Pulse', ur: 'G-Pulse میں جائیں',
+  },
+  Ingresar: {
+    en: 'Sign in', pt: 'Entrar', fr: 'Se connecter', ru: 'Войти', sv: 'Logga in',
+    hr: 'Prijava', ar: 'تسجيل الدخول', de: 'Anmelden', sr: 'Пријава', ur: 'سائن ان',
+  },
+
+  /* ── las FAQ y el header ─────────────────────────────────────────── */
+  'Lo que|conviene saber.': {
+    en: 'What you|should know.', pt: 'O que|convém saber.', fr: 'Ce qu’il|faut savoir.',
+    ru: 'Что стоит|знать.', sv: 'Vad du|bör veta.', hr: 'Što je|dobro znati.',
+    ar: 'ما|يجدر معرفته.', de: 'Was man|wissen sollte.',
+    sr: 'Шта је|добро знати.', ur: 'جو جاننا|چاہیے۔',
+  },
+  'Busca tu pregunta…': {
+    en: 'Search your question…', pt: 'Busque sua pergunta…', fr: 'Cherche ta question…',
+    ru: 'Найди свой вопрос…', sv: 'Sök din fråga…', hr: 'Potraži svoje pitanje…',
+    ar: '…ابحث عن سؤالك', de: 'Suche deine Frage…', sr: 'Потражи своје питање…', ur: '…اپنا سوال تلاش کریں',
+  },
+  'Sin resultados. Prueba otras palabras o usa el asistente.': {
+    en: 'No results. Try other words, or use the assistant.',
+    pt: 'Sem resultados. Tente outras palavras ou use o assistente.',
+    fr: 'Aucun résultat. Essaie d’autres mots ou utilise l’assistant.',
+    ru: 'Ничего не найдено. Попробуй другие слова или спроси ассистента.',
+    sv: 'Inga träffar. Prova andra ord eller använd assistenten.',
+    hr: 'Nema rezultata. Probaj druge riječi ili koristi asistenta.',
+    ar: 'لا نتائج. جرّب كلمات أخرى أو استخدم المساعد.',
+    de: 'Keine Ergebnisse. Probiere andere Wörter oder nutze den Assistenten.',
+    sr: 'Нема резултата. Пробај друге речи или користи асистента.',
+    ur: 'کوئی نتیجہ نہیں۔ دوسرے الفاظ آزمائیں یا اسسٹنٹ استعمال کریں۔',
+  },
+  Índice: {
+    en: 'Index', pt: 'Índice', fr: 'Sommaire', ru: 'Указатель', sv: 'Index',
+    hr: 'Kazalo', ar: 'الفهرس', de: 'Index', sr: 'Садржај', ur: 'فہرست',
+  },
+  'Regístrate': {
+    en: 'Sign up', pt: 'Cadastre-se', fr: 'Inscris-toi', ru: 'Регистрация',
+    sv: 'Registrera dig', hr: 'Registriraj se', ar: 'سجّل', de: 'Registrieren',
+    sr: 'Региструј се', ur: 'رجسٹر کریں',
+  },
+  'Regístrate en el Portal IBO de Génesis': {
+    en: 'Sign up in the Génesis IBO Portal', pt: 'Cadastre-se no Portal IBO da Génesis',
+    fr: 'Inscris-toi sur le portail IBO de Génesis', ru: 'Зарегистрируйся в IBO-портале Génesis',
+    sv: 'Registrera dig i Génesis IBO-portal', hr: 'Registriraj se na Génesis IBO portalu',
+    ar: 'سجّل في بوابة Génesis IBO', de: 'Registriere dich im IBO-Portal von Génesis',
+    sr: 'Региструј се на Génesis IBO порталу', ur: 'Génesis IBO پورٹل پر رجسٹر کریں',
+  },
+  'Ingresar al Portal IBO de Génesis': {
+    en: 'Sign in to the Génesis IBO Portal', pt: 'Entrar no Portal IBO da Génesis',
+    fr: 'Se connecter au portail IBO de Génesis', ru: 'Войти в IBO-портал Génesis',
+    sv: 'Logga in i Génesis IBO-portal', hr: 'Prijavi se na Génesis IBO portal',
+    ar: 'تسجيل الدخول إلى بوابة Génesis IBO', de: 'Im IBO-Portal von Génesis anmelden',
+    sr: 'Пријави се на Génesis IBO портал', ur: 'Génesis IBO پورٹل میں سائن ان کریں',
+  },
+  Educación: {
+    en: 'Education', pt: 'Educação', fr: 'Éducation', ru: 'Образование', sv: 'Utbildning',
+    hr: 'Obrazovanje', ar: 'التعليم', de: 'Bildung', sr: 'Образовање', ur: 'تعلیم',
+  },
+  Formación: {
+    en: 'Training', pt: 'Formação', fr: 'Formation', ru: 'Обучение', sv: 'Utbildning',
+    hr: 'Edukacija', ar: 'التدريب', de: 'Ausbildung', sr: 'Едукација', ur: 'تربیت',
+  },
+  /* `Tecnología` ya existe arriba (línea ~134). */
+
+  /* ── el pie de G1 ────────────────────────────────────────────────── */
+  'G1 conecta comunidad, mercados, activos digitales y herramientas de pago dentro de la alianza Génesis × Aitech × TAG.':
+    {
+      en: 'G1 connects community, markets, digital assets and payment tools within the Génesis × Aitech × TAG alliance.',
+      pt: 'A G1 conecta comunidade, mercados, ativos digitais e ferramentas de pagamento dentro da aliança Génesis × Aitech × TAG.',
+      fr: 'G1 relie communauté, marchés, actifs numériques et outils de paiement au sein de l’alliance Génesis × Aitech × TAG.',
+      ru: 'G1 объединяет сообщество, рынки, цифровые активы и платёжные инструменты в рамках альянса Génesis × Aitech × TAG.',
+      sv: 'G1 kopplar samman gemenskap, marknader, digitala tillgångar och betalverktyg inom alliansen Génesis × Aitech × TAG.',
+      hr: 'G1 povezuje zajednicu, tržišta, digitalnu imovinu i alate za plaćanje unutar saveza Génesis × Aitech × TAG.',
+      ar: 'يربط G1 المجتمع والأسواق والأصول الرقمية وأدوات الدفع ضمن تحالف Génesis × Aitech × TAG.',
+      de: 'G1 verbindet Community, Märkte, digitale Vermögenswerte und Zahlungswerkzeuge innerhalb der Allianz Génesis × Aitech × TAG.',
+      sr: 'G1 повезује заједницу, тржишта, дигиталну имовину и алате за плаћање унутар савеза Génesis × Aitech × TAG.',
+      ur: 'G1 کمیونٹی، مارکیٹوں، ڈیجیٹل اثاثوں اور ادائیگی کے آلات کو Génesis × Aitech × TAG اتحاد کے اندر جوڑتا ہے۔',
+    },
+  'Trading · Exchange · Tarjeta cripto': {
+    en: 'Trading · Exchange · Crypto card', pt: 'Trading · Exchange · Cartão cripto',
+    fr: 'Trading · Échange · Carte crypto', ru: 'Трейдинг · Биржа · Криптокарта',
+    sv: 'Handel · Börs · Kryptokort', hr: 'Trgovanje · Burza · Kripto kartica',
+    ar: 'تداول · منصة · بطاقة تشفير', de: 'Trading · Börse · Krypto-Karte',
+    sr: 'Трговање · Берза · Крипто картица', ur: 'ٹریڈنگ · ایکسچینج · کرپٹو کارڈ',
+  },
+  'Sello G‑TAG · Génesis × Aitech × TAG': {
+    en: 'G‑TAG seal · Génesis × Aitech × TAG', pt: 'Selo G‑TAG · Génesis × Aitech × TAG',
+    fr: 'Sceau G‑TAG · Génesis × Aitech × TAG', ru: 'Печать G‑TAG · Génesis × Aitech × TAG',
+    sv: 'G‑TAG-sigill · Génesis × Aitech × TAG', hr: 'Pečat G‑TAG · Génesis × Aitech × TAG',
+    ar: 'ختم G‑TAG · Génesis × Aitech × TAG', de: 'G‑TAG-Siegel · Génesis × Aitech × TAG',
+    sr: 'Печат G‑TAG · Génesis × Aitech × TAG', ur: 'G‑TAG مہر · Génesis × Aitech × TAG',
+  },
+  Navegación: {
+    en: 'Navigation', pt: 'Navegação', fr: 'Navigation', ru: 'Навигация', sv: 'Navigering',
+    hr: 'Navigacija', ar: 'التنقل', de: 'Navigation', sr: 'Навигација', ur: 'نیویگیشن',
+  },
+  /* `Ecosistema`, `Legal`, `Inicio` y `Comunidad` ya viven arriba en este mismo
+     diccionario (líneas ~130, ~586, ~600 y ~1429). Volver a declararlas aquí no
+     era añadir nada: era romper el archivo, porque un objeto no admite la misma
+     clave dos veces. El compilador lo dijo antes que nadie. */
+  Acceso: {
+    en: 'Access', pt: 'Acesso', fr: 'Accès', ru: 'Доступ', sv: 'Åtkomst',
+    hr: 'Pristup', ar: 'الدخول', de: 'Zugang', sr: 'Приступ', ur: 'رسائی',
+  },
+  'Qué es G1': {
+    en: 'What G1 is', pt: 'O que é a G1', fr: 'Qu’est-ce que G1', ru: 'Что такое G1',
+    sv: 'Vad G1 är', hr: 'Što je G1', ar: 'ما هو G1', de: 'Was G1 ist',
+    sr: 'Шта је G1', ur: 'G1 کیا ہے',
+  },
+  'Cómo funciona': {
+    en: 'How it works', pt: 'Como funciona', fr: 'Comment ça marche', ru: 'Как это работает',
+    sv: 'Så fungerar det', hr: 'Kako funkcionira', ar: 'كيف يعمل', de: 'So funktioniert es',
+    sr: 'Како функционише', ur: 'یہ کیسے کام کرتا ہے',
+  },
+  'Preguntas frecuentes': {
+    en: 'FAQ', pt: 'Perguntas frequentes', fr: 'Questions fréquentes', ru: 'Частые вопросы',
+    sv: 'Vanliga frågor', hr: 'Česta pitanja', ar: 'الأسئلة الشائعة', de: 'Häufige Fragen',
+    sr: 'Честа питања', ur: 'عمومی سوالات',
+  },
+  'Únete / Ingresar': {
+    en: 'Join / Sign in', pt: 'Junte-se / Entrar', fr: 'Rejoindre / Se connecter',
+    ru: 'Присоединиться / Войти', sv: 'Gå med / Logga in', hr: 'Pridruži se / Prijava',
+    ar: 'انضم / تسجيل الدخول', de: 'Beitreten / Anmelden',
+    sr: 'Придружи се / Пријава', ur: 'شامل ہوں / سائن ان',
+  },
+  'Próximos eventos': {
+    en: 'Upcoming events', pt: 'Próximos eventos', fr: 'Prochains événements',
+    ru: 'Ближайшие события', sv: 'Kommande evenemang', hr: 'Nadolazeći događaji',
+    ar: 'الفعاليات القادمة', de: 'Kommende Veranstaltungen',
+    sr: 'Предстојећи догађаји', ur: 'آنے والے ایونٹس',
+  },
+  'Términos y condiciones': {
+    en: 'Terms and conditions', pt: 'Termos e condições', fr: 'Conditions générales',
+    ru: 'Условия использования', sv: 'Villkor', hr: 'Uvjeti i odredbe',
+    ar: 'الشروط والأحكام', de: 'Allgemeine Geschäftsbedingungen',
+    sr: 'Услови коришћења', ur: 'شرائط و ضوابط',
+  },
+  'Política de privacidad': {
+    en: 'Privacy policy', pt: 'Política de privacidade', fr: 'Politique de confidentialité',
+    ru: 'Политика конфиденциальности', sv: 'Integritetspolicy', hr: 'Pravila privatnosti',
+    ar: 'سياسة الخصوصية', de: 'Datenschutzerklärung',
+    sr: 'Политика приватности', ur: 'رازداری کی پالیسی',
+  },
+  'Política de cookies': {
+    en: 'Cookie policy', pt: 'Política de cookies', fr: 'Politique de cookies',
+    ru: 'Политика использования файлов cookie', sv: 'Cookiepolicy', hr: 'Pravila o kolačićima',
+    ar: 'سياسة ملفات تعريف الارتباط', de: 'Cookie-Richtlinie',
+    sr: 'Политика колачића', ur: 'کوکی پالیسی',
+  },
+  'Aviso de riesgo': {
+    en: 'Risk notice', pt: 'Aviso de risco', fr: 'Avertissement sur les risques',
+    ru: 'Уведомление о рисках', sv: 'Riskinformation', hr: 'Obavijest o riziku',
+    ar: 'إشعار المخاطر', de: 'Risikohinweis', sr: 'Обавештење о ризику', ur: 'خطرے کا نوٹس',
+  },
+  'Descargo de responsabilidad': {
+    en: 'Disclaimer', pt: 'Isenção de responsabilidade', fr: 'Clause de non-responsabilité',
+    ru: 'Отказ от ответственности', sv: 'Ansvarsfriskrivning', hr: 'Odricanje od odgovornosti',
+    ar: 'إخلاء المسؤولية', de: 'Haftungsausschluss',
+    sr: 'Одрицање од одговорности', ur: 'ذمہ داری سے دستبرداری',
+  },
+  'Todos los derechos reservados.': {
+    en: 'All rights reserved.', pt: 'Todos os direitos reservados.',
+    fr: 'Tous droits réservés.', ru: 'Все права защищены.',
+    sv: 'Med ensamrätt.', hr: 'Sva prava pridržana.',
+    ar: 'جميع الحقوق محفوظة.', de: 'Alle Rechte vorbehalten.',
+    sr: 'Сва права задржана.', ur: 'جملہ حقوق محفوظ ہیں۔',
+  },
+
+  /* ── la franja de esencia del pie ────────────────────────────────── */
+  Espacio: {
+    en: 'Space', pt: 'Espaço', fr: 'Espace', ru: 'Пространство', sv: 'Rymd',
+    hr: 'Prostor', ar: 'فضاء', de: 'Raum', sr: 'Простор', ur: 'خلا',
+  },
+  Conciencia: {
+    en: 'Awareness', pt: 'Consciência', fr: 'Conscience', ru: 'Осознанность', sv: 'Medvetenhet',
+    hr: 'Svijest', ar: 'وعي', de: 'Bewusstsein', sr: 'Свест', ur: 'شعور',
+  },
+  Presencia: {
+    en: 'Presence', pt: 'Presença', fr: 'Présence', ru: 'Присутствие', sv: 'Närvaro',
+    hr: 'Prisutnost', ar: 'حضور', de: 'Präsenz', sr: 'Присуство', ur: 'موجودگی',
+  },
+  Libertad: {
+    en: 'Freedom', pt: 'Liberdade', fr: 'Liberté', ru: 'Свобода', sv: 'Frihet',
+    hr: 'Sloboda', ar: 'حرية', de: 'Freiheit', sr: 'Слобода', ur: 'آزادی',
+  },
+  Prosperidad: {
+    en: 'Prosperity', pt: 'Prosperidade', fr: 'Prospérité', ru: 'Процветание', sv: 'Välstånd',
+    hr: 'Blagostanje', ar: 'ازدهار', de: 'Wohlstand', sr: 'Просперитет', ur: 'خوشحالی',
+  },
+  Equilibrio: {
+    en: 'Balance', pt: 'Equilíbrio', fr: 'Équilibre', ru: 'Равновесие', sv: 'Balans',
+    hr: 'Ravnoteža', ar: 'توازن', de: 'Gleichgewicht', sr: 'Равнотежа', ur: 'توازن',
+  },
+
   /* ── el Aula: el material grabado dentro del asistente ─────────────
      OJO CON «Idioma del material»: es lo único que separa el idioma de la
      INTERFAZ del idioma del ARCHIVO. Traducido flojo —«Idioma», a secas— la

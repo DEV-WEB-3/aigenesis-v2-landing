@@ -1,5 +1,8 @@
+'use client'
+
 import type { ReactNode } from 'react'
 import Link from 'next/link'
+import { useCorpus } from '@/hooks/useCorpus'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 import { DisclaimerBar } from '../DisclaimerBar'
 import { CredentialStrip } from '../CredentialStrip'
@@ -45,24 +48,41 @@ const SOCIAL = [
 ]
 
 function Col({ title, children }: { title: string; children: ReactNode }) {
+  const c = useCorpus()
+  const t = c(title)
   return (
     <div>
-      <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-genesis-mist">{title}</p>
+      <p lang={t.lang} className="font-mono text-[11px] uppercase tracking-[0.16em] text-genesis-mist">
+        {t.texto}
+      </p>
       <ul className="mt-4 space-y-2.5">{children}</ul>
     </div>
   )
 }
 
 export function G1Footer() {
+  const c = useCorpus()
+  /*
+   * LOS NOMBRES PROPIOS NO ENTRAN AQUÍ. `ECOSISTEMA` son productos —Tag Markets,
+   * Bit1, BixCard, G-Pulse, Gevy, AiG Token— y las redes son plataformas. Un
+   * nombre traducido deja de ser el nombre, y quien lo busque no lo encuentra.
+   * Se traduce lo que DESCRIBE, no lo que IDENTIFICA.
+   */
+  const resumen = c(
+    'G1 conecta comunidad, mercados, activos digitales y herramientas de pago dentro de la alianza Génesis × Aitech × TAG.'
+  )
+  const aviso = c(
+    'La información publicada tiene fines informativos y educativos. No es asesoría financiera, legal ni fiscal. Los mercados y los activos digitales implican riesgos y pueden generar pérdidas parciales o totales. G1 no administra el capital de las personas: cada quien revisa los términos oficiales de cada plataforma, analiza los riesgos y decide de forma independiente.'
+  )
   return (
     <footer className="relative border-t bg-genesis-void" style={{ borderColor: `${G1.cyan}1a` }}>
       {/* franja de esencia — somos un ser vivo */}
       <div className="border-b" style={{ borderColor: `${G1.cyan}12` }}>
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-6 gap-y-2 px-[clamp(16px,4vw,40px)] py-5">
           {ESENCIA.map((e, i) => (
-            <span key={e} className="flex items-center gap-6 font-mono text-[11px] uppercase tracking-[0.22em] text-genesis-mist">
+            <span key={e} lang={c(e).lang} className="flex items-center gap-6 font-mono text-[11px] uppercase tracking-[0.22em] text-genesis-mist">
               {i > 0 ? <span aria-hidden style={{ color: G1.cyan }}>·</span> : null}
-              {e}
+              {c(e).texto}
             </span>
           ))}
         </div>
@@ -74,14 +94,15 @@ export function G1Footer() {
           <div>
             <G1Lockup className="!mx-0 justify-start" heightClass="h-[150px]" monoClass="h-[64px]" maxW={300} />
             <p className="mt-5 font-display text-[19px] font-bold leading-tight tracking-tight">
-              <span style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>Tres fuerzas. Un ecosistema.</span>
+              <span lang={c('Tres fuerzas. Un ecosistema.').lang} style={{ background: G1_GRADIENT, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
+                {c('Tres fuerzas. Un ecosistema.').texto}
+              </span>
             </p>
-            <p className="mt-4 max-w-[38ch] text-[14px] leading-relaxed text-genesis-mist">
-              G1 conecta comunidad, mercados, activos digitales y herramientas de pago dentro de la
-              alianza Génesis × Aitech × TAG.
+            <p lang={resumen.lang} className="mt-4 max-w-[38ch] text-[14px] leading-relaxed text-genesis-mist">
+              {resumen.texto}
             </p>
-            <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em]" style={{ color: G1.cyan }}>
-              Trading · Exchange · Tarjeta cripto
+            <p lang={c('Trading · Exchange · Tarjeta cripto').lang} className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em]" style={{ color: G1.cyan }}>
+              {c('Trading · Exchange · Tarjeta cripto').texto}
             </p>
             {/* redes reales de la comunidad */}
             <div className="mt-6 flex flex-wrap gap-2">
@@ -100,14 +121,14 @@ export function G1Footer() {
                 </a>
               ))}
             </div>
-            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: G1.amber }}>
-              Sello G‑TAG · Génesis × Aitech × TAG
+            <p lang={c('Sello G‑TAG · Génesis × Aitech × TAG').lang} className="mt-6 font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: G1.amber }}>
+              {c('Sello G‑TAG · Génesis × Aitech × TAG').texto}
             </p>
           </div>
 
           <Col title="Navegación">
             {NAV.map((n) => (
-              <li key={n.href}><Link href={n.href} className="text-[14px] text-genesis-text hover:underline">{n.label}</Link></li>
+              <li key={n.href}><Link href={n.href} lang={c(n.label).lang} className="text-[14px] text-genesis-text hover:underline">{c(n.label).texto}</Link></li>
             ))}
           </Col>
 
@@ -122,14 +143,14 @@ export function G1Footer() {
           </Col>
 
           <Col title="Acceso">
-            <li><a href="https://g-pulse.aigenesis.io" target="_blank" rel="noopener noreferrer" className="text-[14px] text-genesis-text hover:underline">Únete / Ingresar ↗</a></li>
+            <li><a href="https://g-pulse.aigenesis.io" target="_blank" rel="noopener noreferrer" lang={c('Únete / Ingresar').lang} className="text-[14px] text-genesis-text hover:underline">{c('Únete / Ingresar').texto} ↗</a></li>
             <li><a href="https://genesis.ibportal.io" target="_blank" rel="noopener noreferrer" className="text-[14px] text-genesis-text hover:underline">Portal IBO ↗</a></li>
-            <li><Link href="/g1/comunidad" className="text-[14px] text-genesis-text hover:underline">Próximos eventos</Link></li>
+            <li><Link href="/g1/comunidad" lang={c('Próximos eventos').lang} className="text-[14px] text-genesis-text hover:underline">{c('Próximos eventos').texto}</Link></li>
           </Col>
 
           <Col title="Legal">
             {LEGAL.map((l) => (
-              <li key={l}><Link href="/legal" className="text-[13.5px] text-genesis-mist hover:text-genesis-text">{l}</Link></li>
+              <li key={l}><Link href="/legal" lang={c(l).lang} className="text-[13.5px] text-genesis-mist hover:text-genesis-text">{c(l).texto}</Link></li>
             ))}
           </Col>
         </div>
@@ -160,13 +181,10 @@ export function G1Footer() {
             <div>
               <p className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.18em] text-genesis-mist">
                 <span aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ background: G1.amber, boxShadow: `0 0 8px ${G1.amber}` }} />
-                Aviso de riesgo
+                {c('Aviso de riesgo').texto}
               </p>
-              <p className="mt-4 max-w-[60ch] text-[13px] leading-relaxed text-genesis-mist">
-                La información publicada tiene fines informativos y educativos. No es asesoría financiera,
-                legal ni fiscal. Los mercados y los activos digitales implican riesgos y pueden generar
-                pérdidas parciales o totales. G1 no administra el capital de las personas: cada quien revisa
-                los términos oficiales de cada plataforma, analiza los riesgos y decide de forma independiente.
+              <p lang={aviso.lang} className="mt-4 max-w-[60ch] text-[13px] leading-relaxed text-genesis-mist">
+                {aviso.texto}
               </p>
             </div>
           </div>
@@ -174,7 +192,9 @@ export function G1Footer() {
 
         <div className="mt-8 flex flex-col gap-4 border-t pt-6 sm:flex-row sm:items-center sm:justify-between" style={{ borderColor: `${G1.cyan}14` }}>
           <DisclaimerBar />
-          <p className="font-mono text-[11px] tracking-[0.05em] text-genesis-mist">© {'2026'} G1 · Génesis. Todos los derechos reservados.</p>
+          <p lang={c('Todos los derechos reservados.').lang} className="font-mono text-[11px] tracking-[0.05em] text-genesis-mist">
+            © 2026 G1 · Génesis. {c('Todos los derechos reservados.').texto}
+          </p>
         </div>
       </div>
     </footer>
