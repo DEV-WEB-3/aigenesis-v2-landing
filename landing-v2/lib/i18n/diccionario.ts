@@ -4601,6 +4601,393 @@ export const DICCIONARIO: Record<string, Fila> = {
       ur: 'ممبرشپ کی میعاد اُس پلان کے دنوں کے برابر ہوتی ہے جو آپ نے فعال کیا (مثلاً PRO فعال ہونے سے 180 دن ہے)۔ اُس تاریخ کے بعد پلان تک رسائی خودکار طور پر رک جاتی ہے اور پینل دوبارہ فعال کرنے کی پیشکش کرتا ہے۔ ابھی فعال ممبرشپ ہوتے ہوئے دوبارہ ادائیگی کرنے سے دن اوپر نہیں جڑتے: دوبارہ فعال کرنا تب گنتا ہے جب پلان ختم ہو چکا ہو۔ میعاد ختم ہونے کی تاریخ آپ اپنے G-Pulse پینل میں دیکھ سکتے ہیں۔',
     },
 
+  /* ══════════════════════════════════════════════════════════════════
+     CORPUS · HOLD (resto), SI ALGO SALE MAL, Y GEVY
+
+     Tres respuestas dicen lo mismo con distintas palabras y las tres importan:
+     NO PAGUES OTRA VEZ. En español está claro; en once idiomas hay que evitar
+     el condicional cortés, que la vuelve una sugerencia.
+
+     Y una respuesta marca una frontera de responsabilidad: «Compras a Gevy y
+     reclamas a Gevy… eso es asunto nuestro, no tuyo». Traducida floja se lee
+     como un descargo; traducida bien, como lo que es: quitarle al cliente el
+     trabajo de averiguar quién fabrica.
+     ══════════════════════════════════════════════════════════════════ */
+  'Me falta AIG para llegar al hold. ¿De dónde lo saco?': {
+    en: 'I am short of AIG to reach the hold. Where do I get it?',
+    pt: 'Falta-me AIG para chegar ao hold. De onde tiro?',
+    fr: 'Il me manque de l’AIG pour atteindre le hold. Où en trouver ?',
+    ru: 'Мне не хватает AIG до hold. Где его взять?',
+    sv: 'Jag saknar AIG för att nå hold. Var får jag tag i det?',
+    hr: 'Nedostaje mi AIG-a da dosegnem hold. Gdje da ga nabavim?',
+    ar: 'ينقصني AIG لبلوغ الـ hold. من أين أحصل عليه؟',
+    de: 'Mir fehlt AIG, um den Hold zu erreichen. Woher bekomme ich es?',
+    sr: 'Недостаје ми AIG-а да достигнем hold. Где да га набавим?',
+    ur: 'مجھے hold تک پہنچنے کے لیے AIG کم ہے۔ کہاں سے لوں؟',
+  },
+  'Se consigue en la comunidad, fuera de la herramienta. Genesis es una comunidad global: allá donde preguntes hay participantes con AIG, y ese intercambio se acuerda entre personas. Lo que la plataforma no hace es venderte el AIG que te falta.':
+    {
+      en: 'You get it within the community, outside the tool. Genesis is a global community: wherever you ask there are participants holding AIG, and that exchange is agreed between people. What the platform does not do is sell you the AIG you are missing.',
+      pt: 'Consegue-se na comunidade, fora da ferramenta. A Genesis é uma comunidade global: onde quer que você pergunte há participantes com AIG, e essa troca é acordada entre pessoas. O que a plataforma não faz é lhe vender o AIG que falta.',
+      fr: 'On l’obtient dans la communauté, en dehors de l’outil. Genesis est une communauté mondiale : où que tu demandes, il y a des participants qui détiennent de l’AIG, et cet échange se convient entre personnes. Ce que la plateforme ne fait pas, c’est te vendre l’AIG qui te manque.',
+      ru: 'Его находят в сообществе, за пределами инструмента. Genesis — глобальное сообщество: где ни спроси, есть участники с AIG, и такой обмен люди договаривают между собой. Чего платформа не делает — так это не продаёт тебе недостающий AIG.',
+      sv: 'Du får tag i det i gemenskapen, utanför verktyget. Genesis är en global gemenskap: var du än frågar finns deltagare som har AIG, och det utbytet kommer man överens om mellan människor. Det plattformen inte gör är att sälja dig den AIG du saknar.',
+      hr: 'Nabavlja se u zajednici, izvan alata. Genesis je globalna zajednica: gdje god pitaš ima sudionika s AIG-om, a ta se razmjena dogovara među ljudima. Ono što platforma ne radi jest da ti proda AIG koji ti nedostaje.',
+      ar: 'تحصل عليه داخل المجتمع، خارج الأداة. Genesis مجتمع عالمي: أينما سألت تجد مشاركين يملكون AIG، ويُتفق على ذلك التبادل بين الأشخاص. ما لا تفعله المنصة هو أن تبيعك الـ AIG الناقص.',
+      de: 'Du bekommst es in der Community, außerhalb des Werkzeugs. Genesis ist eine globale Community: Wo du auch fragst, gibt es Teilnehmende mit AIG, und dieser Tausch wird zwischen Menschen vereinbart. Was die Plattform nicht tut, ist dir das fehlende AIG zu verkaufen.',
+      sr: 'Набавља се у заједници, изван алата. Genesis је глобална заједница: где год питаш има учесника са AIG-ом, а та се размена договара међу људима. Оно што платформа не ради јесте да ти прода AIG који ти недостаје.',
+      ur: 'یہ کمیونٹی میں ملتا ہے، ٹول سے باہر۔ Genesis ایک عالمی کمیونٹی ہے: جہاں بھی پوچھیں، AIG رکھنے والے شرکاء ہیں، اور یہ تبادلہ لوگوں کے درمیان طے ہوتا ہے۔ پلیٹ فارم جو نہیں کرتا وہ یہ ہے کہ آپ کو کم پڑنے والا AIG بیچے۔',
+    },
+  'Mi minado no avanza': {
+    en: 'My mining is not advancing', pt: 'Minha mineração não avança',
+    fr: 'Mon minage n’avance pas', ru: 'Мой майнинг не движется',
+    sv: 'Min mining går inte framåt', hr: 'Moje rudarenje ne napreduje',
+    ar: 'تعديني لا يتقدّم', de: 'Mein Mining kommt nicht voran',
+    sr: 'Моје рударење не напредује', ur: 'میری مائننگ آگے نہیں بڑھ رہی',
+  },
+  'Lo primero que hay que mirar es el hold: si la cuenta está por debajo del mínimo, los beneficios quedan congelados y el contador se detiene. Comprueba el estado en tu panel antes de reportarlo como avería. Si el hold está cubierto y aun así no avanza, es un caso para el equipo.':
+    {
+      en: 'The first thing to check is the hold: if the account is below the minimum, benefits are frozen and the counter stops. Check the status in your dashboard before reporting it as a fault. If the hold is covered and it still does not advance, it is a case for the team.',
+      pt: 'A primeira coisa a olhar é o hold: se a conta está abaixo do mínimo, os benefícios ficam congelados e o contador para. Verifique o estado no seu painel antes de reportar como falha. Se o hold está coberto e mesmo assim não avança, é um caso para a equipe.',
+      fr: 'La première chose à regarder, c’est le hold : si le compte est sous le minimum, les avantages sont gelés et le compteur s’arrête. Vérifie l’état dans ton tableau de bord avant de le signaler comme panne. Si le hold est couvert et que ça n’avance toujours pas, c’est un cas pour l’équipe.',
+      ru: 'Первое, что нужно проверить, — hold: если аккаунт ниже минимума, преимущества заморожены и счётчик стоит. Посмотри состояние в панели, прежде чем сообщать о сбое. Если hold покрыт, а прогресса всё равно нет — это случай для команды.',
+      sv: 'Det första att titta på är hold: ligger kontot under minimum fryses förmånerna och räknaren stannar. Kontrollera statusen i din panel innan du anmäler det som ett fel. Är hold täckt och det ändå inte går framåt är det ett ärende för teamet.',
+      hr: 'Prvo treba pogledati hold: ako je račun ispod minimuma, pogodnosti su zamrznute i brojač staje. Provjeri stanje na svojoj ploči prije nego to prijaviš kao kvar. Ako je hold pokriven, a i dalje ne napreduje, to je slučaj za tim.',
+      ar: 'أول ما يجب النظر إليه هو الـ hold: إذا كان الحساب تحت الحد الأدنى، تُجمَّد المزايا ويتوقف العدّاد. تحقّق من الحالة في لوحتك قبل الإبلاغ عن عطل. وإذا كان الـ hold مغطّى ومع ذلك لا يتقدّم، فهي حالة للفريق.',
+      de: 'Als Erstes solltest du den Hold prüfen: Liegt das Konto unter dem Minimum, sind die Vorteile eingefroren und der Zähler steht. Prüfe den Status in deinem Panel, bevor du es als Störung meldest. Ist der Hold gedeckt und es geht trotzdem nicht voran, ist es ein Fall fürs Team.',
+      sr: 'Прво треба погледати hold: ако је налог испод минимума, погодности су замрзнуте и бројач стаје. Провери стање на својој табли пре него што то пријавиш као квар. Ако је hold покривен, а и даље не напредује, то је случај за тим.',
+      ur: 'سب سے پہلے hold دیکھیں: اگر اکاؤنٹ کم از کم سے نیچے ہے تو فوائد منجمد ہو جاتے ہیں اور کاؤنٹر رک جاتا ہے۔ خرابی کی اطلاع دینے سے پہلے اپنے پینل میں حالت دیکھیں۔ اگر hold پورا ہے اور پھر بھی نہیں بڑھتا تو یہ ٹیم کا کیس ہے۔',
+    },
+  'Pagué y no veo el pedido': {
+    en: 'I paid and I do not see the order', pt: 'Paguei e não vejo o pedido',
+    fr: 'J’ai payé et je ne vois pas la commande', ru: 'Я оплатил и не вижу заказ',
+    sv: 'Jag betalade och ser ingen order', hr: 'Platio sam i ne vidim narudžbu',
+    ar: 'دفعت ولا أرى الطلب', de: 'Ich habe bezahlt und sehe die Bestellung nicht',
+    sr: 'Платио сам и не видим наруџбину', ur: 'میں نے ادائیگی کی اور آرڈر نظر نہیں آتا',
+  },
+  'No pagues otra vez. Entra en «Mis pedidos»: si el pedido quedó creado sin cobrar, puedes retomar el pago desde ahí, y el sistema no genera un segundo cargo. Si al fallar viste el aviso de que no se cobró nada, es literal: el cobro no llegó a producirse.':
+    {
+      en: 'Do not pay again. Go to “My orders”: if the order was created without being charged, you can resume the payment from there, and the system does not create a second charge. If when it failed you saw the notice saying nothing was charged, it is literal: the charge never happened.',
+      pt: 'Não pague de novo. Entre em «Meus pedidos»: se o pedido ficou criado sem cobrança, você pode retomar o pagamento a partir dali, e o sistema não gera uma segunda cobrança. Se ao falhar você viu o aviso de que nada foi cobrado, é literal: a cobrança não chegou a acontecer.',
+      fr: 'Ne repaie pas. Va dans « Mes commandes » : si la commande a été créée sans être débitée, tu peux reprendre le paiement de là, et le système ne génère pas un second débit. Si, à l’échec, tu as vu l’avis disant que rien n’a été débité, c’est littéral : le débit n’a pas eu lieu.',
+      ru: 'Не плати снова. Зайди в «Мои заказы»: если заказ создан, но не оплачен, ты можешь возобновить оплату оттуда, и система не создаст второе списание. Если при сбое ты видел уведомление, что ничего не списалось, это буквально так: списания не произошло.',
+      sv: 'Betala inte igen. Gå till ”Mina ordrar”: om ordern skapades utan att debiteras kan du återuppta betalningen därifrån, och systemet skapar ingen andra debitering. Om du vid felet såg meddelandet att inget debiterats är det bokstavligt: debiteringen blev aldrig av.',
+      hr: 'Nemoj platiti ponovno. Uđi u «Moje narudžbe»: ako je narudžba stvorena bez naplate, odande možeš nastaviti plaćanje, a sustav ne stvara drugu naplatu. Ako si pri kvaru vidio obavijest da ništa nije naplaćeno, to je doslovno: naplata se nije ni dogodila.',
+      ar: 'لا تدفع مرة أخرى. ادخل إلى «طلباتي»: إذا أُنشئ الطلب دون خصم، يمكنك استئناف الدفع من هناك، والنظام لا يولّد خصمًا ثانيًا. وإذا رأيت عند الفشل إشعارًا بأنه لم يُخصم شيء، فهو حرفيّ: الخصم لم يحدث أصلًا.',
+      de: 'Zahle nicht erneut. Geh zu „Meine Bestellungen“: Wurde die Bestellung ohne Abbuchung erstellt, kannst du die Zahlung dort fortsetzen, und das System erzeugt keine zweite Abbuchung. Wenn du beim Fehlschlag den Hinweis gesehen hast, dass nichts abgebucht wurde, ist das wörtlich zu nehmen: die Abbuchung fand nicht statt.',
+      sr: 'Немој платити поново. Уђи у «Моје наруџбине»: ако је наруџбина створена без наплате, одатле можеш наставити плаћање, а систем не ствара другу наплату. Ако си при квару видео обавештење да ништа није наплаћено, то је дословно: наплата се није ни догодила.',
+      ur: 'دوبارہ ادائیگی نہ کریں۔ «میرے آرڈرز» میں جائیں: اگر آرڈر بغیر وصولی کے بن گیا تھا تو آپ وہیں سے ادائیگی دوبارہ شروع کر سکتے ہیں، اور نظام دوسرا چارج نہیں بناتا۔ اگر ناکامی پر آپ نے یہ نوٹس دیکھا کہ کچھ وصول نہیں ہوا، تو یہ لفظی ہے: وصولی ہوئی ہی نہیں۔',
+    },
+  'Mi pedido quedó a medias sin pagar': {
+    en: 'My order was left half-finished, unpaid',
+    pt: 'Meu pedido ficou pela metade, sem pagar',
+    fr: 'Ma commande est restée à moitié faite, sans paiement',
+    ru: 'Мой заказ остался незавершённым, неоплаченным',
+    sv: 'Min order blev halvfärdig, obetald',
+    hr: 'Moja je narudžba ostala nedovršena, neplaćena',
+    ar: 'بقي طلبي ناقصًا دون دفع',
+    de: 'Meine Bestellung ist halbfertig und unbezahlt geblieben',
+    sr: 'Моја наруџбина је остала недовршена, неплаћена',
+    ur: 'میرا آرڈر ادھورا رہ گیا، بغیر ادائیگی',
+  },
+  'Se puede retomar. El pedido queda creado y esperando el cobro, y desde «Mis pedidos» vuelves al mismo pago para confirmarlo. No se crea un pedido nuevo ni un cargo nuevo.':
+    {
+      en: 'It can be resumed. The order stays created and waiting to be charged, and from “My orders” you return to the same payment to confirm it. No new order and no new charge is created.',
+      pt: 'Pode ser retomado. O pedido fica criado e esperando a cobrança, e a partir de «Meus pedidos» você volta ao mesmo pagamento para confirmá-lo. Não se cria um pedido novo nem uma cobrança nova.',
+      fr: 'Elle peut être reprise. La commande reste créée en attente de paiement, et depuis « Mes commandes » tu reviens au même paiement pour le confirmer. Aucune nouvelle commande ni nouveau débit n’est créé.',
+      ru: 'Его можно возобновить. Заказ остаётся созданным и ждёт оплаты, а из «Моих заказов» ты возвращаешься к тому же платежу, чтобы подтвердить его. Ни нового заказа, ни нового списания не создаётся.',
+      sv: 'Den kan återupptas. Ordern förblir skapad och väntar på betalning, och från ”Mina ordrar” återvänder du till samma betalning för att bekräfta den. Ingen ny order och ingen ny debitering skapas.',
+      hr: 'Može se nastaviti. Narudžba ostaje stvorena i čeka naplatu, a iz «Mojih narudžbi» vraćaš se na isto plaćanje da ga potvrdiš. Ne stvara se nova narudžba ni nova naplata.',
+      ar: 'يمكن استئنافه. يبقى الطلب منشأً بانتظار الدفع، ومن «طلباتي» تعود إلى الدفع نفسه لتأكيده. لا يُنشأ طلب جديد ولا خصم جديد.',
+      de: 'Sie lässt sich fortsetzen. Die Bestellung bleibt angelegt und wartet auf die Zahlung, und über „Meine Bestellungen“ kehrst du zur selben Zahlung zurück, um sie zu bestätigen. Es entsteht weder eine neue Bestellung noch eine neue Abbuchung.',
+      sr: 'Може се наставити. Наруџбина остаје створена и чека наплату, а из «Мојих наруџбина» враћаш се на исто плаћање да га потврдиш. Не ствара се нова наруџбина ни нова наплата.',
+      ur: 'اسے دوبارہ شروع کیا جا سکتا ہے۔ آرڈر بنا رہتا ہے اور ادائیگی کا منتظر ہوتا ہے، اور «میرے آرڈرز» سے آپ اُسی ادائیگی پر واپس جا کر تصدیق کرتے ہیں۔ نہ نیا آرڈر بنتا ہے نہ نیا چارج۔',
+    },
+  '¿Quién me responde si hay un problema con el producto?': {
+    en: 'Who answers to me if there is a problem with the product?',
+    pt: 'Quem me responde se houver um problema com o produto?',
+    fr: 'Qui me répond s’il y a un problème avec le produit ?',
+    ru: 'Кто отвечает, если с товаром проблема?',
+    sv: 'Vem svarar mig om det blir problem med produkten?',
+    hr: 'Tko mi odgovara ako ima problema s proizvodom?',
+    ar: 'من يجيبني إذا كانت هناك مشكلة في المنتج؟',
+    de: 'Wer ist für mich zuständig, wenn es ein Problem mit dem Produkt gibt?',
+    sr: 'Ко ми одговара ако има проблема са производом?',
+    ur: 'پروڈکٹ میں مسئلہ ہو تو مجھے کون جواب دے گا؟',
+  },
+  'Gevy. Compras a Gevy y reclamas a Gevy, con tu número de pedido. No tienes que averiguar quién fabrica o quién surte: eso es asunto nuestro, no tuyo.':
+    {
+      en: 'Gevy. You buy from Gevy and you claim from Gevy, with your order number. You do not have to find out who manufactures or who supplies: that is our business, not yours.',
+      pt: 'A Gevy. Você compra da Gevy e reclama à Gevy, com seu número de pedido. Não tem que descobrir quem fabrica ou quem fornece: isso é assunto nosso, não seu.',
+      fr: 'Gevy. Tu achètes chez Gevy et tu réclames chez Gevy, avec ton numéro de commande. Tu n’as pas à chercher qui fabrique ni qui approvisionne : ça, c’est notre affaire, pas la tienne.',
+      ru: 'Gevy. Ты покупаешь у Gevy и обращаешься к Gevy, с номером своего заказа. Тебе не нужно выяснять, кто производит и кто поставляет: это наша забота, не твоя.',
+      sv: 'Gevy. Du köper av Gevy och reklamerar hos Gevy, med ditt ordernummer. Du behöver inte ta reda på vem som tillverkar eller levererar: det är vår sak, inte din.',
+      hr: 'Gevy. Kupuješ od Gevyja i reklamiraš Gevyju, sa svojim brojem narudžbe. Ne moraš doznavati tko proizvodi ni tko dobavlja: to je naša stvar, ne tvoja.',
+      ar: 'Gevy. تشتري من Gevy وتُطالب Gevy، برقم طلبك. لست مضطرًا لمعرفة من يصنع أو من يورّد: هذا شأننا نحن، لا شأنك.',
+      de: 'Gevy. Du kaufst bei Gevy und reklamierst bei Gevy, mit deiner Bestellnummer. Du musst nicht herausfinden, wer herstellt oder wer liefert: Das ist unsere Sache, nicht deine.',
+      sr: 'Gevy. Купујеш од Gevy-ја и рекламираш Gevy-ју, са својим бројем наруџбине. Не мораш сазнавати ко производи ни ко снабдева: то је наша ствар, не твоја.',
+      ur: 'Gevy۔ آپ Gevy سے خریدتے ہیں اور Gevy سے ہی شکایت کرتے ہیں، اپنے آرڈر نمبر کے ساتھ۔ آپ کو یہ معلوم کرنے کی ضرورت نہیں کہ کون بناتا یا کون سپلائی کرتا ہے: یہ ہمارا کام ہے، آپ کا نہیں۔',
+    },
+  '¿Qué es Gevy?': {
+    en: 'What is Gevy?', pt: 'O que é a Gevy?', fr: 'Qu’est-ce que Gevy ?',
+    ru: 'Что такое Gevy?', sv: 'Vad är Gevy?', hr: 'Što je Gevy?',
+    ar: 'ما هو Gevy؟', de: 'Was ist Gevy?', sr: 'Шта је Gevy?', ur: 'Gevy کیا ہے؟',
+  },
+  'Es la tienda de Genesis: un catálogo global con envío internacional donde compras productos reales y te llegan a casa, pagando desde tu wallet con AIG y USDT.':
+    {
+      en: 'It is the Genesis store: a global catalogue with international shipping where you buy real products delivered to your home, paying from your wallet with AIG and USDT.',
+      pt: 'É a loja da Genesis: um catálogo global com envio internacional onde você compra produtos reais que chegam à sua casa, pagando pela sua carteira com AIG e USDT.',
+      fr: 'C’est la boutique de Genesis : un catalogue mondial avec livraison internationale où tu achètes de vrais produits livrés chez toi, en payant depuis ton portefeuille en AIG et USDT.',
+      ru: 'Это магазин Genesis: глобальный каталог с международной доставкой, где ты покупаешь настоящие товары с доставкой домой, оплачивая из кошелька в AIG и USDT.',
+      sv: 'Det är Genesis butik: en global katalog med internationell frakt där du köper riktiga produkter som levereras hem, och betalar från din plånbok med AIG och USDT.',
+      hr: 'To je Genesisova trgovina: globalni katalog s međunarodnom dostavom gdje kupuješ stvarne proizvode koji stižu kući, plaćajući iz svog novčanika AIG-om i USDT-om.',
+      ar: 'هو متجر Genesis: كتالوج عالمي بشحن دولي تشتري فيه منتجات حقيقية تصلك إلى بيتك، وتدفع من محفظتك بالـ AIG و USDT.',
+      de: 'Das ist der Genesis-Shop: ein globaler Katalog mit internationalem Versand, in dem du echte Produkte kaufst, die nach Hause geliefert werden — bezahlt aus deiner Wallet mit AIG und USDT.',
+      sr: 'То је Genesis-ова продавница: глобални каталог са међународном доставом где купујеш стварне производе који стижу кући, плаћајући из свог новчаника AIG-ом и USDT-ом.',
+      ur: 'یہ Genesis کی دکان ہے: بین الاقوامی ترسیل کے ساتھ ایک عالمی کیٹلاگ جہاں آپ حقیقی مصنوعات خریدتے ہیں جو گھر پہنچتی ہیں، اپنے والٹ سے AIG اور USDT میں ادائیگی کرتے ہوئے۔',
+    },
+  '¿Tengo que registrarme en Gevy?': {
+    en: 'Do I have to register on Gevy?', pt: 'Tenho que me cadastrar na Gevy?',
+    fr: 'Dois-je m’inscrire sur Gevy ?', ru: 'Нужно ли регистрироваться в Gevy?',
+    sv: 'Måste jag registrera mig på Gevy?', hr: 'Moram li se registrirati na Gevy?',
+    ar: 'هل عليّ التسجيل في Gevy؟', de: 'Muss ich mich bei Gevy registrieren?',
+    sr: 'Морам ли да се региструјем на Gevy?', ur: 'کیا مجھے Gevy پر رجسٹر کرنا ہوگا؟',
+  },
+  'No. Es la misma cuenta de Genesis: si ya entras al ecosistema, ya estás dentro de la tienda. No hay un alta aparte ni una contraseña distinta.':
+    {
+      en: 'No. It is the same Genesis account: if you already sign in to the ecosystem, you are already inside the store. There is no separate sign-up and no different password.',
+      pt: 'Não. É a mesma conta da Genesis: se você já entra no ecossistema, já está dentro da loja. Não há um cadastro à parte nem uma senha diferente.',
+      fr: 'Non. C’est le même compte Genesis : si tu accèdes déjà à l’écosystème, tu es déjà dans la boutique. Il n’y a pas d’inscription séparée ni de mot de passe différent.',
+      ru: 'Нет. Это тот же аккаунт Genesis: если ты уже входишь в экосистему, ты уже внутри магазина. Отдельной регистрации и другого пароля нет.',
+      sv: 'Nej. Det är samma Genesis-konto: loggar du redan in i ekosystemet är du redan inne i butiken. Det finns ingen separat registrering och inget annat lösenord.',
+      hr: 'Ne. To je isti Genesis račun: ako već ulaziš u ekosustav, već si u trgovini. Nema zasebne registracije ni druge lozinke.',
+      ar: 'لا. إنه حساب Genesis نفسه: إن كنت تدخل النظام البيئي فأنت داخل المتجر بالفعل. لا يوجد تسجيل منفصل ولا كلمة مرور مختلفة.',
+      de: 'Nein. Es ist dasselbe Genesis-Konto: Wenn du dich schon im Ökosystem anmeldest, bist du bereits im Shop. Es gibt keine separate Anmeldung und kein anderes Passwort.',
+      sr: 'Не. То је исти Genesis налог: ако већ улазиш у екосистем, већ си у продавници. Нема засебне регистрације ни друге лозинке.',
+      ur: 'نہیں۔ یہ وہی Genesis اکاؤنٹ ہے: اگر آپ پہلے ہی ایکو سسٹم میں داخل ہوتے ہیں تو آپ دکان کے اندر بھی ہیں۔ نہ الگ رجسٹریشن ہے نہ مختلف پاس ورڈ۔',
+    },
+  '¿Qué pasó con AIGMarket?': {
+    en: 'What happened to AIGMarket?', pt: 'O que aconteceu com o AIGMarket?',
+    fr: 'Qu’est devenu AIGMarket ?', ru: 'Что стало с AIGMarket?',
+    sv: 'Vad hände med AIGMarket?', hr: 'Što je bilo s AIGMarketom?',
+    ar: 'ماذا حدث لـ AIGMarket؟', de: 'Was ist aus AIGMarket geworden?',
+    sr: 'Шта је било са AIGMarket-ом?', ur: 'AIGMarket کا کیا ہوا؟',
+  },
+  'Gevy lo sucede: es el marketplace único del ecosistema. AIGMarket pasa a ser una herramienta dentro de Gevy, en desarrollo futuro. Para comprar hoy no hay que elegir entre dos sitios — el sitio es Gevy.':
+    {
+      en: 'Gevy succeeds it: it is the ecosystem’s single marketplace. AIGMarket becomes a tool inside Gevy, in future development. To buy today there is no choosing between two sites — the site is Gevy.',
+      pt: 'A Gevy o sucede: é o marketplace único do ecossistema. O AIGMarket passa a ser uma ferramenta dentro da Gevy, em desenvolvimento futuro. Para comprar hoje não há que escolher entre dois sites — o site é a Gevy.',
+      fr: 'Gevy lui succède : c’est la marketplace unique de l’écosystème. AIGMarket devient un outil au sein de Gevy, en développement futur. Pour acheter aujourd’hui, pas de choix entre deux sites — le site, c’est Gevy.',
+      ru: 'Его сменяет Gevy: это единый маркетплейс экосистемы. AIGMarket становится инструментом внутри Gevy, в будущей разработке. Чтобы купить сегодня, выбирать между двумя сайтами не нужно — сайт это Gevy.',
+      sv: 'Gevy efterträder den: det är ekosystemets enda marknadsplats. AIGMarket blir ett verktyg inuti Gevy, under framtida utveckling. För att handla i dag finns inget val mellan två sajter — sajten är Gevy.',
+      hr: 'Nasljeđuje ga Gevy: to je jedinstvena tržnica ekosustava. AIGMarket postaje alat unutar Gevyja, u budućem razvoju. Za kupnju danas ne treba birati između dva mjesta — mjesto je Gevy.',
+      ar: 'يخلفه Gevy: هو السوق الوحيد للنظام البيئي. ويصبح AIGMarket أداة داخل Gevy، قيد تطوير مستقبلي. للشراء اليوم لا اختيار بين موقعين — الموقع هو Gevy.',
+      de: 'Gevy folgt darauf: Es ist der einzige Marktplatz des Ökosystems. AIGMarket wird zu einem Werkzeug innerhalb von Gevy, in künftiger Entwicklung. Um heute zu kaufen, muss man nicht zwischen zwei Seiten wählen — die Seite ist Gevy.',
+      sr: 'Наслеђује га Gevy: то је јединствени маркетплејс екосистема. AIGMarket постаје алат унутар Gevy-ја, у будућем развоју. За куповину данас не треба бирати између два места — место је Gevy.',
+      ur: 'اس کی جگہ Gevy لیتا ہے: یہ ایکو سسٹم کا واحد مارکیٹ پلیس ہے۔ AIGMarket، Gevy کے اندر ایک ٹول بن جاتا ہے، آئندہ ترقی میں۔ آج خریدنے کے لیے دو سائٹس میں سے چننا نہیں پڑتا — سائٹ Gevy ہے۔',
+    },
+
+  /* ══════════════════════════════════════════════════════════════════
+     CORPUS · ENVÍO, SEÑALES, RED Y NOVEDADES
+
+     CUATRO RESPUESTAS QUE DICEN «NO», y son las más valiosas del corpus:
+     una señal NO es una recomendación · G-Pulse NO predice · NO se publica un
+     porcentaje de aciertos · G-Pulse NO opera por ti.
+
+     Cada una está redactada para cerrar una expectativa, no para sonar modesta.
+     Traducidas con un «no exactamente» o un «no del todo» dejan la puerta
+     entreabierta, y por esa rendija entra justo lo que niegan. En los once
+     idiomas el «no» va primero y va solo.
+
+     LA TABLA DE RANGOS SE COPIA ENTERA: los nombres —Bronze, Silver, Gold,
+     Zappire, Ruby, Emerald, Diamond, Blue/Black/Red Diamond, G11— no se
+     traducen, son nombres de nivel. Los puntos y los USDT tampoco se tocan.
+     ══════════════════════════════════════════════════════════════════ */
+  '¿Una señal me está diciendo que compre o que venda?': {
+    en: 'Is a signal telling me to buy or to sell?',
+    pt: 'Um sinal está me dizendo para comprar ou vender?',
+    fr: 'Un signal me dit-il d’acheter ou de vendre ?',
+    ru: 'Сигнал говорит мне покупать или продавать?',
+    sv: 'Säger en signal åt mig att köpa eller sälja?',
+    hr: 'Govori li mi signal da kupim ili prodam?',
+    ar: 'هل تخبرني الإشارة بأن أشتري أو أبيع؟',
+    de: 'Sagt mir ein Signal, ob ich kaufen oder verkaufen soll?',
+    sr: 'Да ли ми сигнал говори да купим или продам?',
+    ur: 'کیا سگنل مجھے خریدنے یا بیچنے کو کہہ رہا ہے؟',
+  },
+  'No. Una señal describe una condición que se ha cumplido en el mercado — nada más. No es una recomendación, no conoce tu situación y no te dice qué hacer. La decisión y el riesgo son de quien opera, siempre.':
+    {
+      en: 'No. A signal describes a condition that has been met in the market — nothing more. It is not a recommendation, it does not know your situation and it does not tell you what to do. The decision and the risk belong to whoever trades, always.',
+      pt: 'Não. Um sinal descreve uma condição que se cumpriu no mercado — nada mais. Não é uma recomendação, não conhece sua situação e não lhe diz o que fazer. A decisão e o risco são de quem opera, sempre.',
+      fr: 'Non. Un signal décrit une condition qui s’est réalisée sur le marché — rien de plus. Ce n’est pas une recommandation, il ne connaît pas ta situation et il ne te dit pas quoi faire. La décision et le risque appartiennent à celui qui opère, toujours.',
+      ru: 'Нет. Сигнал описывает условие, которое выполнилось на рынке — и только. Это не рекомендация, он не знает твоей ситуации и не говорит, что делать. Решение и риск всегда на том, кто торгует.',
+      sv: 'Nej. En signal beskriver ett villkor som uppfyllts på marknaden — inget mer. Den är ingen rekommendation, den känner inte din situation och säger inte vad du ska göra. Beslutet och risken tillhör den som handlar, alltid.',
+      hr: 'Ne. Signal opisuje uvjet koji se ispunio na tržištu — ništa više. Nije preporuka, ne poznaje tvoju situaciju i ne govori ti što činiti. Odluka i rizik pripadaju onome tko trguje, uvijek.',
+      ar: 'لا. الإشارة تصف شرطًا تحقّق في السوق — لا أكثر. ليست توصية، ولا تعرف وضعك، ولا تخبرك بما تفعل. القرار والمخاطرة يخصّان من يتداول، دائمًا.',
+      de: 'Nein. Ein Signal beschreibt eine Bedingung, die am Markt eingetreten ist — mehr nicht. Es ist keine Empfehlung, es kennt deine Lage nicht und sagt dir nicht, was zu tun ist. Entscheidung und Risiko liegen immer bei dem, der handelt.',
+      sr: 'Не. Сигнал описује услов који се испунио на тржишту — ништа више. Није препорука, не познаје твоју ситуацију и не говори ти шта да радиш. Одлука и ризик припадају ономе ко тргује, увек.',
+      ur: 'نہیں۔ سگنل صرف یہ بتاتا ہے کہ مارکیٹ میں کوئی شرط پوری ہوئی — بس۔ یہ سفارش نہیں، آپ کی صورتحال نہیں جانتا اور یہ نہیں بتاتا کہ کیا کریں۔ فیصلہ اور خطرہ ہمیشہ اُسی کا ہے جو ٹریڈ کرتا ہے۔',
+    },
+  '¿G-Pulse predice lo que va a pasar?': {
+    en: 'Does G-Pulse predict what is going to happen?',
+    pt: 'O G-Pulse prevê o que vai acontecer?',
+    fr: 'G-Pulse prédit-il ce qui va arriver ?',
+    ru: 'Предсказывает ли G-Pulse, что произойдёт?',
+    sv: 'Förutsäger G-Pulse vad som kommer att hända?',
+    hr: 'Predviđa li G-Pulse što će se dogoditi?',
+    ar: 'هل يتنبّأ G-Pulse بما سيحدث؟',
+    de: 'Sagt G-Pulse voraus, was passieren wird?',
+    sr: 'Да ли G-Pulse предвиђа шта ће се десити?',
+    ur: 'کیا G-Pulse پیش گوئی کرتا ہے کہ کیا ہوگا؟',
+  },
+  'No. Procesa lo que ya ocurrió y lo que está ocurriendo. Cualquier lectura de la herramienta como anticipación del futuro es un malentendido: ningún sistema puede sostener eso, y G-Pulse tampoco lo intenta.':
+    {
+      en: 'No. It processes what has already happened and what is happening. Reading the tool as an anticipation of the future is a misunderstanding: no system can sustain that, and G-Pulse does not attempt it either.',
+      pt: 'Não. Processa o que já ocorreu e o que está ocorrendo. Qualquer leitura da ferramenta como antecipação do futuro é um mal-entendido: nenhum sistema pode sustentar isso, e o G-Pulse também não tenta.',
+      fr: 'Non. Il traite ce qui s’est déjà produit et ce qui se produit. Lire l’outil comme une anticipation de l’avenir est un malentendu : aucun système ne peut soutenir cela, et G-Pulse n’essaie pas non plus.',
+      ru: 'Нет. Он обрабатывает то, что уже произошло и что происходит сейчас. Читать инструмент как предвидение будущего — недоразумение: ни одна система не может это утверждать, и G-Pulse тоже не пытается.',
+      sv: 'Nej. Den bearbetar det som redan hänt och det som händer. Att läsa verktyget som en förutsägelse av framtiden är ett missförstånd: inget system kan hävda det, och G-Pulse försöker inte heller.',
+      hr: 'Ne. Obrađuje ono što se već dogodilo i što se događa. Čitanje alata kao predviđanja budućnosti nesporazum je: nijedan sustav to ne može tvrditi, pa ni G-Pulse ne pokušava.',
+      ar: 'لا. يعالج ما حدث بالفعل وما يحدث الآن. قراءة الأداة كاستباق للمستقبل سوء فهم: لا يمكن لأي نظام أن يزعم ذلك، و G-Pulse لا يحاوله أصلًا.',
+      de: 'Nein. Es verarbeitet, was bereits geschehen ist und was gerade geschieht. Das Werkzeug als Vorwegnahme der Zukunft zu lesen, ist ein Missverständnis: Kein System kann das leisten, und G-Pulse versucht es auch nicht.',
+      sr: 'Не. Обрађује оно што се већ десило и што се дешава. Читање алата као предвиђања будућности је неспоразум: ниједан систем то не може тврдити, па ни G-Pulse не покушава.',
+      ur: 'نہیں۔ یہ اُس پر کام کرتا ہے جو ہو چکا اور جو ہو رہا ہے۔ اِس ٹول کو مستقبل کی پیش بینی سمجھنا غلط فہمی ہے: کوئی نظام یہ دعویٰ نہیں کر سکتا، اور G-Pulse کوشش بھی نہیں کرتا۔',
+    },
+  '¿Qué porcentaje de aciertos tienen las señales?': {
+    en: 'What is the signals’ success rate?',
+    pt: 'Qual é a porcentagem de acertos dos sinais?',
+    fr: 'Quel est le taux de réussite des signaux ?',
+    ru: 'Какой процент попаданий у сигналов?',
+    sv: 'Vilken träffprocent har signalerna?',
+    hr: 'Koliki je postotak pogodaka signala?',
+    ar: 'ما نسبة نجاح الإشارات؟',
+    de: 'Welche Trefferquote haben die Signale?',
+    sr: 'Колики је проценат погодака сигнала?',
+    ur: 'سگنلز کی درستی کی شرح کیا ہے؟',
+  },
+  'No se publica un porcentaje de aciertos, y no es una omisión: una cifra así convertiría la herramienta en algo con resultado esperado, que es justo lo que no es. Si algún día se publican métricas, irán con su método y su periodo, o no irán.':
+    {
+      en: 'No success rate is published, and that is not an omission: a figure like that would turn the tool into something with an expected outcome, which is exactly what it is not. If metrics are ever published, they will come with their method and their period, or they will not come at all.',
+      pt: 'Não se publica uma porcentagem de acertos, e não é uma omissão: uma cifra assim converteria a ferramenta em algo com resultado esperado, que é justamente o que ela não é. Se algum dia forem publicadas métricas, virão com seu método e seu período, ou não virão.',
+      fr: 'Aucun taux de réussite n’est publié, et ce n’est pas un oubli : un tel chiffre transformerait l’outil en quelque chose à résultat attendu, ce qu’il n’est justement pas. Si des métriques sont un jour publiées, elles viendront avec leur méthode et leur période, ou elles ne viendront pas.',
+      ru: 'Процент попаданий не публикуется, и это не упущение: такая цифра превратила бы инструмент в нечто с ожидаемым результатом — а он именно этим не является. Если когда-нибудь метрики опубликуют, они выйдут вместе со своим методом и периодом, либо не выйдут вовсе.',
+      sv: 'Ingen träffprocent publiceras, och det är ingen glömska: en sådan siffra skulle göra verktyget till något med förväntat utfall, vilket det just inte är. Om mätvärden någon gång publiceras kommer de med sin metod och sin period, annars kommer de inte alls.',
+      hr: 'Postotak pogodaka se ne objavljuje, i to nije propust: takva bi brojka pretvorila alat u nešto s očekivanim ishodom, a upravo to nije. Ako se ikad objave mjere, doći će sa svojom metodom i razdobljem, ili neće doći.',
+      ar: 'لا تُنشر نسبة نجاح، وهذا ليس إغفالًا: رقم كهذا يحوّل الأداة إلى شيء ذي نتيجة متوقّعة، وهو تحديدًا ما ليست عليه. وإن نُشرت مقاييس يومًا ما، فستأتي مع منهجها وفترتها، أو لن تأتي.',
+      de: 'Es wird keine Trefferquote veröffentlicht, und das ist kein Versäumnis: Eine solche Zahl machte aus dem Werkzeug etwas mit erwartetem Ergebnis — genau das ist es nicht. Sollten je Kennzahlen veröffentlicht werden, kommen sie mit Methode und Zeitraum, oder sie kommen gar nicht.',
+      sr: 'Проценат погодака се не објављује, и то није пропуст: таква би бројка претворила алат у нешто са очекиваним исходом, а управо то није. Ако се икад објаве мере, доћи ће са својом методом и периодом, или неће доћи.',
+      ur: 'درستی کی کوئی شرح شائع نہیں کی جاتی، اور یہ بھول نہیں: ایسا عدد اِس ٹول کو متوقع نتیجے والی چیز بنا دیتا، جو یہ بالکل نہیں ہے۔ اگر کبھی پیمائشیں شائع ہوئیں تو وہ اپنے طریقے اور مدت کے ساتھ آئیں گی، ورنہ آئیں گی ہی نہیں۔',
+    },
+  '¿G-Pulse opera por mí?': {
+    en: 'Does G-Pulse trade for me?', pt: 'O G-Pulse opera por mim?',
+    fr: 'G-Pulse trade-t-il à ma place ?', ru: 'Торгует ли G-Pulse за меня?',
+    sv: 'Handlar G-Pulse åt mig?', hr: 'Trguje li G-Pulse umjesto mene?',
+    ar: 'هل يتداول G-Pulse نيابةً عني؟', de: 'Handelt G-Pulse für mich?',
+    sr: 'Да ли G-Pulse тргује уместо мене?', ur: 'کیا G-Pulse میری جگہ ٹریڈ کرتا ہے؟',
+  },
+  'No. Informa. Quien decide y ejecuta es la persona, con su propio criterio.': {
+    en: 'No. It informs. The one who decides and executes is the person, using their own judgement.',
+    pt: 'Não. Informa. Quem decide e executa é a pessoa, com seu próprio critério.',
+    fr: 'Non. Il informe. Celui qui décide et exécute, c’est la personne, avec son propre jugement.',
+    ru: 'Нет. Он информирует. Решает и исполняет человек, по собственному усмотрению.',
+    sv: 'Nej. Den informerar. Den som beslutar och utför är personen, efter eget omdöme.',
+    hr: 'Ne. Informira. Onaj tko odlučuje i izvršava jest osoba, po vlastitoj prosudbi.',
+    ar: 'لا. هو يُعلم فقط. من يقرّر وينفّذ هو الشخص، بتقديره الخاص.',
+    de: 'Nein. Es informiert. Wer entscheidet und ausführt, ist die Person, nach eigenem Urteil.',
+    sr: 'Не. Информише. Онај ко одлучује и извршава јесте особа, по сопственој процени.',
+    ur: 'نہیں۔ یہ صرف بتاتا ہے۔ فیصلہ اور عمل انسان کا ہے، اپنی صوابدید سے۔',
+  },
+  '¿Cómo sé en qué punto está mi pedido?': {
+    en: 'How do I know where my order is?', pt: 'Como sei em que ponto está meu pedido?',
+    fr: 'Comment savoir où en est ma commande ?', ru: 'Как узнать, на каком этапе мой заказ?',
+    sv: 'Hur vet jag var min order befinner sig?', hr: 'Kako znam gdje je moja narudžba?',
+    ar: 'كيف أعرف أين وصل طلبي؟', de: 'Woher weiß ich, wo meine Bestellung steht?',
+    sr: 'Како да знам где је моја наруџбина?', ur: 'مجھے کیسے پتہ چلے کہ میرا آرڈر کہاں ہے؟',
+  },
+  'El pedido va contando su estado solo, y recibes aviso en los momentos que importan: pagado, enviado, en tránsito y entregado. No hace falta preguntar para saber dónde está.':
+    {
+      en: 'The order reports its own status, and you get a notice at the moments that matter: paid, shipped, in transit and delivered. You do not need to ask to know where it is.',
+      pt: 'O pedido vai contando seu estado sozinho, e você recebe aviso nos momentos que importam: pago, enviado, em trânsito e entregue. Não é preciso perguntar para saber onde está.',
+      fr: 'La commande raconte son état toute seule, et tu reçois un avis aux moments qui comptent : payée, expédiée, en transit et livrée. Pas besoin de demander pour savoir où elle est.',
+      ru: 'Заказ сам сообщает свой статус, и ты получаешь уведомление в важные моменты: оплачен, отправлен, в пути и доставлен. Спрашивать, где он, не нужно.',
+      sv: 'Ordern berättar sin status själv, och du får besked i de ögonblick som betyder något: betald, skickad, under transport och levererad. Du behöver inte fråga för att veta var den är.',
+      hr: 'Narudžba sama javlja svoje stanje, a obavijest dobivaš u trenucima koji su važni: plaćeno, poslano, u prijevozu i isporučeno. Ne treba pitati da bi znao gdje je.',
+      ar: 'الطلب يروي حالته بنفسه، وتصلك إشعارات في اللحظات المهمة: مدفوع، مُرسل، قيد النقل، ومُسلَّم. لا حاجة للسؤال لتعرف أين هو.',
+      de: 'Die Bestellung meldet ihren Status selbst, und du bekommst eine Nachricht zu den Momenten, die zählen: bezahlt, versandt, unterwegs und zugestellt. Du musst nicht nachfragen, um zu wissen, wo sie ist.',
+      sr: 'Наруџбина сама јавља своје стање, а обавештење добијаш у тренуцима који су важни: плаћено, послато, у превозу и испоручено. Не треба питати да би знао где је.',
+      ur: 'آرڈر خود اپنی حالت بتاتا رہتا ہے، اور اہم لمحوں پر آپ کو اطلاع ملتی ہے: ادا شدہ، بھیجا گیا، راستے میں، اور پہنچا دیا گیا۔ یہ جاننے کے لیے پوچھنے کی ضرورت نہیں کہ وہ کہاں ہے۔',
+    },
+  'Mi pedido lleva días en el mismo estado': {
+    en: 'My order has been in the same status for days',
+    pt: 'Meu pedido está há dias no mesmo estado',
+    fr: 'Ma commande est au même statut depuis des jours',
+    ru: 'Мой заказ уже несколько дней в одном статусе',
+    sv: 'Min order har haft samma status i flera dagar',
+    hr: 'Moja je narudžba danima u istom stanju',
+    ar: 'طلبي في الحالة نفسها منذ أيام',
+    de: 'Meine Bestellung steht seit Tagen im selben Status',
+    sr: 'Моја наруџбина је данима у истом стању',
+    ur: 'میرا آرڈر کئی دن سے ایک ہی حالت میں ہے',
+  },
+  'En envío internacional es normal que el estado se quede quieto un tiempo, sobre todo entre que sale del almacén y entra en la red del país de destino. Si pasa de ahí sin moverse, escribe con tu número de pedido y se revisa.':
+    {
+      en: 'With international shipping it is normal for the status to sit still for a while, especially between leaving the warehouse and entering the destination country’s network. If it goes beyond that without moving, write in with your order number and it will be reviewed.',
+      pt: 'No envio internacional é normal que o estado fique parado um tempo, sobretudo entre a saída do armazém e a entrada na rede do país de destino. Se passar disso sem se mover, escreva com seu número de pedido e será revisado.',
+      fr: 'En livraison internationale, il est normal que le statut reste figé un temps, surtout entre la sortie de l’entrepôt et l’entrée dans le réseau du pays de destination. Si ça dépasse ce délai sans bouger, écris avec ton numéro de commande et on regardera.',
+      ru: 'При международной доставке нормально, что статус какое-то время стоит — особенно между выходом со склада и входом в сеть страны назначения. Если после этого он не двигается, напиши с номером заказа, и это проверят.',
+      sv: 'Vid internationell frakt är det normalt att statusen står stilla ett tag, särskilt mellan att den lämnar lagret och kommer in i destinationslandets nät. Rör den sig inte efter det, skriv med ditt ordernummer så ses det över.',
+      hr: 'Kod međunarodne dostave normalno je da stanje neko vrijeme miruje, osobito između izlaska iz skladišta i ulaska u mrežu odredišne zemlje. Ako i nakon toga stoji, javi se sa svojim brojem narudžbe pa će se pregledati.',
+      ar: 'في الشحن الدولي من الطبيعي أن تبقى الحالة ثابتة بعض الوقت، خصوصًا بين مغادرة المستودع ودخول شبكة بلد الوجهة. وإن تجاوز ذلك دون حركة، راسلنا برقم طلبك وسيُراجَع.',
+      de: 'Beim internationalen Versand ist es normal, dass der Status eine Weile stillsteht — vor allem zwischen dem Verlassen des Lagers und dem Eintritt ins Netz des Ziellands. Bewegt er sich darüber hinaus nicht, schreib mit deiner Bestellnummer und es wird geprüft.',
+      sr: 'Код међународне доставе нормално је да стање неко време мирује, посебно између изласка из складишта и уласка у мрежу земље одредишта. Ако и након тога стоји, јави се са својим бројем наруџбине па ће се прегледати.',
+      ur: 'بین الاقوامی ترسیل میں کچھ عرصہ حالت ساکن رہنا معمول ہے، خاص طور پر گودام سے نکلنے اور منزل کے ملک کے نیٹ ورک میں داخل ہونے کے درمیان۔ اگر اس سے آگے بھی نہ ہلے تو اپنے آرڈر نمبر کے ساتھ لکھیں، جائزہ لیا جائے گا۔',
+    },
+  '¿Enviáis a mi país?': {
+    en: 'Do you ship to my country?', pt: 'Vocês enviam para o meu país?',
+    fr: 'Livrez-vous dans mon pays ?', ru: 'Вы доставляете в мою страну?',
+    sv: 'Skickar ni till mitt land?', hr: 'Šaljete li u moju zemlju?',
+    ar: 'هل تشحنون إلى بلدي؟', de: 'Versendet ihr in mein Land?',
+    sr: 'Да ли шаљете у моју земљу?', ur: 'کیا آپ میرے ملک بھیجتے ہیں؟',
+  },
+  'El catálogo sólo ofrece en cada país lo que se puede entregar allí: si un producto te aparece disponible, es porque hay envío a tu destino. Si no aparece, no es un fallo de la búsqueda — es que ese artículo no llega ahí.':
+    {
+      en: 'In each country the catalogue only offers what can be delivered there: if a product shows as available to you, it is because there is shipping to your destination. If it does not appear, it is not a search failure — it is that the item does not reach there.',
+      pt: 'O catálogo só oferece em cada país o que se pode entregar ali: se um produto aparece disponível para você, é porque há envio ao seu destino. Se não aparece, não é uma falha da busca — é que aquele artigo não chega ali.',
+      fr: 'Le catalogue ne propose dans chaque pays que ce qui peut y être livré : si un produit t’apparaît disponible, c’est qu’il existe une livraison vers ta destination. S’il n’apparaît pas, ce n’est pas une défaillance de la recherche — c’est que cet article n’arrive pas là-bas.',
+      ru: 'В каждой стране каталог показывает только то, что туда можно доставить: если товар отображается доступным, значит доставка до тебя есть. Если его нет, это не сбой поиска — просто этот товар туда не едет.',
+      sv: 'Katalogen erbjuder i varje land bara det som går att leverera dit: syns en produkt som tillgänglig för dig är det för att det finns frakt till din destination. Syns den inte är det inget sökfel — det är att artikeln inte når dit.',
+      hr: 'Katalog u svakoj zemlji nudi samo ono što se ondje može isporučiti: ako ti se proizvod prikaže kao dostupan, to je zato što postoji dostava na tvoje odredište. Ako se ne pojavi, nije kvar pretrage — nego taj artikl onamo ne stiže.',
+      ar: 'يعرض الكتالوج في كل بلد ما يمكن توصيله هناك فقط: إن ظهر لك منتج متاحًا، فلأن هناك شحنًا إلى وجهتك. وإن لم يظهر، فليس خللًا في البحث — بل لأن ذلك الصنف لا يصل إلى هناك.',
+      de: 'Der Katalog bietet in jedem Land nur an, was dorthin geliefert werden kann: Erscheint dir ein Produkt als verfügbar, dann weil es Versand an dein Ziel gibt. Erscheint es nicht, ist das kein Suchfehler — der Artikel kommt dort schlicht nicht an.',
+      sr: 'Каталог у свакој земљи нуди само оно што се тамо може испоручити: ако ти се производ прикаже као доступан, то је зато што постоји достава на твоје одредиште. Ако се не појави, није квар претраге — него тај артикал тамо не стиже.',
+      ur: 'کیٹلاگ ہر ملک میں صرف وہی پیش کرتا ہے جو وہاں پہنچایا جا سکتا ہے: اگر آپ کو کوئی پروڈکٹ دستیاب دکھے تو اس کا مطلب ہے کہ آپ کی منزل تک ترسیل ہے۔ اگر نہ دکھے تو یہ تلاش کی خرابی نہیں — بلکہ وہ چیز وہاں نہیں پہنچتی۔',
+    },
+  '¿Cuándo sale la próxima actualización o novedad?': {
+    en: 'When is the next update or announcement?',
+    pt: 'Quando sai a próxima atualização ou novidade?',
+    fr: 'Quand sort la prochaine mise à jour ou nouveauté ?',
+    ru: 'Когда выйдет следующее обновление или новость?',
+    sv: 'När kommer nästa uppdatering eller nyhet?',
+    hr: 'Kada izlazi sljedeća nadogradnja ili novost?',
+    ar: 'متى يصدر التحديث أو الجديد القادم؟',
+    de: 'Wann kommt das nächste Update oder die nächste Neuigkeit?',
+    sr: 'Када излази следећа надоградња или новост?',
+    ur: 'اگلی اپ ڈیٹ یا خبر کب آئے گی؟',
+  },
+  'Las fechas y novedades se anuncian únicamente por los canales oficiales del ecosistema. Si viste una fecha en otro lado, trátala con cautela: nadie fuera del equipo puede confirmarla. Cuando algo esté disponible, lo verás anunciado — y aquí se responde sobre lo que ya existe, no sobre promesas.':
+    {
+      en: 'Dates and news are announced only through the ecosystem’s official channels. If you saw a date somewhere else, treat it with caution: nobody outside the team can confirm it. When something is available, you will see it announced — and here we answer about what already exists, not about promises.',
+      pt: 'As datas e novidades são anunciadas unicamente pelos canais oficiais do ecossistema. Se você viu uma data em outro lugar, trate-a com cautela: ninguém fora da equipe pode confirmá-la. Quando algo estiver disponível, você o verá anunciado — e aqui se responde sobre o que já existe, não sobre promessas.',
+      fr: 'Les dates et nouveautés sont annoncées uniquement par les canaux officiels de l’écosystème. Si tu as vu une date ailleurs, prends-la avec prudence : personne en dehors de l’équipe ne peut la confirmer. Quand quelque chose sera disponible, tu le verras annoncé — et ici on répond sur ce qui existe déjà, pas sur des promesses.',
+      ru: 'Даты и новости объявляются только по официальным каналам экосистемы. Если ты видел дату где-то ещё, отнесись к ней осторожно: никто вне команды не может её подтвердить. Когда что-то станет доступно, ты увидишь объявление — а здесь отвечают о том, что уже есть, а не об обещаниях.',
+      sv: 'Datum och nyheter meddelas endast via ekosystemets officiella kanaler. Har du sett ett datum någon annanstans, ta det med försiktighet: ingen utanför teamet kan bekräfta det. När något finns tillgängligt kommer du att se det annonserat — och här svarar vi om det som redan finns, inte om löften.',
+      hr: 'Datumi i novosti objavljuju se isključivo putem službenih kanala ekosustava. Ako si datum vidio negdje drugdje, uzmi ga s oprezom: nitko izvan tima ne može ga potvrditi. Kad nešto bude dostupno, vidjet ćeš objavu — a ovdje se odgovara o onome što već postoji, ne o obećanjima.',
+      ar: 'تُعلَن المواعيد والمستجدات عبر القنوات الرسمية للنظام البيئي فقط. وإن رأيت تاريخًا في مكان آخر، فتعامل معه بحذر: لا أحد خارج الفريق يستطيع تأكيده. وعندما يتوفّر شيء سترى إعلانه — وهنا نجيب عمّا هو موجود بالفعل، لا عن وعود.',
+      de: 'Termine und Neuigkeiten werden ausschließlich über die offiziellen Kanäle des Ökosystems angekündigt. Hast du ein Datum anderswo gesehen, behandle es mit Vorsicht: Niemand außerhalb des Teams kann es bestätigen. Wenn etwas verfügbar ist, wirst du die Ankündigung sehen — und hier wird über das geantwortet, was bereits existiert, nicht über Versprechen.',
+      sr: 'Датуми и новости објављују се искључиво путем званичних канала екосистема. Ако си датум видео негде другде, узми га са опрезом: нико изван тима не може да га потврди. Кад нешто буде доступно, видећеш објаву — а овде се одговара о ономе што већ постоји, не о обећањима.',
+      ur: 'تاریخیں اور خبریں صرف ایکو سسٹم کے سرکاری چینلز پر بتائی جاتی ہیں۔ اگر آپ نے کہیں اور کوئی تاریخ دیکھی تو احتیاط سے لیں: ٹیم کے باہر کوئی اس کی تصدیق نہیں کر سکتا۔ جب کچھ دستیاب ہوگا تو آپ اعلان دیکھیں گے — اور یہاں اُس کا جواب دیا جاتا ہے جو پہلے سے موجود ہے، وعدوں کا نہیں۔',
+    },
+
   /* ── el Aula: el material grabado dentro del asistente ─────────────
      OJO CON «Idioma del material»: es lo único que separa el idioma de la
      INTERFAZ del idioma del ARCHIVO. Traducido flojo —«Idioma», a secas— la
