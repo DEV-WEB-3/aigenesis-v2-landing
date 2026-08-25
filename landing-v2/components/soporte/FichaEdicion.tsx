@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useT } from '@/context/IdiomaContext'
+import { useCorpus } from '@/hooks/useCorpus'
 import type { Aliento } from '@/hooks/useAliento'
 import {
   type Edicion,
@@ -80,6 +81,9 @@ export default function FichaEdicion({
   onVoz?: Aliento
 }) {
   const t = useT()
+  /* El título y el resumen de la edición son CORPUS, no chrome: se traducen
+     por el mismo camino que las preguntas del asistente. */
+  const c = useCorpus()
   const [reproduciendo, setReproduciendo] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -125,8 +129,8 @@ export default function FichaEdicion({
 
   return (
     <article dir={pieza?.rtl ? 'rtl' : undefined}>
-      <h3 className="text-lg font-semibold leading-snug text-genesis-text" lang="es">
-        {edicion.titulo}
+      <h3 lang={c(edicion.titulo).lang} className="text-lg font-semibold leading-snug text-genesis-text">
+        {c(edicion.titulo).texto}
       </h3>
       <p className="mb-3 mt-1 text-[11px] text-genesis-mist">
         {edicion.version} · {t('Fuente')}:{' '}
@@ -213,8 +217,8 @@ export default function FichaEdicion({
         ) : null}
       </div>
 
-      <p className="mt-3 text-sm leading-relaxed text-genesis-mist" lang="es">
-        {edicion.resumen}
+      <p lang={c(edicion.resumen).lang} className="mt-3 text-sm leading-relaxed text-genesis-mist">
+        {c(edicion.resumen).texto}
       </p>
 
       {/* ── La descarga ── */}

@@ -81,8 +81,12 @@ compilar('lib/official-links.ts', 'official-links.js', { '@/lib/rutaPublica': '.
 const modEdiciones = compilar('lib/soporte/ediciones.ts', 'ediciones.js', {
   '@/lib/official-links': './official-links',
 })
+/* `useCorpus` se compila también: la ficha traduce por él desde que el corpus
+   del asistente dejó de estar fijo en español. */
+compilar('hooks/useCorpus.tsx', 'useCorpus.js', { '@/context/IdiomaContext': './stub-idioma' })
 const modFicha = compilar('components/soporte/FichaEdicion.tsx', 'FichaEdicion.js', {
   '@/context/IdiomaContext': './stub-idioma',
+  '@/hooks/useCorpus': './useCorpus',
   '@/lib/soporte/ediciones': './ediciones',
 })
 

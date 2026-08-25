@@ -54,6 +54,7 @@ import {
   idiomaInicial,
 } from '@/lib/soporte/ediciones'
 import { useAliento } from '@/hooks/useAliento'
+import { useCorpus } from '@/hooks/useCorpus'
 import AsistenteChat from './AsistenteChat'
 import FichaEdicion from './FichaEdicion'
 import ZonaDeslizable from './ZonaDeslizable'
@@ -222,6 +223,9 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
   const [cargando, setCargando] = useState(false)
 
   const aliento = useAliento(abierto)
+  /* El corpus en el idioma de quien lee. Ver `hooks/useCorpus.tsx`: mientras
+     una respuesta no esté traducida sale en español y se declara como tal. */
+  const corp = useCorpus()
 
   /*
    * El ancho se recuerda. Quien lo amplía para ver un video no quiere volver a
@@ -451,7 +455,7 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                       type="button"
                       onClick={() => abrirEdicion(e)}
                       className="flex w-full items-center gap-2.5 rounded-xl surface-card px-4 py-3 text-left transition-colors hover:border-genesis-ion"
-                      lang="es"
+                     
                     >
                       <MarcaVideo segundos={e.piezas[idiomaInicial(e, idiomaUI)]?.segundos ?? null} />
                       <span className="min-w-0 text-[13px] text-genesis-text">{e.titulo}</span>
@@ -459,7 +463,7 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                     </button>
                   ))}
                 </div>
-                <div className="overflow-hidden rounded-xl border border-genesis-ghost" lang="es">
+                <div className="overflow-hidden rounded-xl border border-genesis-ghost">
                   {sugeridos.map((id) => {
                     const p = porId.get(id)
                     if (!p) return null
@@ -470,7 +474,8 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                         onClick={() => abrirArticulo(p)}
                         className="flex w-full items-center justify-between gap-2 border-t border-genesis-ghost/50 px-4 py-3 text-left text-[13px] text-genesis-text first:border-t-0 hover:bg-genesis-surface/60"
                       >
-                        {p.pregunta} <span className="text-genesis-ion">›</span>
+                        <span lang={corp(p.pregunta).lang}>{corp(p.pregunta).texto}</span>{' '}
+                        <span className="text-genesis-ion">›</span>
                       </button>
                     )
                   })}
@@ -497,7 +502,7 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                           irA('chat')
                         }}
                         className="flex w-full items-center justify-between gap-2 rounded-xl surface-card px-4 py-3 text-left"
-                        lang="es"
+                       
                       >
                         <span className="min-w-0">
                           <span className="block truncate text-[13px] font-semibold text-genesis-text">
@@ -537,14 +542,14 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                     onChange={(e) => setBusqueda(e.target.value)}
                     placeholder={t('Buscar ayuda')}
                     className="w-full bg-transparent text-sm text-genesis-text placeholder:text-genesis-mist focus:outline-none"
-                    lang="es"
+                   
                   />
                 </form>
                 <p className="mb-3 px-1 text-xs text-genesis-mist">
                   {colecciones.length + 1} {t('colecciones')} · {TODAS_LAS_PREGUNTAS.length}{' '}
                   {t('artículos')}
                 </p>
-                <div className="space-y-2.5" lang="es">
+                <div className="space-y-2.5">
                   {/* «Aprende» va primera y a mano, no derivada del corpus: no
                       agrupa preguntas, agrupa material grabado. Meterla en el
                       `useMemo` de las categorías habría obligado a inventarle una
@@ -578,7 +583,7 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                       className="flex w-full items-center justify-between gap-2 rounded-xl surface-card px-4 py-3 text-left"
                     >
                       <span>
-                        <span className="block text-[13px] font-semibold text-genesis-text">{nombre}</span>
+                        <span lang={corp(nombre).lang} className="block text-[13px] font-semibold text-genesis-text">{corp(nombre).texto}</span>
                         <span className="text-xs text-genesis-mist">
                           {preguntas.length} {t(preguntas.length === 1 ? 'artículo' : 'artículos')}
                         </span>
@@ -592,11 +597,11 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
 
             {vista === 'lista' && coleccion ? (
               <ZonaDeslizable className="p-4">
-                <p className="mb-3 px-1 text-xs text-genesis-mist" lang="es">
-                  {coleccion}
+                <p className="mb-3 px-1 text-xs text-genesis-mist">
+                  {corp(coleccion).texto}
                 </p>
                 {coleccion === COLECCION_AULA ? (
-                  <div className="space-y-2" lang="es">
+                  <div className="space-y-2">
                     {EDICIONES.map((e) => (
                       <button
                         key={e.id}
@@ -614,7 +619,7 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                     ))}
                   </div>
                 ) : (
-                <div className="overflow-hidden rounded-xl border border-genesis-ghost" lang="es">
+                <div className="overflow-hidden rounded-xl border border-genesis-ghost">
                   {(colecciones.find(([n]) => n === coleccion)?.[1] ?? []).map((p: Pregunta) => (
                     <button
                       key={p.id}
@@ -690,15 +695,17 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
 
             {vista === 'articulo' && articulo ? (
               <ZonaDeslizable className="p-4">
-                <article lang="es">
+                <article>
                   <h3 className="text-lg font-semibold leading-snug text-genesis-text">
-                    {articulo.pregunta}
+                    {corp(articulo.pregunta).texto}
                   </h3>
                   {/* La trazabilidad que la referencia no tiene: de dónde sale. */}
                   <p className="mb-3 mt-1 text-[11px] text-genesis-mist">
                     {t('Fuente')}: <span className="text-genesis-ion">{FUENTES[articulo.fuente]}</span>
                   </p>
-                  <p className="text-sm leading-relaxed text-genesis-mist">{articulo.respuesta}</p>
+                  <p lang={corp(articulo.respuesta).lang} className="text-sm leading-relaxed text-genesis-mist">
+                    {corp(articulo.respuesta).texto}
+                  </p>
                   {articulo.enlace ? (
                     <a
                       href={articulo.enlace}

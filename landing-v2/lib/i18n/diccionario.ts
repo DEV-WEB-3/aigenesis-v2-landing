@@ -2993,6 +2993,273 @@ export const DICCIONARIO: Record<string, Fila> = {
     hr: 'Ravnoteža', ar: 'توازن', de: 'Gleichgewicht', sr: 'Равнотежа', ur: 'توازن',
   },
 
+  /* ══════════════════════════════════════════════════════════════════
+     LAS COLECCIONES DEL CORPUS.
+
+     Son los nombres de categoría de las 99 preguntas, y sirven en DOS sitios
+     con una sola entrada: la pestaña «Ayuda» del asistente y el índice de las
+     preguntas frecuentes de la web. Es lo primero que se ve al abrir Ayuda, y
+     por eso van antes que las respuestas.
+
+     Los nombres de producto viajan dentro —«Sobre G-Pulse», «Membresía
+     G-Pulse», «Sobre Gevy»— y NO se traducen: sólo la palabra que los rodea.
+     ══════════════════════════════════════════════════════════════════ */
+  'Hold y estado de la cuenta': {
+    en: 'Hold and account status', pt: 'Hold e status da conta',
+    fr: 'Blocage et état du compte', ru: 'Удержание и состояние счёта',
+    sv: 'Spärr och kontostatus', hr: 'Zadržavanje i status računa',
+    ar: 'التجميد وحالة الحساب', de: 'Sperre und Kontostatus',
+    sr: 'Задржавање и статус налога', ur: 'ہولڈ اور اکاؤنٹ کی حالت',
+  },
+  P2P: {
+    en: 'P2P', pt: 'P2P', fr: 'P2P', ru: 'P2P', sv: 'P2P', hr: 'P2P',
+    ar: 'P2P', de: 'P2P', sr: 'P2P', ur: 'P2P',
+  },
+  Pagar: {
+    en: 'Paying', pt: 'Pagar', fr: 'Payer', ru: 'Оплата', sv: 'Betala',
+    hr: 'Plaćanje', ar: 'الدفع', de: 'Bezahlen', sr: 'Плаћање', ur: 'ادائیگی',
+  },
+  'Token AiG': {
+    en: 'AiG Token', pt: 'Token AiG', fr: 'Jeton AiG', ru: 'Токен AiG',
+    sv: 'AiG-token', hr: 'AiG token', ar: 'رمز AiG', de: 'AiG-Token',
+    sr: 'AiG токен', ur: 'AiG ٹوکن',
+  },
+  'Alianza Aitech': {
+    en: 'Aitech alliance', pt: 'Aliança Aitech', fr: 'Alliance Aitech',
+    ru: 'Альянс Aitech', sv: 'Aitech-alliansen', hr: 'Savez Aitech',
+    ar: 'تحالف Aitech', de: 'Aitech-Allianz', sr: 'Савез Aitech', ur: 'Aitech اتحاد',
+  },
+  'Booster y staking': {
+    en: 'Booster and staking', pt: 'Booster e staking', fr: 'Booster et staking',
+    ru: 'Booster и стейкинг', sv: 'Booster och staking', hr: 'Booster i staking',
+    ar: 'Booster والتخزين', de: 'Booster und Staking',
+    sr: 'Booster и стејкинг', ur: 'Booster اور اسٹیکنگ',
+  },
+  'Membresía G-Pulse': {
+    en: 'G-Pulse membership', pt: 'Assinatura G-Pulse', fr: 'Abonnement G-Pulse',
+    ru: 'Подписка G-Pulse', sv: 'G-Pulse-medlemskap', hr: 'Članstvo G-Pulse',
+    ar: 'عضوية G-Pulse', de: 'G-Pulse-Mitgliedschaft',
+    sr: 'Чланство G-Pulse', ur: 'G-Pulse ممبرشپ',
+  },
+  'Envío y seguimiento': {
+    en: 'Shipping and tracking', pt: 'Envio e rastreamento',
+    fr: 'Expédition et suivi', ru: 'Доставка и отслеживание',
+    sv: 'Frakt och spårning', hr: 'Dostava i praćenje',
+    ar: 'الشحن والتتبّع', de: 'Versand und Sendungsverfolgung',
+    sr: 'Достава и праћење', ur: 'ترسیل اور ٹریکنگ',
+  },
+  'Qué significa una señal': {
+    en: 'What a signal means', pt: 'O que significa um sinal',
+    fr: 'Ce que signifie un signal', ru: 'Что означает сигнал',
+    sv: 'Vad en signal betyder', hr: 'Što znači signal',
+    ar: 'ماذا تعني الإشارة', de: 'Was ein Signal bedeutet',
+    sr: 'Шта значи сигнал', ur: 'سگنل کا مطلب کیا ہے',
+  },
+  'Casos históricos': {
+    en: 'Past cases', pt: 'Casos históricos', fr: 'Cas historiques',
+    ru: 'Исторические случаи', sv: 'Historiska fall', hr: 'Povijesni slučajevi',
+    ar: 'حالات سابقة', de: 'Vergangene Fälle', sr: 'Историјски случајеви', ur: 'ماضی کے واقعات',
+  },
+  'Sobre Gevy': {
+    en: 'About Gevy', pt: 'Sobre a Gevy', fr: 'À propos de Gevy',
+    ru: 'О Gevy', sv: 'Om Gevy', hr: 'O Gevyju', ar: 'عن Gevy',
+    de: 'Über Gevy', sr: 'О Gevy-ју', ur: 'Gevy کے بارے میں',
+  },
+  'Si algo sale mal': {
+    en: 'If something goes wrong', pt: 'Se algo der errado',
+    fr: 'Si quelque chose ne va pas', ru: 'Если что-то пошло не так',
+    sv: 'Om något går fel', hr: 'Ako nešto pođe po zlu',
+    ar: 'إذا حدث خطأ ما', de: 'Wenn etwas schiefgeht',
+    sr: 'Ако нешто пође по злу', ur: 'اگر کچھ غلط ہو جائے',
+  },
+  'Sobre G-Pulse': {
+    en: 'About G-Pulse', pt: 'Sobre o G-Pulse', fr: 'À propos de G-Pulse',
+    ru: 'О G-Pulse', sv: 'Om G-Pulse', hr: 'O G-Pulseu', ar: 'عن G-Pulse',
+    de: 'Über G-Pulse', sr: 'О G-Pulse-у', ur: 'G-Pulse کے بارے میں',
+  },
+  'Uso del panel': {
+    en: 'Using the dashboard', pt: 'Uso do painel', fr: 'Utiliser le tableau de bord',
+    ru: 'Работа с панелью', sv: 'Använda panelen', hr: 'Korištenje ploče',
+    ar: 'استخدام اللوحة', de: 'Das Panel nutzen',
+    sr: 'Коришћење табле', ur: 'پینل کا استعمال',
+  },
+  /* `Empezar` ya existe arriba (línea ~1615). */
+  Minería: {
+    en: 'Mining', pt: 'Mineração', fr: 'Minage', ru: 'Майнинг', sv: 'Mining',
+    hr: 'Rudarenje', ar: 'التعدين', de: 'Mining', sr: 'Рударење', ur: 'مائننگ',
+  },
+  'Red y compensación': {
+    en: 'Network and compensation', pt: 'Rede e compensação',
+    fr: 'Réseau et rémunération', ru: 'Сеть и вознаграждение',
+    sv: 'Nätverk och ersättning', hr: 'Mreža i naknade',
+    ar: 'الشبكة والمكافآت', de: 'Netzwerk und Vergütung',
+    sr: 'Мрежа и накнаде', ur: 'نیٹ ورک اور معاوضہ',
+  },
+  Herramientas: {
+    en: 'Tools', pt: 'Ferramentas', fr: 'Outils', ru: 'Инструменты',
+    sv: 'Verktyg', hr: 'Alati', ar: 'الأدوات', de: 'Werkzeuge',
+    sr: 'Алати', ur: 'اوزار',
+  },
+  'Uso de G-Pulse': {
+    en: 'Using G-Pulse', pt: 'Uso do G-Pulse', fr: 'Utiliser G-Pulse',
+    ru: 'Использование G-Pulse', sv: 'Använda G-Pulse', hr: 'Korištenje G-Pulsea',
+    ar: 'استخدام G-Pulse', de: 'G-Pulse nutzen',
+    sr: 'Коришћење G-Pulse-а', ur: 'G-Pulse کا استعمال',
+  },
+  'Sobre Genesis': {
+    en: 'About Genesis', pt: 'Sobre a Genesis', fr: 'À propos de Genesis',
+    ru: 'О Genesis', sv: 'Om Genesis', hr: 'O Genesisu', ar: 'عن Genesis',
+    de: 'Über Genesis', sr: 'О Genesis-у', ur: 'Genesis کے بارے میں',
+  },
+  Seguridad: {
+    en: 'Security', pt: 'Segurança', fr: 'Sécurité', ru: 'Безопасность',
+    sv: 'Säkerhet', hr: 'Sigurnost', ar: 'الأمان', de: 'Sicherheit',
+    sr: 'Безбедност', ur: 'سیکیورٹی',
+  },
+  Credenciales: {
+    en: 'Credentials', pt: 'Credenciais', fr: 'Accréditations', ru: 'Документы',
+    sv: 'Meriter', hr: 'Vjerodajnice', ar: 'الاعتمادات', de: 'Nachweise',
+    sr: 'Акредитиви', ur: 'اسناد',
+  },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LAS PREGUNTAS SUGERIDAS — pregunta Y respuesta.
+
+     Son las ocho que el asistente ofrece al abrirse, en la web pública y en
+     G1. Se traducen ANTES que las otras 91 porque son las únicas que alguien
+     lee sin buscarlas.
+
+     LAS DEMÁS SIGUEN EN ESPAÑOL, y eso se ve: `useCorpus` devuelve el original
+     y lo declara con `lang="es"`, así que un lector de pantalla en árabe lo
+     pronuncia con fonética española en vez de convertirlo en ruido. El hueco
+     es visible, no disimulado.
+
+     LAS CIFRAS Y LOS AVISOS DE RIESGO viajan dentro de estas respuestas —«desde
+     20 USDT», «el 8% es una tasa de emisión, no un resultado asegurado»—.
+     Están traducidos literalmente y conviene revisarlos por idioma, igual que
+     el descargo del pie.
+     ══════════════════════════════════════════════════════════════════ */
+  '¿Cómo me uno al ecosistema? Paso a paso': {
+    en: 'How do I join the ecosystem? Step by step',
+    pt: 'Como me junto ao ecossistema? Passo a passo',
+    fr: 'Comment rejoindre l’écosystème ? Étape par étape',
+    ru: 'Как присоединиться к экосистеме? Шаг за шагом',
+    sv: 'Hur går jag med i ekosystemet? Steg för steg',
+    hr: 'Kako se pridružiti ekosustavu? Korak po korak',
+    ar: 'كيف أنضم إلى النظام البيئي؟ خطوة بخطوة',
+    de: 'Wie trete ich dem Ökosystem bei? Schritt für Schritt',
+    sr: 'Како да се придружим екосистему? Корак по корак',
+    ur: 'میں ایکو سسٹم میں کیسے شامل ہوں؟ مرحلہ وار',
+  },
+  'Necesitas cuatro cosas y estos pasos: 1) Una wallet Web3 compatible con BEP-20 (SafePal, MetaMask u otra). 2) Fondearla con BNB para el gas y USDT (BEP-20) para tu aporte — desde 20 USDT. 3) Entrar con el enlace de referido de quien te invitó (sin ese enlace no se abre el registro). 4) Elegir AiG Mining, Booster o ambos, y seguir tu distribución diaria. Genesis es solo por invitación, así que el enlace del referido es imprescindible.':
+    {
+      en: 'You need four things and these steps: 1) A Web3 wallet compatible with BEP-20 (SafePal, MetaMask or another). 2) Fund it with BNB for gas and USDT (BEP-20) for your contribution — from 20 USDT. 3) Enter through the referral link of whoever invited you (without that link, registration does not open). 4) Choose AiG Mining, Booster or both, and follow your daily distribution. Genesis is invitation-only, so the referral link is essential.',
+      pt: 'Você precisa de quatro coisas e destes passos: 1) Uma carteira Web3 compatível com BEP-20 (SafePal, MetaMask ou outra). 2) Abastecê-la com BNB para o gas e USDT (BEP-20) para seu aporte — a partir de 20 USDT. 3) Entrar com o link de indicação de quem lhe convidou (sem esse link o cadastro não abre). 4) Escolher AiG Mining, Booster ou ambos, e acompanhar sua distribuição diária. A Genesis é apenas por convite, então o link de indicação é imprescindível.',
+      fr: 'Il te faut quatre choses et ces étapes : 1) Un portefeuille Web3 compatible BEP-20 (SafePal, MetaMask ou autre). 2) L’alimenter en BNB pour le gas et en USDT (BEP-20) pour ton apport — à partir de 20 USDT. 3) Entrer par le lien de parrainage de la personne qui t’a invité (sans ce lien, l’inscription ne s’ouvre pas). 4) Choisir AiG Mining, Booster ou les deux, et suivre ta distribution quotidienne. Genesis est uniquement sur invitation : le lien de parrainage est indispensable.',
+      ru: 'Нужны четыре вещи и эти шаги: 1) Web3-кошелёк с поддержкой BEP-20 (SafePal, MetaMask или другой). 2) Пополнить его BNB на газ и USDT (BEP-20) для взноса — от 20 USDT. 3) Войти по реферальной ссылке того, кто тебя пригласил (без неё регистрация не откроется). 4) Выбрать AiG Mining, Booster или оба и следить за ежедневным распределением. Genesis работает только по приглашению, поэтому реферальная ссылка обязательна.',
+      sv: 'Du behöver fyra saker och dessa steg: 1) En Web3-plånbok som stöder BEP-20 (SafePal, MetaMask eller annan). 2) Fylla på den med BNB för gas och USDT (BEP-20) för ditt bidrag — från 20 USDT. 3) Gå in via inbjudarens hänvisningslänk (utan den öppnas ingen registrering). 4) Välja AiG Mining, Booster eller båda, och följa din dagliga fördelning. Genesis är endast för inbjudna, så hänvisningslänken är nödvändig.',
+      hr: 'Trebaš četiri stvari i ove korake: 1) Web3 novčanik kompatibilan s BEP-20 (SafePal, MetaMask ili drugi). 2) Napuniti ga s BNB za gas i USDT (BEP-20) za svoj ulog — od 20 USDT. 3) Ući putem preporuke osobe koja te pozvala (bez te poveznice registracija se ne otvara). 4) Odabrati AiG Mining, Booster ili oboje i pratiti svoju dnevnu raspodjelu. Genesis je samo na poziv, pa je poveznica preporuke nužna.',
+      ar: 'تحتاج أربعة أشياء وهذه الخطوات: ١) محفظة Web3 متوافقة مع BEP-20 (SafePal أو MetaMask أو غيرها). ٢) تمويلها بـ BNB للرسوم و USDT (BEP-20) لمساهمتك — ابتداءً من 20 USDT. ٣) الدخول عبر رابط الإحالة لمن دعاك (بدون ذلك الرابط لا يُفتح التسجيل). ٤) اختيار AiG Mining أو Booster أو كليهما، ومتابعة توزيعك اليومي. Genesis بالدعوة فقط، لذا رابط الإحالة ضروري.',
+      de: 'Du brauchst vier Dinge und diese Schritte: 1) Eine Web3-Wallet mit BEP-20-Unterstützung (SafePal, MetaMask oder eine andere). 2) Sie mit BNB für Gas und USDT (BEP-20) für deinen Beitrag füllen — ab 20 USDT. 3) Über den Empfehlungslink der Person eintreten, die dich eingeladen hat (ohne diesen Link öffnet sich keine Registrierung). 4) AiG Mining, Booster oder beides wählen und deine tägliche Verteilung verfolgen. Genesis ist nur auf Einladung, der Empfehlungslink ist also unerlässlich.',
+      sr: 'Потребне су ти четири ствари и ови кораци: 1) Web3 новчаник компатибилан са BEP-20 (SafePal, MetaMask или други). 2) Напунити га са BNB за гас и USDT (BEP-20) за твој улог — од 20 USDT. 3) Ући преко препоруке особе која те позвала (без те везе регистрација се не отвара). 4) Изабрати AiG Mining, Booster или обоје и пратити своју дневну расподелу. Genesis је само на позив, па је веза препоруке неопходна.',
+      ur: 'آپ کو چار چیزیں اور یہ مراحل چاہییں: ۱) BEP-20 کے موافق ایک Web3 والٹ (SafePal، MetaMask یا کوئی اور)۔ ۲) اسے گیس کے لیے BNB اور اپنے حصے کے لیے USDT (BEP-20) سے بھریں — 20 USDT سے۔ ۳) اُس شخص کے ریفرل لنک سے داخل ہوں جس نے آپ کو مدعو کیا (اُس لنک کے بغیر رجسٹریشن نہیں کھلتی)۔ ۴) AiG Mining، Booster یا دونوں منتخب کریں اور اپنی روزانہ تقسیم دیکھیں۔ Genesis صرف دعوت پر ہے، اس لیے ریفرل لنک ضروری ہے۔',
+    },
+  '¿Qué es TAG o Tag Markets?': {
+    en: 'What is TAG or Tag Markets?', pt: 'O que é TAG ou Tag Markets?',
+    fr: 'Qu’est-ce que TAG ou Tag Markets ?', ru: 'Что такое TAG или Tag Markets?',
+    sv: 'Vad är TAG eller Tag Markets?', hr: 'Što je TAG ili Tag Markets?',
+    ar: 'ما هو TAG أو Tag Markets؟', de: 'Was ist TAG oder Tag Markets?',
+    sr: 'Шта је TAG или Tag Markets?', ur: 'TAG یا Tag Markets کیا ہے؟',
+  },
+  'Tag Markets es el bróker de trading sistemático de la alianza Aitech One: estrategias automatizadas para operar sin depender de tu tiempo, experiencia o emociones. El capital operativo se maneja en formato DUAL (AIG-USDT). Su web oficial es tagmarkets.com y el portal de Genesis es genesis.ibportal.io. Punto clave: el trading conlleva riesgos, los resultados varían y el desempeño pasado no garantiza resultados futuros; esto es informativo, no asesoría financiera.':
+    {
+      en: 'Tag Markets is the systematic trading broker of the Aitech One alliance: automated strategies to operate without depending on your time, experience or emotions. Operating capital is handled in DUAL format (AIG-USDT). Its official site is tagmarkets.com and the Genesis portal is genesis.ibportal.io. Key point: trading carries risk, results vary and past performance does not guarantee future results; this is informational, not financial advice.',
+      pt: 'A Tag Markets é a corretora de trading sistemático da aliança Aitech One: estratégias automatizadas para operar sem depender do seu tempo, experiência ou emoções. O capital operacional é gerido no formato DUAL (AIG-USDT). O site oficial é tagmarkets.com e o portal da Genesis é genesis.ibportal.io. Ponto-chave: o trading envolve riscos, os resultados variam e o desempenho passado não garante resultados futuros; isto é informativo, não assessoria financeira.',
+      fr: 'Tag Markets est le courtier de trading systématique de l’alliance Aitech One : des stratégies automatisées pour opérer sans dépendre de ton temps, de ton expérience ou de tes émotions. Le capital opérationnel est géré au format DUAL (AIG-USDT). Son site officiel est tagmarkets.com et le portail Genesis est genesis.ibportal.io. Point clé : le trading comporte des risques, les résultats varient et les performances passées ne garantissent pas les résultats futurs ; ceci est informatif, pas un conseil financier.',
+      ru: 'Tag Markets — брокер системного трейдинга альянса Aitech One: автоматизированные стратегии, чтобы торговать, не завися от твоего времени, опыта или эмоций. Операционный капитал ведётся в формате DUAL (AIG-USDT). Официальный сайт — tagmarkets.com, портал Genesis — genesis.ibportal.io. Ключевое: трейдинг сопряжён с рисками, результаты бывают разными, а прошлые показатели не гарантируют будущих; это информация, а не финансовая консультация.',
+      sv: 'Tag Markets är Aitech One-alliansens mäklare för systematisk handel: automatiserade strategier för att handla utan att bero på din tid, erfarenhet eller dina känslor. Handelskapitalet hanteras i DUAL-format (AIG-USDT). Officiell webbplats är tagmarkets.com och Genesis-portalen är genesis.ibportal.io. Viktigt: handel innebär risk, resultaten varierar och tidigare utfall garanterar inte framtida; detta är information, inte finansiell rådgivning.',
+      hr: 'Tag Markets je broker sustavnog trgovanja saveza Aitech One: automatizirane strategije za trgovanje bez ovisnosti o tvom vremenu, iskustvu ili emocijama. Operativni kapital vodi se u DUAL formatu (AIG-USDT). Službena stranica je tagmarkets.com, a Genesisov portal genesis.ibportal.io. Ključno: trgovanje nosi rizike, rezultati variraju i prošli učinak ne jamči buduće rezultate; ovo je informativno, nije financijski savjet.',
+      ar: 'Tag Markets هو وسيط التداول المنهجي لتحالف Aitech One: استراتيجيات آلية للتداول دون الاعتماد على وقتك أو خبرتك أو مشاعرك. يُدار رأس المال التشغيلي بصيغة DUAL ‏(AIG-USDT). موقعه الرسمي tagmarkets.com وبوابة Genesis هي genesis.ibportal.io. نقطة أساسية: التداول ينطوي على مخاطر، والنتائج تتفاوت، والأداء السابق لا يضمن نتائج مستقبلية؛ هذا للإعلام لا للاستشارة المالية.',
+      de: 'Tag Markets ist der Broker für systematisches Trading der Aitech-One-Allianz: automatisierte Strategien, um zu handeln, ohne von deiner Zeit, Erfahrung oder deinen Emotionen abzuhängen. Das Handelskapital wird im DUAL-Format (AIG-USDT) geführt. Die offizielle Seite ist tagmarkets.com und das Genesis-Portal genesis.ibportal.io. Wichtig: Trading birgt Risiken, Ergebnisse schwanken und vergangene Performance garantiert keine künftigen Ergebnisse; dies ist Information, keine Finanzberatung.',
+      sr: 'Tag Markets је брокер системског трговања савеза Aitech One: аутоматизоване стратегије за трговање без зависности од твог времена, искуства или емоција. Оперативни капитал води се у DUAL формату (AIG-USDT). Званични сајт је tagmarkets.com, а Genesis портал genesis.ibportal.io. Кључно: трговање носи ризике, резултати варирају, а прошли учинак не гарантује будуће резултате; ово је информативно, није финансијски савет.',
+      ur: 'Tag Markets، Aitech One اتحاد کا سسٹمیٹک ٹریڈنگ بروکر ہے: خودکار حکمتِ عملیاں تاکہ آپ کے وقت، تجربے یا جذبات پر انحصار کیے بغیر ٹریڈ ہو۔ آپریٹنگ سرمایہ DUAL فارمیٹ (AIG-USDT) میں چلایا جاتا ہے۔ سرکاری سائٹ tagmarkets.com اور Genesis پورٹل genesis.ibportal.io ہے۔ اہم بات: ٹریڈنگ میں خطرات ہیں، نتائج مختلف ہوتے ہیں اور ماضی کی کارکردگی مستقبل کی ضمانت نہیں؛ یہ معلوماتی ہے، مالی مشورہ نہیں۔',
+    },
+  '¿Cómo activo la minería (AiG Mining)? Paso a paso': {
+    en: 'How do I activate mining (AiG Mining)? Step by step',
+    pt: 'Como ativo a mineração (AiG Mining)? Passo a passo',
+    fr: 'Comment activer le minage (AiG Mining) ? Étape par étape',
+    ru: 'Как включить майнинг (AiG Mining)? Шаг за шагом',
+    sv: 'Hur aktiverar jag mining (AiG Mining)? Steg för steg',
+    hr: 'Kako aktivirati rudarenje (AiG Mining)? Korak po korak',
+    ar: 'كيف أُفعّل التعدين (AiG Mining)؟ خطوة بخطوة',
+    de: 'Wie aktiviere ich das Mining (AiG Mining)? Schritt für Schritt',
+    sr: 'Како да активирам рударење (AiG Mining)? Корак по корак',
+    ur: 'میں مائننگ (AiG Mining) کیسے فعال کروں؟ مرحلہ وار',
+  },
+  '¿Qué es el AiG Token?': {
+    en: 'What is the AiG Token?', pt: 'O que é o AiG Token?',
+    fr: 'Qu’est-ce que le AiG Token ?', ru: 'Что такое AiG Token?',
+    sv: 'Vad är AiG Token?', hr: 'Što je AiG Token?',
+    ar: 'ما هو AiG Token؟', de: 'Was ist der AiG Token?',
+    sr: 'Шта је AiG Token?', ur: 'AiG Token کیا ہے؟',
+  },
+  'Es el activo nativo del ecosistema AiGenesis, sobre la Binance Smart Chain (BSC). Está en cada operación: se genera a diario como recompensa de minería, se bloquea en staking para rendimientos, circula entre usuarios como medio de intercambio, y se recibe en referidos, binario y bonos de rango. Tiene un supply FIJO de 111 millones, sin emisión nueva ni quema.':
+    {
+      en: 'It is the native asset of the AiGenesis ecosystem, on the Binance Smart Chain (BSC). It is present in every operation: generated daily as a mining reward, locked in staking for yield, circulating between users as a means of exchange, and received through referrals, binary and rank bonuses. It has a FIXED supply of 111 million, with no new issuance and no burning.',
+      pt: 'É o ativo nativo do ecossistema AiGenesis, na Binance Smart Chain (BSC). Está em cada operação: é gerado diariamente como recompensa de mineração, é bloqueado em staking para rendimentos, circula entre usuários como meio de troca e é recebido em indicações, binário e bônus de rank. Tem supply FIXO de 111 milhões, sem nova emissão nem queima.',
+      fr: 'C’est l’actif natif de l’écosystème AiGenesis, sur la Binance Smart Chain (BSC). Il est dans chaque opération : généré chaque jour comme récompense de minage, bloqué en staking pour du rendement, il circule entre utilisateurs comme moyen d’échange et se reçoit via les parrainages, le binaire et les bonus de rang. Son offre est FIXE à 111 millions, sans nouvelle émission ni destruction.',
+      ru: 'Это нативный актив экосистемы AiGenesis в сети Binance Smart Chain (BSC). Он присутствует в каждой операции: ежедневно начисляется как награда за майнинг, блокируется в стейкинге ради доходности, обращается между пользователями как средство обмена и приходит по рефералам, бинару и ранговым бонусам. Эмиссия ФИКСИРОВАНА — 111 миллионов, без допвыпуска и без сжигания.',
+      sv: 'Det är AiGenesis-ekosystemets egen tillgång, på Binance Smart Chain (BSC). Den finns i varje operation: den skapas dagligen som miningbelöning, låses i staking för avkastning, cirkulerar mellan användare som bytesmedel och tas emot via hänvisningar, binär och rangbonusar. Utbudet är FAST på 111 miljoner, utan nyemission och utan bränning.',
+      hr: 'To je nativna imovina ekosustava AiGenesis, na Binance Smart Chainu (BSC). Prisutna je u svakoj operaciji: stvara se svakodnevno kao nagrada za rudarenje, zaključava se u staking radi prinosa, kruži među korisnicima kao sredstvo razmjene i dobiva se kroz preporuke, binarni sustav i bonuse ranga. Ponuda je FIKSNA — 111 milijuna, bez novog izdavanja i bez spaljivanja.',
+      ar: 'هو الأصل الأصلي لنظام AiGenesis البيئي، على شبكة Binance Smart Chain ‏(BSC). يوجد في كل عملية: يُولَّد يوميًا كمكافأة تعدين، ويُقفل في التخزين لتحقيق عائد، ويتداول بين المستخدمين كوسيلة تبادل، ويُستلم عبر الإحالات والنظام الثنائي ومكافآت الرتب. المعروض ثابت عند 111 مليونًا، بلا إصدار جديد ولا حرق.',
+      de: 'Es ist der native Vermögenswert des AiGenesis-Ökosystems auf der Binance Smart Chain (BSC). Er steckt in jeder Operation: täglich als Mining-Belohnung erzeugt, im Staking für Erträge gebunden, zwischen Nutzern als Tauschmittel im Umlauf und über Empfehlungen, Binär und Rangboni erhalten. Das Angebot ist FEST bei 111 Millionen, ohne Neuausgabe und ohne Verbrennung.',
+      sr: 'То је нативна имовина екосистема AiGenesis, на Binance Smart Chain-у (BSC). Присутна је у свакој операцији: ствара се свакодневно као награда за рударење, закључава се у стејкинг ради приноса, кружи међу корисницима као средство размене и добија се кроз препоруке, бинарни систем и бонусе ранга. Понуда је ФИКСНА — 111 милиона, без новог издавања и без спаљивања.',
+      ur: 'یہ AiGenesis ایکو سسٹم کا مقامی اثاثہ ہے، Binance Smart Chain (BSC) پر۔ یہ ہر عمل میں موجود ہے: روزانہ مائننگ انعام کے طور پر بنتا ہے، منافع کے لیے اسٹیکنگ میں بند ہوتا ہے، صارفین کے درمیان تبادلے کے ذریعے کے طور پر چلتا ہے، اور ریفرل، بائنری اور رینک بونس سے ملتا ہے۔ سپلائی مقررہ ہے — 111 ملین، نہ نئی اجرا نہ جلانا۔',
+    },
+  '¿Cómo empiezo o me uno a la alianza (TagMarket) a través de la comunidad?': {
+    en: 'How do I start or join the alliance (TagMarket) through the community?',
+    pt: 'Como começo ou me junto à aliança (TagMarket) pela comunidade?',
+    fr: 'Comment démarrer ou rejoindre l’alliance (TagMarket) via la communauté ?',
+    ru: 'Как начать или присоединиться к альянсу (TagMarket) через сообщество?',
+    sv: 'Hur börjar jag eller går med i alliansen (TagMarket) via gemenskapen?',
+    hr: 'Kako početi ili se pridružiti savezu (TagMarket) preko zajednice?',
+    ar: 'كيف أبدأ أو أنضم إلى التحالف (TagMarket) عبر المجتمع؟',
+    de: 'Wie fange ich an oder trete der Allianz (TagMarket) über die Community bei?',
+    sr: 'Како да почнем или се придружим савезу (TagMarket) преко заједнице?',
+    ur: 'میں کمیونٹی کے ذریعے اتحاد (TagMarket) میں کیسے شروع یا شامل ہوں؟',
+  },
+  '¿Qué es Aitech / Aitech One y la alianza con Genesis?': {
+    en: 'What is Aitech / Aitech One and the alliance with Genesis?',
+    pt: 'O que é Aitech / Aitech One e a aliança com a Genesis?',
+    fr: 'Qu’est-ce qu’Aitech / Aitech One et l’alliance avec Genesis ?',
+    ru: 'Что такое Aitech / Aitech One и альянс с Genesis?',
+    sv: 'Vad är Aitech / Aitech One och alliansen med Genesis?',
+    hr: 'Što je Aitech / Aitech One i savez s Genesisom?',
+    ar: 'ما هو Aitech / Aitech One والتحالف مع Genesis؟',
+    de: 'Was ist Aitech / Aitech One und die Allianz mit Genesis?',
+    sr: 'Шта је Aitech / Aitech One и савез са Genesis-ом?',
+    ur: 'Aitech / Aitech One اور Genesis کے ساتھ اتحاد کیا ہے؟',
+  },
+  '¿Para qué sirve el AiG Token en la alianza? ¿Dónde puedo usarlo?': {
+    en: 'What is the AiG Token for within the alliance? Where can I use it?',
+    pt: 'Para que serve o AiG Token na aliança? Onde posso usá-lo?',
+    fr: 'À quoi sert le AiG Token dans l’alliance ? Où puis-je l’utiliser ?',
+    ru: 'Для чего нужен AiG Token в альянсе? Где им можно пользоваться?',
+    sv: 'Vad används AiG Token till i alliansen? Var kan jag använda den?',
+    hr: 'Čemu služi AiG Token u savezu? Gdje ga mogu koristiti?',
+    ar: 'ما فائدة AiG Token في التحالف؟ وأين يمكنني استخدامه؟',
+    de: 'Wofür ist der AiG Token in der Allianz da? Wo kann ich ihn nutzen?',
+    sr: 'Чему служи AiG Token у савезу? Где могу да га користим?',
+    ur: 'اتحاد میں AiG Token کس کام آتا ہے؟ میں اسے کہاں استعمال کر سکتا ہوں؟',
+  },
+  '¿Qué es BIX o BixCard?': {
+    en: 'What is BIX or BixCard?', pt: 'O que é BIX ou BixCard?',
+    fr: 'Qu’est-ce que BIX ou BixCard ?', ru: 'Что такое BIX или BixCard?',
+    sv: 'Vad är BIX eller BixCard?', hr: 'Što je BIX ili BixCard?',
+    ar: 'ما هو BIX أو BixCard؟', de: 'Was ist BIX oder BixCard?',
+    sr: 'Шта је BIX или BixCard?', ur: 'BIX یا BixCard کیا ہے؟',
+  },
+
   /* ── el Aula: el material grabado dentro del asistente ─────────────
      OJO CON «Idioma del material»: es lo único que separa el idioma de la
      INTERFAZ del idioma del ARCHIVO. Traducido flojo —«Idioma», a secas— la
