@@ -149,6 +149,9 @@ const PREGUNTAS = (() => {
     const js = compilar(`lib/soporte/${n}`, n.replace(/\.ts$/, '.js'), {
       '@/lib/soporte/tipos': './tipos',
       './tipos': './tipos',
+      /* `preguntas-token.ts` deriva la dirección del contrato de la fuente única
+         desde el 25-ago-2026, así que arrastra este alias. */
+      '@/lib/official-links': './official-links',
     })
     for (const v of Object.values(require_(js))) {
       if (Array.isArray(v)) for (const p of v) if (p?.id && p?.pregunta) todas.push(p)
@@ -353,6 +356,62 @@ comprobar('el árabe se pinta de derecha a izquierda', () => {
 })
 
 console.log('\nCONTROL DE INSTRUMENTO — ¿sigue en el camino vivo?\n')
+
+comprobar('sólo existe UNA dirección de contrato del AiG en todo el proyecto', () => {
+  /*
+   * NACIDA DE UN FALLO VIVO (25-ago-2026).
+   *
+   * `preguntas-token.ts` daba `0x4b4594bfe661919a8e2373eb175004da2989a479` como
+   * «el contrato oficial», y `official-links.ts` daba
+   * `0xC1F0768587Dc889e494C171B155C60B4e9a13F08`. Las dos direcciones EXISTEN en
+   * BSC, las dos se llaman «A.I. Genesis Official», las dos con símbolo AIG y
+   * 111 millones de supply — comprobado preguntándole a la cadena.
+   *
+   * La que usa el dinero es la de `official-links.ts`: está en el `.env` de
+   * producción del portal. La otra no aparecía en ninguna parte del backend.
+   *
+   * Y la respuesta equivocada estaba SERVIDA, diciendo «desconfía de cualquier
+   * otra dirección» mientras daba la que el sistema no usa. Nada fallaba: dos
+   * cadenas hexadecimales de 42 caracteres se leen igual de plausibles.
+   *
+   * Por eso la comprobación no es «que sea esta dirección» —eso sería fijar el
+   * error si algún día cambia— sino «que no haya DOS». Una sola fuente no puede
+   * contradecirse.
+   */
+  const dirs = new Map()
+  const pila = [resolve(raiz, 'lib'), resolve(raiz, 'components'), resolve(raiz, 'app')]
+  while (pila.length) {
+    const d = pila.pop()
+    for (const n of readdirSync(d, { withFileTypes: true })) {
+      const ruta = join(d, n.name)
+      if (n.isDirectory()) pila.push(ruta)
+      else if (/\.tsx?$/.test(n.name)) {
+        /* Los COMENTARIOS se descartan: este proyecto documenta a fondo, y la
+           dirección vieja se cita a propósito en `whitepaper.ts` para explicar
+           por qué NO se usa. Contarla como duplicado castigaría justo la nota
+           que evita el error. */
+        const src = readFileSync(ruta, 'utf8')
+          .replace(/\/\*[\s\S]*?\*\//g, ' ')
+          .replace(/^\s*\/\/.*$/gm, '')
+        for (const m of src.matchAll(/0x[0-9a-fA-F]{40}/g)) {
+          /* Sólo interesan las que se presentan como el contrato del AiG: una
+             dirección de USDT o del router no es un duplicado. */
+          const ventana = src.slice(Math.max(0, m.index - 220), m.index + 120)
+          if (!/AIG|AiG|token oficial|contrato oficial|TOKEN_CONTRACT/i.test(ventana)) continue
+          const dir = m[0].toLowerCase()
+          if (!dirs.has(dir)) dirs.set(dir, [])
+          dirs.get(dir).push(ruta.replace(raiz, '').replace(/\\/g, '/'))
+        }
+      }
+    }
+  }
+  assert.equal(
+    dirs.size,
+    1,
+    `hay ${dirs.size} direcciones distintas presentadas como el contrato del AiG:\n   ` +
+      [...dirs.entries()].map(([d, f]) => `${d}\n     ${f.join('\n     ')}`).join('\n   ')
+  )
+})
 
 comprobar('la web G1 sigue montando el asistente', () => {
   const layout = readFileSync(resolve(raiz, 'app/g1/(site)/layout.tsx'), 'utf8')

@@ -27,12 +27,40 @@ const ts = require_('typescript')
 
 rmSync(salida, { recursive: true, force: true })
 mkdirSync(salida, { recursive: true })
+
+/*
+ * EL CORPUS YA NO ES AUTOSUFICIENTE, y esta prueba tuvo que enterarse.
+ *
+ * Desde el 25-ago-2026 `preguntas-token.ts` deriva la direccion del contrato de
+ * `lib/official-links.ts` en vez de escribirla a mano — habia DOS direcciones
+ * distintas en el proyecto y la del corpus era la vieja. Al hacerlo, el corpus
+ * pasa a depender de un modulo de fuera de `lib/soporte`, asi que hay que
+ * compilarlo tambien y reescribir su alias.
+ */
+for (const [rel, nombre] of [
+  ['lib/rutaPublica.ts', 'rutaPublica.js'],
+  ['lib/official-links.ts', 'official-links.js'],
+]) {
+  const { outputText } = ts.transpileModule(readFileSync(resolve(raiz, rel), 'utf8'), {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
+  })
+  writeFileSync(
+    join(salida, nombre),
+    outputText.split("'@/lib/rutaPublica'").join("'./rutaPublica'").split('"@/lib/rutaPublica"').join('"./rutaPublica"'),
+    'utf8'
+  )
+}
+
 for (const nombre of readdirSync(fuente).filter((n) => n.endsWith('.ts'))) {
   const codigo = readFileSync(join(fuente, nombre), 'utf8')
   const { outputText } = ts.transpileModule(codigo, {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
   })
-  writeFileSync(join(salida, nombre.replace(/\.ts$/, '.js')), outputText, 'utf8')
+  writeFileSync(
+    join(salida, nombre.replace(/\.ts$/, '.js')),
+    outputText.split("'@/lib/official-links'").join("'./official-links'").split('"@/lib/official-links"').join('"./official-links"'),
+    'utf8'
+  )
 }
 
 const { responder } = require_(join(salida, 'buscar.js'))

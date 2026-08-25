@@ -1,3 +1,4 @@
+import { AIG_TOKEN_CONTRACT, OFFICIAL_BSCSCAN } from '@/lib/official-links'
 import type { Pregunta } from './tipos'
 
 /**
@@ -50,15 +51,34 @@ export const PREGUNTAS_TOKEN: readonly Pregunta[] = [
     proyecto: 'ecosistema',
     categoria: 'Token AiG',
     pregunta: '¿Cuál es el contrato oficial del AiG Token?',
+    /*
+     * LA DIRECCIÓN SE DERIVA, NO SE ESCRIBE.
+     *
+     * Aquí había otra: `0x4b4594bfe661919a8e2373eb175004da2989a479`, distinta de
+     * la de `official-links.ts`. Las DOS existen en BSC, las dos se llaman
+     * «A.I. Genesis Official», las dos con símbolo AIG y 111 millones de supply
+     * — comprobado preguntándole a la cadena, no a un explorador.
+     *
+     * Lo que las separa es cuál usa el dinero: el `.env` de producción del
+     * portal lleva la de `official-links.ts`, y la otra NO APARECE en ninguna
+     * parte del backend. Sólo estaba aquí.
+     *
+     * Y estaba viva, diciendo «desconfía de cualquier otra dirección» mientras
+     * daba una que el sistema no usa: o sea, mandando a desconfiar de la buena.
+     *
+     * Derivarla de la fuente única hace que la contradicción no pueda volver.
+     * Dos copias de una dirección de contrato se desincronizan igual que dos
+     * listas de URLs, sólo que aquí el coste es que alguien compre otro token.
+     */
     respuesta:
-      'El contrato oficial en BSC es 0x4b4594bfe661919a8e2373eb175004da2989a479. Puedes verificarlo en BscScan: bscscan.com/token/0x4b4594bfe661919a8e2373eb175004da2989a479. Desconfía de cualquier otra dirección — un contrato distinto NO es el AiG oficial, aunque se llame parecido.',
+      `El contrato oficial en BSC es ${AIG_TOKEN_CONTRACT}. Puedes verificarlo en BscScan: ${OFFICIAL_BSCSCAN.TOKEN.replace('https://', '')}. Desconfía de cualquier otra dirección — un contrato distinto NO es el AiG oficial, aunque se llame parecido y aunque tenga el mismo símbolo.`,
     sinonimos: [
       'contrato del aig', 'contrato oficial', 'direccion del token', 'contract address',
       'cual es el contrato', 'token address', 'bscscan', 'donde veo el contrato',
       'como agrego el aig a metamask', 'importar token',
     ],
     fuente: 'landing',
-    enlace: 'https://bscscan.com/token/0x4b4594bfe661919a8e2373eb175004da2989a479',
+    enlace: OFFICIAL_BSCSCAN.TOKEN,
   },
   {
     id: 'tok-distribucion',
