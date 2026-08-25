@@ -285,6 +285,45 @@ if (sinCors.length === ORIGENES.length * MEDIOS.length) {
   console.log('         (scp deploy/media-aula.htaccess hostinger-aigenesis:~/domains/…/media/aula/.htaccess)')
 }
 
+/*
+ * ¿Y aigenesis.io? PORQUE NADIE LO MIRABA.
+ *
+ * El workflow subía sólo a la carpeta del subdominio. aigenesis.io se quedó con
+ * una copia subida a mano el 22-ago-2026 y siguió sirviéndola tres días y siete
+ * commits, sin los títulos traducidos ni el arreglo del video. No hubo ningún
+ * fallo: nadie le había pedido nunca a nada que mirara ahí.
+ *
+ * Ésa es la forma de rotura más cara que conozco — la que no rompe nada. Un
+ * despliegue que sale verde y un sitio que se queda quieto.
+ *
+ * Se compara el sello de los dos hosts. NO tumba el despliegue: la raíz depende
+ * de un secreto que puede no estar configurado, y hacer fallar el despliegue de
+ * g1 por eso lo dejaría todo parado. Pero se DICE, con el número de commits de
+ * distancia, para que la deriva sea visible desde el primer día y no desde el
+ * tercero.
+ */
+{
+  let selloRaiz = ''
+  try {
+    const r = await fetch(`https://aigenesis.io/version.txt?${SHA || Date.now()}`)
+    /* Sin `version.txt`, el servidor devuelve la página 404 con estado 200. Un
+       sello es 40 caracteres hexadecimales; cualquier otra cosa es «no hay». */
+    const cuerpo = r.ok ? (await r.text()).trim() : ''
+    selloRaiz = /^[0-9a-f]{40}$/.test(cuerpo) ? cuerpo : ''
+  } catch {
+    selloRaiz = ''
+  }
+  const selloG1 = SHA || (await bajar(`${BASE}/version.txt?${Date.now()}`).catch(() => '')).trim()
+  if (!selloRaiz) {
+    console.log('  AVISO · aigenesis.io no publica sello: no se puede saber qué build sirve')
+  } else if (selloG1 && selloRaiz !== selloG1) {
+    console.log(`  AVISO · aigenesis.io sirve OTRO build: ${selloRaiz.slice(0, 8)} (g1: ${selloG1.slice(0, 8)})`)
+    console.log('         Falta el secreto HOSTINGER_FTP_USER_RAIZ, o la subida a la raíz falló.')
+  } else if (selloG1) {
+    console.log('  ok   aigenesis.io sirve el mismo build que g1')
+  }
+}
+
 /* El póster no necesita CORS; necesita EXISTIR. Se comprueba lo único que puede
    fallar de él, que es que no esté o que el candado lo bloquee. */
 {

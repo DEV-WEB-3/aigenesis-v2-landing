@@ -139,6 +139,39 @@ jobs:
           HOSTINGER_FTP_DIR: ${{ secrets.HOSTINGER_FTP_DIR }}
         run: node scripts/desplegar-hosting.mjs
 
+      # ── LA RAÍZ: aigenesis.io ─────────────────────────────────────────────
+      #
+      # ESTE PASO EXISTE PORQUE FALTABA. El workflow subía SÓLO a la carpeta del
+      # subdominio, así que g1.aigenesis.io iba al día y aigenesis.io se quedó
+      # con una copia subida a mano el 22-ago-2026. Tres días y siete commits
+      # después seguía sirviéndola: sin los títulos traducidos, sin el arreglo
+      # del video, sin nada. Y no avisaba, porque nadie le había pedido nunca
+      # que subiera ahí.
+      #
+      # SE EXCLUYE `media/`: los videos y los PDF del Aula viven en el servidor y
+      # NO salen del repositorio (`public/media/` está en .gitignore). En CI ni
+      # siquiera existen; en un export local pesan 567 MB. Subirlos seria
+      # reemplazar produccion por una copia y tardar media hora en no cambiar nada.
+      #
+      # SE EXCLUYE `g1/`: esa carpeta la sube el paso anterior. Que dos pasos
+      # escriban el mismo directorio es la clase de cosa que un dia se pisa.
+      - name: Subir la raíz (aigenesis.io)
+        if: steps.acceso.outputs.subir == 'si'
+        env:
+          HOSTINGER_FTP_HOST: ${{ secrets.HOSTINGER_FTP_HOST }}
+          HOSTINGER_FTP_USER: ${{ secrets.HOSTINGER_FTP_USER_RAIZ }}
+          HOSTINGER_FTP_PASS: ${{ secrets.HOSTINGER_FTP_PASS_RAIZ }}
+          HOSTINGER_FTP_DIR: ${{ secrets.HOSTINGER_FTP_DIR_RAIZ }}
+        run: |
+          if [ -z "$HOSTINGER_FTP_USER" ]; then
+            echo "::warning::aigenesis.io NO se actualizó: falta el secreto HOSTINGER_FTP_USER_RAIZ."
+            echo "::warning::La cuenta FTP de g1 está acotada a su carpeta y no alcanza la raíz."
+            echo "::warning::Mientras falte, aigenesis.io se queda en el build que tenga."
+            exit 0
+          fi
+          rm -rf out/g1 out/media
+          node scripts/desplegar-hosting.mjs
+
       - name: Verificar que el subdominio quedó vivo
         if: steps.acceso.outputs.subir == 'si'
         run: |
