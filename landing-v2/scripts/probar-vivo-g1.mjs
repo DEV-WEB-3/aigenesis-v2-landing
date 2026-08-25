@@ -187,6 +187,88 @@ if (!SHA) {
   )
 }
 
+/*
+ * EL CORS DE LOS VIDEOS, DESDE TODOS LOS ORÍGENES DONDE CORRE EL ASISTENTE.
+ *
+ * Esto existe por el fallo del 25-ago-2026. Comprobé el CORS de la videoteca
+ * muchas veces y siempre salía perfecto — preguntando desde `g1.aigenesis.io`,
+ * el host que yo tenía en la cabeza. El owner probaba en
+ * `aigenesis-landing.vercel.app`, que es donde Vercel publica la misma landing,
+ * y ahí no había ni una cabecera: ni un video cargaba, ni un póster.
+ *
+ * Una lista blanca sólo vale si se hizo enumerando dónde CORRE la aplicación.
+ * Y una guarda que interroga un solo origen no comprueba una lista blanca:
+ * comprueba una entrada de la lista.
+ *
+ * Los orígenes se declaran aquí y tienen que coincidir con
+ * `deploy/media-aula.htaccess`. Si alguien añade un host allí y no aquí, esta
+ * guarda deja de cubrirlo — por eso van juntos en el mismo commit siempre.
+ */
+const ORIGENES = [
+  'https://g1.aigenesis.io',
+  'https://aigenesis.io',
+  'https://conect.aigenesis.io',
+  'https://aigenesis-landing.vercel.app',
+]
+
+/* Se prueba un video Y un póster: el elemento `<video>` lleva
+   `crossOrigin="anonymous"`, que aplica también a la imagen del `poster`. En la
+   consola del owner fallaron los dos, y por el mismo motivo. */
+const MEDIOS = ['acceso-cuenta/es.mp4?v1', 'acceso-cuenta/es.jpg?v1']
+
+/*
+ * SEVERIDAD CALIBRADA, NO TOLERANCIA.
+ *
+ * Estas comprobaciones NO tumban el despliegue, y la razón es concreta: desde
+ * que `FichaEdicion` reintenta sin `crossOrigin` cuando el medio falla, la falta
+ * de CORS ya no impide ver el video — sólo apaga el borde que respira con la
+ * voz. Es una degradación, no una avería.
+ *
+ * Marcarlo como fallo dejaría el CI en rojo permanente por algo que se arregla
+ * en un `.htaccess` de OTRO servidor, que se sube a mano. Y una guarda siempre
+ * roja se acaba ignorando entera — con ella, la que sí importaba.
+ *
+ * Así que se cuenta y se dice, con el remedio al lado. Lo que sí sería avería:
+ * que NINGÚN origen tuviera CORS, porque entonces el archivo `.htaccess` no
+ * estaría aplicándose en absoluto y el candado anti-hotlink tampoco. Eso sí para.
+ */
+const sinCors = []
+for (const origen of ORIGENES) {
+  for (const medio of MEDIOS) {
+    let acao = ''
+    let estado = 0
+    try {
+      const r = await fetch(`https://aigenesis.io/media/aula/${medio}`, {
+        headers: { Origin: origen, Range: 'bytes=0-1' },
+      })
+      estado = r.status
+      acao = r.headers.get('access-control-allow-origin') ?? ''
+    } catch (e) {
+      acao = `(fallo de red: ${e.message})`
+    }
+    const tipo = medio.split('?')[0].split('.').pop()
+    if (acao === origen) {
+      console.log(`  ok   ${tipo} con CORS desde ${origen.replace('https://', '')}`)
+    } else {
+      sinCors.push(`${tipo} desde ${origen.replace('https://', '')} (estado ${estado})`)
+      console.log(`  deg  ${tipo} SIN CORS desde ${origen.replace('https://', '')}`)
+    }
+  }
+}
+if (sinCors.length === ORIGENES.length * MEDIOS.length) {
+  comprobar(
+    'la videoteca aplica su .htaccess',
+    false,
+    'NINGÚN origen recibe CORS: el .htaccess no se está aplicando y el candado ' +
+      'anti-hotlink tampoco estará activo.',
+  )
+} else if (sinCors.length) {
+  console.log('')
+  console.log(`  AVISO · ${sinCors.length} combinación(es) sin CORS — el video se ve, el borde no respira:`)
+  for (const s of sinCors) console.log(`         · ${s}`)
+  console.log('         Remedio: subir `deploy/media-aula.htaccess` a /media/aula/ en aigenesis.io.')
+}
+
 console.log('')
 if (fallos.length) {
   console.error(`vivo: ${fallos.length} comprobación(es) fallaron en ${BASE}`)

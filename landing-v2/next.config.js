@@ -35,7 +35,18 @@ const CSP_INFORME = [
   "font-src 'self' data:",
   "connect-src 'self' https://www.google-analytics.com https://vitals.vercel-insights.com",
   "worker-src 'self' blob:",
-  "media-src 'self'",
+  /*
+   * `media-src` incluye aigenesis.io porque los videos del Aula viven ahí, no
+   * aquí. Con `'self'` a secas la consola informaba en cada apertura:
+   * «Loading media from 'https://aigenesis.io/media/aula/…' violates the
+   * following Content Security Policy directive: media-src 'self'».
+   *
+   * Hoy la política va en modo INFORME y no bloqueaba nada — el video fallaba
+   * por CORS, que es otra cosa. Pero esta línea es exactamente la que rompería
+   * el Aula el día que se pase a bloqueante, y ese día el síntoma sería idéntico
+   * al de hoy. Se arregla ahora, mientras es un aviso y no una avería.
+   */
+  "media-src 'self' https://aigenesis.io",
   /*
    * `object-src` pasa de 'none' a 'self' porque `/whitepaper` incrusta el PDF
    * —ya alojado aquí— con un `<object>`. Con 'none' el visor quedaba en blanco.

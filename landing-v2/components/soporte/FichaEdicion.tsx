@@ -89,6 +89,25 @@ export default function FichaEdicion({
      guarda para ENSEÑARLO: un reproductor que falla en silencio es
      indistinguible de un archivo que no está. */
   const [falloAlReproducir, setFalloAlReproducir] = useState<string | null>(null)
+  /*
+   * ¿SE PIDE EL VIDEO CON CORS?
+   *
+   * `crossOrigin="anonymous"` hace falta para ANALIZAR el audio y que el borde
+   * de la consola respire con la voz. Su precio: si el servidor no devuelve
+   * `Access-Control-Allow-Origin` para ESE origen, el navegador no baja el
+   * video. No degrada el efecto — mata la reproducción.
+   *
+   * Y la lista blanca vive en un `.htaccess` de OTRO servidor, que se sube a
+   * mano. El 25-ago-2026 no incluía `aigenesis-landing.vercel.app`, que es donde
+   * el owner prueba la landing: ni un video, ni un póster, en ningún idioma.
+   *
+   * El orden de importancia no admite discusión: un video que se ve sin efecto
+   * es infinitamente mejor que un efecto sin video. Así que se intenta con CORS
+   * y, si el medio falla por eso, se reintenta sin él. Se pierde el aliento
+   * reactivo y se gana el Aula funcionando en cualquier host, esté o no en una
+   * lista que vive fuera de este repositorio.
+   */
+  const [conCors, setConCors] = useState(true)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   /*
@@ -144,24 +163,48 @@ export default function FichaEdicion({
 
       {/* ── El reproductor ── */}
       <div className="relative overflow-hidden rounded-xl border border-genesis-ghost bg-genesis-void">
+        {/*
+         * EL PÓSTER, FUERA DEL ELEMENTO DE VIDEO.
+         *
+         * Estaba como atributo `poster`, que parece lo natural y tiene una
+         * consecuencia que no vi: la imagen la descarga el propio `<video>`, así
+         * que hereda su `crossOrigin`. Una foto de la que nunca leemos un píxel
+         * pasaba a exigir `Access-Control-Allow-Origin`, y sin él el navegador la
+         * bloqueaba. Fue la primera línea de la consola del owner:
+         * «Access to image at '…/en.jpg?v1' … has been blocked by CORS policy».
+         *
+         * Como `<img>` suelto no exige nada. Se oculta en cuanto el video
+         * arranca; `aria-hidden` porque no aporta información —el título ya está
+         * escrito encima— y `onError` vacío para que un póster que falte deje el
+         * fondo liso en vez de un icono de imagen rota.
+         */}
+        {src && poster && !reproduciendo ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={poster}
+            alt=""
+            aria-hidden
+            onError={(e) => {
+              e.currentTarget.style.display = 'none'
+            }}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        ) : null}
         {src ? (
           <video
             ref={videoRef}
-            key={src}
+            /* La `key` incluye `conCors`: cambiar `crossOrigin` sobre un
+               elemento ya cargado no reintenta nada. Hay que rearmarlo. */
+            key={`${src}|${conCors}`}
             src={src}
-            poster={poster ?? undefined}
+            /* El póster NO va como atributo: lo pintaría el propio elemento y
+               heredaría su `crossOrigin`, así que una imagen que no necesita
+               CORS —nunca leemos sus píxeles— quedaba bloqueada por él. Va
+               debajo, como `<img>` normal. */
             controls={reproduciendo}
             preload="none"
             playsInline
-            /*
-             * `crossOrigin` hace falta para poder ANALIZAR el audio: sin él, un
-             * video de otro origen «contamina» el grafo de Web Audio y el
-             * analizador devuelve silencio — y peor, el video se queda mudo. En
-             * local no importa (mismo origen); en producción los archivos vienen
-             * de aigenesis.io y la página de g1.aigenesis.io, y por eso el
-             * `.htaccess` de la videoteca manda `Access-Control-Allow-Origin`.
-             */
-            crossOrigin="anonymous"
+            crossOrigin={conCors ? 'anonymous' : undefined}
             onPlay={() => {
               setReproduciendo(true)
               if (videoRef.current) onVoz?.escuchar(videoRef.current)
@@ -192,11 +235,30 @@ export default function FichaEdicion({
                 3: 'MEDIA_ERR_DECODE',
                 4: 'MEDIA_ERR_SRC_NOT_SUPPORTED',
               }
+              /*
+               * UN FALLO DE CORS LLEGA AQUÍ DISFRAZADO. El navegador no dice
+               * «CORS» al elemento —eso sólo va a la consola—: entrega un
+               * MEDIA_ERR_NETWORK o un MEDIA_ERR_SRC_NOT_SUPPORTED, los mismos
+               * códigos que daría un archivo que no existe.
+               *
+               * Como no se puede distinguir, se PRUEBA: si íbamos con CORS, se
+               * reintenta sin él una vez. Si el problema era la lista blanca, el
+               * video arranca y sólo se pierde el aliento reactivo. Si era otra
+               * cosa, el segundo intento falla igual y entonces sí se enseña el
+               * motivo. Un reintento, no un bucle: `conCors` ya es `false` la
+               * segunda vez y esta rama no se vuelve a tomar.
+               */
+              if (conCors && (codigo === 2 || codigo === 4)) {
+                setConCors(false)
+                setReproduciendo(false)
+                onVoz?.callar()
+                return
+              }
               setReproduciendo(false)
               onVoz?.callar()
               setFalloAlReproducir(codigo ? nombres[codigo] ?? `MEDIA_ERR_${codigo}` : 'MEDIA_ERR')
             }}
-            className="block aspect-video w-full bg-genesis-void"
+            className="relative block aspect-video w-full bg-genesis-void"
           />
         ) : (
           /* Sin material: se dice, no se disimula con un reproductor que no

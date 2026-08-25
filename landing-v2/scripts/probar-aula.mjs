@@ -306,7 +306,27 @@ comprobar('con la videoteca ENCENDIDA sale el reproductor, el póster y la durac
   const html = pintarOn('edicion-acceso-cuenta', 'es')
   assert.match(html, /<video/, 'no pintó el reproductor con la videoteca encendida')
   assert.match(html, /media\/aula\/acceso-cuenta\/es\.mp4/, 'el src no apunta al archivo')
-  assert.match(html, /poster="[^"]*acceso-cuenta\/es\.jpg\?v\d+"/, 'falta el póster o su versión')
+  /*
+   * EL PÓSTER YA NO ES UN ATRIBUTO. Era `poster="…"` del propio `<video>`, y por
+   * eso heredaba su `crossOrigin`: una imagen de la que nunca leemos un píxel
+   * exigía `Access-Control-Allow-Origin`, y sin él el navegador la bloqueaba.
+   * Ahora va como `<img>` suelto detrás del reproductor.
+   *
+   * Se comprueba lo que importa —que la URL con su versión llega a la pantalla—
+   * y NO la etiqueta concreta, para que reordenar el marcado no rompa esto. Pero
+   * sí se exige que NO vuelva como atributo: ese camino es el que estaba roto.
+   */
+  assert.match(html, /acceso-cuenta\/es\.jpg\?v\d+/, 'falta el póster o su versión')
+  assert.doesNotMatch(
+    html,
+    /<video[^>]*poster=/,
+    'el póster volvió a ser atributo del video: heredaría su crossOrigin y CORS lo bloquea',
+  )
+  assert.doesNotMatch(
+    html,
+    /<img[^>]*crossorigin/i,
+    'el póster no debe pedir CORS: nunca se leen sus píxeles',
+  )
   assert.match(html, /preload="none"/, 'el video precargaría en cada apertura del panel')
   assert.match(html, /2:03/, 'no salió la duración medida')
   assert.doesNotMatch(html, /Todavía no hay edición/, 'dice que falta material y sí lo hay')

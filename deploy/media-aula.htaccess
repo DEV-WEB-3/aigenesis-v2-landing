@@ -64,9 +64,30 @@
   # Se declara la lista exacta, NO `*`. Un comodín permitiría a cualquier página
   # leer el contenido byte a byte desde JavaScript, que es justo lo que la regla
   # anti-hotlinking de arriba trata de evitar.
-  SetEnvIf Origin "^https://(g1\.|www\.)?aigenesis\.io$" CORS_OK=$0
-  SetEnvIf Origin "^https://conect\.aigenesis\.io$"      CORS_OK=$0
-  SetEnvIf Origin "^http://localhost(:[0-9]+)?$"         CORS_OK=$0
+  #
+  # ─────────────────────────────────────────────────────────────────────────
+  # ESTA LISTA SE ESCRIBIÓ CON LOS HOSTS QUE SUPUSE, Y FALTABA EL PRINCIPAL.
+  #
+  # El 25-ago-2026 el owner mandó la consola del navegador: origen
+  # `https://aigenesis-landing.vercel.app`, «No 'Access-Control-Allow-Origin'
+  # header is present». Ni un video cargaba, ni un póster.
+  #
+  # Yo había verificado el CORS desde g1.aigenesis.io una y otra vez, y siempre
+  # salía perfecto — porque preguntaba por el host que yo tenía en la cabeza. La
+  # landing también vive en Vercel, y ése es el sitio donde el owner la prueba.
+  # Una lista blanca sólo vale si se hizo enumerando dónde CORRE la aplicación,
+  # no dónde uno cree que corre.
+  #
+  # El patrón cubre el alias de producción y las URL por despliegue que Vercel
+  # genera (`aigenesis-landing-<hash>-<equipo>.vercel.app`), que cambian en cada
+  # subida y por eso no pueden listarse una a una. Queda acotado al nombre de
+  # ESTE proyecto: abrir `*.vercel.app` entero dejaría que cualquier página
+  # alojada en Vercel se llevara los videos, que es lo que el candado evita.
+  # ─────────────────────────────────────────────────────────────────────────
+  SetEnvIf Origin "^https://(g1\.|www\.)?aigenesis\.io$"        CORS_OK=$0
+  SetEnvIf Origin "^https://conect\.aigenesis\.io$"             CORS_OK=$0
+  SetEnvIf Origin "^https://aigenesis-landing[a-z0-9-]*\.vercel\.app$" CORS_OK=$0
+  SetEnvIf Origin "^http://localhost(:[0-9]+)?$"                CORS_OK=$0
   Header set Access-Control-Allow-Origin %{CORS_OK}e env=CORS_OK
   # Sin esto, un proxy podría servirle a un origen la respuesta cacheada de otro.
   Header merge Vary Origin
