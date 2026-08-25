@@ -62,3 +62,7 @@ _media.mjs
 _verify.mjs
 _align.mjs
 _clean*.mjs
+
+# Copia LOCAL de la videoteca del Aula para previsualizar (ver lib/soporte/ediciones.ts).
+# Los videos NO viven en el repositorio ni en la exportacion: viven en el servidor.
+public/media/

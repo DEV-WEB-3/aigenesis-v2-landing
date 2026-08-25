@@ -58,6 +58,14 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
+      # Van ANTES de exportar y no después: un despliegue que publica y luego
+      # comprueba ya publicó el fallo. Las tres son de segundos.
+      - name: Comprobar el material del Aula
+        run: npm run verify:aula
+
+      - name: Comprobar el diccionario y el lenguaje
+        run: npm run verify:i18n && npm run verify:lenguaje
+
       - name: Exportar el sitio estático
         run: npm run exportar
 

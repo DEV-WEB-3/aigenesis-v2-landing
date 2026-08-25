@@ -19,6 +19,8 @@
     "verify:lenguaje": "node scripts/verify-lenguaje.mjs",
     "verify:lenguaje:prueba": "node scripts/probar-guarda-lenguaje.mjs",
     "verify:buscador": "node scripts/probar-buscador.mjs",
+    "verify:aula": "node scripts/probar-aula.mjs",
+    "subir:video": "node scripts/subir-video.mjs",
     "exportar": "node scripts/exportar.mjs",
     "desplegar": "node scripts/desplegar-ssh.mjs",
     "desplegar:simular": "node scripts/desplegar-ssh.mjs --simular",

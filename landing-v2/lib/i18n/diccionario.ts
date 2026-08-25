@@ -1905,6 +1905,115 @@ export const DICCIONARIO: Record<string, Fila> = {
     ur: 'ایکو سسٹم دیکھیں',
   },
 
+  /* ── el Aula: el material grabado dentro del asistente ─────────────
+     OJO CON «Idioma del material»: es lo único que separa el idioma de la
+     INTERFAZ del idioma del ARCHIVO. Traducido flojo —«Idioma», a secas— la
+     distinción desaparece y el control se lee como un segundo selector de idioma
+     de la web, que es exactamente lo que no es. */
+  'Idioma del material': {
+    en: 'Material language', pt: 'Idioma do material',
+    fr: 'Langue du document', ru: 'Язык материала',
+    sv: 'Materialets språk', hr: 'Jezik materijala',
+    ar: 'لغة المادة', de: 'Sprache des Materials',
+    sr: 'Језик материјала', ur: 'مواد کی زبان',
+  },
+  'material oficial del ecosistema': {
+    en: 'official ecosystem material', pt: 'material oficial do ecossistema',
+    fr: 'documentation officielle de l’écosystème', ru: 'официальные материалы экосистемы',
+    sv: 'officiellt material från ekosystemet', hr: 'službeni materijal ekosustava',
+    ar: 'المواد الرسمية للنظام البيئي', de: 'offizielles Material des Ökosystems',
+    sr: 'званични материјал екосистема', ur: 'ایکو سسٹم کا سرکاری مواد',
+  },
+  'Todavía no hay edición en': {
+    en: 'There is no edition yet in', pt: 'Ainda não há edição em',
+    fr: 'Il n’existe pas encore d’édition en', ru: 'Пока нет издания на языке',
+    sv: 'Det finns ännu ingen utgåva på', hr: 'Još nema izdanja na jeziku',
+    ar: 'لا يوجد إصدار بعد بلغة', de: 'Es gibt noch keine Ausgabe auf',
+    sr: 'Још нема издања на језику', ur: 'ابھی تک اس زبان میں ایڈیشن نہیں ہے',
+  },
+  'Elige otro idioma abajo o descarga el documento.': {
+    en: 'Pick another language below, or download the document.',
+    pt: 'Escolha outro idioma abaixo ou baixe o documento.',
+    fr: 'Choisissez une autre langue ci-dessous ou téléchargez le document.',
+    ru: 'Выберите другой язык ниже или скачайте документ.',
+    sv: 'Välj ett annat språk nedan eller ladda ner dokumentet.',
+    hr: 'Odaberite drugi jezik ispod ili preuzmite dokument.',
+    ar: 'اختر لغة أخرى بالأسفل أو نزّل المستند.',
+    de: 'Wähle unten eine andere Sprache oder lade das Dokument herunter.',
+    sr: 'Изаберите други језик испод или преузмите документ.',
+    ur: 'نیچے دوسری زبان منتخب کریں یا دستاویز ڈاؤن لوڈ کریں۔',
+  },
+  Reproducir: {
+    en: 'Play', pt: 'Reproduzir', fr: 'Lire', ru: 'Воспроизвести',
+    sv: 'Spela upp', hr: 'Reproduciraj', ar: 'تشغيل', de: 'Abspielen',
+    sr: 'Репродукуј', ur: 'چلائیں',
+  },
+  idiomas: {
+    en: 'languages', pt: 'idiomas', fr: 'langues', ru: 'языков',
+    sv: 'språk', hr: 'jezika', ar: 'لغات', de: 'Sprachen',
+    sr: 'језика', ur: 'زبانیں',
+  },
+  'Ampliar la ventana': {
+    en: 'Expand the window', pt: 'Ampliar a janela', fr: 'Agrandir la fenêtre',
+    ru: 'Развернуть окно', sv: 'Förstora fönstret', hr: 'Proširi prozor',
+    ar: 'توسيع النافذة', de: 'Fenster vergrößern',
+    sr: 'Прошири прозор', ur: 'ونڈو بڑی کریں',
+  },
+  'Reducir la ventana': {
+    en: 'Shrink the window', pt: 'Reduzir a janela', fr: 'Réduire la fenêtre',
+    ru: 'Свернуть окно', sv: 'Förminska fönstret', hr: 'Smanji prozor',
+    ar: 'تصغير النافذة', de: 'Fenster verkleinern',
+    sr: 'Смањи прозор', ur: 'ونڈو چھوٹی کریں',
+  },
+  'Cargando el material…': {
+    en: 'Loading the material…', pt: 'Carregando o material…',
+    fr: 'Chargement du document…', ru: 'Загрузка материала…',
+    sv: 'Laddar materialet…', hr: 'Učitavanje materijala…',
+    ar: '…جارٍ تحميل المادة', de: 'Material wird geladen…',
+    sr: 'Учитавање материјала…', ur: '…مواد لوڈ ہو رہا ہے',
+  },
+  'video en': {
+    en: 'video in', pt: 'vídeo em', fr: 'vidéo en', ru: 'видео на',
+    sv: 'video på', hr: 'videozapis na', ar: 'فيديو بـ', de: 'Video in',
+    sr: 'видео на', ur: 'ویڈیو',
+  },
+  ediciones: {
+    en: 'editions', pt: 'edições', fr: 'éditions', ru: 'издания',
+    sv: 'utgåvor', hr: 'izdanja', ar: 'إصدارات', de: 'Ausgaben',
+    sr: 'издања', ur: 'ایڈیشنز',
+  },
+  'video y documento en varios idiomas': {
+    en: 'video and document in several languages',
+    pt: 'vídeo e documento em vários idiomas',
+    fr: 'vidéo et document en plusieurs langues',
+    ru: 'видео и документ на нескольких языках',
+    sv: 'video och dokument på flera språk',
+    hr: 'video i dokument na više jezika',
+    ar: 'فيديو ومستند بعدة لغات',
+    de: 'Video und Dokument in mehreren Sprachen',
+    sr: 'видео и документ на више језика',
+    ur: 'ویڈیو اور دستاویز کئی زبانوں میں',
+  },
+  '¿Te sirvió este material?': {
+    en: 'Was this material useful?', pt: 'Este material foi útil?',
+    fr: 'Ce document vous a-t-il été utile ?', ru: 'Этот материал был полезен?',
+    sv: 'Var materialet till hjälp?', hr: 'Je li vam ovaj materijal pomogao?',
+    ar: 'هل كانت هذه المادة مفيدة؟', de: 'War dieses Material hilfreich?',
+    sr: 'Да ли вам је овај материјал помогао?', ur: 'کیا یہ مواد مفید تھا؟',
+  },
+  'Material informativo. No constituye una oferta de inversión ni promete rendimientos.': {
+    en: 'Informational material. It is not an investment offer and promises no returns.',
+    pt: 'Material informativo. Não constitui oferta de investimento nem promete rendimentos.',
+    fr: 'Document d’information. Ne constitue pas une offre d’investissement et ne promet aucun rendement.',
+    ru: 'Информационный материал. Не является инвестиционным предложением и не обещает доходности.',
+    sv: 'Informationsmaterial. Utgör inte ett investeringserbjudande och lovar ingen avkastning.',
+    hr: 'Informativni materijal. Ne predstavlja investicijsku ponudu niti obećava prinose.',
+    ar: 'مادة إعلامية. لا تشكل عرض استثمار ولا تَعِد بأي عوائد.',
+    de: 'Informationsmaterial. Es ist kein Anlageangebot und verspricht keine Renditen.',
+    sr: 'Информативни материјал. Не представља инвестициону понуду нити обећава приносе.',
+    ur: 'معلوماتی مواد۔ یہ سرمایہ کاری کی پیشکش نہیں ہے اور کسی منافع کا وعدہ نہیں کرتا۔',
+  },
+
   /* ── descarga vinculada al idioma ──────────────────────────────── */
   'Descargar la presentación': {
     en: 'Download the presentation', pt: 'Baixar a apresentação',

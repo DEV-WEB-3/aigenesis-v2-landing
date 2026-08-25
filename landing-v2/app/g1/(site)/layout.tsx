@@ -24,10 +24,23 @@ export default function G1SiteLayout({ children }: { children: ReactNode }) {
 
       {/* Asistente flotante — el mismo mensajero de aigenesis.io; ayuda al usuario
           en toda la web G1. Cerebro client-side (responder sobre el corpus).
-          Sugeridos de ONBOARDING (usuario nuevo): qué es, cómo empezar, el token,
-          G-Pulse y el respaldo — no las de soporte de cuenta. */}
+
+          SUGERIDOS PRO TAG MARKETS, que es la novedad de la alianza y lo que la
+          gente viene a entender: cómo se entra, qué es TAG, qué es Aitech One,
+          para qué sirve el AiG aquí dentro y qué es BixCard.
+
+          SE QUITÓ `ali-credenciales` («¿La alianza es confiable?»). La respuesta
+          es buena y sigue en el corpus, pero como PRIMERA sugerencia planta la
+          duda que pretende despejar: nadie que llegue confiado se pregunta eso, y
+          leerlo se lo sugiere. Vive en su colección, para quien vaya a buscarlo. */}
       <AsistenteFlotante
-        sugeridos={['ali-como-empezar', 'ali-aitech-one', 'tok-que-es', 'gp-que-es', 'ali-credenciales']}
+        sugeridos={[
+          'ali-como-empezar',
+          'ali-tagmarkets',
+          'ali-aitech-one',
+          'ali-aig-usabilidad',
+          'ali-bixcard',
+        ]}
       />
     </div>
   )

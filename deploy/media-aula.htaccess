@@ -1,0 +1,111 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# PROTECCIÓN DE LA VIDEOTECA DEL AULA
+#
+# Va en  ~/domains/aigenesis.io/public_html/media/aula/.htaccess
+# Se sube A MANO, una sola vez. NO forma parte de `out/`: si estuviera ahí, el
+# despliegue lo reescribiría en cada push y esta carpeta no pertenece al sitio
+# exportado.
+#
+# QUÉ PROTEGE Y QUÉ NO — LEER ESTO ANTES DE CONFIAR EN ELLO
+# ─────────────────────────────────────────────────────────
+# Esto es protección por REFERENCIA (hotlinking), no autenticación.
+#
+#   SÍ impide  que alguien pegue el enlace del video en otro sitio, en un blog o
+#              en otro portal y lo reproduzca desde allí a costa nuestra.
+#   SÍ impide  que un buscador lo indexe y lo sirva fuera de contexto.
+#   NO impide  que una persona que YA está viendo el video en nuestro portal abra
+#              las herramientas del navegador y se lleve el archivo.
+#
+# Esa segunda parte no se puede impedir sin un servidor que firme URLs con
+# caducidad, y la landing de G1 es una exportación estática: no hay servidor donde
+# firmar nada. Fingir lo contrario sería el peor resultado — creer que está cerrado
+# y no estarlo.
+#
+# Y para ESTE material concreto, es el nivel correcto: una presentación de negocio
+# existe para que la compartan. Cerrarla a cal y canto trabajaría contra su
+# propósito. Si algún día hay material que de verdad no puede salir, se decide
+# aparte y hace falta un servidor.
+# ══════════════════════════════════════════════════════════════════════════════
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Se permite la petición SIN referente. No es un descuido: el navegador no manda
+  # `Referer` cuando alguien descarga el archivo, cuando la política del sitio de
+  # origen lo suprime, o cuando la petición llega con rangos desde el reproductor.
+  # Bloquear eso rompe la descarga legítima para proteger nada — quien quiere el
+  # archivo puede borrar la cabecera de todos modos.
+  RewriteCond %{HTTP_REFERER} !^$
+
+  # Los nuestros. `NC` porque el dominio no distingue mayúsculas.
+  RewriteCond %{HTTP_REFERER} !^https?://(www\.)?aigenesis\.io/    [NC]
+  RewriteCond %{HTTP_REFERER} !^https?://g1\.aigenesis\.io/        [NC]
+  RewriteCond %{HTTP_REFERER} !^https?://conect\.aigenesis\.io/    [NC]
+  # Los despliegues de Vercel, que sirven la misma landing.
+  RewriteCond %{HTTP_REFERER} !^https?://[a-z0-9-]+\.vercel\.app/  [NC]
+  # El desarrollo en la máquina de quien trabaja.
+  RewriteCond %{HTTP_REFERER} !^https?://localhost(:[0-9]+)?/      [NC]
+
+  RewriteRule \.(mp4|webm|jpg)$ - [F,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # ── CORS: hace falta para que el BORDE REACCIONE A LA VOZ ──────────────────
+  #
+  # La consola del asistente analiza el audio del video con Web Audio para que su
+  # borde se mueva con la voz. Para eso el elemento lleva `crossOrigin="anonymous"`,
+  # y sin esta cabecera pasan las dos cosas malas a la vez: el analizador devuelve
+  # silencio Y el navegador se niega a cargar el video. Sin CORS no se pierde el
+  # efecto: se pierde el video.
+  #
+  # Los videos viven en aigenesis.io y la landing en g1.aigenesis.io: para el
+  # navegador son orígenes distintos aunque sean la misma casa.
+  #
+  # Se declara la lista exacta, NO `*`. Un comodín permitiría a cualquier página
+  # leer el contenido byte a byte desde JavaScript, que es justo lo que la regla
+  # anti-hotlinking de arriba trata de evitar.
+  SetEnvIf Origin "^https://(g1\.|www\.)?aigenesis\.io$" CORS_OK=$0
+  SetEnvIf Origin "^https://conect\.aigenesis\.io$"      CORS_OK=$0
+  SetEnvIf Origin "^http://localhost(:[0-9]+)?$"         CORS_OK=$0
+  Header set Access-Control-Allow-Origin %{CORS_OK}e env=CORS_OK
+  # Sin esto, un proxy podría servirle a un origen la respuesta cacheada de otro.
+  Header merge Vary Origin
+
+  # ── CACHÉ: «private», y NO es un descuido ─────────────────────────────────
+  #
+  # Un año de caché, porque el nombre del archivo lleva la edición y el idioma: un
+  # video que cambia de contenido cambia de nombre. Sin esto, cada visita se
+  # vuelve a descargar hasta 150 MB.
+  #
+  # PERO VA EN `private` Y NO EN `public`, Y ESO SE DESCUBRIÓ MIDIENDO.
+  #
+  # Con `public`, la CDN de Hostinger (`hcdn`) guarda el archivo en el borde y lo
+  # sirve sin volver a preguntarle a Apache. Y la CDN NO mira el referente. O sea
+  # que en cuanto alguien carga el video una vez, la regla anti-hotlinking de
+  # arriba deja de aplicarse para todo el mundo: la cabecera de caché anulaba el
+  # candado.
+  #
+  # Comprobado el 25-ago-2026: con `public`, una petición desde un referente ajeno
+  # devolvía 200; la misma petición con la URL cambiada —que esquiva la CDN—
+  # devolvía 403. El candado siempre estuvo bien; lo que fallaba era que nadie
+  # llegaba a él.
+  #
+  # Con `private` el navegador SIGUE guardándolo entero —volver a ver el video no
+  # cuesta un byte— y la CDN no se queda una copia compartida. Se pierde la
+  # aceleración de borde, que aquí importa poco: los archivos viven en el mismo
+  # servidor que sirve la web.
+  <FilesMatch "\.(mp4|webm|jpg)$">
+    Header set Cache-Control "private, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Que no lo indexen: no es contenido de la web, es material de apoyo.
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
+
+# Sin listado de directorio: la carpeta no es un índice público.
+Options -Indexes
+
+# `mod_mime` a veces no reconoce el tipo en hosting compartido y el navegador se
+# descarga el video en vez de reproducirlo.
+AddType video/mp4 .mp4
+AddType video/webm .webm
