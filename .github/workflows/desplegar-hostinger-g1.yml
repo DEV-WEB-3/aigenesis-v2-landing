@@ -100,6 +100,13 @@ jobs:
       - name: Exportar el sitio estático
         run: npm run exportar
 
+      # EL SELLO DEL BUILD. Sin él, la verificación de más abajo sólo puede
+      # decir «lo servido contiene este diccionario», que un artefacto anterior
+      # cumple igual cuando el commit no toca el diccionario. Con él se puede
+      # exigir que lo servido SEA este commit.
+      - name: Sellar el build con el commit
+        run: echo "${{ github.sha }}" > out/version.txt
+
       - name: Reglas del subdominio en .htaccess
         # El .htaccess lo genera el export a partir de next.config.js. Las
         # reglas propias del subdominio (la raíz es G1) se añaden aquí, desde

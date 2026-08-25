@@ -149,6 +149,44 @@ comprobar(
   `¡${CONTRATO_VIEJO} está vivo otra vez!`,
 )
 
+/*
+ * ¿ES ESTE BUILD, O UNO QUE SE LE PARECE?
+ *
+ * Todo lo de arriba comprueba que lo servido CONTIENE este diccionario. No es lo
+ * mismo que ser este build, y la diferencia no es teórica: el primer despliegue
+ * que corrió esta guarda en CI sólo cambiaba scripts, así que el bundle anterior
+ * —que también lleva el corpus entero— habría pasado las seis sondas sin que se
+ * hubiera subido nada. Verde honesto midiendo la pregunta equivocada.
+ *
+ * El sello lo cierra: el export escribe el SHA del commit en `version.txt` y
+ * aquí se exige que el dominio devuelva ESE. Ya no hay forma de que un artefacto
+ * viejo pase.
+ *
+ * LA CONSULTA LLEVA EL SHA COMO PARÁMETRO a propósito. El borde de Hostinger
+ * guarda copias por URL y no pregunta a Apache mientras la tenga; con el SHA
+ * dentro, cada despliegue estrena URL y la copia vieja no puede contestar. Es la
+ * misma técnica que desbloqueó el candado de los videos del Aula.
+ *
+ * Y SI NO HAY SHA QUE ESPERAR, SE DICE. En local casi nunca lo hay. Callarlo
+ * dejaría un informe que parece completo y comprobó una cosa menos.
+ */
+const SHA = process.env.SHA_ESPERADO || process.env.GITHUB_SHA || ''
+if (!SHA) {
+  console.log('  --   sin SHA esperado: NO se comprobó QUÉ build está servido, sólo qué contiene')
+} else {
+  let sello = ''
+  try {
+    sello = (await bajar(`${BASE}/version.txt?${SHA}`)).trim()
+  } catch (e) {
+    sello = `(no se pudo leer version.txt: ${e.message})`
+  }
+  comprobar(
+    'el sello del sitio es el de este commit',
+    sello === SHA,
+    `esperado ${SHA.slice(0, 12)} · servido ${sello.slice(0, 60)}`,
+  )
+}
+
 console.log('')
 if (fallos.length) {
   console.error(`vivo: ${fallos.length} comprobación(es) fallaron en ${BASE}`)
