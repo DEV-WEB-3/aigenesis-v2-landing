@@ -68,7 +68,27 @@ export default function ZonaDeslizable({ className = '', children }: ZonaDesliza
 
   return (
     <div className="relative min-h-0 flex-1">
-      <div ref={contRef} className={`h-full overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${className}`}>
+      {/*
+       * `data-lenis-prevent` — SIN ESTO EL PANEL NO SE DESLIZA EN G1.
+       *
+       * La web de G1 usa Lenis con `smoothWheel`, que intercepta la rueda del
+       * ratón en TODA la página para animar el desplazamiento él mismo. Un
+       * contenedor con `overflow-y-auto` dentro nunca llega a recibir el evento:
+       * el asistente se queda clavado mientras la página de detrás se mueve.
+       *
+       * Y sólo pasaba en G1, que es donde vive la narrativa —y con ella Lenis—,
+       * así que en el resto del sitio el mismo componente funcionaba y el fallo
+       * parecía cosa de una página concreta.
+       *
+       * El atributo es la salida oficial de Lenis (1.3.x) para contenedores
+       * anidados: al verlo en un ancestro del objetivo del evento, se aparta y
+       * deja que el navegador desplace de forma nativa.
+       */}
+      <div
+        ref={contRef}
+        data-lenis-prevent
+        className={`h-full overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${className}`}
+      >
         {children}
       </div>
       {barra ? (
