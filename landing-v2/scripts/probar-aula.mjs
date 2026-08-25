@@ -129,6 +129,23 @@ const EOn = E
 const FichaOn = FichaEdicion
 
 const fallos = []
+
+/* El mensaje entero, no su primera línea: las guardas que listan hallazgos
+   —direcciones de contrato repetidas, sugeridos con forma de queja— ponen el
+   dato ÚTIL a partir de la segunda. Recortar en la primera deja un informe que
+   sabe que algo falló y no sabe decir qué. El tope es para el diff automático
+   de `assert` cuando la comprobación no trae mensaje propio. */
+const detallar = (e) => {
+  const lineas = String(e.message).split('\n')
+  const cortadas = lineas.length > 14
+  return (
+    lineas
+      .slice(0, 14)
+      .map((l) => '       ' + l)
+      .join('\n') + (cortadas ? `\n       … y ${lineas.length - 14} línea(s) más` : '')
+  )
+}
+
 const comprobar = (titulo, fn) => {
   try {
     fn()
@@ -136,7 +153,7 @@ const comprobar = (titulo, fn) => {
   } catch (e) {
     fallos.push({ titulo, error: e.message })
     console.log(`  FALL ${titulo}`)
-    console.log(`       ${String(e.message).split('\n')[0]}`)
+    console.log(detallar(e))
   }
 }
 
@@ -515,4 +532,36 @@ if (fallos.length) {
   process.exit(1)
 }
 console.log(`aula: todo en orden · ${E.EDICIONES.length} ediciones · ${E.ORDEN_IDIOMAS.length} idiomas`)
-console.log('      la videoteca está APAGADA a propósito: no hay ningún video subido todavía')
+
+/*
+ * ESTE RESUMEN SE DERIVA, PORQUE EL FIJO SE QUEDÓ MINTIENDO.
+ *
+ * Aquí había escrito a mano «la videoteca está APAGADA a propósito: no hay
+ * ningún video subido todavía». Era cierto el día que lo escribí. Los videos se
+ * subieron, `publicado` pasó a `true`, y la comprobación de la línea 200 empezó
+ * a EXIGIR que estuviera encendida — mientras el resumen de la última línea
+ * seguía anunciando lo contrario, en la misma ejecución y sin que nada fallara.
+ *
+ * Un informe que afirma algo que no mide es peor que no decir nada: se lee como
+ * medición. Ahora las tres cifras salen del módulo, y si mañana se apaga la
+ * videoteca la línea lo dirá sola.
+ */
+/* El campo se llama `piezas`. Escribí `idiomas` de memoria y la línea salió
+   diciendo «0 de 2 ediciones con video» sin que nada fallara: `undefined?.[i]`
+   es `undefined`, `urlDeVideo(undefined)` es `null`, y un cero así se lee igual
+   que un cero medido. Se cuenta desde el módulo y se exige que no sea cero. */
+const videos = E.EDICIONES.flatMap((ed) =>
+  Object.values(ed.piezas).filter((p) => E.urlDeVideo(p)),
+).length
+const conVideo = E.EDICIONES.filter((ed) =>
+  Object.values(ed.piezas).some((p) => E.urlDeVideo(p)),
+).length
+if (E.VIDEOTECA.publicado && videos === 0) {
+  console.error('aula: la videoteca dice estar publicada y no produce NI UNA url de video')
+  process.exit(1)
+}
+console.log(
+  `      videoteca ${E.VIDEOTECA.publicado ? 'ENCENDIDA' : 'APAGADA'} · ` +
+    `${conVideo} de ${E.EDICIONES.length} ediciones con video · ${videos} archivos · ` +
+    E.VIDEOTECA.base,
+)

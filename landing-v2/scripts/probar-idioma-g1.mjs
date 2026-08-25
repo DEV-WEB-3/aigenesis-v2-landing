@@ -73,6 +73,32 @@ const React = require_('react')
 const { renderToStaticMarkup } = require_('react-dom/server')
 
 const fallos = []
+/**
+ * IMPRIMIR EL FALLO ENTERO, NO SU PRIMERA LÍNEA.
+ *
+ * Aquí había `String(e.message).split('\n')[0]`, puesto para que el diff
+ * automático de `assert` no llenara la pantalla. El precio se cobró hoy: la
+ * guarda de mezcla de alfabetos detectó la palabra mala y el informe imprimió
+ * «palabras que mezclan alfabetos:» seguido de NADA — el titular del mensaje sin
+ * la lista, que es justamente el dato. Tuve que reconstruir el detector en un
+ * script aparte para saber cuál era la palabra.
+ *
+ * Un informe que dice que algo falló pero no dice qué obliga a rehacer el
+ * trabajo del instrumento a mano. Ahora se imprime el mensaje completo, con un
+ * tope: los `assert` SIN mensaje propio traen el diff de node detrás, y ése sí
+ * conviene recortar.
+ */
+const detallar = (e) => {
+  const lineas = String(e.message).split('\n')
+  const cortadas = lineas.length > 14
+  return (
+    lineas
+      .slice(0, 14)
+      .map((l) => '       ' + l)
+      .join('\n') + (cortadas ? `\n       … y ${lineas.length - 14} línea(s) más` : '')
+  )
+}
+
 const comprobar = (titulo, fn) => {
   try {
     fn()
@@ -80,7 +106,7 @@ const comprobar = (titulo, fn) => {
   } catch (e) {
     fallos.push(titulo)
     console.log('  FALL ' + titulo)
-    console.log('       ' + String(e.message).split('\n')[0])
+    console.log(detallar(e))
   }
 }
 
@@ -264,6 +290,53 @@ comprobar('ninguna palabra mezcla cirílico con latín', () => {
   assert.ok(mezcla('закașало'), 'control: el detector de mezcla no muerde')
   assert.ok(!mezcla('пошло'), 'control: marca cirílico limpio')
   assert.ok(!mezcla('MetaMask'), 'control: marca un nombre propio latino')
+})
+
+comprobar('el serbio no usa letras que sólo existen en ruso', () => {
+  /*
+   * LA TERCERA VEZ QUE EL SERBIO SE ME CONTAMINA — y las dos guardas anteriores
+   * no podían verla.
+   *
+   * El detector de alfabeto ajeno mira bloques Unicode: ruso y serbio están los
+   * dos en cirílico, así que para él son el mismo. El detector de mezcla busca
+   * cirílico junto a latín dentro de una palabra: escribí `помериш` como
+   * `померишь` — todo cirílico, ninguna mezcla, verde.
+   *
+   * Lo que separa a los dos idiomas no es el bloque, es el INVENTARIO. El
+   * alfabeto serbio tiene exactamente 30 letras y NO incluye ninguna de éstas:
+   *
+   *     ё  й  щ  ъ  ы  ь  э  ю  я
+   *
+   * Cualquiera de ellas en una fila `sr` es ruso filtrándose, no una variante
+   * ortográfica: el serbio escribe њ donde el ruso escribe нь, ј donde escribe
+   * й, y ја donde escribe я. No hay palabra serbia correcta que las lleve.
+   *
+   * Lo mismo al revés no sirve como guarda: el ruso no tiene ђ ћ љ њ џ ј, pero
+   * ésas son letras raras que no aparecen por error de tecleo desde el español.
+   * La contaminación siempre va en la dirección del idioma que más he escrito.
+   */
+  const SOLO_RUSAS = /[ёйщъыьэЁЙЩЪЫЬЭюяЮЯ]/
+  const D = require_(join(salida, 'diccionario.js'))
+  const tabla = Object.assign({}, ...Object.values(D).filter((v) => v && typeof v === 'object'))
+  const contaminadas = []
+  for (const [clave, fila] of Object.entries(tabla)) {
+    if (!fila || typeof fila !== 'object' || typeof fila.sr !== 'string') continue
+    for (const palabra of fila.sr.split(/[\s.,;:!?()«»"'—–\-/]+/)) {
+      if (palabra && SOLO_RUSAS.test(palabra)) {
+        contaminadas.push(`«${palabra}» en: ${clave.slice(0, 44)}`)
+      }
+    }
+  }
+  assert.deepEqual(
+    contaminadas,
+    [],
+    'serbio con letras que sólo existen en ruso:\n   ' + contaminadas.join('\n   '),
+  )
+  /* Control de instrumento: el caso real de hoy y dos que NO deben morder. */
+  assert.ok(SOLO_RUSAS.test('померишь'), 'control: no detecta el signo blando ruso')
+  assert.ok(SOLO_RUSAS.test('который'), 'control: no detecta la и breve rusa')
+  assert.ok(!SOLO_RUSAS.test('помериш'), 'control: marca serbio correcto')
+  assert.ok(!SOLO_RUSAS.test('њихов'), 'control: marca una letra propia del serbio')
 })
 
 console.log('')
