@@ -3260,6 +3260,461 @@ export const DICCIONARIO: Record<string, Fila> = {
     sr: 'Шта је BIX или BixCard?', ur: 'BIX یا BixCard کیا ہے؟',
   },
 
+  /* ══════════════════════════════════════════════════════════════════
+     CORPUS · ACCESO, SEGURIDAD Y PROBLEMAS
+
+     La primera tanda de las 91 que faltaban, y va primera por una razón: son
+     las que busca alguien que NO PUEDE ENTRAR. Quien tiene un problema y no lee
+     español es exactamente a quien más le duele que esto esté sin traducir.
+
+     TRES COSAS QUE NO SE TRADUCEN Y ESTÁN A PROPÓSITO:
+       · Las direcciones —`conect.aigenesis.io`, `aigenesis.io`, `BscScan`—.
+         Traducir una dirección la vuelve inservible.
+       · `?ref=`, que es literal y hay que reconocerlo en la barra del navegador.
+       · Los atajos de teclado SÍ se localizan: «Ctrl+Mayús+R» es «Ctrl+Shift+R»
+         en un teclado inglés, y decirle «Mayús» a alguien que ve «Shift» es
+         mandarlo a buscar una tecla que no existe.
+
+     LA ADVERTENCIA DE LA FRASE DE RECUPERACIÓN es la línea más importante del
+     corpus entero: nadie del equipo la pide jamás. Traducida floja no protege.
+     ══════════════════════════════════════════════════════════════════ */
+  '¿Necesito una cuenta distinta para cada producto?': {
+    en: 'Do I need a separate account for each product?',
+    pt: 'Preciso de uma conta diferente para cada produto?',
+    fr: 'Ai-je besoin d’un compte différent pour chaque produit ?',
+    ru: 'Нужен ли отдельный аккаунт для каждого продукта?',
+    sv: 'Behöver jag ett separat konto för varje produkt?',
+    hr: 'Trebam li poseban račun za svaki proizvod?',
+    ar: 'هل أحتاج حسابًا منفصلًا لكل منتج؟',
+    de: 'Brauche ich für jedes Produkt ein eigenes Konto?',
+    sr: 'Треба ли ми посебан налог за сваки производ?',
+    ur: 'کیا مجھے ہر پروڈکٹ کے لیے الگ اکاؤنٹ چاہیے؟',
+  },
+  'No. Hay una sola cuenta para todo el ecosistema. Los botones de Mining, Staking, Booster, G-Pulse y el marketplace llevan todos al mismo sitio: conect.aigenesis.io. Si ya entraste una vez, estás dentro de todo.':
+    {
+      en: 'No. There is a single account for the whole ecosystem. The Mining, Staking, Booster, G-Pulse and marketplace buttons all lead to the same place: conect.aigenesis.io. If you have signed in once, you are in everywhere.',
+      pt: 'Não. Existe uma única conta para todo o ecossistema. Os botões de Mining, Staking, Booster, G-Pulse e do marketplace levam todos ao mesmo lugar: conect.aigenesis.io. Se você já entrou uma vez, está dentro de tudo.',
+      fr: 'Non. Il n’y a qu’un seul compte pour tout l’écosystème. Les boutons Mining, Staking, Booster, G-Pulse et la marketplace mènent tous au même endroit : conect.aigenesis.io. Si tu t’es connecté une fois, tu as accès à tout.',
+      ru: 'Нет. На всю экосистему — один аккаунт. Кнопки Mining, Staking, Booster, G-Pulse и маркетплейса ведут в одно и то же место: conect.aigenesis.io. Если ты вошёл один раз, ты внутри всего.',
+      sv: 'Nej. Det finns ett enda konto för hela ekosystemet. Knapparna för Mining, Staking, Booster, G-Pulse och marknadsplatsen leder alla till samma ställe: conect.aigenesis.io. Har du loggat in en gång är du inne överallt.',
+      hr: 'Ne. Postoji jedan račun za cijeli ekosustav. Gumbi Mining, Staking, Booster, G-Pulse i tržnica vode na isto mjesto: conect.aigenesis.io. Ako si se jednom prijavio, unutra si svugdje.',
+      ar: 'لا. هناك حساب واحد للنظام البيئي كله. أزرار Mining و Staking و Booster و G-Pulse والسوق تؤدي جميعها إلى المكان نفسه: conect.aigenesis.io. إذا دخلت مرة واحدة، فأنت داخل كل شيء.',
+      de: 'Nein. Es gibt ein einziges Konto für das gesamte Ökosystem. Die Buttons für Mining, Staking, Booster, G-Pulse und den Marktplatz führen alle an denselben Ort: conect.aigenesis.io. Wenn du dich einmal angemeldet hast, bist du überall drin.',
+      sr: 'Не. Постоји један налог за цео екосистем. Дугмад Mining, Staking, Booster, G-Pulse и маркетплејс воде на исто место: conect.aigenesis.io. Ако си се једном пријавио, унутра си свуда.',
+      ur: 'نہیں۔ پورے ایکو سسٹم کے لیے ایک ہی اکاؤنٹ ہے۔ Mining، Staking، Booster، G-Pulse اور مارکیٹ پلیس کے بٹن سب ایک ہی جگہ لے جاتے ہیں: conect.aigenesis.io۔ اگر آپ ایک بار داخل ہو چکے ہیں تو آپ ہر جگہ اندر ہیں۔',
+    },
+  'Quiero registrarme y me dice «ACCESO RESTRINGIDO»': {
+    en: 'I want to register and it says “RESTRICTED ACCESS”',
+    pt: 'Quero me cadastrar e aparece «ACESSO RESTRITO»',
+    fr: 'Je veux m’inscrire et il affiche « ACCÈS RESTREINT »',
+    ru: 'Хочу зарегистрироваться, а пишет «ДОСТУП ОГРАНИЧЕН»',
+    sv: 'Jag vill registrera mig och det står ”BEGRÄNSAD ÅTKOMST”',
+    hr: 'Želim se registrirati, a piše «OGRANIČEN PRISTUP»',
+    ar: 'أريد التسجيل ويظهر لي «الوصول مقيّد»',
+    de: 'Ich will mich registrieren und es steht „ZUGANG BESCHRÄNKT“',
+    sr: 'Желим да се региструјем, а пише «ОГРАНИЧЕН ПРИСТУП»',
+    ur: 'میں رجسٹر کرنا چاہتا ہوں اور لکھا آتا ہے «رسائی محدود»',
+  },
+  'Genesis es solo por invitación. Para abrir el formulario de alta hace falta un enlace que lleve el referido de quien te invitó — la parte «?ref=» de la dirección. Sin esa parte no hay registro que rellenar. Si te pasaron el enlace como botón y se recortó, pide que te lo manden como texto plano.':
+    {
+      en: 'Genesis is invitation-only. To open the sign-up form you need a link carrying the referral of whoever invited you — the “?ref=” part of the address. Without that part there is no form to fill in. If the link was sent to you as a button and got cut off, ask for it as plain text.',
+      pt: 'A Genesis é apenas por convite. Para abrir o formulário de cadastro é preciso um link que leve a indicação de quem lhe convidou — a parte «?ref=» do endereço. Sem essa parte não há cadastro para preencher. Se lhe enviaram o link como botão e ele foi cortado, peça que lhe mandem como texto simples.',
+      fr: 'Genesis est uniquement sur invitation. Pour ouvrir le formulaire d’inscription, il faut un lien portant le parrainage de la personne qui t’a invité — la partie « ?ref= » de l’adresse. Sans cette partie, il n’y a pas de formulaire à remplir. Si le lien t’a été envoyé sous forme de bouton et qu’il a été tronqué, demande-le en texte brut.',
+      ru: 'Genesis работает только по приглашению. Чтобы открылась форма регистрации, нужна ссылка с рефералом того, кто тебя пригласил — часть «?ref=» в адресе. Без неё заполнять нечего. Если ссылку прислали кнопкой и она обрезалась, попроси прислать её обычным текстом.',
+      sv: 'Genesis är endast för inbjudna. För att öppna registreringsformuläret krävs en länk som bär inbjudarens hänvisning — delen ”?ref=” i adressen. Utan den finns inget formulär att fylla i. Om länken skickades som en knapp och klipptes av, be att få den som ren text.',
+      hr: 'Genesis je samo na poziv. Za otvaranje obrasca za registraciju potrebna je poveznica koja nosi preporuku osobe koja te pozvala — dio «?ref=» u adresi. Bez tog dijela nema obrasca za ispuniti. Ako su ti poveznicu poslali kao gumb pa se skratila, zatraži je kao običan tekst.',
+      ar: 'Genesis بالدعوة فقط. لفتح نموذج التسجيل تحتاج رابطًا يحمل إحالة من دعاك — الجزء «‎?ref=‎» من العنوان. بدون ذلك الجزء لا يوجد نموذج تملؤه. إذا أُرسل لك الرابط كزرّ وتم اقتطاعه، اطلبه كنص عادي.',
+      de: 'Genesis ist nur auf Einladung. Um das Anmeldeformular zu öffnen, brauchst du einen Link mit der Empfehlung der Person, die dich eingeladen hat — den Teil „?ref=“ in der Adresse. Ohne diesen Teil gibt es kein Formular zum Ausfüllen. Wurde dir der Link als Button geschickt und dabei abgeschnitten, bitte um die Zusendung als reinen Text.',
+      sr: 'Genesis је само на позив. За отварање обрасца за регистрацију потребна је веза која носи препоруку особе која те позвала — део «?ref=» у адреси. Без тог дела нема обрасца за попуњавање. Ако су ти везу послали као дугме па се скратила, затражи је као обичан текст.',
+      ur: 'Genesis صرف دعوت پر ہے۔ رجسٹریشن فارم کھولنے کے لیے ایسا لنک چاہیے جس میں دعوت دینے والے کا ریفرل ہو — پتے کا «?ref=» والا حصہ۔ اُس حصے کے بغیر بھرنے کو کوئی فارم نہیں۔ اگر لنک بٹن کی صورت بھیجا گیا اور کٹ گیا، تو اسے سادہ متن میں بھیجنے کو کہیں۔',
+    },
+  'Me registré, ¿y ahora?': {
+    en: 'I registered — now what?', pt: 'Me cadastrei, e agora?',
+    fr: 'Je me suis inscrit, et maintenant ?', ru: 'Я зарегистрировался — что дальше?',
+    sv: 'Jag har registrerat mig — vad nu?', hr: 'Registrirao sam se, i sad?',
+    ar: 'سجّلت، وماذا الآن؟', de: 'Ich habe mich registriert — und jetzt?',
+    sr: 'Регистровао сам се, и сад?', ur: 'میں نے رجسٹر کر لیا، اب کیا؟',
+  },
+  'Al registrarte llega un código a tu correo para validar el alta. Hasta que lo introduzcas, el registro no queda confirmado. Si no aparece, revisa la carpeta de no deseados antes de repetir el proceso: crear una segunda cuenta no arregla el correo que falta y deja dos altas a medias.':
+    {
+      en: 'When you register, a code arrives by email to validate the sign-up. Until you enter it, the registration is not confirmed. If it does not show up, check your spam folder before repeating the process: creating a second account does not fix the missing email and leaves two half-finished sign-ups.',
+      pt: 'Ao se cadastrar, chega um código ao seu e-mail para validar a inscrição. Até você inseri-lo, o cadastro não fica confirmado. Se não aparecer, verifique a pasta de spam antes de repetir o processo: criar uma segunda conta não resolve o e-mail que falta e deixa dois cadastros pela metade.',
+      fr: 'À l’inscription, un code arrive par e-mail pour valider ton compte. Tant que tu ne le saisis pas, l’inscription n’est pas confirmée. S’il n’apparaît pas, vérifie le dossier indésirables avant de recommencer : créer un second compte ne répare pas l’e-mail manquant et laisse deux inscriptions à moitié faites.',
+      ru: 'При регистрации на почту приходит код для подтверждения. Пока ты его не введёшь, регистрация не подтверждена. Если письма нет, проверь папку «Спам», прежде чем повторять: создание второго аккаунта не вернёт пропавшее письмо и оставит две недоделанные регистрации.',
+      sv: 'När du registrerar dig kommer en kod till din e-post för att bekräfta kontot. Tills du anger den är registreringen inte bekräftad. Om den inte dyker upp, kolla skräpposten innan du gör om processen: att skapa ett andra konto löser inte det uteblivna mejlet och lämnar två halvfärdiga registreringar.',
+      hr: 'Pri registraciji na e-poštu stiže kôd za potvrdu. Dok ga ne upišeš, registracija nije potvrđena. Ako se ne pojavi, provjeri mapu neželjene pošte prije nego ponoviš postupak: otvaranje drugog računa neće riješiti e-poštu koja nije stigla i ostavit će dvije nedovršene registracije.',
+      ar: 'عند التسجيل يصلك رمز على بريدك لتأكيد الحساب. وحتى تُدخله، لا يُعدّ التسجيل مؤكدًا. إذا لم يظهر، تحقّق من مجلد الرسائل غير المرغوبة قبل تكرار العملية: إنشاء حساب ثانٍ لا يُصلح البريد المفقود ويترك تسجيلين ناقصين.',
+      de: 'Bei der Registrierung kommt ein Code per E-Mail, um die Anmeldung zu bestätigen. Bis du ihn eingibst, ist die Registrierung nicht bestätigt. Erscheint er nicht, prüfe den Spam-Ordner, bevor du den Vorgang wiederholst: ein zweites Konto behebt die fehlende E-Mail nicht und hinterlässt zwei halbfertige Anmeldungen.',
+      sr: 'При регистрацији на е-пошту стиже код за потврду. Док га не унесеш, регистрација није потврђена. Ако се не појави, провери фасциклу нежељене поште пре него што поновиш поступак: отварање другог налога неће решити е-пошту која није стигла и оставиће две недовршене регистрације.',
+      ur: 'رجسٹر کرنے پر آپ کے ای میل پر تصدیق کا کوڈ آتا ہے۔ جب تک آپ اسے درج نہ کریں، رجسٹریشن مکمل نہیں ہوتی۔ اگر نہ آئے تو عمل دہرانے سے پہلے اسپیم فولڈر دیکھیں: دوسرا اکاؤنٹ بنانے سے گمشدہ ای میل ٹھیک نہیں ہوتی اور دو ادھورے اندراج رہ جاتے ہیں۔',
+    },
+  'Dice que no existe mi correo o mi wallet': {
+    en: 'It says my email or my wallet does not exist',
+    pt: 'Diz que meu e-mail ou minha carteira não existe',
+    fr: 'Il dit que mon e-mail ou mon portefeuille n’existe pas',
+    ru: 'Пишет, что моей почты или кошелька не существует',
+    sv: 'Det står att min e-post eller plånbok inte finns',
+    hr: 'Piše da moja e-pošta ili novčanik ne postoji',
+    ar: 'يقول إن بريدي أو محفظتي غير موجودة',
+    de: 'Es sagt, meine E-Mail oder meine Wallet existiere nicht',
+    sr: 'Пише да моја е-пошта или новчаник не постоји',
+    ur: 'کہتا ہے کہ میرا ای میل یا والٹ موجود نہیں',
+  },
+  'Entra por donde te diste de alta. Si te registraste con correo y contraseña, entrar conectando la wallet no funciona, y al revés tampoco: el sistema no asocia las dos formas por su cuenta. Comprueba también que el correo sea exactamente el del alta.':
+    {
+      en: 'Sign in the same way you signed up. If you registered with email and password, signing in by connecting the wallet will not work, and the other way round neither: the system does not link the two methods on its own. Also check that the email is exactly the one used at sign-up.',
+      pt: 'Entre pelo mesmo caminho pelo qual se cadastrou. Se você se registrou com e-mail e senha, entrar conectando a carteira não funciona, e o inverso também não: o sistema não associa as duas formas por conta própria. Verifique também se o e-mail é exatamente o do cadastro.',
+      fr: 'Connecte-toi par où tu t’es inscrit. Si tu t’es enregistré avec e-mail et mot de passe, te connecter en reliant le portefeuille ne marchera pas, et l’inverse non plus : le système n’associe pas les deux méthodes tout seul. Vérifie aussi que l’e-mail est exactement celui de l’inscription.',
+      ru: 'Входи тем же способом, каким регистрировался. Если ты зарегистрировался с почтой и паролем, вход через подключение кошелька не сработает — и наоборот тоже: система сама два способа не связывает. Проверь также, что почта в точности та, что при регистрации.',
+      sv: 'Logga in på samma sätt som du registrerade dig. Registrerade du dig med e-post och lösenord fungerar det inte att logga in genom att koppla plånboken, och tvärtom heller inte: systemet kopplar inte ihop de två sätten själv. Kontrollera också att e-posten är exakt den från registreringen.',
+      hr: 'Prijavi se onako kako si se registrirao. Ako si se registrirao e-poštom i lozinkom, prijava povezivanjem novčanika neće raditi, ni obrnuto: sustav sam ne povezuje ta dva načina. Provjeri i je li e-pošta točno ona s registracije.',
+      ar: 'ادخل من حيث سجّلت. إذا سجّلت ببريد وكلمة مرور، فالدخول بربط المحفظة لن يعمل، والعكس كذلك: النظام لا يربط الطريقتين من تلقاء نفسه. تحقّق أيضًا أن البريد هو نفسه المستخدم عند التسجيل تمامًا.',
+      de: 'Melde dich so an, wie du dich registriert hast. Hast du dich mit E-Mail und Passwort registriert, funktioniert die Anmeldung über die Wallet nicht — und umgekehrt ebenso wenig: Das System verknüpft die beiden Wege nicht von selbst. Prüfe außerdem, ob die E-Mail exakt die der Registrierung ist.',
+      sr: 'Пријави се онако како си се регистровао. Ако си се регистровао е-поштом и лозинком, пријава повезивањем новчаника неће радити, ни обрнуто: систем сам не повезује та два начина. Провери и да ли је е-пошта тачно она са регистрације.',
+      ur: 'اُسی طریقے سے داخل ہوں جس سے رجسٹر ہوئے تھے۔ اگر ای میل اور پاس ورڈ سے رجسٹر ہوئے تھے تو والٹ جوڑ کر داخل ہونا کام نہیں کرے گا، اور اس کے برعکس بھی نہیں: نظام خود دونوں طریقے نہیں جوڑتا۔ یہ بھی دیکھیں کہ ای میل بالکل وہی ہے جو رجسٹریشن میں تھی۔',
+    },
+  'Olvidé mi contraseña': {
+    en: 'I forgot my password', pt: 'Esqueci minha senha',
+    fr: 'J’ai oublié mon mot de passe', ru: 'Я забыл пароль',
+    sv: 'Jag har glömt mitt lösenord', hr: 'Zaboravio sam lozinku',
+    ar: 'نسيت كلمة المرور', de: 'Ich habe mein Passwort vergessen',
+    sr: 'Заборавио сам лозинку', ur: 'میں اپنا پاس ورڈ بھول گیا',
+  },
+  'Se resuelve sin ayuda de nadie: «¿Olvidaste la contraseña?» está en la propia pantalla de acceso y te manda un correo de recuperación desde una dirección de aigenesis.io. Si no llega, comprueba que escribiste el correo del alta — el sistema no avisa cuando una dirección no existe, y es a propósito, para no revelar quién tiene cuenta.':
+    {
+      en: 'You can solve it on your own: “Forgot your password?” is on the sign-in screen itself and sends you a recovery email from an aigenesis.io address. If it does not arrive, check that you typed the email used at sign-up — the system does not warn you when an address does not exist, and that is deliberate, so as not to reveal who has an account.',
+      pt: 'Resolve-se sem ajuda de ninguém: «Esqueceu a senha?» está na própria tela de acesso e envia um e-mail de recuperação de um endereço aigenesis.io. Se não chegar, verifique se escreveu o e-mail do cadastro — o sistema não avisa quando um endereço não existe, e isso é proposital, para não revelar quem tem conta.',
+      fr: 'Cela se règle sans aide : « Mot de passe oublié ? » se trouve sur l’écran de connexion et t’envoie un e-mail de récupération depuis une adresse aigenesis.io. S’il n’arrive pas, vérifie que tu as saisi l’e-mail de l’inscription — le système ne prévient pas quand une adresse n’existe pas, et c’est volontaire, pour ne pas révéler qui possède un compte.',
+      ru: 'Это решается без чьей-либо помощи: «Забыли пароль?» есть на самом экране входа и присылает письмо для восстановления с адреса aigenesis.io. Если письма нет, проверь, что ввёл почту, указанную при регистрации — система не сообщает, что адреса не существует, и это сделано намеренно, чтобы не выдавать, у кого есть аккаунт.',
+      sv: 'Det löser du själv: ”Glömt lösenordet?” finns på inloggningsskärmen och skickar ett återställningsmejl från en aigenesis.io-adress. Kommer det inte fram, kontrollera att du skrev e-posten från registreringen — systemet varnar inte när en adress inte finns, och det är avsiktligt, för att inte avslöja vem som har konto.',
+      hr: 'Rješava se bez ičije pomoći: «Zaboravljena lozinka?» nalazi se na samom zaslonu prijave i šalje ti e-poštu za oporavak s adrese aigenesis.io. Ako ne stigne, provjeri jesi li upisao e-poštu s registracije — sustav ne upozorava kad adresa ne postoji, i to je namjerno, kako se ne bi otkrilo tko ima račun.',
+      ar: 'يُحلّ دون مساعدة أحد: «هل نسيت كلمة المرور؟» موجود في شاشة الدخول نفسها ويرسل لك بريد استرداد من عنوان aigenesis.io. إذا لم يصل، تأكّد أنك كتبت بريد التسجيل — النظام لا ينبّه عندما لا يوجد عنوان، وذلك عن قصد، حتى لا يكشف مَن لديه حساب.',
+      de: 'Das löst du ohne fremde Hilfe: „Passwort vergessen?“ steht auf dem Anmeldebildschirm und schickt dir eine Wiederherstellungs-E-Mail von einer aigenesis.io-Adresse. Kommt sie nicht an, prüfe, ob du die E-Mail der Registrierung eingegeben hast — das System meldet nicht, wenn eine Adresse nicht existiert, und das ist Absicht, um nicht preiszugeben, wer ein Konto hat.',
+      sr: 'Решава се без ичије помоћи: «Заборављена лозинка?» налази се на самом екрану пријаве и шаље ти е-пошту за опоравак са адресе aigenesis.io. Ако не стигне, провери да ли си уписао е-пошту са регистрације — систем не упозорава када адреса не постоји, и то је намерно, како се не би открило ко има налог.',
+      ur: 'یہ آپ خود حل کر سکتے ہیں: «پاس ورڈ بھول گئے؟» لاگ اِن اسکرین پر ہی ہے اور aigenesis.io کے پتے سے بحالی کی ای میل بھیجتا ہے۔ اگر نہ آئے تو دیکھیں کہ آپ نے رجسٹریشن والا ای میل لکھا ہے — نظام یہ نہیں بتاتا کہ پتہ موجود نہیں، اور یہ جان بوجھ کر ہے، تاکہ یہ ظاہر نہ ہو کہ کس کا اکاؤنٹ ہے۔',
+    },
+  '¿Cómo sé qué es oficial? ¿Cuáles son las fuentes verificables?': {
+    en: 'How do I know what is official? What are the verifiable sources?',
+    pt: 'Como sei o que é oficial? Quais são as fontes verificáveis?',
+    fr: 'Comment savoir ce qui est officiel ? Quelles sont les sources vérifiables ?',
+    ru: 'Как понять, что официально? Какие источники можно проверить?',
+    sv: 'Hur vet jag vad som är officiellt? Vilka källor går att verifiera?',
+    hr: 'Kako znam što je službeno? Koji su izvori provjerljivi?',
+    ar: 'كيف أعرف ما هو رسمي؟ وما المصادر القابلة للتحقق؟',
+    de: 'Woran erkenne ich, was offiziell ist? Welche Quellen sind überprüfbar?',
+    sr: 'Како да знам шта је званично? Који су извори проверљиви?',
+    ur: 'مجھے کیسے پتہ چلے کہ کیا سرکاری ہے؟ قابلِ تصدیق ذرائع کون سے ہیں؟',
+  },
+  '¿Qué datos me puede pedir el soporte?': {
+    en: 'What information can support ask me for?',
+    pt: 'Quais dados o suporte pode me pedir?',
+    fr: 'Quelles informations le support peut-il me demander ?',
+    ru: 'Какие данные может запросить поддержка?',
+    sv: 'Vilka uppgifter får supporten be om?',
+    hr: 'Koje podatke podrška smije tražiti?',
+    ar: 'ما البيانات التي يمكن للدعم أن يطلبها مني؟',
+    de: 'Welche Daten darf der Support von mir verlangen?',
+    sr: 'Које податке подршка сме да тражи?',
+    ur: 'سپورٹ مجھ سے کون سی معلومات مانگ سکتی ہے؟',
+  },
+  'Tu usuario, tu correo, la wallet asociada y los hashes de las transacciones del caso. Nunca la contraseña, y nunca la frase de recuperación de tu wallet: nadie del equipo la necesita jamás, y quien te la pida está intentando robarte, aunque escriba desde un canal que parezca oficial.':
+    {
+      en: 'Your username, your email, the associated wallet and the transaction hashes for the case. Never your password, and never your wallet’s recovery phrase: nobody on the team ever needs it, and anyone who asks for it is trying to rob you — even if they write from a channel that looks official.',
+      pt: 'Seu usuário, seu e-mail, a carteira associada e os hashes das transações do caso. Nunca a senha, e nunca a frase de recuperação da sua carteira: ninguém da equipe precisa dela jamais, e quem a pedir está tentando roubá-lo, mesmo que escreva de um canal que pareça oficial.',
+      fr: 'Ton identifiant, ton e-mail, le portefeuille associé et les hachages des transactions concernées. Jamais le mot de passe, et jamais la phrase de récupération de ton portefeuille : personne dans l’équipe n’en a jamais besoin, et quiconque te la demande cherche à te voler, même s’il écrit depuis un canal qui a l’air officiel.',
+      ru: 'Твой логин, почту, привязанный кошелёк и хеши транзакций по делу. Никогда пароль и никогда сид-фразу кошелька: она не нужна никому из команды, и тот, кто её просит, пытается тебя обокрасть — даже если пишет из канала, который выглядит официальным.',
+      sv: 'Ditt användarnamn, din e-post, den kopplade plånboken och transaktionernas hashar i ärendet. Aldrig lösenordet, och aldrig plånbokens återställningsfras: ingen i teamet behöver den någonsin, och den som ber om den försöker bestjäla dig — även om hen skriver från en kanal som ser officiell ut.',
+      hr: 'Tvoje korisničko ime, e-poštu, povezani novčanik i hasheve transakcija iz slučaja. Nikad lozinku, i nikad frazu za oporavak novčanika: nikome iz tima nikada ne treba, a tko je traži pokušava te opljačkati, čak i ako piše s kanala koji izgleda službeno.',
+      ar: 'اسم المستخدم وبريدك والمحفظة المرتبطة وبصمات (hashes) معاملات الحالة. لا كلمة المرور أبدًا، ولا عبارة استرداد محفظتك أبدًا: لا أحد في الفريق يحتاجها إطلاقًا، ومن يطلبها يحاول سرقتك، حتى لو كتب من قناة تبدو رسمية.',
+      de: 'Deinen Benutzernamen, deine E-Mail, die zugehörige Wallet und die Transaktions-Hashes des Falls. Niemals das Passwort und niemals die Wiederherstellungsphrase deiner Wallet: Niemand im Team braucht sie je, und wer danach fragt, will dich bestehlen — auch wenn er aus einem Kanal schreibt, der offiziell wirkt.',
+      sr: 'Твоје корисничко име, е-пошту, повезани новчаник и хешеве трансакција из случаја. Никад лозинку, и никад фразу за опоравак новчаника: никоме из тима никада не треба, а ко је тражи покушава да те покраде, чак и ако пише са канала који изгледа званично.',
+      ur: 'آپ کا صارف نام، ای میل، منسلک والٹ اور کیس کی ٹرانزیکشنز کے hashes۔ کبھی پاس ورڈ نہیں، اور کبھی آپ کے والٹ کا ریکوری فقرہ نہیں: ٹیم کے کسی فرد کو یہ کبھی درکار نہیں، اور جو مانگے وہ آپ کو لوٹنے کی کوشش کر رہا ہے، چاہے وہ ایسے چینل سے لکھے جو سرکاری لگے۔',
+    },
+  '¿Puedo cambiar la wallet de mi cuenta?': {
+    en: 'Can I change my account’s wallet?', pt: 'Posso mudar a carteira da minha conta?',
+    fr: 'Puis-je changer le portefeuille de mon compte ?', ru: 'Могу ли я сменить кошелёк аккаунта?',
+    sv: 'Kan jag byta plånbok på mitt konto?', hr: 'Mogu li promijeniti novčanik svog računa?',
+    ar: 'هل يمكنني تغيير محفظة حسابي؟', de: 'Kann ich die Wallet meines Kontos ändern?',
+    sr: 'Могу ли да променим новчаник свог налога?', ur: 'کیا میں اپنے اکاؤنٹ کا والٹ بدل سکتا ہوں؟',
+  },
+
+  /* ══════════════════════════════════════════════════════════════════
+     CORPUS · HOLD Y ESTADO DE LA CUENTA (1 de 2)
+
+     La categoría con más consultas reales del corpus. Y la más delicada de
+     traducir, porque lleva CIFRAS dentro: el 14 % del histórico minado, los
+     10 USDT mínimos para reclamar, las 72 horas de plazo.
+
+     ESAS CIFRAS SE COPIAN, NO SE ADAPTAN. Ni se redondean, ni se convierten a
+     otra moneda, ni se cambia el formato del porcentaje. Una respuesta sobre
+     dinero que dice un número distinto del original no es una traducción
+     imprecisa: es información falsa.
+     ══════════════════════════════════════════════════════════════════ */
+  '¿Qué es el hold y por qué me lo piden?': {
+    en: 'What is the hold and why is it required?',
+    pt: 'O que é o hold e por que me pedem?',
+    fr: 'Qu’est-ce que le hold et pourquoi me le demande-t-on ?',
+    ru: 'Что такое hold и почему его требуют?',
+    sv: 'Vad är hold och varför krävs det?',
+    hr: 'Što je hold i zašto se traži?',
+    ar: 'ما هو الـ hold ولماذا يُطلب مني؟',
+    de: 'Was ist der Hold und warum wird er verlangt?',
+    sr: 'Шта је hold и зашто се тражи?',
+    ur: 'hold کیا ہے اور مجھ سے کیوں مانگا جاتا ہے؟',
+  },
+  'El hold es una cantidad de AIG que la cuenta debe mantener para conservar sus beneficios activos. No es un cobro ni un depósito que se pierda: sigue siendo tuyo, sólo tiene que estar ahí. La cuenta muestra en qué banda estás — desde «Cumple Requisito» hasta «Óptimo», y «Beneficios Congelados» cuando cae por debajo.':
+    {
+      en: 'The hold is an amount of AIG the account must keep in order to preserve its active benefits. It is not a charge nor a deposit you lose: it remains yours, it just has to be there. The account shows which band you are in — from “Requirement Met” to “Optimal”, and “Benefits Frozen” when it drops below.',
+      pt: 'O hold é uma quantidade de AIG que a conta deve manter para conservar seus benefícios ativos. Não é uma cobrança nem um depósito que se perca: continua sendo seu, só precisa estar ali. A conta mostra em que faixa você está — de «Requisito Cumprido» até «Ótimo», e «Benefícios Congelados» quando cai abaixo.',
+      fr: 'Le hold est une quantité d’AIG que le compte doit conserver pour garder ses avantages actifs. Ce n’est ni un frais ni un dépôt perdu : il reste à toi, il doit simplement être là. Le compte indique dans quelle tranche tu te situes — de « Exigence remplie » à « Optimal », et « Avantages gelés » quand il passe en dessous.',
+      ru: 'Hold — это количество AIG, которое аккаунт должен держать, чтобы сохранить активные преимущества. Это не комиссия и не депозит, который пропадает: он остаётся твоим, просто должен быть на месте. Аккаунт показывает, в какой ты полосе — от «Требование выполнено» до «Оптимально», и «Преимущества заморожены», когда опускаешься ниже.',
+      sv: 'Hold är en mängd AIG som kontot måste behålla för att bevara sina aktiva förmåner. Det är varken en avgift eller en insats du förlorar: den förblir din, den måste bara finnas där. Kontot visar vilket band du ligger i — från ”Krav uppfyllt” till ”Optimalt”, och ”Förmåner frysta” när du hamnar under.',
+      hr: 'Hold je količina AIG-a koju račun mora držati da bi zadržao aktivne pogodnosti. Nije naplata ni polog koji se gubi: ostaje tvoj, samo mora biti ondje. Račun pokazuje u kojem si pojasu — od «Uvjet ispunjen» do «Optimalno», i «Pogodnosti zamrznute» kad padneš ispod.',
+      ar: 'الـ hold هو مقدار من AIG يجب أن يحتفظ به الحساب للحفاظ على مزاياه نشطة. ليس رسمًا ولا وديعة تُفقد: يبقى ملكك، عليه فقط أن يكون موجودًا. يعرض الحساب في أي نطاق أنت — من «الشرط مُستوفى» إلى «الأمثل»، و«المزايا مجمّدة» عند النزول تحته.',
+      de: 'Der Hold ist eine Menge AIG, die das Konto halten muss, um seine aktiven Vorteile zu bewahren. Es ist weder eine Gebühr noch eine Einlage, die verloren geht: Sie bleibt dein, sie muss nur da sein. Das Konto zeigt, in welchem Band du bist — von „Anforderung erfüllt“ bis „Optimal“, und „Vorteile eingefroren“, wenn es darunter fällt.',
+      sr: 'Hold је количина AIG-а коју налог мора држати да би задржао активне погодности. Није наплата ни депозит који се губи: остаје твој, само мора бити ту. Налог показује у ком си појасу — од «Услов испуњен» до «Оптимално», и «Погодности замрзнуте» кад паднеш испод.',
+      ur: 'hold وہ AIG کی مقدار ہے جو اکاؤنٹ کو اپنے فعال فوائد برقرار رکھنے کے لیے رکھنی ہوتی ہے۔ یہ کوئی فیس یا ضائع ہونے والا ڈپازٹ نہیں: یہ آپ ہی کا رہتا ہے، بس وہاں ہونا چاہیے۔ اکاؤنٹ دکھاتا ہے کہ آپ کس درجے میں ہیں — «شرط پوری» سے «بہترین» تک، اور نیچے آنے پر «فوائد منجمد»۔',
+    },
+  '¿Cuánto AIG tengo que mantener exactamente?': {
+    en: 'Exactly how much AIG do I have to keep?',
+    pt: 'Quanto AIG tenho que manter exatamente?',
+    fr: 'Combien d’AIG dois-je conserver exactement ?',
+    ru: 'Сколько именно AIG нужно держать?',
+    sv: 'Exakt hur mycket AIG måste jag behålla?',
+    hr: 'Koliko točno AIG-a moram držati?',
+    ar: 'كم مقدار AIG الذي عليّ الاحتفاظ به بالضبط؟',
+    de: 'Wie viel AIG muss ich genau halten?',
+    sr: 'Колико тачно AIG-а морам да држим?',
+    ur: 'مجھے بالکل کتنا AIG رکھنا ہوگا؟',
+  },
+  'El 14% de lo que has minado históricamente. Sobre ese mínimo hay bandas de margen —el sistema las llama Recomendado y Óptimo— que existen para que un movimiento pequeño no te deje por debajo del límite. La cifra exacta en AIG la calcula tu propia cuenta: mírala en el panel antes de mover nada, porque depende de tu histórico y no del de nadie más.':
+    {
+      en: '14% of what you have mined historically. Above that minimum there are margin bands — the system calls them Recommended and Optimal — which exist so a small movement does not push you below the limit. The exact figure in AIG is calculated by your own account: check it in the dashboard before moving anything, because it depends on your history and nobody else’s.',
+      pt: '14% do que você minerou historicamente. Acima desse mínimo há faixas de margem — o sistema as chama de Recomendado e Ótimo — que existem para que um movimento pequeno não o deixe abaixo do limite. A cifra exata em AIG é calculada pela sua própria conta: veja no painel antes de mover qualquer coisa, porque depende do seu histórico e de mais ninguém.',
+      fr: '14 % de ce que tu as miné historiquement. Au-dessus de ce minimum, il existe des tranches de marge — le système les appelle Recommandé et Optimal — qui évitent qu’un petit mouvement te fasse passer sous la limite. Le chiffre exact en AIG est calculé par ton propre compte : regarde-le dans le tableau de bord avant de bouger quoi que ce soit, car il dépend de ton historique et de celui de personne d’autre.',
+      ru: '14 % от того, что ты добыл за всю историю. Над этим минимумом есть полосы запаса — система называет их «Рекомендуемо» и «Оптимально» — они нужны, чтобы небольшое движение не увело тебя за предел. Точную цифру в AIG считает твой аккаунт: посмотри её в панели, прежде чем что-то двигать, потому что она зависит от твоей истории и ничьей больше.',
+      sv: '14 % av det du historiskt har minat. Ovanför det minimum finns marginalband — systemet kallar dem Rekommenderat och Optimalt — som finns till för att en liten rörelse inte ska lämna dig under gränsen. Den exakta siffran i AIG räknas ut av ditt eget konto: titta i panelen innan du flyttar något, eftersom den beror på din historik och ingen annans.',
+      hr: '14 % onoga što si povijesno iskopao. Iznad tog minimuma postoje pojasevi margine — sustav ih zove Preporučeno i Optimalno — koji postoje da te mali pomak ne ostavi ispod granice. Točan iznos u AIG-u računa tvoj vlastiti račun: pogledaj ga na ploči prije nego išta pomakneš, jer ovisi o tvojoj povijesti, a ne o tuđoj.',
+      ar: '14 % مما عدّنته تاريخيًا. فوق هذا الحد الأدنى توجد نطاقات هامش — يسمّيها النظام «موصى به» و«الأمثل» — وُجدت كي لا تُنزلك حركة صغيرة تحت الحد. الرقم الدقيق بالـ AIG يحسبه حسابك أنت: انظره في اللوحة قبل أن تحرّك شيئًا، لأنه يعتمد على سجلّك أنت لا على سجل أحد آخر.',
+      de: '14 % dessen, was du historisch geschürft hast. Über diesem Minimum gibt es Margenbänder — das System nennt sie Empfohlen und Optimal —, damit eine kleine Bewegung dich nicht unter die Grenze bringt. Den genauen AIG-Wert berechnet dein eigenes Konto: sieh ihn im Panel nach, bevor du etwas bewegst, denn er hängt von deiner Historie ab und von keiner anderen.',
+      sr: '14 % од онога што си историјски ископао. Изнад тог минимума постоје појасеви маргине — систем их зове Препоручено и Оптимално — који постоје да те мали помак не остави испод границе. Тачан износ у AIG-у рачуна твој сопствени налог: погледај га на табли пре него што било шта помериш, јер зависи од твоје историје, а не од туђе.',
+      ur: 'جو آپ نے تاریخی طور پر مائن کیا اس کا 14%۔ اُس کم از کم سے اوپر مارجن کے درجے ہیں — نظام انہیں «تجویز کردہ» اور «بہترین» کہتا ہے — تاکہ ایک چھوٹی حرکت آپ کو حد سے نیچے نہ لے جائے۔ AIG میں درست عدد آپ کا اپنا اکاؤنٹ نکالتا ہے: کچھ بھی ہلانے سے پہلے پینل میں دیکھیں، کیونکہ یہ آپ کی اپنی تاریخ پر منحصر ہے، کسی اور کی نہیں۔',
+    },
+  'Si bajo del hold, ¿qué deja de funcionar exactamente?': {
+    en: 'If I fall below the hold, what exactly stops working?',
+    pt: 'Se eu ficar abaixo do hold, o que exatamente deixa de funcionar?',
+    fr: 'Si je passe sous le hold, qu’est-ce qui cesse de fonctionner exactement ?',
+    ru: 'Если я опущусь ниже hold, что именно перестанет работать?',
+    sv: 'Om jag hamnar under hold — vad slutar exakt fungera?',
+    hr: 'Ako padnem ispod holda, što točno prestaje raditi?',
+    ar: 'إذا نزلت تحت الـ hold، ما الذي يتوقف بالضبط؟',
+    de: 'Wenn ich unter den Hold falle, was funktioniert dann genau nicht mehr?',
+    sr: 'Ако паднем испод hold-а, шта тачно престаје да ради?',
+    ur: 'اگر میں hold سے نیچے آ جاؤں تو بالکل کیا بند ہو جاتا ہے؟',
+  },
+  'Se bloquean las recompensas: dejas de minar y no puedes reclamar. No es un bloqueo de la cuenta entera ni te quita nada de lo que ya tienes — lo que se detiene es la generación y el reclamo, hasta que vuelvas a cubrir el mínimo.':
+    {
+      en: 'Rewards are blocked: you stop mining and cannot claim. It is not a lock on the whole account and it does not take away anything you already hold — what stops is generation and claiming, until you cover the minimum again.',
+      pt: 'As recompensas ficam bloqueadas: você para de minerar e não pode reclamar. Não é um bloqueio da conta inteira nem lhe tira nada do que já tem — o que para é a geração e o resgate, até você voltar a cobrir o mínimo.',
+      fr: 'Les récompenses sont bloquées : tu cesses de miner et tu ne peux pas réclamer. Ce n’est pas un blocage du compte entier et cela ne t’enlève rien de ce que tu détiens déjà — ce qui s’arrête, c’est la génération et la réclamation, jusqu’à ce que tu couvres à nouveau le minimum.',
+      ru: 'Награды блокируются: майнинг останавливается и запросить выплату нельзя. Это не блокировка всего аккаунта и у тебя ничего не забирают — останавливается начисление и возможность запросить, пока ты снова не покроешь минимум.',
+      sv: 'Belöningarna blockeras: du slutar mina och kan inte begära uttag. Det är ingen spärr av hela kontot och inget tas ifrån dig av det du redan har — det som stannar är genereringen och uttaget, tills du täcker minimum igen.',
+      hr: 'Nagrade se blokiraju: prestaješ rudariti i ne možeš zatražiti isplatu. To nije blokada cijelog računa niti ti oduzima išta što već imaš — staje generiranje i zahtjev, dok ponovno ne pokriješ minimum.',
+      ar: 'تُحجب المكافآت: يتوقف التعدين ولا يمكنك المطالبة. ليس حظرًا للحساب كله ولا يسلبك شيئًا مما تملكه — ما يتوقف هو التوليد والمطالبة، حتى تغطّي الحد الأدنى مجددًا.',
+      de: 'Die Belohnungen werden gesperrt: Du schürfst nicht mehr und kannst nicht auszahlen. Es ist keine Sperre des ganzen Kontos und es wird dir nichts weggenommen, was du bereits hast — gestoppt werden Erzeugung und Auszahlung, bis du das Minimum wieder deckst.',
+      sr: 'Награде се блокирају: престајеш да рудариш и не можеш да затражиш исплату. То није блокада целог налога нити ти одузима ишта што већ имаш — стаје генерисање и захтев, док поново не покријеш минимум.',
+      ur: 'انعامات بند ہو جاتے ہیں: مائننگ رک جاتی ہے اور آپ کلیم نہیں کر سکتے۔ یہ پورے اکاؤنٹ کی بندش نہیں اور جو آپ کے پاس پہلے سے ہے وہ نہیں لیا جاتا — جو رکتا ہے وہ پیداوار اور کلیم ہے، جب تک آپ دوبارہ کم از کم پورا نہ کریں۔',
+    },
+  '¿Alguien tiene que descongelarme la cuenta?': {
+    en: 'Does someone have to unfreeze my account?',
+    pt: 'Alguém precisa descongelar minha conta?',
+    fr: 'Est-ce que quelqu’un doit dégeler mon compte ?',
+    ru: 'Должен ли кто-то разморозить мой аккаунт?',
+    sv: 'Måste någon frysa upp mitt konto?',
+    hr: 'Mora li mi netko odmrznuti račun?',
+    ar: 'هل يجب أن يقوم أحد بإلغاء تجميد حسابي؟',
+    de: 'Muss jemand mein Konto entsperren?',
+    sr: 'Мора ли неко да ми одмрзне налог?',
+    ur: 'کیا کسی کو میرا اکاؤنٹ کھولنا ہوگا؟',
+  },
+  'No. En cuanto repones AIG en tu wallet hasta alcanzar el mínimo, el protocolo reactiva los beneficios de forma automática: no requiere soporte ni aprobación manual. La propia pantalla te lo dice cuando estás por debajo, indicándote cuánto AIG te falta exactamente.':
+    {
+      en: 'No. As soon as you top your wallet back up to the minimum, the protocol reactivates the benefits automatically: no support ticket and no manual approval needed. The screen itself tells you when you are below, showing exactly how much AIG you are missing.',
+      pt: 'Não. Assim que você repõe AIG na sua carteira até atingir o mínimo, o protocolo reativa os benefícios automaticamente: não requer suporte nem aprovação manual. A própria tela lhe diz quando está abaixo, indicando exatamente quanto AIG falta.',
+      fr: 'Non. Dès que tu remets de l’AIG dans ton portefeuille jusqu’au minimum, le protocole réactive les avantages automatiquement : ni support ni validation manuelle. L’écran lui-même te le dit quand tu es en dessous, en indiquant exactement combien d’AIG il te manque.',
+      ru: 'Нет. Как только ты пополнишь кошелёк до минимума, протокол включит преимущества автоматически: ни поддержки, ни ручного подтверждения не нужно. Экран сам сообщает, когда ты ниже, и показывает, сколько именно AIG не хватает.',
+      sv: 'Nej. Så snart du fyller på AIG i din plånbok upp till minimum återaktiverar protokollet förmånerna automatiskt: varken support eller manuellt godkännande behövs. Skärmen själv säger till när du ligger under och visar exakt hur mycket AIG som saknas.',
+      hr: 'Ne. Čim nadopuniš AIG u novčaniku do minimuma, protokol automatski ponovno aktivira pogodnosti: ne treba ni podrška ni ručno odobrenje. Sam zaslon ti kaže kad si ispod i pokazuje točno koliko ti AIG-a nedostaje.',
+      ar: 'لا. بمجرد أن تعيد AIG إلى محفظتك حتى بلوغ الحد الأدنى، يعيد البروتوكول تفعيل المزايا تلقائيًا: لا يحتاج دعمًا ولا موافقة يدوية. الشاشة نفسها تخبرك عندما تكون تحته، وتبيّن كم AIG ينقصك بالضبط.',
+      de: 'Nein. Sobald du deine Wallet wieder bis zum Minimum auffüllst, aktiviert das Protokoll die Vorteile automatisch: kein Support, keine manuelle Freigabe nötig. Der Bildschirm sagt dir selbst, wenn du darunter bist, und zeigt genau, wie viel AIG dir fehlt.',
+      sr: 'Не. Чим допуниш AIG у новчанику до минимума, протокол аутоматски поново активира погодности: не треба ни подршка ни ручно одобрење. Сам екран ти каже кад си испод и показује тачно колико ти AIG-а недостаје.',
+      ur: 'نہیں۔ جیسے ہی آپ اپنے والٹ میں AIG کم از کم تک بھر دیتے ہیں، پروٹوکول خودکار طور پر فوائد بحال کر دیتا ہے: نہ سپورٹ چاہیے نہ دستی منظوری۔ اسکرین خود بتاتی ہے کہ آپ نیچے ہیں، اور دکھاتی ہے کہ بالکل کتنا AIG کم ہے۔',
+    },
+  '¿Desde cuánto puedo reclamar?': {
+    en: 'What is the minimum I can claim from?',
+    pt: 'A partir de quanto posso resgatar?',
+    fr: 'À partir de quel montant puis-je réclamer ?',
+    ru: 'С какой суммы можно запросить выплату?',
+    sv: 'Från vilket belopp kan jag begära uttag?',
+    hr: 'Od kojeg iznosa mogu zatražiti isplatu?',
+    ar: 'من أي مبلغ يمكنني المطالبة؟',
+    de: 'Ab welchem Betrag kann ich auszahlen?',
+    sr: 'Од ког износа могу да затражим исплату?',
+    ur: 'میں کتنی رقم سے کلیم کر سکتا ہوں؟',
+  },
+  'Desde 10 USDT acumulados. Por debajo de esa cifra el reclamo no se puede ejecutar — no es una avería ni una cuenta bloqueada: hay que acumular hasta el mínimo. Es habitual quedarse con un resto pequeño al terminar un ciclo y no poder moverlo.':
+    {
+      en: 'From 10 USDT accumulated. Below that figure the claim cannot be executed — it is not a fault nor a blocked account: you have to accumulate up to the minimum. It is common to be left with a small remainder at the end of a cycle and not be able to move it.',
+      pt: 'A partir de 10 USDT acumulados. Abaixo dessa cifra o resgate não pode ser executado — não é uma falha nem uma conta bloqueada: é preciso acumular até o mínimo. É comum ficar com um resto pequeno ao terminar um ciclo e não poder movê-lo.',
+      fr: 'À partir de 10 USDT accumulés. En dessous de ce montant, la réclamation ne peut pas s’exécuter — ce n’est ni une panne ni un compte bloqué : il faut accumuler jusqu’au minimum. Il est fréquent de se retrouver avec un petit reliquat en fin de cycle sans pouvoir le déplacer.',
+      ru: 'От 10 USDT накопленных. Ниже этой суммы запрос выполнить нельзя — это не сбой и не блокировка аккаунта: нужно накопить до минимума. Часто в конце цикла остаётся небольшой остаток, который нельзя сдвинуть.',
+      sv: 'Från 10 USDT samlade. Under det beloppet går uttaget inte att genomföra — det är varken ett fel eller ett spärrat konto: du måste samla ihop till minimum. Det är vanligt att bli kvar med en liten rest när en cykel tar slut, utan att kunna flytta den.',
+      hr: 'Od 10 USDT prikupljenih. Ispod tog iznosa zahtjev se ne može izvršiti — nije kvar ni blokiran račun: treba prikupiti do minimuma. Uobičajeno je ostati s malim ostatkom na kraju ciklusa i ne moći ga pomaknuti.',
+      ar: 'ابتداءً من 10 USDT متراكمة. تحت هذا الرقم لا يمكن تنفيذ المطالبة — ليس عطلًا ولا حسابًا محظورًا: عليك التراكم حتى الحد الأدنى. من المعتاد أن يتبقّى مبلغ صغير عند انتهاء الدورة دون إمكانية تحريكه.',
+      de: 'Ab 10 USDT angesammelt. Unter diesem Betrag lässt sich die Auszahlung nicht ausführen — es ist weder ein Fehler noch ein gesperrtes Konto: Du musst bis zum Minimum ansammeln. Es kommt häufig vor, dass am Ende eines Zyklus ein kleiner Rest bleibt, der sich nicht bewegen lässt.',
+      sr: 'Од 10 USDT прикупљених. Испод тог износа захтев се не може извршити — није квар ни блокиран налог: треба прикупити до минимума. Уобичајено је остати са малим остатком на крају циклуса и не моћи га померити.',
+      ur: '10 USDT جمع ہونے سے۔ اُس عدد سے کم پر کلیم نہیں چل سکتا — یہ خرابی یا بند اکاؤنٹ نہیں: کم از کم تک جمع کرنا ہوتا ہے۔ سائیکل کے آخر میں تھوڑی رقم بچ جانا اور اسے نہ ہلا سکنا عام بات ہے۔',
+    },
+  'Reclamé y no ha llegado nada': {
+    en: 'I claimed and nothing has arrived',
+    pt: 'Resgatei e não chegou nada',
+    fr: 'J’ai réclamé et rien n’est arrivé',
+    ru: 'Я запросил выплату, и ничего не пришло',
+    sv: 'Jag begärde uttag och inget har kommit',
+    hr: 'Zatražio sam isplatu i ništa nije stiglo',
+    ar: 'طالبت ولم يصل شيء',
+    de: 'Ich habe ausgezahlt und es ist nichts angekommen',
+    sr: 'Затражио сам исплату и ништа није стигло',
+    ur: 'میں نے کلیم کیا اور کچھ نہیں آیا',
+  },
+  'Un reclamo puede tardar desde un minuto hasta 72 horas en llegar a tu wallet, según el caso, por procesos de verificación y seguridad. Que no aparezca al momento no significa que haya fallado, y volver a reclamar no lo acelera. Pasadas 72 horas sí es un caso: escribe con el hash, la hora y el importe.':
+    {
+      en: 'A claim can take from one minute up to 72 hours to reach your wallet, depending on the case, due to verification and security processes. Not appearing immediately does not mean it failed, and claiming again does not speed it up. After 72 hours it is a case: write in with the hash, the time and the amount.',
+      pt: 'Um resgate pode levar de um minuto até 72 horas para chegar à sua carteira, conforme o caso, por processos de verificação e segurança. Não aparecer na hora não significa que falhou, e resgatar de novo não acelera. Passadas 72 horas, aí sim é um caso: escreva com o hash, a hora e o valor.',
+      fr: 'Une réclamation peut mettre d’une minute à 72 heures pour arriver dans ton portefeuille, selon le cas, en raison des processus de vérification et de sécurité. Qu’elle n’apparaisse pas tout de suite ne veut pas dire qu’elle a échoué, et réclamer à nouveau n’accélère rien. Passé 72 heures, c’est un cas : écris avec le hachage, l’heure et le montant.',
+      ru: 'Выплата может идти в кошелёк от минуты до 72 часов, в зависимости от случая, из-за проверок и процедур безопасности. Если её не видно сразу, это не значит, что она не прошла, а повторный запрос ничего не ускорит. После 72 часов — это уже случай: напиши с хешем, временем и суммой.',
+      sv: 'Ett uttag kan ta från en minut upp till 72 timmar innan det når din plånbok, beroende på fallet, på grund av verifierings- och säkerhetsprocesser. Att det inte syns direkt betyder inte att det misslyckats, och att begära igen snabbar inte på det. Efter 72 timmar är det ett ärende: skriv med hash, tidpunkt och belopp.',
+      hr: 'Isplata može trajati od jedne minute do 72 sata dok stigne u tvoj novčanik, ovisno o slučaju, zbog provjera i sigurnosnih postupaka. To što se ne pojavi odmah ne znači da je propala, a ponovni zahtjev je ne ubrzava. Nakon 72 sata to jest slučaj: javi se s hashom, vremenom i iznosom.',
+      ar: 'قد تستغرق المطالبة من دقيقة واحدة إلى 72 ساعة لتصل إلى محفظتك، بحسب الحالة، بسبب إجراءات التحقّق والأمان. عدم ظهورها فورًا لا يعني فشلها، وإعادة المطالبة لا تُسرّعها. بعد 72 ساعة تصبح حالة: راسلنا بالـ hash والوقت والمبلغ.',
+      de: 'Eine Auszahlung kann je nach Fall zwischen einer Minute und 72 Stunden brauchen, bis sie in deiner Wallet ankommt — wegen Prüf- und Sicherheitsprozessen. Dass sie nicht sofort erscheint, heißt nicht, dass sie fehlgeschlagen ist, und erneutes Auszahlen beschleunigt nichts. Nach 72 Stunden ist es ein Fall: schreib mit Hash, Uhrzeit und Betrag.',
+      sr: 'Исплата може трајати од једног минута до 72 сата док стигне у твој новчаник, зависно од случаја, због провера и безбедносних поступака. То што се не појави одмах не значи да је пропала, а поновни захтев је не убрзава. После 72 сата то јесте случај: јави се са hash-ом, временом и износом.',
+      ur: 'کلیم آپ کے والٹ تک پہنچنے میں ایک منٹ سے 72 گھنٹے تک لے سکتا ہے، معاملے کے مطابق، تصدیق اور سیکیورٹی کے مراحل کی وجہ سے۔ فوراً نہ دکھنے کا مطلب ناکامی نہیں، اور دوبارہ کلیم کرنے سے تیز نہیں ہوتا۔ 72 گھنٹے کے بعد یہ واقعی ایک کیس ہے: hash، وقت اور رقم کے ساتھ لکھیں۔',
+    },
+
+  /* ══════════════════════════════════════════════════════════════════
+     CORPUS · HOLD Y ESTADO DE LA CUENTA (2 de 2)
+
+     Aquí están las tres respuestas que más malentendidos deshacen, y las tres
+     dicen algo contraintuitivo. Traducirlas flojo devuelve a la persona al
+     malentendido del que venía:
+
+       · El hold NO se calcula sobre lo que tienes, sino sobre lo que MINASTE.
+         Sacar monedas no baja el requisito: baja lo que tienes para cubrirlo.
+       · Se reclama en USDT y llega AIG. No es un error, es la unidad de medida.
+       · «Tengo de sobra» suele ser «lo tengo en otro sitio»: sólo cuenta el AIG
+         de la wallet on-chain, no la bóveda interna ni la liquidez del P2P.
+     ══════════════════════════════════════════════════════════════════ */
+  'Retiré mis AIG y la cuenta se congeló. ¿Por qué no baja lo que me piden?': {
+    en: 'I withdrew my AIG and the account froze. Why doesn’t the requirement go down?',
+    pt: 'Retirei meus AIG e a conta congelou. Por que o que me pedem não diminui?',
+    fr: 'J’ai retiré mes AIG et le compte a gelé. Pourquoi l’exigence ne baisse-t-elle pas ?',
+    ru: 'Я вывел свои AIG, и аккаунт заморозился. Почему требование не снижается?',
+    sv: 'Jag tog ut mina AIG och kontot frystes. Varför sjunker inte kravet?',
+    hr: 'Povukao sam svoje AIG i račun se zamrznuo. Zašto se zahtjev ne smanjuje?',
+    ar: 'سحبت AIG وتجمّد الحساب. لماذا لا ينخفض المطلوب مني؟',
+    de: 'Ich habe meine AIG abgehoben und das Konto ist eingefroren. Warum sinkt die Anforderung nicht?',
+    sr: 'Повукао сам своје AIG и налог се замрзнуо. Зашто се захтев не смањује?',
+    ur: 'میں نے اپنے AIG نکالے اور اکاؤنٹ منجمد ہو گیا۔ مطالبہ کم کیوں نہیں ہوتا؟',
+  },
+  'Porque el hold NO se calcula sobre lo que tienes ahora, sino sobre lo que has minado históricamente. Sacar monedas no reduce el requisito: reduce lo que tienes para cubrirlo, y por eso la cuenta pasa a congelada. La propia pantalla lo enseña con la frase «Históricamente has minado…». Para reactivarla hay que devolver AIG hasta cubrir de nuevo el mínimo.':
+    {
+      en: 'Because the hold is NOT calculated on what you hold now, but on what you have mined historically. Withdrawing coins does not reduce the requirement: it reduces what you have to cover it with, and that is why the account becomes frozen. The screen itself shows this with the line “Historically you have mined…”. To reactivate it you must put AIG back until you cover the minimum again.',
+      pt: 'Porque o hold NÃO é calculado sobre o que você tem agora, e sim sobre o que minerou historicamente. Retirar moedas não reduz o requisito: reduz o que você tem para cobri-lo, e por isso a conta fica congelada. A própria tela mostra isso com a frase «Historicamente você minerou…». Para reativá-la é preciso devolver AIG até cobrir novamente o mínimo.',
+      fr: 'Parce que le hold n’est PAS calculé sur ce que tu détiens maintenant, mais sur ce que tu as miné historiquement. Retirer des pièces ne réduit pas l’exigence : cela réduit ce dont tu disposes pour la couvrir, et c’est pourquoi le compte passe en gelé. L’écran lui-même l’indique avec la phrase « Historiquement, tu as miné… ». Pour le réactiver, il faut remettre de l’AIG jusqu’à couvrir de nouveau le minimum.',
+      ru: 'Потому что hold считается НЕ от того, сколько у тебя сейчас, а от того, сколько ты добыл за всю историю. Вывод монет не снижает требование: он снижает то, чем ты его покрываешь, — поэтому аккаунт и замораживается. Экран сам показывает это фразой «Исторически вы добыли…». Чтобы включить обратно, нужно вернуть AIG до минимума.',
+      sv: 'Eftersom hold INTE räknas på vad du har nu, utan på vad du historiskt har minat. Att ta ut mynt minskar inte kravet: det minskar det du har att täcka med, och därför fryses kontot. Skärmen visar det med raden ”Historiskt har du minat…”. För att återaktivera måste du föra tillbaka AIG tills du täcker minimum igen.',
+      hr: 'Zato što se hold NE računa na ono što sada imaš, nego na ono što si povijesno iskopao. Povlačenje novčića ne smanjuje zahtjev: smanjuje ono čime ga pokrivaš, i zato se račun zamrzne. Sam zaslon to pokazuje rečenicom «Povijesno si iskopao…». Za ponovnu aktivaciju treba vratiti AIG dok ponovno ne pokriješ minimum.',
+      ar: 'لأن الـ hold لا يُحسب على ما تملكه الآن، بل على ما عدّنته تاريخيًا. سحب العملات لا يخفّض المطلوب: يخفّض ما لديك لتغطيته، ولذلك يتجمّد الحساب. الشاشة نفسها تبيّن ذلك بعبارة «تاريخيًا عدّنت…». لإعادة تفعيله يجب إرجاع AIG حتى تغطية الحد الأدنى مجددًا.',
+      de: 'Weil der Hold NICHT auf dem berechnet wird, was du jetzt hast, sondern auf dem, was du historisch geschürft hast. Münzen abzuheben senkt die Anforderung nicht: Es senkt das, womit du sie deckst — deshalb wird das Konto eingefroren. Der Bildschirm zeigt das mit dem Satz „Historisch hast du geschürft…“. Zum Reaktivieren musst du AIG zurückführen, bis das Minimum wieder gedeckt ist.',
+      sr: 'Зато што се hold НЕ рачуна на оно што сада имаш, него на оно што си историјски ископао. Повлачење новчића не смањује захтев: смањује оно чиме га покриваш, и зато се налог замрзне. Сам екран то показује реченицом «Историјски си ископао…». За поновну активацију треба вратити AIG док поново не покријеш минимум.',
+      ur: 'کیونکہ hold اُس پر نہیں لگتا جو اِس وقت آپ کے پاس ہے، بلکہ اُس پر جو آپ نے تاریخی طور پر مائن کیا۔ سکے نکالنے سے مطالبہ کم نہیں ہوتا: وہ کم ہوتا ہے جس سے آپ اسے پورا کرتے ہیں، اسی لیے اکاؤنٹ منجمد ہو جاتا ہے۔ اسکرین خود یہ «تاریخی طور پر آپ نے مائن کیا…» کے جملے سے دکھاتی ہے۔ دوبارہ چالو کرنے کے لیے AIG واپس ڈالنا ہوگا۔',
+    },
+  'Tengo AIG de sobra pero sigo por debajo del mínimo': {
+    en: 'I have plenty of AIG but I am still below the minimum',
+    pt: 'Tenho AIG de sobra mas continuo abaixo do mínimo',
+    fr: 'J’ai largement assez d’AIG mais je suis toujours sous le minimum',
+    ru: 'У меня AIG с запасом, но я всё равно ниже минимума',
+    sv: 'Jag har gott om AIG men ligger ändå under minimum',
+    hr: 'Imam AIG-a napretek, ali i dalje sam ispod minimuma',
+    ar: 'لديّ AIG بوفرة لكنني ما زلت تحت الحد الأدنى',
+    de: 'Ich habe reichlich AIG, liege aber weiter unter dem Minimum',
+    sr: 'Имам AIG-а напретек, али сам и даље испод минимума',
+    ur: 'میرے پاس AIG وافر ہے مگر پھر بھی کم از کم سے نیچے ہوں',
+  },
+  'Mira DÓNDE lo tienes. El mínimo se calcula sobre el AIG que hay en tu wallet on-chain — no cuenta la bóveda interna del protocolo ni la liquidez que tengas publicada en el P2P. Con la bóveda llena y la wallet vacía se sigue estando por debajo.':
+    {
+      en: 'Look at WHERE you are holding it. The minimum is calculated on the AIG in your on-chain wallet — the protocol’s internal vault does not count, nor does liquidity you have published on the P2P. With a full vault and an empty wallet you are still below.',
+      pt: 'Veja ONDE você o tem. O mínimo é calculado sobre o AIG que está na sua carteira on-chain — não conta o cofre interno do protocolo nem a liquidez publicada no P2P. Com o cofre cheio e a carteira vazia, você continua abaixo.',
+      fr: 'Regarde OÙ tu le détiens. Le minimum se calcule sur l’AIG présent dans ton portefeuille on-chain — le coffre interne du protocole ne compte pas, ni la liquidité publiée sur le P2P. Avec un coffre plein et un portefeuille vide, tu restes en dessous.',
+      ru: 'Посмотри, ГДЕ он у тебя. Минимум считается по AIG в твоём on-chain кошельке — внутреннее хранилище протокола не считается, как и ликвидность, выставленная в P2P. С полным хранилищем и пустым кошельком ты по-прежнему ниже.',
+      sv: 'Kolla VAR du har den. Minimum räknas på den AIG som finns i din on-chain-plånbok — protokollets interna valv räknas inte, och inte heller likviditet du lagt ut på P2P. Med fullt valv och tom plånbok ligger du fortfarande under.',
+      hr: 'Pogledaj GDJE ga držiš. Minimum se računa na AIG koji je u tvom on-chain novčaniku — interni trezor protokola se ne broji, ni likvidnost objavljena na P2P-u. S punim trezorom i praznim novčanikom i dalje si ispod.',
+      ar: 'انظر أين تحتفظ به. يُحسب الحد الأدنى على AIG الموجود في محفظتك على السلسلة — الخزنة الداخلية للبروتوكول لا تُحتسب، ولا السيولة المنشورة في P2P. مع خزنة ممتلئة ومحفظة فارغة تبقى تحت الحد.',
+      de: 'Schau, WO du sie hältst. Das Minimum wird auf die AIG in deiner On-Chain-Wallet berechnet — der interne Tresor des Protokolls zählt nicht, ebenso wenig Liquidität, die du im P2P eingestellt hast. Mit vollem Tresor und leerer Wallet bleibst du darunter.',
+      sr: 'Погледај ГДЕ га држиш. Минимум се рачуна на AIG који је у твом on-chain новчанику — интерни трезор протокола се не броји, ни ликвидност објављена на P2P-у. Са пуним трезором и празним новчаником и даље си испод.',
+      ur: 'دیکھیں کہ وہ کہاں ہے۔ کم از کم آپ کے on-chain والٹ میں موجود AIG پر لگتا ہے — پروٹوکول کا اندرونی والٹ شمار نہیں ہوتا، اور نہ P2P پر شائع کردہ لیکویڈیٹی۔ بھرے والٹ اور خالی wallet کے ساتھ آپ اب بھی نیچے ہیں۔',
+    },
+  'Reclamé y me llegó AIG, no USDT': {
+    en: 'I claimed and received AIG, not USDT',
+    pt: 'Resgatei e me chegou AIG, não USDT',
+    fr: 'J’ai réclamé et j’ai reçu de l’AIG, pas de l’USDT',
+    ru: 'Я запросил выплату и получил AIG, а не USDT',
+    sv: 'Jag begärde uttag och fick AIG, inte USDT',
+    hr: 'Zatražio sam isplatu i stigao mi je AIG, ne USDT',
+    ar: 'طالبت ووصلني AIG وليس USDT',
+    de: 'Ich habe ausgezahlt und AIG erhalten, nicht USDT',
+    sr: 'Затражио сам исплату и стигао ми је AIG, не USDT',
+    ur: 'میں نے کلیم کیا اور مجھے AIG ملا، USDT نہیں',
+  },
+  'Es lo correcto. El protocolo lleva la cuenta de las recompensas en USDT porque es una unidad cómoda de medir, pero lo que se genera y se libera es AIG. Al reclamar, ese saldo contabilizado se convierte en AIG. Todas las pantallas lo advierten: los valores en USDT son estimaciones, no una promesa de valor.':
+    {
+      en: 'That is correct. The protocol accounts for rewards in USDT because it is a convenient unit of measure, but what is generated and released is AIG. When you claim, that accounted balance is converted into AIG. Every screen warns of this: USDT values are estimates, not a promise of value.',
+      pt: 'É o correto. O protocolo contabiliza as recompensas em USDT porque é uma unidade cômoda de medir, mas o que se gera e se libera é AIG. Ao resgatar, esse saldo contabilizado se converte em AIG. Todas as telas advertem: os valores em USDT são estimativas, não uma promessa de valor.',
+      fr: 'C’est normal. Le protocole comptabilise les récompenses en USDT parce que c’est une unité de mesure pratique, mais ce qui est généré et libéré, c’est de l’AIG. À la réclamation, ce solde comptabilisé se convertit en AIG. Tous les écrans le signalent : les valeurs en USDT sont des estimations, pas une promesse de valeur.',
+      ru: 'Так и должно быть. Протокол ведёт учёт наград в USDT, потому что это удобная единица измерения, но генерируется и выдаётся AIG. При запросе выплаты этот учтённый баланс конвертируется в AIG. Все экраны об этом предупреждают: значения в USDT — оценка, а не обещание стоимости.',
+      sv: 'Det är korrekt. Protokollet bokför belöningarna i USDT för att det är en bekväm måttenhet, men det som genereras och frigörs är AIG. Vid uttag omvandlas det bokförda saldot till AIG. Alla skärmar varnar för detta: USDT-värdena är uppskattningar, inte ett löfte om värde.',
+      hr: 'To je ispravno. Protokol vodi nagrade u USDT-u jer je to zgodna mjerna jedinica, ali ono što se stvara i oslobađa jest AIG. Pri zahtjevu se taj evidentirani saldo pretvara u AIG. Svi zasloni na to upozoravaju: vrijednosti u USDT-u su procjene, a ne obećanje vrijednosti.',
+      ar: 'هذا هو الصحيح. يحتسب البروتوكول المكافآت بالـ USDT لأنها وحدة قياس مريحة، لكن ما يُولَّد ويُحرَّر هو AIG. عند المطالبة يتحوّل ذلك الرصيد المحتسب إلى AIG. جميع الشاشات تنبّه إلى ذلك: قيم الـ USDT تقديرات، وليست وعدًا بقيمة.',
+      de: 'Das ist richtig so. Das Protokoll verbucht die Belohnungen in USDT, weil das eine bequeme Maßeinheit ist, erzeugt und freigegeben wird aber AIG. Bei der Auszahlung wird dieser verbuchte Saldo in AIG umgewandelt. Alle Bildschirme weisen darauf hin: USDT-Werte sind Schätzungen, kein Wertversprechen.',
+      sr: 'То је исправно. Протокол води награде у USDT-у јер је то згодна мерна јединица, али оно што се ствара и ослобађа јесте AIG. При захтеву се тај евидентирани салдо претвара у AIG. Сви екрани на то упозоравају: вредности у USDT-у су процене, а не обећање вредности.',
+      ur: 'یہی درست ہے۔ پروٹوکول انعامات کا حساب USDT میں رکھتا ہے کیونکہ یہ ماپنے کی آسان اکائی ہے، مگر جو بنتا اور جاری ہوتا ہے وہ AIG ہے۔ کلیم پر وہ حساب شدہ بیلنس AIG میں بدل جاتا ہے۔ ہر اسکرین خبردار کرتی ہے: USDT کی قیمتیں تخمینہ ہیں، قیمت کا وعدہ نہیں۔',
+    },
+  '¿Dónde está mi dinero? No cuadran mis saldos': {
+    en: 'Where is my money? My balances do not add up',
+    pt: 'Onde está meu dinheiro? Meus saldos não batem',
+    fr: 'Où est mon argent ? Mes soldes ne correspondent pas',
+    ru: 'Где мои деньги? Балансы не сходятся',
+    sv: 'Var är mina pengar? Mina saldon stämmer inte',
+    hr: 'Gdje je moj novac? Stanja mi se ne slažu',
+    ar: 'أين أموالي؟ أرصدتي لا تتطابق',
+    de: 'Wo ist mein Geld? Meine Salden stimmen nicht',
+    sr: 'Где је мој новац? Стања ми се не слажу',
+    ur: 'میرا پیسہ کہاں ہے؟ میرے بیلنس نہیں ملتے',
+  },
+  'Tu dinero puede estar en cuatro sitios distintos, y confundirlos es la causa más común de «no cuadra»: 1) tu wallet on-chain (lo que controlas con MetaMask); 2) el crédito interno del sistema; 3) la Liquidez Marketplace (lo que publicaste en el P2P y aún no retiraste); y 4) el saldo de recompensas por reclamar. Cada uno se ve por separado en tu panel. Si publicaste liquidez, ese saldo deja de estar en la wallet hasta que lo retires — no desapareció, cambió de sitio.':
+    {
+      en: 'Your money can be in four different places, and mixing them up is the most common cause of “it does not add up”: 1) your on-chain wallet (what you control with MetaMask); 2) the system’s internal credit; 3) Marketplace Liquidity (what you published on the P2P and have not withdrawn yet); and 4) the rewards balance pending claim. Each one is shown separately in your dashboard. If you published liquidity, that balance leaves the wallet until you withdraw it — it did not vanish, it moved.',
+      pt: 'Seu dinheiro pode estar em quatro lugares diferentes, e confundi-los é a causa mais comum de «não bate»: 1) sua carteira on-chain (o que você controla com a MetaMask); 2) o crédito interno do sistema; 3) a Liquidez Marketplace (o que você publicou no P2P e ainda não retirou); e 4) o saldo de recompensas a resgatar. Cada um aparece separado no seu painel. Se você publicou liquidez, esse saldo deixa de estar na carteira até você retirá-lo — não sumiu, mudou de lugar.',
+      fr: 'Ton argent peut se trouver à quatre endroits différents, et les confondre est la cause la plus fréquente du « ça ne correspond pas » : 1) ton portefeuille on-chain (ce que tu contrôles avec MetaMask) ; 2) le crédit interne du système ; 3) la Liquidité Marketplace (ce que tu as publié sur le P2P et pas encore retiré) ; et 4) le solde de récompenses à réclamer. Chacun s’affiche séparément dans ton tableau de bord. Si tu as publié de la liquidité, ce solde quitte le portefeuille jusqu’à ce que tu le retires — il n’a pas disparu, il a changé de place.',
+      ru: 'Твои деньги могут быть в четырёх разных местах, и путаница между ними — самая частая причина «не сходится»: 1) твой on-chain кошелёк (то, чем ты управляешь через MetaMask); 2) внутренний кредит системы; 3) Ликвидность маркетплейса (то, что ты выставил в P2P и ещё не забрал); и 4) баланс наград к получению. Каждое видно в панели отдельно. Если ты выставил ликвидность, этот баланс уходит из кошелька, пока ты его не заберёшь — он не исчез, он сменил место.',
+      sv: 'Dina pengar kan finnas på fyra olika ställen, och att blanda ihop dem är den vanligaste orsaken till att ”det inte stämmer”: 1) din on-chain-plånbok (det du styr med MetaMask); 2) systemets interna kredit; 3) Marketplace-likviditet (det du lagt ut på P2P och ännu inte tagit ut); och 4) belöningssaldot som väntar på uttag. Var och en visas separat i panelen. Har du lagt ut likviditet lämnar det saldot plånboken tills du tar ut det — det försvann inte, det bytte plats.',
+      hr: 'Tvoj novac može biti na četiri različita mjesta, a njihovo miješanje najčešći je uzrok «ne slaže se»: 1) tvoj on-chain novčanik (ono čime upravljaš MetaMaskom); 2) interni kredit sustava; 3) Likvidnost tržnice (ono što si objavio na P2P-u i još nisi povukao); i 4) stanje nagrada za preuzimanje. Svako se zasebno vidi na ploči. Ako si objavio likvidnost, to stanje izlazi iz novčanika dok ga ne povučeš — nije nestalo, promijenilo je mjesto.',
+      ar: 'قد تكون أموالك في أربعة أماكن مختلفة، والخلط بينها هو أشيع سبب لـ«لا يتطابق»: ١) محفظتك على السلسلة (ما تتحكم به عبر MetaMask)؛ ٢) الرصيد الداخلي للنظام؛ ٣) سيولة السوق (ما نشرته في P2P ولم تسحبه بعد)؛ ٤) رصيد المكافآت المنتظر المطالبة. كلٌّ منها يظهر منفصلًا في لوحتك. إذا نشرت سيولة، فذلك الرصيد يغادر المحفظة حتى تسحبه — لم يختفِ، بل غيّر مكانه.',
+      de: 'Dein Geld kann an vier verschiedenen Orten liegen, und sie zu verwechseln ist die häufigste Ursache für „es stimmt nicht“: 1) deine On-Chain-Wallet (was du mit MetaMask steuerst); 2) das interne Guthaben des Systems; 3) die Marketplace-Liquidität (was du im P2P eingestellt und noch nicht abgezogen hast); und 4) der Belohnungssaldo zur Auszahlung. Jeder wird im Panel getrennt angezeigt. Hast du Liquidität eingestellt, verlässt dieser Saldo die Wallet, bis du ihn abziehst — er ist nicht verschwunden, er hat den Ort gewechselt.',
+      sr: 'Твој новац може бити на четири различита места, а њихово мешање најчешћи је узрок «не слаже се»: 1) твој on-chain новчаник (оно чиме управљаш преко MetaMask-а); 2) интерни кредит система; 3) Ликвидност маркетплејса (оно што си објавио на P2P-у и још ниси повукао); и 4) стање награда за преузимање. Свако се засебно види на табли. Ако си објавио ликвидност, то стање излази из новчаника док га не повучеш — није нестало, променило је место.',
+      ur: 'آپ کا پیسہ چار مختلف جگہوں پر ہو سکتا ہے، اور انہیں گڈمڈ کرنا «نہیں ملتا» کی سب سے عام وجہ ہے: ۱) آپ کا on-chain والٹ (جو آپ MetaMask سے چلاتے ہیں)؛ ۲) نظام کا اندرونی کریڈٹ؛ ۳) مارکیٹ پلیس لیکویڈیٹی (جو آپ نے P2P پر رکھی اور ابھی نکالی نہیں)؛ اور ۴) کلیم کے منتظر انعامات کا بیلنس۔ ہر ایک پینل میں الگ دکھتا ہے۔ اگر آپ نے لیکویڈیٹی رکھی تو وہ بیلنس والٹ سے نکل جاتا ہے جب تک آپ اسے واپس نہ لیں — یہ غائب نہیں ہوا، جگہ بدل گئی۔',
+    },
+
   /* ── el Aula: el material grabado dentro del asistente ─────────────
      OJO CON «Idioma del material»: es lo único que separa el idioma de la
      INTERFAZ del idioma del ARCHIVO. Traducido flojo —«Idioma», a secas— la
