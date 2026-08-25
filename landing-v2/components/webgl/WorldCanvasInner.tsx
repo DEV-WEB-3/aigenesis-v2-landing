@@ -1,7 +1,7 @@
 'use client'
 
 import { EMISSION } from '@/lib/design/tokens'
-import { alCambiarReproduccion } from '@/lib/reproduccionActiva'
+import { alCambiarReproduccion, hayReproduccion } from '@/lib/reproduccionActiva'
 
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
@@ -72,7 +72,26 @@ export default function WorldCanvasInner({ sectionIndex }: WorldCanvasInnerProps
    * qué quiere mirar; el fondo animado pasa a ser lo que estorba.
    */
   const [videoEnCurso, setVideoEnCurso] = useState(false)
-  useEffect(() => alCambiarReproduccion(setVideoEnCurso), [])
+  useEffect(() => {
+    const baja = alCambiarReproduccion(setVideoEnCurso)
+    /*
+     * Y ADEMÁS SE REVISA SOLO, cada segundo.
+     *
+     * Los otros dos lienzos son de Canvas 2D y preguntan en cada fotograma, así
+     * que se recuperan gratis. Éste vive de una suscripción, y una suscripción
+     * sólo se entera de lo que alguien le cuenta: si un video muriera sin que
+     * nadie lo anuncie, este lienzo se quedaría apagado el resto de la sesión —
+     * o sea, un rectángulo sin pintar detrás del contenido.
+     *
+     * Un intervalo de un segundo que consulta el estado real cuesta nada y
+     * convierte «puede quedarse pegado» en «se despega solo en un segundo».
+     */
+    const reloj = window.setInterval(() => setVideoEnCurso(hayReproduccion()), 1000)
+    return () => {
+      baja()
+      window.clearInterval(reloj)
+    }
+  }, [])
 
   const { sectionIndexRef, scrollProgressRef } = useScene()
   const prevHeroActive = useRef(heroActive)

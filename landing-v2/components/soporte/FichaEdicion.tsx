@@ -153,7 +153,7 @@ export default function FichaEdicion({
   /* Al desmontar la ficha, el fondo vuelve a animarse: sin esto, cerrar el
      asistente con el video en marcha dejaría el héroe congelado para siempre. */
   useEffect(() => () => {
-    marcarReproduccion(false)
+    marcarReproduccion(videoRef.current, false)
     onVoz?.callar()
   }, [onVoz])
 
@@ -216,7 +216,7 @@ export default function FichaEdicion({
               /* Se avisa a quien anima para que suelte el hilo principal: con el
                  héroe WebGL pintando, el fotograma pasa de 8 a 99 ms y el video
                  no consigue turno para decodificar. */
-              marcarReproduccion(true)
+              marcarReproduccion(videoRef.current, true)
               /*
                * SÓLO SE ANALIZA EL AUDIO SI VAMOS CON CORS.
                *
@@ -229,11 +229,11 @@ export default function FichaEdicion({
               if (conCors && videoRef.current) onVoz?.escuchar(videoRef.current)
             }}
             onPause={() => {
-              marcarReproduccion(false)
+              marcarReproduccion(videoRef.current, false)
               onVoz?.callar()
             }}
             onEnded={() => {
-              marcarReproduccion(false)
+              marcarReproduccion(videoRef.current, false)
               onVoz?.callar()
             }}
             /*

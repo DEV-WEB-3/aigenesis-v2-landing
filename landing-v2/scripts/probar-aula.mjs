@@ -220,9 +220,9 @@ comprobar('las URL de producción salen absolutas, versionadas y bajo el dominio
    * pensando que sobra, esto lo para.
    */
   const u = E.urlDeVideo(E.edicionPorId('edicion-acceso-cuenta').piezas.es)
-  assert.equal(u, 'https://aigenesis.io/media/aula/acceso-cuenta/es.mp4?v1')
+  assert.equal(u, 'https://aigenesis.io/media/aula/acceso-cuenta/720/es.mp4?v1')
   const p = E.urlDePoster(E.edicionPorId('edicion-acceso-cuenta').piezas.es)
-  assert.equal(p, 'https://aigenesis.io/media/aula/acceso-cuenta/es.jpg?v1')
+  assert.equal(p, 'https://aigenesis.io/media/aula/acceso-cuenta/720/es.jpg?v1')
   for (const ed of E.EDICIONES) {
     for (const [l, pieza] of Object.entries(ed.piezas)) {
       const v = E.urlDeVideo(pieza)
@@ -248,9 +248,23 @@ comprobar('cada video declarado apunta a SU edición y SU idioma', () => {
     for (const [l, pieza] of Object.entries(ed.piezas)) {
       if (!pieza.video) continue
       declarados++
-      assert.equal(
+      /*
+       * LA CARPETA DE RESOLUCIÓN NO SE FIJA AQUÍ.
+       *
+       * Esto exigía `acceso-cuenta/es.mp4` exacto, y al pasar los videos a 720p
+       * —`acceso-cuenta/720/es.mp4`— fallaron tres comprobaciones. Hicieron bien
+       * su trabajo: la forma cambió. Pero lo que esta guarda existe para
+       * proteger no es la carpeta, es la IDENTIDAD: que debajo de `en` no haya
+       * quedado pegado el archivo español.
+       *
+       * Así que se comprueba la edición y el idioma, y se deja libre lo que hay
+       * en medio. Si mañana aparece una carpeta `1080` o `av1`, esto sigue
+       * midiendo lo que importa en vez de romperse por un cambio legítimo.
+       */
+      const esperado = new RegExp(`^${carpeta[ed.id]}/(?:[a-z0-9]+/)?${l}\.mp4$`)
+      assert.match(
         pieza.video,
-        `${carpeta[ed.id]}/${l}.mp4`,
+        esperado,
         `${ed.id}/${l} apunta a «${pieza.video}», que no es su archivo`
       )
       assert.ok(pieza.segundos > 0, `${ed.id}/${l} declara un video sin duración medida`)
@@ -310,7 +324,7 @@ comprobar('con la videoteca APAGADA no sale un reproductor roto', () => {
 comprobar('con la videoteca ENCENDIDA sale el reproductor, el póster y la duración', () => {
   const html = pintarOn('edicion-acceso-cuenta', 'es')
   assert.match(html, /<video/, 'no pintó el reproductor con la videoteca encendida')
-  assert.match(html, /media\/aula\/acceso-cuenta\/es\.mp4/, 'el src no apunta al archivo')
+  assert.match(html, /media\/aula\/acceso-cuenta\/(?:[a-z0-9]+\/)?es\.mp4/, 'el src no apunta al archivo')
   /*
    * EL PÓSTER YA NO ES UN ATRIBUTO. Era `poster="…"` del propio `<video>`, y por
    * eso heredaba su `crossOrigin`: una imagen de la que nunca leemos un píxel
@@ -321,7 +335,7 @@ comprobar('con la videoteca ENCENDIDA sale el reproductor, el póster y la durac
    * y NO la etiqueta concreta, para que reordenar el marcado no rompa esto. Pero
    * sí se exige que NO vuelva como atributo: ese camino es el que estaba roto.
    */
-  assert.match(html, /acceso-cuenta\/es\.jpg\?v\d+/, 'falta el póster o su versión')
+  assert.match(html, /acceso-cuenta\/(?:[a-z0-9]+\/)?es\.jpg\?v\d+/, 'falta el póster o su versión')
   assert.doesNotMatch(
     html,
     /<video[^>]*poster=/,
@@ -628,8 +642,8 @@ comprobar('lo que anima suelta el hilo mientras se reproduce un video', () => {
    * comentario está aquí para que se sepa por qué.
    */
   const ficha = readFileSync(resolve(raiz, 'components/soporte/FichaEdicion.tsx'), 'utf8')
-  assert.match(ficha, /marcarReproduccion\(true\)/, 'el reproductor no avisa de que empieza')
-  assert.match(ficha, /marcarReproduccion\(false\)/, 'el reproductor no avisa de que termina')
+  assert.match(ficha, /marcarReproduccion\(videoRef\.current, true\)/, 'el reproductor no avisa de que empieza')
+  assert.match(ficha, /marcarReproduccion\(videoRef\.current, false\)/, 'el reproductor no avisa de que termina')
 
   const ANIMAN = [
     'components/hero/HeroLivingField.tsx',

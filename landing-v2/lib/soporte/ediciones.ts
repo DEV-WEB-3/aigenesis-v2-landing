@@ -202,9 +202,9 @@ const ACCESO: Edicion = {
     'Desde tu panel de AiGenesis: vincular la cuenta, verificar la identidad y activar el acceso.',
   version: 'Edición 1',
   piezas: {
-    es: { video: 'acceso-cuenta/es.mp4', segundos: 123 },
-    en: { video: 'acceso-cuenta/en.mp4', segundos: 114 },
-    pt: { video: 'acceso-cuenta/pt.mp4', segundos: 116 },
+    es: { video: 'acceso-cuenta/720/es.mp4', segundos: 123 },
+    en: { video: 'acceso-cuenta/720/en.mp4', segundos: 114 },
+    pt: { video: 'acceso-cuenta/720/pt.mp4', segundos: 116 },
   },
 }
 
@@ -232,9 +232,9 @@ const ACCESO: Edicion = {
  * para la web, que no toca el original.
  */
 const VIDEO_PLAN: Readonly<Record<string, { video: string; segundos: number }>> = {
-  es: { video: 'plan-de-negocio/es.mp4', segundos: 881 },
-  en: { video: 'plan-de-negocio/en.mp4', segundos: 852 },
-  pt: { video: 'plan-de-negocio/pt.mp4', segundos: 875 },
+  es: { video: 'plan-de-negocio/720/es.mp4', segundos: 881 },
+  en: { video: 'plan-de-negocio/720/en.mp4', segundos: 852 },
+  pt: { video: 'plan-de-negocio/720/pt.mp4', segundos: 875 },
 }
 
 const PLAN: Edicion = {
