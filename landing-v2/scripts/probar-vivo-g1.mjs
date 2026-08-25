@@ -41,30 +41,52 @@ if (!mDir) {
 const AIG_TOKEN_CONTRACT = mDir[1]
 
 /*
- * LAS SONDAS SE ELIGEN POR SER IMPOSIBLES DE ACERTAR POR CASUALIDAD.
+ * LAS SONDAS SE DERIVAN DEL DICCIONARIO, NO SE ESCRIBEN AQUÍ.
  *
- * Una cadena corta («Ecosistema», «Token») aparece en cualquier bundle por mil
- * motivos y su presencia no prueba nada. Estas son fragmentos largos de
- * traducciones concretas de esta tanda: si están, es que este diccionario, y no
- * otro, es el que se está sirviendo.
+ * La primera versión las llevaba a mano: seis fragmentos de traducciones de la
+ * tanda que acababa de escribir. Funcionaban, y estaban condenadas — el día que
+ * alguien corrija una de esas seis respuestas, la guarda falla sin que nada esté
+ * mal, y una guarda que grita por un cambio legítimo se acaba desactivando.
  *
- * Van sin la primera palabra y sin la última a propósito: el minificador puede
- * partir una cadena en concatenaciones, pero no parte por dentro de un
- * fragmento de 40 caracteres sin espacios raros.
+ * Ahora se calculan: para cada idioma se toma la traducción MÁS LARGA del
+ * diccionario y se busca un fragmento de su interior. Eso hace dos cosas a la
+ * vez — nunca caduca, y siempre mide el diccionario de ESTE commit, que es la
+ * pregunta real («¿el servidor sirve lo que acabo de construir?»).
+ *
+ * TRES DECISIONES QUE PARECEN DETALLES:
+ *
+ * · La MÁS LARGA, no una cualquiera. Una cadena corta («Ecosistema», «Token»)
+ *   aparece en cualquier bundle por mil motivos y encontrarla no prueba nada.
+ *
+ * · Un fragmento del MEDIO, no la cadena entera. El minificador puede partir un
+ *   literal largo en concatenaciones; por el interior de 60 caracteres no parte.
+ *
+ * · Determinista. Nada de elegir al azar: una guarda que mide algo distinto en
+ *   cada ejecución no permite comparar dos ejecuciones.
  */
-const SONDAS = [
-  /* La primera sonda rusa que puse aquí era «сид-фразу или приватные ключи», y
-     PASÓ contra el sitio de antes del despliegue: esa advertencia ya estaba en
-     otra respuesta de seguridad traducida hace tandas. Una sonda que también
-     puede acertar con el bundle viejo no distingue nada. Ésta es del acelerador
-     por referido, que no existía en ningún otro sitio. */
-  { que: 'ruso · el acelerador por referido', txt: 'мгновенно ускоряется на 11' },
-  { que: 'árabe · el modo dual de G-Pulse', txt: 'وضع تفعيل G-Pulse هو الثنائي' },
-  { que: 'serbio · la wallet no se cambia', txt: 'Новчаник налога се не мења' },
-  { que: 'alemán · las tasas son de emisión', txt: 'Emissionsrate des Protokolls' },
-  { que: 'urdu · el paso a paso del staking', txt: 'ایک مدت کے لیے لاک کرتا ہے' },
-  { que: 'croata · los rangos hasta G11', txt: 'nagradu u USDT-u plus NFT' },
-]
+const IDIOMAS_SONDA = ['ru', 'ar', 'sr', 'de', 'ur', 'hr']
+
+const fuenteDicc = readFileSync(resolve(raiz, 'lib/i18n/diccionario.ts'), 'utf8')
+const SONDAS = IDIOMAS_SONDA.map((idioma) => {
+  let mejor = ''
+  const re = new RegExp("\\n\\s*" + idioma + ":\\s*'((?:[^'\\\\]|\\\\.)*)',", 'g')
+  for (const m of fuenteDicc.matchAll(re)) {
+    if (m[1].length > mejor.length) mejor = m[1]
+  }
+  /* Del medio, y una longitud que ningún empaquetador parte por dentro. */
+  const desde = Math.floor((mejor.length - 60) / 2)
+  return { que: `${idioma} · la traducción más larga del diccionario`, txt: mejor.slice(desde, desde + 60) }
+})
+
+/* Si el diccionario cambiara de forma, `mejor` quedaría vacío y las sondas
+   buscarían la cadena vacía — que SIEMPRE se encuentra. Un verde así es peor
+   que un rojo: parece una medición y no lo es. */
+for (const s of SONDAS) {
+  if (s.txt.length < 40) {
+    console.error(`no se pudo derivar una sonda para «${s.que}»: ¿cambió la forma del diccionario?`)
+    process.exit(1)
+  }
+}
 
 /* La dirección que estuvo viva diciendo «desconfía de cualquier otra». */
 const CONTRATO_VIEJO = '0x4b4594bfe661919a8e2373eb175004da2989a479'

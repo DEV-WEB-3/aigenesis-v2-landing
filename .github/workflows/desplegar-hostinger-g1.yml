@@ -120,3 +120,22 @@ jobs:
           code=$(curl -sL -o /dev/null -w '%{http_code}' https://g1.aigenesis.io/g1/)
           echo "g1.aigenesis.io/g1/ -> $code"
           test "$code" = "200"
+
+      # UN 200 NO DICE QUÉ SE ESTÁ SIRVIENDO. El paso de arriba pasa igual de
+      # verde con el bundle de hace un mes: presencia no es validez, y el borde
+      # de Hostinger ya sirvió copias viejas una vez. Esto baja los chunks
+      # reales y busca dentro las traducciones de ESTE commit — las sondas se
+      # derivan del diccionario, así que no caducan al corregir una respuesta.
+      #
+      # Los reintentos son por la propagación del borde, no por tolerancia: si
+      # a los tres minutos sigue sin aparecer, es que no se subió.
+      - name: Verificar que sirve lo que se acaba de construir
+        if: steps.acceso.outputs.subir == 'si'
+        run: |
+          for intento in 1 2 3; do
+            if npm run verify:vivo:g1; then exit 0; fi
+            echo "intento $intento sin éxito; el borde puede tardar en propagar"
+            sleep 60
+          done
+          echo "::error::el dominio responde 200 pero NO sirve el diccionario de este commit"
+          exit 1
