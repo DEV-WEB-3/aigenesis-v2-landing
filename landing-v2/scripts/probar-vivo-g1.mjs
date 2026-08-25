@@ -211,10 +211,25 @@ const ORIGENES = [
   'https://aigenesis-landing.vercel.app',
 ]
 
-/* Se prueba un video Y un póster: el elemento `<video>` lleva
-   `crossOrigin="anonymous"`, que aplica también a la imagen del `poster`. En la
-   consola del owner fallaron los dos, y por el mismo motivo. */
-const MEDIOS = ['acceso-cuenta/es.mp4?v1', 'acceso-cuenta/es.jpg?v1']
+/*
+ * SÓLO EL VIDEO LLEVA CORS, Y EL PÓSTER NO PUEDE LLEVARLO.
+ *
+ * La primera versión de esto probaba los dos y marcaba el .jpg como degradado en
+ * los cuatro orígenes, con el remedio «subir el .htaccess». Era falso, y lo
+ * demostré con un experimento en el servidor: copié los mismos 2048 bytes a
+ * `_p.jpg`, `_p.txt`, `_p.mp4` y `_p.dat` en la misma carpeta. El `.txt`, el
+ * `.mp4` y el `.dat` recibieron TODAS las cabeceras del `.htaccess`; el `.jpg`
+ * no recibió NINGUNA —ni CORS, ni X-Robots-Tag, ni X-Frame-Options—.
+ *
+ * No es la configuración: el CDN de Hostinger intercepta las imágenes y reemite
+ * un juego reducido de cabeceras. Ningún `.htaccess` lo cambia.
+ *
+ * Por eso el póster salió del atributo `poster` y es un `<img>` normal, que no
+ * pide CORS. Aquí se comprueba lo que le corresponde a cada uno: al video, que
+ * la cabecera esté; al póster, que el archivo se pueda descargar.
+ */
+const MEDIOS = ['acceso-cuenta/es.mp4?v1']
+const POSTER = 'acceso-cuenta/es.jpg?v1'
 
 /*
  * SEVERIDAD CALIBRADA, NO TOLERANCIA.
@@ -264,9 +279,29 @@ if (sinCors.length === ORIGENES.length * MEDIOS.length) {
   )
 } else if (sinCors.length) {
   console.log('')
-  console.log(`  AVISO · ${sinCors.length} combinación(es) sin CORS — el video se ve, el borde no respira:`)
+  console.log(`  AVISO · ${sinCors.length} origen(es) sin CORS — el video se ve, el borde no respira:`)
   for (const s of sinCors) console.log(`         · ${s}`)
-  console.log('         Remedio: subir `deploy/media-aula.htaccess` a /media/aula/ en aigenesis.io.')
+  console.log('         Remedio: subir `deploy/media-aula.htaccess` a /media/aula/ en aigenesis.io')
+  console.log('         (scp deploy/media-aula.htaccess hostinger-aigenesis:~/domains/…/media/aula/.htaccess)')
+}
+
+/* El póster no necesita CORS; necesita EXISTIR. Se comprueba lo único que puede
+   fallar de él, que es que no esté o que el candado lo bloquee. */
+{
+  let estado = 0
+  try {
+    const r = await fetch(`https://aigenesis.io/media/aula/${POSTER}`, {
+      headers: { Referer: `${BASE}/g1/`, Range: 'bytes=0-1' },
+    })
+    estado = r.status
+  } catch {
+    estado = 0
+  }
+  comprobar(
+    'el póster se descarga (sin CORS: el CDN se lo quita a las imágenes)',
+    estado === 200 || estado === 206,
+    `estado ${estado}`,
+  )
 }
 
 console.log('')

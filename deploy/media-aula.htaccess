@@ -42,7 +42,12 @@
   RewriteCond %{HTTP_REFERER} !^https?://g1\.aigenesis\.io/        [NC]
   RewriteCond %{HTTP_REFERER} !^https?://conect\.aigenesis\.io/    [NC]
   # Los despliegues de Vercel, que sirven la misma landing.
-  RewriteCond %{HTTP_REFERER} !^https?://[a-z0-9-]+\.vercel\.app/  [NC]
+  #
+  # ACOTADO AL NOMBRE DE ESTE PROYECTO. Antes decía `[a-z0-9-]+\.vercel\.app`,
+  # o sea CUALQUIER sitio alojado en Vercel — comprobado el 25-ago-2026 pidiendo
+  # el video con referente `otracosa-cualquiera.vercel.app`: devolvía 206. Un
+  # candado que deja pasar a un tercio de la web no es un candado.
+  RewriteCond %{HTTP_REFERER} !^https?://aigenesis-landing[a-z0-9-]*\.vercel\.app/ [NC]
   # El desarrollo en la máquina de quien trabaja.
   RewriteCond %{HTTP_REFERER} !^https?://localhost(:[0-9]+)?/      [NC]
 
