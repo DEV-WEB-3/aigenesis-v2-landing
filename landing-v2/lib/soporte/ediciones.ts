@@ -264,7 +264,98 @@ const PLAN: Edicion = {
   ),
 }
 
-export const EDICIONES: readonly Edicion[] = [ACCESO, PLAN] as const
+/**
+ * Edición 3 — el plan de negocio de la ALIANZA (Aitech One: Aitech + Genesis + TAG).
+ *
+ * ─────────────────────────────────────────────────────────────────────────
+ * POR QUÉ EXISTE APARTE DEL PLAN DE NEGOCIO DE AiGENESIS.
+ *
+ * Instrucción del owner (25-ago-2026): el material que enseña el asistente
+ * depende del portal donde se abre. En aigenesis.io, la presentación de
+ * AiGenesis; en g1.aigenesis.io —que es la marca de la alianza— el plan que
+ * presenta a Aitech, Génesis y TAG juntos. No son dos versiones del mismo
+ * documento: son dos documentos que hablan de cosas distintas, y enseñar el
+ * equivocado deja a quien lo abre explicando otra empresa.
+ *
+ * DE DÓNDE SALEN LOS ARCHIVOS. De los mazos `AITECHONE.*` que entregó el owner.
+ * Estaban SIN PUBLICAR y pesaban de 12,7 a 45,4 MB. Se comprimieron con
+ * `scripts/comprimir-pdf.py` a 4,1-4,6 MB y se subieron a `/media/aula/alianza/`.
+ * El peso importa: esto se abre en el móvil para enseñárselo a alguien delante.
+ *
+ * CINCO IDIOMAS, NO OCHO. Existen es, en, de, pt y sr. Los otros tres de
+ * `ORDEN_IDIOMAS` no están grabados, y la ficha los enseña APAGADOS en vez de
+ * ocultarlos: quien busca el suyo tiene que poder ver que no está, no creer que
+ * no existe la edición.
+ *
+ * EL ESPAÑOL TIENE DOS ORIGINALES y difieren en la página 12: uno denomina el
+ * ejemplo de apalancamiento en DUAL AIG-USDT y el otro en dólares. Elegido por
+ * el owner el 25-ago-2026: el de DUAL AIG-USDT. Las otras 18 páginas son iguales.
+ * ─────────────────────────────────────────────────────────────────────────
+ */
+const PDF_ALIANZA = 'https://aigenesis.io/media/aula/alianza'
+
+const ALIANZA: Edicion = {
+  id: 'edicion-plan-alianza',
+  titulo: 'El plan de negocio de la alianza',
+  resumen: 'Aitech, Génesis y TAG presentados juntos: qué aporta cada uno y cómo encaja el AiG.',
+  version: 'Aitech One',
+  /* Habla de apalancamiento, de resultados y de capital operativo. El aviso de
+     riesgo no es opcional en una ficha así. */
+  avisoRiesgo: true,
+  piezas: {
+    es: { video: null, segundos: null, pdf: `${PDF_ALIANZA}/es.pdf`, mb: 4.1 },
+    en: { video: null, segundos: null, pdf: `${PDF_ALIANZA}/en.pdf`, mb: 4.3 },
+    de: { video: null, segundos: null, pdf: `${PDF_ALIANZA}/de.pdf`, mb: 4.4 },
+    pt: { video: null, segundos: null, pdf: `${PDF_ALIANZA}/pt.pdf`, mb: 4.4 },
+    sr: { video: null, segundos: null, pdf: `${PDF_ALIANZA}/sr.pdf`, mb: 4.4 },
+  },
+}
+
+export const EDICIONES: readonly Edicion[] = [ACCESO, PLAN, ALIANZA] as const
+
+/* ───────────────────  qué se enseña en cada portal  ─────────────────── */
+
+/**
+ * EL MATERIAL DEPENDE DEL PORTAL, Y ESO NO SE PUEDE DECIDIR EN EL SERVIDOR.
+ *
+ * La misma exportación estática sirve aigenesis.io y g1.aigenesis.io: es un solo
+ * build, así que no hay forma de hornear la decisión. Se toma en el navegador,
+ * con lo único que distingue de verdad a los dos sitios — el host— y con la ruta
+ * como respaldo para el caso en que la landing de Genesis y la de G1 convivan
+ * bajo el mismo dominio (que es lo que pasa hoy en Vercel: `/` y `/g1`).
+ *
+ * `desconocido` NO es un caso raro: es lo que vale durante el primer render del
+ * servidor, antes de que exista `window`. Se le da el juego COMPLETO a propósito.
+ * Esconder material hasta saber dónde estamos produciría un parpadeo en el que
+ * la lista se encoge, y de los dos errores posibles —enseñar de más un instante,
+ * o esconder algo que sí toca— el segundo es el que hace que alguien concluya
+ * que su documento no existe.
+ */
+export type Portal = 'genesis' | 'g1' | 'desconocido'
+
+export function portalActual(): Portal {
+  if (typeof window === 'undefined') return 'desconocido'
+  /* El subdominio manda: en g1.aigenesis.io la raíz YA es G1 (lo redirige el
+     .htaccess), así que ahí la ruta no distingue nada. */
+  if (window.location.hostname.startsWith('g1.')) return 'g1'
+  /* Y donde los dos sitios conviven bajo un mismo dominio —Vercel sirve la
+     landing de Genesis en `/` y la de G1 en `/g1`— decide la ruta. */
+  if (window.location.pathname.startsWith('/g1')) return 'g1'
+  return 'genesis'
+}
+
+/**
+ * Las ediciones que le tocan a un portal.
+ *
+ * El tutorial de vinculación va en LOS DOS: enseña a conectar una cuenta de TAG
+ * Markets desde el panel de AiGenesis, así que le sirve igual a quien llega por
+ * cualquiera de las dos puertas. Lo que se separa son los planes de negocio.
+ */
+export function edicionesDePortal(portal: Portal): readonly Edicion[] {
+  if (portal === 'g1') return [ACCESO, ALIANZA]
+  if (portal === 'genesis') return [ACCESO, PLAN]
+  return EDICIONES
+}
 
 /** El nombre de la colección en Ayuda. Vive aquí para que no se escriba dos veces. */
 export const COLECCION_AULA = 'Aprende'

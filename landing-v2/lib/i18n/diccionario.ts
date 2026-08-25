@@ -5745,6 +5745,36 @@ export const DICCIONARIO: Record<string, Fila> = {
     sr: 'Из своје AiGenesis табле: повезати налог, проверити идентитет и активирати приступ.',
     ur: 'اپنے AiGenesis پینل سے: اکاؤنٹ منسلک کریں، شناخت کی تصدیق کریں اور رسائی فعال کریں۔',
   },
+  /* La edición de la alianza — la que se enseña en g1, donde G1 ES la marca de
+     la alianza. «Aitech One» es el nombre propio del programa y no se traduce. */
+  'El plan de negocio de la alianza': {
+    en: 'The alliance business plan',
+    pt: 'O plano de negócio da aliança',
+    fr: 'Le plan d’affaires de l’alliance',
+    ru: 'Бизнес-план альянса',
+    sv: 'Alliansens affärsplan',
+    hr: 'Poslovni plan saveza',
+    ar: 'خطة عمل التحالف',
+    de: 'Der Geschäftsplan der Allianz',
+    sr: 'Пословни план савеза',
+    ur: 'اتحاد کا کاروباری منصوبہ',
+  },
+  'Aitech, Génesis y TAG presentados juntos: qué aporta cada uno y cómo encaja el AiG.': {
+    en: 'Aitech, Génesis and TAG presented together: what each contributes and how AiG fits in.',
+    pt: 'Aitech, Génesis e TAG apresentados juntos: o que cada um aporta e como o AiG se encaixa.',
+    fr: 'Aitech, Génesis et TAG présentés ensemble : ce qu’apporte chacun et comment s’y intègre le AiG.',
+    ru: 'Aitech, Génesis и TAG представлены вместе: что даёт каждый и как в это встраивается AiG.',
+    sv: 'Aitech, Génesis och TAG presenterade tillsammans: vad var och en bidrar med och hur AiG passar in.',
+    hr: 'Aitech, Génesis i TAG predstavljeni zajedno: što svaki donosi i kako se AiG uklapa.',
+    ar: 'Aitech و Génesis و TAG معًا: ما الذي يقدّمه كلٌّ منها وكيف يندرج الـ AiG.',
+    de: 'Aitech, Génesis und TAG gemeinsam vorgestellt: was jedes beiträgt und wie der AiG hineinpasst.',
+    sr: 'Aitech, Génesis и TAG представљени заједно: шта сваки доноси и како се AiG уклапа.',
+    ur: 'Aitech، Génesis اور TAG ایک ساتھ: ہر ایک کیا دیتا ہے اور AiG کہاں فٹ ہوتا ہے۔',
+  },
+  'Aitech One': {
+    en: 'Aitech One', pt: 'Aitech One', fr: 'Aitech One', ru: 'Aitech One', sv: 'Aitech One',
+    hr: 'Aitech One', ar: 'Aitech One', de: 'Aitech One', sr: 'Aitech One', ur: 'Aitech One',
+  },
   'El plan de negocio': {
     en: 'The business plan', pt: 'O plano de negócio', fr: 'Le plan d’affaires',
     ru: 'Бизнес-план', sv: 'Affärsplanen', hr: 'Poslovni plan',

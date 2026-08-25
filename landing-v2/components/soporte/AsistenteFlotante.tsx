@@ -48,7 +48,9 @@ import {
 } from '@/lib/soporte/conversaciones'
 import {
   COLECCION_AULA,
-  EDICIONES,
+  edicionesDePortal,
+  portalActual,
+  type Portal,
   type Edicion,
   duracionLegible,
   idiomaInicial,
@@ -250,6 +252,24 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
   /* El idioma DEL MATERIAL, que no es el de la interfaz. Ver `ediciones.ts`. */
   const [idiomaMaterial, setIdiomaMaterial] = useState('es')
 
+  /*
+   * QUÉ MATERIAL LE TOCA A ESTE PORTAL.
+   *
+   * Instrucción del owner: el asistente enseña la presentación de AiGenesis en
+   * aigenesis.io y el plan de la alianza en g1.aigenesis.io. La misma
+   * exportación estática sirve a los dos, así que la decisión no puede hornearse
+   * en el build: se toma en el navegador.
+   *
+   * Y por eso va en un efecto y no leyendo `window` durante el render. El primer
+   * render lo hace el servidor, donde `window` no existe; leerlo ahí devolvería
+   * `desconocido` y el cliente calcularía otra cosa, que es exactamente lo que
+   * React llama error de hidratación. Con el efecto, el primer pintado coincide
+   * con el del servidor —el juego completo— y se ajusta enseguida.
+   */
+  const [portal, setPortal] = useState<Portal>('desconocido')
+  useEffect(() => setPortal(portalActual()), [])
+  const ediciones = useMemo(() => edicionesDePortal(portal), [portal])
+
   /* Colecciones derivadas del corpus — jamás una lista a mano. */
   const colecciones = useMemo(() => {
     const m = new Map<string, Pregunta[]>()
@@ -449,7 +469,7 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                     entrar a su cuenta. Ése es el paso 0 del onboarding, y una
                     fila más entre cuatro preguntas no lo parecería. */}
                 <div className="mb-3 space-y-2">
-                  {EDICIONES.map((e) => (
+                  {ediciones.map((e) => (
                     <button
                       key={e.id}
                       type="button"
@@ -567,7 +587,7 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                         {COLECCION_AULA}
                       </span>
                       <span className="text-xs text-genesis-mist">
-                        {EDICIONES.length} {t('ediciones')} · {t('video y documento en varios idiomas')}
+                        {ediciones.length} {t('ediciones')} · {t('video y documento en varios idiomas')}
                       </span>
                     </span>
                     <span className="text-genesis-ion">›</span>
@@ -602,7 +622,7 @@ export default function AsistenteFlotante({ sugeridos = SUGERIDOS }: { sugeridos
                 </p>
                 {coleccion === COLECCION_AULA ? (
                   <div className="space-y-2">
-                    {EDICIONES.map((e) => (
+                    {ediciones.map((e) => (
                       <button
                         key={e.id}
                         type="button"

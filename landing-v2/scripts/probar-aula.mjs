@@ -598,6 +598,51 @@ comprobar('el texto de las ediciones existe en el diccionario', () => {
   assert.ok(enDicc(E.EDICIONES[0].titulo), 'control: no encuentra un título que SÍ está')
 })
 
+comprobar('cada portal enseña SU plan de negocio, y el asistente lo usa', () => {
+  /*
+   * LA REGLA DEL OWNER (25-ago-2026): en aigenesis.io se enseña la presentación
+   * de AiGenesis; en g1.aigenesis.io, el plan de la alianza. Enseñar el
+   * equivocado deja a quien lo abre explicando otra empresa.
+   *
+   * SE COMPRUEBAN LAS DOS MITADES, porque una sola no vale de nada:
+   *
+   *   1. Que la FUNCIÓN reparta bien. Trivial, pero si se rompe, se rompe entero.
+   *   2. Que el ASISTENTE la llame. Una función perfecta que nadie invoca es
+   *      indistinguible de no haberla escrito: el componente seguiría pintando
+   *      `EDICIONES` —las tres— y el fallo sería invisible en el repositorio.
+   *
+   * La segunda es la que de verdad protege. Se exige que `EDICIONES` no aparezca
+   * ya en el componente: mientras siga ahí, hay un camino que ignora el portal.
+   */
+  const g1 = E.edicionesDePortal('g1').map((e) => e.id)
+  const gen = E.edicionesDePortal('genesis').map((e) => e.id)
+  assert.ok(g1.includes('edicion-plan-alianza'), 'g1 no enseña el plan de la alianza')
+  assert.ok(!g1.includes('edicion-plan-de-negocio'), 'g1 enseña el plan de AiGenesis, que no le toca')
+  assert.ok(gen.includes('edicion-plan-de-negocio'), 'genesis no enseña su propio plan')
+  assert.ok(!gen.includes('edicion-plan-alianza'), 'genesis enseña el plan de la alianza, que no le toca')
+  assert.ok(
+    g1.includes('edicion-acceso-cuenta') && gen.includes('edicion-acceso-cuenta'),
+    'el tutorial de vinculación sirve a los dos portales y debe estar en ambos',
+  )
+  /* Sin portal —el primer render, antes de que exista `window`— se da el juego
+     completo: esconder material hasta saber dónde estamos haría creer que un
+     documento no existe, y ése es el peor de los dos errores posibles. */
+  assert.equal(
+    E.edicionesDePortal('desconocido').length,
+    E.EDICIONES.length,
+    'sin portar conocido debe darse el catálogo entero, no un subconjunto',
+  )
+
+  const f = readFileSync(resolve(raiz, 'components/soporte/AsistenteFlotante.tsx'), 'utf8')
+  assert.match(f, /edicionesDePortal\(portal\)/, 'el asistente no pide las ediciones de su portal')
+  assert.match(f, /setPortal\(portalActual\(\)\)/, 'el asistente nunca averigua en qué portal está')
+  assert.doesNotMatch(
+    f.replace(/\/\*[\s\S]*?\*\//g, ' '),
+    /\bEDICIONES\b/,
+    'queda un uso de EDICIONES: ese camino pinta las tres ediciones y se salta el portal',
+  )
+})
+
 console.log('')
 if (fallos.length) {
   console.error(`aula: ${fallos.length} comprobación(es) fallaron`)
