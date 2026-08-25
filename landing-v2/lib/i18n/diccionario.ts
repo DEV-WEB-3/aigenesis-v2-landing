@@ -4106,6 +4106,274 @@ export const DICCIONARIO: Record<string, Fila> = {
       ur: 'دو۔ پہلے ترسیل کا پتہ — یہ اگلی خریداریوں کے لیے محفوظ ہو جاتا ہے — اور پھر ادائیگی کا طریقہ۔ ترسیل کل میں شامل ہے، اس لیے آخر میں کوئی اضافی چارج نہیں آتا۔',
     },
 
+  /* ══════════════════════════════════════════════════════════════════
+     CORPUS · TOKEN AiG
+
+     LA RESPUESTA DEL CONTRATO NO ESTÁ AQUÍ, y es deliberado. Esa respuesta se
+     construye en `preguntas-token.ts` a partir de `AIG_TOKEN_CONTRACT`, así que
+     su texto cambia si cambia la dirección — y una clave de diccionario fija no
+     podría seguirlo. Meterla congelaría una dirección en once idiomas, que es
+     exactamente el fallo que se acaba de arreglar.
+
+     LOS PORCENTAJES SE COPIAN TAL CUAL, incluido que el reparto suma 100,01 %.
+     Está así en el documento oficial y ya queda anotado en `whitepaper.ts`:
+     «corregirlo» al traducir sería inventar una cifra que nadie publicó.
+     ══════════════════════════════════════════════════════════════════ */
+  '¿Cuántos AiG hay en total? ¿Se pueden crear más?': {
+    en: 'How many AiG are there in total? Can more be created?',
+    pt: 'Quantos AiG existem no total? Podem ser criados mais?',
+    fr: 'Combien d’AiG existe-t-il au total ? Peut-on en créer d’autres ?',
+    ru: 'Сколько всего AiG? Можно ли создать ещё?',
+    sv: 'Hur många AiG finns totalt? Kan fler skapas?',
+    hr: 'Koliko ukupno ima AiG-a? Može li se stvoriti još?',
+    ar: 'كم عدد AiG إجمالًا؟ وهل يمكن إنشاء المزيد؟',
+    de: 'Wie viele AiG gibt es insgesamt? Können mehr erzeugt werden?',
+    sr: 'Колико укупно има AiG-а? Може ли се створити још?',
+    ur: 'کل کتنے AiG ہیں؟ کیا مزید بنائے جا سکتے ہیں؟',
+  },
+  'El supply es fijo: 111 millones de AiG, y no cambia. El contrato no tiene función de acuñar (mint) ni de quemar (burn), así que nadie puede crear tokens nuevos ni destruir los existentes. Esa permanencia es a propósito: da previsibilidad al ecosistema.':
+    {
+      en: 'The supply is fixed: 111 million AiG, and it does not change. The contract has no mint and no burn function, so nobody can create new tokens or destroy existing ones. That permanence is deliberate: it gives the ecosystem predictability.',
+      pt: 'O supply é fixo: 111 milhões de AiG, e não muda. O contrato não tem função de cunhar (mint) nem de queimar (burn), então ninguém pode criar tokens novos nem destruir os existentes. Essa permanência é proposital: dá previsibilidade ao ecossistema.',
+      fr: 'L’offre est fixe : 111 millions d’AiG, et elle ne change pas. Le contrat n’a ni fonction de frappe (mint) ni de destruction (burn), donc personne ne peut créer de nouveaux jetons ni détruire ceux qui existent. Cette permanence est volontaire : elle donne de la prévisibilité à l’écosystème.',
+      ru: 'Эмиссия фиксирована: 111 миллионов AiG, и она не меняется. В контракте нет функций выпуска (mint) и сжигания (burn), поэтому никто не может создать новые токены или уничтожить существующие. Эта неизменность — намеренная: она даёт экосистеме предсказуемость.',
+      sv: 'Utbudet är fast: 111 miljoner AiG, och det ändras inte. Kontraktet har varken mint- eller burn-funktion, så ingen kan skapa nya tokens eller förstöra befintliga. Den beständigheten är avsiktlig: den ger ekosystemet förutsägbarhet.',
+      hr: 'Ponuda je fiksna: 111 milijuna AiG-a i ne mijenja se. Ugovor nema funkciju kovanja (mint) ni spaljivanja (burn), pa nitko ne može stvoriti nove tokene niti uništiti postojeće. Ta je trajnost namjerna: daje ekosustavu predvidljivost.',
+      ar: 'المعروض ثابت: 111 مليون AiG، ولا يتغيّر. لا يملك العقد وظيفة سكّ (mint) ولا حرق (burn)، لذا لا يستطيع أحد إنشاء رموز جديدة ولا إتلاف الموجودة. هذا الثبات مقصود: يمنح النظام البيئي قابلية للتنبؤ.',
+      de: 'Das Angebot ist fix: 111 Millionen AiG, und es ändert sich nicht. Der Vertrag hat weder eine Mint- noch eine Burn-Funktion, also kann niemand neue Token erzeugen oder bestehende vernichten. Diese Beständigkeit ist Absicht: Sie gibt dem Ökosystem Vorhersehbarkeit.',
+      sr: 'Понуда је фиксна: 111 милиона AiG-а и не мења се. Уговор нема функцију ковања (mint) ни спаљивања (burn), па нико не може створити нове токене нити уништити постојеће. Та трајност је намерна: даје екосистему предвидивост.',
+      ur: 'سپلائی مقررہ ہے: 111 ملین AiG، اور یہ نہیں بدلتی۔ کنٹریکٹ میں نہ mint کا فنکشن ہے نہ burn کا، اس لیے کوئی نئے ٹوکن نہیں بنا سکتا اور نہ موجودہ ختم کر سکتا ہے۔ یہ ثبات جان بوجھ کر ہے: یہ ایکو سسٹم کو پیش بینی دیتا ہے۔',
+    },
+  '¿Cómo se distribuye el supply del AiG?': {
+    en: 'How is the AiG supply distributed?', pt: 'Como se distribui o supply do AiG?',
+    fr: 'Comment l’offre d’AiG est-elle répartie ?', ru: 'Как распределена эмиссия AiG?',
+    sv: 'Hur fördelas AiG-utbudet?', hr: 'Kako se raspodjeljuje ponuda AiG-a?',
+    ar: 'كيف يُوزَّع معروض AiG؟', de: 'Wie ist das AiG-Angebot verteilt?',
+    sr: 'Како се распоређује понуда AiG-а?', ur: 'AiG کی سپلائی کیسے تقسیم ہوتی ہے؟',
+  },
+  'De los 111 millones: 50% bloqueado (locked), 20% recompensas, 15% staking, 10% tesorería (treasury), 5% equipo corporativo y 0.01% liquidez. La distribución está pensada para sostener las recompensas del ecosistema a largo plazo.':
+    {
+      en: 'Of the 111 million: 50% locked, 20% rewards, 15% staking, 10% treasury, 5% corporate team and 0.01% liquidity. The distribution is designed to sustain the ecosystem’s rewards over the long term.',
+      pt: 'Dos 111 milhões: 50% bloqueado (locked), 20% recompensas, 15% staking, 10% tesouraria (treasury), 5% equipe corporativa e 0,01% liquidez. A distribuição foi pensada para sustentar as recompensas do ecossistema a longo prazo.',
+      fr: 'Sur les 111 millions : 50 % bloqués (locked), 20 % récompenses, 15 % staking, 10 % trésorerie (treasury), 5 % équipe corporative et 0,01 % liquidité. La répartition est pensée pour soutenir les récompenses de l’écosystème sur le long terme.',
+      ru: 'Из 111 миллионов: 50 % заблокировано (locked), 20 % награды, 15 % стейкинг, 10 % казна (treasury), 5 % корпоративная команда и 0,01 % ликвидность. Распределение рассчитано на то, чтобы поддерживать награды экосистемы в долгую.',
+      sv: 'Av de 111 miljonerna: 50 % låsta (locked), 20 % belöningar, 15 % staking, 10 % kassa (treasury), 5 % företagsteam och 0,01 % likviditet. Fördelningen är utformad för att bära ekosystemets belöningar på lång sikt.',
+      hr: 'Od 111 milijuna: 50 % zaključano (locked), 20 % nagrade, 15 % staking, 10 % riznica (treasury), 5 % korporativni tim i 0,01 % likvidnost. Raspodjela je zamišljena da dugoročno održi nagrade ekosustava.',
+      ar: 'من الـ 111 مليونًا: 50٪ مقفلة (locked)، و20٪ مكافآت، و15٪ تخزين (staking)، و10٪ خزينة (treasury)، و5٪ الفريق المؤسسي، و0.01٪ سيولة. التوزيع مصمَّم لدعم مكافآت النظام البيئي على المدى الطويل.',
+      de: 'Von den 111 Millionen: 50 % gesperrt (locked), 20 % Belohnungen, 15 % Staking, 10 % Treasury, 5 % Unternehmensteam und 0,01 % Liquidität. Die Verteilung ist darauf ausgelegt, die Belohnungen des Ökosystems langfristig zu tragen.',
+      sr: 'Од 111 милиона: 50 % закључано (locked), 20 % награде, 15 % стејкинг, 10 % ризница (treasury), 5 % корпоративни тим и 0,01 % ликвидност. Расподела је замишљена да дугорочно одржи награде екосистема.',
+      ur: '111 ملین میں سے: 50٪ مقفل (locked)، 20٪ انعامات، 15٪ اسٹیکنگ، 10٪ خزانہ (treasury)، 5٪ کارپوریٹ ٹیم اور 0.01٪ لیکویڈیٹی۔ یہ تقسیم ایکو سسٹم کے انعامات کو طویل مدت تک سہارا دینے کے لیے بنائی گئی ہے۔',
+    },
+  '¿La emisión de AiG baja con el tiempo?': {
+    en: 'Does AiG issuance decrease over time?',
+    pt: 'A emissão de AiG diminui com o tempo?',
+    fr: 'L’émission d’AiG diminue-t-elle avec le temps ?',
+    ru: 'Снижается ли эмиссия AiG со временем?',
+    sv: 'Minskar AiG-utgivningen över tid?',
+    hr: 'Smanjuje li se izdavanje AiG-a s vremenom?',
+    ar: 'هل ينخفض إصدار AiG مع الوقت؟',
+    de: 'Sinkt die AiG-Ausgabe mit der Zeit?',
+    sr: 'Смањује ли се издавање AiG-а с временом?',
+    ur: 'کیا AiG کا اجرا وقت کے ساتھ کم ہوتا ہے؟',
+  },
+  'Sí, la emisión se reduce de forma programada año a año: 11% el año 1, 11% el año 2, 8% el año 3, 6% el año 4, 4% el año 5 y 2% el año 6 (tasas mensuales de emisión). Menor emisión significa mayor escasez con el tiempo. Es una tasa de emisión del protocolo, no una promesa de resultado.':
+    {
+      en: 'Yes, issuance decreases on a programmed schedule year by year: 11% in year 1, 11% in year 2, 8% in year 3, 6% in year 4, 4% in year 5 and 2% in year 6 (monthly issuance rates). Lower issuance means greater scarcity over time. It is a protocol issuance rate, not a promise of results.',
+      pt: 'Sim, a emissão se reduz de forma programada ano a ano: 11% no ano 1, 11% no ano 2, 8% no ano 3, 6% no ano 4, 4% no ano 5 e 2% no ano 6 (taxas mensais de emissão). Menor emissão significa maior escassez com o tempo. É uma taxa de emissão do protocolo, não uma promessa de resultado.',
+      fr: 'Oui, l’émission se réduit de façon programmée année après année : 11 % l’année 1, 11 % l’année 2, 8 % l’année 3, 6 % l’année 4, 4 % l’année 5 et 2 % l’année 6 (taux mensuels d’émission). Moins d’émission signifie plus de rareté avec le temps. C’est un taux d’émission du protocole, pas une promesse de résultat.',
+      ru: 'Да, эмиссия снижается по заданному графику год за годом: 11 % в 1-й год, 11 % во 2-й, 8 % в 3-й, 6 % в 4-й, 4 % в 5-й и 2 % в 6-й (месячные ставки эмиссии). Меньшая эмиссия означает большую редкость со временем. Это ставка эмиссии протокола, а не обещание результата.',
+      sv: 'Ja, utgivningen minskar enligt ett programmerat schema år för år: 11 % år 1, 11 % år 2, 8 % år 3, 6 % år 4, 4 % år 5 och 2 % år 6 (månatliga utgivningstakter). Lägre utgivning betyder större knapphet över tid. Det är protokollets utgivningstakt, inte ett löfte om resultat.',
+      hr: 'Da, izdavanje se programirano smanjuje iz godine u godinu: 11 % 1. godine, 11 % 2. godine, 8 % 3. godine, 6 % 4. godine, 4 % 5. godine i 2 % 6. godine (mjesečne stope izdavanja). Manje izdavanje znači veću rijetkost s vremenom. To je stopa izdavanja protokola, a ne obećanje rezultata.',
+      ar: 'نعم، ينخفض الإصدار وفق جدول مبرمج عامًا بعد عام: 11٪ في السنة 1، و11٪ في السنة 2، و8٪ في السنة 3، و6٪ في السنة 4، و4٪ في السنة 5، و2٪ في السنة 6 (معدلات إصدار شهرية). إصدار أقل يعني ندرة أكبر مع الوقت. إنها نسبة إصدار للبروتوكول، لا وعدًا بنتيجة.',
+      de: 'Ja, die Ausgabe sinkt programmiert Jahr für Jahr: 11 % im Jahr 1, 11 % im Jahr 2, 8 % im Jahr 3, 6 % im Jahr 4, 4 % im Jahr 5 und 2 % im Jahr 6 (monatliche Ausgaberaten). Weniger Ausgabe bedeutet mit der Zeit größere Knappheit. Es ist eine Ausgaberate des Protokolls, kein Ergebnisversprechen.',
+      sr: 'Да, издавање се програмирано смањује из године у годину: 11 % 1. године, 11 % 2. године, 8 % 3. године, 6 % 4. године, 4 % 5. године и 2 % 6. године (месечне стопе издавања). Мање издавање значи већу реткост с временом. То је стопа издавања протокола, а не обећање резултата.',
+      ur: 'ہاں، اجرا سال بہ سال طے شدہ طریقے سے کم ہوتا ہے: سال 1 میں 11٪، سال 2 میں 11٪، سال 3 میں 8٪، سال 4 میں 6٪، سال 5 میں 4٪ اور سال 6 میں 2٪ (ماہانہ اجرا کی شرحیں)۔ کم اجرا کا مطلب وقت کے ساتھ زیادہ نایابی۔ یہ پروٹوکول کی اجرا کی شرح ہے، نتیجے کا وعدہ نہیں۔',
+    },
+  '¿El AiG sirve para votar o gobernar el ecosistema?': {
+    en: 'Is AiG used to vote or govern the ecosystem?',
+    pt: 'O AiG serve para votar ou governar o ecossistema?',
+    fr: 'L’AiG sert-il à voter ou à gouverner l’écosystème ?',
+    ru: 'Служит ли AiG для голосования или управления экосистемой?',
+    sv: 'Används AiG för att rösta eller styra ekosystemet?',
+    hr: 'Služi li AiG za glasanje ili upravljanje ekosustavom?',
+    ar: 'هل يُستخدم AiG للتصويت أو حوكمة النظام البيئي؟',
+    de: 'Dient AiG zum Abstimmen oder zur Steuerung des Ökosystems?',
+    sr: 'Служи ли AiG за гласање или управљање екосистемом?',
+    ur: 'کیا AiG ووٹ دینے یا ایکو سسٹم چلانے کے کام آتا ہے؟',
+  },
+  'Sí. El AiG Token es una herramienta de gobernanza: quienes lo tienen pueden influir en decisiones que dan forma al ecosistema, con un enfoque descentralizado y guiado por la comunidad. Las novedades de gobernanza se comunican por los canales oficiales.':
+    {
+      en: 'Yes. The AiG Token is a governance tool: those who hold it can influence decisions that shape the ecosystem, with a decentralised, community-led approach. Governance updates are communicated through the official channels.',
+      pt: 'Sim. O AiG Token é uma ferramenta de governança: quem o tem pode influenciar decisões que dão forma ao ecossistema, com um enfoque descentralizado e guiado pela comunidade. As novidades de governança são comunicadas pelos canais oficiais.',
+      fr: 'Oui. Le AiG Token est un outil de gouvernance : ceux qui le détiennent peuvent influencer les décisions qui façonnent l’écosystème, dans une approche décentralisée et guidée par la communauté. Les nouveautés de gouvernance sont communiquées par les canaux officiels.',
+      ru: 'Да. AiG Token — инструмент управления: те, кто им владеет, могут влиять на решения, формирующие экосистему, в децентрализованном подходе, который ведёт сообщество. Новости управления сообщаются по официальным каналам.',
+      sv: 'Ja. AiG Token är ett styrningsverktyg: de som innehar den kan påverka beslut som formar ekosystemet, med ett decentraliserat och gemenskapslett upplägg. Nyheter om styrningen meddelas via de officiella kanalerna.',
+      hr: 'Da. AiG Token je alat upravljanja: oni koji ga imaju mogu utjecati na odluke koje oblikuju ekosustav, uz decentraliziran pristup koji vodi zajednica. Novosti o upravljanju objavljuju se putem službenih kanala.',
+      ar: 'نعم. AiG Token أداة حوكمة: من يملكه يمكنه التأثير في القرارات التي تُشكّل النظام البيئي، بنهج لا مركزي يقوده المجتمع. تُعلَن مستجدات الحوكمة عبر القنوات الرسمية.',
+      de: 'Ja. Der AiG Token ist ein Governance-Werkzeug: Wer ihn hält, kann Entscheidungen beeinflussen, die das Ökosystem prägen — dezentral und von der Community geführt. Neuigkeiten zur Governance werden über die offiziellen Kanäle mitgeteilt.',
+      sr: 'Да. AiG Token је алат управљања: они који га имају могу утицати на одлуке које обликују екосистем, уз децентрализован приступ који води заједница. Новости о управљању објављују се путем званичних канала.',
+      ur: 'ہاں۔ AiG Token گورننس کا آلہ ہے: جن کے پاس یہ ہے وہ ایکو سسٹم کو شکل دینے والے فیصلوں پر اثر ڈال سکتے ہیں، ایک غیر مرکزی اور کمیونٹی کی رہنمائی والے انداز میں۔ گورننس کی خبریں سرکاری چینلز پر دی جاتی ہیں۔',
+    },
+  '¿En qué red está el AiG? ¿Qué necesito para operar?': {
+    en: 'Which network is AiG on? What do I need to operate?',
+    pt: 'Em que rede está o AiG? O que preciso para operar?',
+    fr: 'Sur quel réseau est l’AiG ? Que me faut-il pour opérer ?',
+    ru: 'В какой сети AiG? Что нужно, чтобы работать с ним?',
+    sv: 'Vilket nätverk ligger AiG på? Vad behöver jag för att handla?',
+    hr: 'Na kojoj je mreži AiG? Što mi treba za poslovanje?',
+    ar: 'على أي شبكة يوجد AiG؟ وما الذي أحتاجه للتعامل؟',
+    de: 'In welchem Netzwerk ist AiG? Was brauche ich zum Handeln?',
+    sr: 'На којој је мрежи AiG? Шта ми треба за пословање?',
+    ur: 'AiG کس نیٹ ورک پر ہے؟ کام کرنے کے لیے مجھے کیا چاہیے؟',
+  },
+  'El AiG vive en la Binance Smart Chain (BSC / BEP-20). Para operar necesitas una wallet Web3 compatible con BEP-20 (como SafePal, MetaMask u otra), un poco de BNB para las comisiones de red (gas fee) y USDT (BEP-20) para tu aporte. Todo es de auto-custodia: tú controlas tus claves privadas.':
+    {
+      en: 'AiG lives on the Binance Smart Chain (BSC / BEP-20). To operate you need a Web3 wallet compatible with BEP-20 (such as SafePal, MetaMask or another), a little BNB for network fees (gas fee) and USDT (BEP-20) for your contribution. Everything is self-custody: you control your private keys.',
+      pt: 'O AiG vive na Binance Smart Chain (BSC / BEP-20). Para operar você precisa de uma carteira Web3 compatível com BEP-20 (como SafePal, MetaMask ou outra), um pouco de BNB para as taxas de rede (gas fee) e USDT (BEP-20) para seu aporte. Tudo é de autocustódia: você controla suas chaves privadas.',
+      fr: 'L’AiG vit sur la Binance Smart Chain (BSC / BEP-20). Pour opérer, il te faut un portefeuille Web3 compatible BEP-20 (comme SafePal, MetaMask ou un autre), un peu de BNB pour les frais de réseau (gas fee) et de l’USDT (BEP-20) pour ton apport. Tout est en auto-conservation : tu contrôles tes clés privées.',
+      ru: 'AiG живёт в Binance Smart Chain (BSC / BEP-20). Чтобы работать, нужен Web3-кошелёк с поддержкой BEP-20 (например SafePal, MetaMask или другой), немного BNB на комиссии сети (gas fee) и USDT (BEP-20) для взноса. Всё на самостоятельном хранении: приватные ключи у тебя.',
+      sv: 'AiG lever på Binance Smart Chain (BSC / BEP-20). För att handla behöver du en Web3-plånbok som stöder BEP-20 (som SafePal, MetaMask eller annan), lite BNB till nätverksavgifter (gas fee) och USDT (BEP-20) till ditt bidrag. Allt är självförvaring: du styr dina privata nycklar.',
+      hr: 'AiG živi na Binance Smart Chainu (BSC / BEP-20). Za poslovanje trebaš Web3 novčanik kompatibilan s BEP-20 (poput SafePala, MetaMaska ili drugog), nešto BNB-a za mrežne naknade (gas fee) i USDT (BEP-20) za svoj ulog. Sve je samostalno skrbništvo: ti kontroliraš svoje privatne ključeve.',
+      ar: 'يعيش AiG على Binance Smart Chain ‏(BSC / BEP-20). للتعامل تحتاج محفظة Web3 متوافقة مع BEP-20 (مثل SafePal أو MetaMask أو غيرها)، وقليلًا من BNB لرسوم الشبكة (gas fee)، و USDT ‏(BEP-20) لمساهمتك. كل شيء بحفظ ذاتي: أنت تتحكم بمفاتيحك الخاصة.',
+      de: 'AiG lebt auf der Binance Smart Chain (BSC / BEP-20). Zum Handeln brauchst du eine Web3-Wallet mit BEP-20-Unterstützung (etwa SafePal, MetaMask oder eine andere), etwas BNB für die Netzgebühren (Gas Fee) und USDT (BEP-20) für deinen Beitrag. Alles ist Selbstverwahrung: Du kontrollierst deine privaten Schlüssel.',
+      sr: 'AiG живи на Binance Smart Chain-у (BSC / BEP-20). За пословање треба ти Web3 новчаник компатибилан са BEP-20 (попут SafePal-а, MetaMask-а или другог), нешто BNB-а за мрежне накнаде (gas fee) и USDT (BEP-20) за твој улог. Све је самостално чување: ти контролишеш своје приватне кључеве.',
+      ur: 'AiG کا گھر Binance Smart Chain (BSC / BEP-20) ہے۔ کام کرنے کے لیے BEP-20 کے موافق Web3 والٹ (جیسے SafePal، MetaMask یا کوئی اور)، نیٹ ورک فیس (gas fee) کے لیے تھوڑا BNB، اور اپنے حصے کے لیے USDT (BEP-20) چاہیے۔ سب کچھ خود حفاظتی ہے: نجی کلیدیں آپ کے پاس ہیں۔',
+    },
+  '¿AiGenesis es un banco o algo garantizado?': {
+    en: 'Is AiGenesis a bank or something guaranteed?',
+    pt: 'A AiGenesis é um banco ou algo garantido?',
+    fr: 'AiGenesis est-elle une banque ou quelque chose de garanti ?',
+    ru: 'AiGenesis — это банк или что-то гарантированное?',
+    sv: 'Är AiGenesis en bank eller något garanterat?',
+    hr: 'Je li AiGenesis banka ili nešto zajamčeno?',
+    ar: 'هل AiGenesis بنك أو شيء مضمون؟',
+    de: 'Ist AiGenesis eine Bank oder etwas Garantiertes?',
+    sr: 'Да ли је AiGenesis банка или нешто загарантовано?',
+    ur: 'کیا AiGenesis کوئی بینک یا ضمانت شدہ چیز ہے؟',
+  },
+  'No. AiGenesis es un ecosistema tecnológico basado en blockchain — no una institución financiera, bancaria ni casa de valores. Participar implica adquirir tecnología de minado e interactuar con contratos inteligentes que se ejecutan solos. Los porcentajes son tasas de emisión programada del token, no un producto bancario ni un resultado asegurado en dólares; los criptoactivos son volátiles por naturaleza.':
+    {
+      en: 'No. AiGenesis is a blockchain-based technology ecosystem — not a financial institution, a bank or a securities firm. Taking part means acquiring mining technology and interacting with smart contracts that execute on their own. The percentages are programmed token issuance rates, not a banking product nor an assured result in dollars; crypto-assets are volatile by nature.',
+      pt: 'Não. A AiGenesis é um ecossistema tecnológico baseado em blockchain — não uma instituição financeira, bancária nem corretora de valores. Participar implica adquirir tecnologia de mineração e interagir com contratos inteligentes que se executam sozinhos. As porcentagens são taxas de emissão programada do token, não um produto bancário nem um resultado assegurado em dólares; os criptoativos são voláteis por natureza.',
+      fr: 'Non. AiGenesis est un écosystème technologique basé sur la blockchain — pas une institution financière, ni une banque, ni une société de bourse. Participer implique d’acquérir une technologie de minage et d’interagir avec des contrats intelligents qui s’exécutent seuls. Les pourcentages sont des taux d’émission programmée du jeton, pas un produit bancaire ni un résultat assuré en dollars ; les cryptoactifs sont volatils par nature.',
+      ru: 'Нет. AiGenesis — это технологическая экосистема на блокчейне, а не финансовое учреждение, банк или брокерская компания. Участие означает приобретение технологии майнинга и взаимодействие со смарт-контрактами, которые исполняются сами. Проценты — это запрограммированные ставки эмиссии токена, а не банковский продукт и не гарантированный результат в долларах; криптоактивы по своей природе волатильны.',
+      sv: 'Nej. AiGenesis är ett teknikekosystem byggt på blockkedja — inte en finansiell institution, en bank eller ett värdepappersbolag. Att delta innebär att skaffa miningteknik och interagera med smarta kontrakt som körs av sig själva. Procenttalen är programmerade utgivningstakter för token, inte en bankprodukt och inget garanterat resultat i dollar; kryptotillgångar är volatila till sin natur.',
+      hr: 'Ne. AiGenesis je tehnološki ekosustav na blockchainu — nije financijska institucija, banka ni brokerska kuća. Sudjelovanje znači nabaviti tehnologiju rudarenja i komunicirati s pametnim ugovorima koji se izvršavaju sami. Postoci su programirane stope izdavanja tokena, a ne bankovni proizvod ni zajamčen rezultat u dolarima; kriptoimovina je po prirodi volatilna.',
+      ar: 'لا. AiGenesis نظام بيئي تقني قائم على البلوكشين — وليس مؤسسة مالية ولا مصرفية ولا شركة أوراق مالية. المشاركة تعني اقتناء تقنية تعدين والتفاعل مع عقود ذكية تُنفَّذ ذاتيًا. النِّسب هي معدلات إصدار مبرمجة للرمز، لا منتجًا مصرفيًا ولا نتيجة مضمونة بالدولار؛ والأصول المشفّرة متقلّبة بطبيعتها.',
+      de: 'Nein. AiGenesis ist ein technologisches Ökosystem auf Blockchain-Basis — keine Finanzinstitution, keine Bank und kein Wertpapierhaus. Teilnehmen heißt, Mining-Technologie zu erwerben und mit Smart Contracts zu interagieren, die von selbst ausgeführt werden. Die Prozentsätze sind programmierte Ausgaberaten des Tokens, kein Bankprodukt und kein zugesichertes Ergebnis in Dollar; Krypto-Assets sind von Natur aus volatil.',
+      sr: 'Не. AiGenesis је технолошки екосистем на блокчејну — није финансијска институција, банка ни брокерска кућа. Учешће значи набавити технологију рударења и комуницирати са паметним уговорима који се извршавају сами. Проценти су програмиране стопе издавања токена, а не банкарски производ ни загарантован резултат у доларима; криптоимовина је по природи волатилна.',
+      ur: 'نہیں۔ AiGenesis بلاک چین پر مبنی ایک ٹیکنالوجی ایکو سسٹم ہے — کوئی مالیاتی ادارہ، بینک یا سیکیورٹیز فرم نہیں۔ شرکت کا مطلب ہے مائننگ ٹیکنالوجی حاصل کرنا اور خود چلنے والے سمارٹ کنٹریکٹس سے تعامل۔ فیصد پروٹوکول کے طے شدہ اجرا کی شرحیں ہیں، نہ بینکنگ پروڈکٹ نہ ڈالر میں یقینی نتیجہ؛ کرپٹو اثاثے فطرتاً غیر مستحکم ہیں۔',
+    },
+
+  /* ══════════════════════════════════════════════════════════════════
+     CORPUS · BOOSTER Y STAKING
+
+     TRES INSTRUCCIONES QUE SALVAN DINERO, y las tres se dicen igual de firme en
+     los once idiomas: «no repitas la compra», «guarda el hash» y «si cancelaste
+     la firma, no se movió nada». La tercera es la que más tranquiliza y la que
+     más se malinterpreta: cancelar en la wallet NO cobra.
+
+     UNA RESPUESTA QUE DICE «NO LO SÉ», y se traduce tal cual. La del binario
+     remite al equipo en vez de dar cifras, porque «un número equivocado sobre tu
+     compensación es peor que pedirte un paso más». Rellenar ese hueco al
+     traducir sería inventar un plan de compensación.
+     ══════════════════════════════════════════════════════════════════ */
+  'Pagué el booster y no se refleja en mi cuenta': {
+    en: 'I paid for the booster and it is not showing in my account',
+    pt: 'Paguei o booster e não se reflete na minha conta',
+    fr: 'J’ai payé le booster et il n’apparaît pas sur mon compte',
+    ru: 'Я оплатил booster, а в аккаунте он не отражается',
+    sv: 'Jag betalade boostern och den syns inte på mitt konto',
+    hr: 'Platio sam booster i ne vidi se na računu',
+    ar: 'دفعت الـ booster ولا يظهر في حسابي',
+    de: 'Ich habe den Booster bezahlt und er erscheint nicht in meinem Konto',
+    sr: 'Платио сам booster и не види се на налогу',
+    ur: 'میں نے booster کی ادائیگی کی اور یہ میرے اکاؤنٹ میں نہیں دکھتا',
+  },
+  'Primero: no repitas la compra ni reenvíes fondos. El pago del booster tiene dos pasos — la transacción en la cadena y el registro en el servidor — y a veces la cadena confirma antes de que el registro termine. Si el registro llega a fallar, el propio portal abre una incidencia en Soporte VIP con el hash de tu transacción para que el equipo la revise contra la cadena. Ten a mano ese hash: con él se reconstruye todo; sin él, no.':
+    {
+      en: 'First: do not repeat the purchase and do not resend funds. Paying for the booster has two steps — the on-chain transaction and the record on the server — and sometimes the chain confirms before the record finishes. If the record does fail, the portal itself opens a VIP Support case with your transaction hash so the team can check it against the chain. Keep that hash to hand: with it everything can be reconstructed; without it, nothing.',
+      pt: 'Primeiro: não repita a compra nem reenvie fundos. O pagamento do booster tem dois passos — a transação na cadeia e o registro no servidor — e às vezes a cadeia confirma antes de o registro terminar. Se o registro chegar a falhar, o próprio portal abre um chamado no Suporte VIP com o hash da sua transação para que a equipe o verifique contra a cadeia. Tenha esse hash à mão: com ele se reconstrói tudo; sem ele, não.',
+      fr: 'D’abord : ne répète pas l’achat et ne renvoie pas de fonds. Le paiement du booster comporte deux étapes — la transaction en chaîne et l’enregistrement sur le serveur — et parfois la chaîne confirme avant que l’enregistrement ne se termine. Si l’enregistrement échoue, le portail ouvre lui-même un ticket au Support VIP avec le hachage de ta transaction pour que l’équipe le vérifie face à la chaîne. Garde ce hachage sous la main : avec lui, tout se reconstitue ; sans lui, non.',
+      ru: 'Первое: не повторяй покупку и не отправляй средства снова. Оплата booster состоит из двух шагов — транзакция в сети и запись на сервере, — и иногда сеть подтверждает раньше, чем запись завершится. Если запись всё же не прошла, портал сам открывает обращение в VIP-поддержку с хешем твоей транзакции, чтобы команда сверила его с цепочкой. Держи этот хеш под рукой: с ним восстанавливается всё; без него — ничего.',
+      sv: 'Först: upprepa inte köpet och skicka inte pengar igen. Betalningen av boostern har två steg — transaktionen på kedjan och registreringen på servern — och ibland bekräftar kedjan innan registreringen hunnit klart. Om registreringen faktiskt misslyckas öppnar portalen själv ett ärende hos VIP-supporten med din transaktionshash, så teamet kan stämma av mot kedjan. Ha den hashen till hands: med den går allt att rekonstruera; utan den, inget.',
+      hr: 'Prvo: nemoj ponavljati kupnju ni ponovno slati sredstva. Plaćanje boostera ima dva koraka — transakciju na lancu i zapis na poslužitelju — i ponekad lanac potvrdi prije nego zapis završi. Ako zapis ipak zakaže, sam portal otvara slučaj u VIP podršci s hashom tvoje transakcije kako bi ga tim provjerio prema lancu. Drži taj hash pri ruci: s njim se sve rekonstruira; bez njega, ništa.',
+      ar: 'أولًا: لا تُكرّر الشراء ولا تُعِد إرسال الأموال. دفع الـ booster يتكوّن من خطوتين — المعاملة على السلسلة والتسجيل في الخادم — وأحيانًا تؤكّد السلسلة قبل أن ينتهي التسجيل. وإذا فشل التسجيل فعلًا، تفتح البوابة نفسها بلاغًا في دعم VIP مع hash معاملتك ليراجعه الفريق مقابل السلسلة. احتفظ بذلك الـ hash: به يُعاد بناء كل شيء؛ وبدونه، لا شيء.',
+      de: 'Zuerst: wiederhole den Kauf nicht und sende keine Mittel erneut. Die Booster-Zahlung hat zwei Schritte — die Transaktion auf der Chain und die Erfassung auf dem Server — und manchmal bestätigt die Chain, bevor die Erfassung fertig ist. Scheitert die Erfassung tatsächlich, öffnet das Portal selbst einen Vorgang im VIP-Support mit dem Hash deiner Transaktion, damit das Team ihn gegen die Chain prüft. Halte diesen Hash bereit: mit ihm lässt sich alles rekonstruieren; ohne ihn nichts.',
+      sr: 'Прво: немој понављати куповину ни поново слати средства. Плаћање boostera има два корака — трансакцију на ланцу и запис на серверу — и понекад ланац потврди пре него што запис заврши. Ако запис ипак закаже, сам портал отвара случај у VIP подршци са hash-ом твоје трансакције како би га тим проверио према ланцу. Држи тај hash при руци: с њим се све реконструише; без њега, ништа.',
+      ur: 'پہلے: خریداری نہ دہرائیں اور نہ دوبارہ رقم بھیجیں۔ booster کی ادائیگی کے دو مرحلے ہیں — چین پر ٹرانزیکشن اور سرور پر اندراج — اور کبھی چین اندراج مکمل ہونے سے پہلے تصدیق کر دیتی ہے۔ اگر اندراج واقعی ناکام ہو تو پورٹل خود VIP سپورٹ میں آپ کی ٹرانزیکشن کے hash کے ساتھ کیس کھول دیتا ہے تاکہ ٹیم اسے چین سے ملا کر دیکھے۔ وہ hash پاس رکھیں: اُس سے سب کچھ دوبارہ بنایا جا سکتا ہے؛ اُس کے بغیر کچھ نہیں۔',
+    },
+  'Cancelé la firma en la wallet — ¿se cobró algo?': {
+    en: 'I cancelled the signature in my wallet — was I charged anything?',
+    pt: 'Cancelei a assinatura na carteira — foi cobrado algo?',
+    fr: 'J’ai annulé la signature dans le portefeuille — ai-je été débité ?',
+    ru: 'Я отменил подпись в кошельке — списалось что-нибудь?',
+    sv: 'Jag avbröt signeringen i plånboken — drogs något?',
+    hr: 'Otkazao sam potpis u novčaniku — je li nešto naplaćeno?',
+    ar: 'ألغيت التوقيع في المحفظة — هل خُصم شيء؟',
+    de: 'Ich habe die Signatur in der Wallet abgebrochen — wurde etwas abgebucht?',
+    sr: 'Отказао сам потпис у новчанику — да ли је нешто наплаћено?',
+    ur: 'میں نے والٹ میں دستخط منسوخ کیا — کیا کچھ کٹا؟',
+  },
+  'No. Si cancelas la firma en tu wallet, la transacción nunca sale: no se mueve nada y no hay nada que revertir. Puedes intentarlo de nuevo cuando quieras. Solo si FIRMASTE y luego algo falló vale la pena revisar: en ese caso guarda el hash de la transacción y escribe a soporte con él.':
+    {
+      en: 'No. If you cancel the signature in your wallet, the transaction never goes out: nothing moves and there is nothing to reverse. You can try again whenever you want. Only if you DID sign and something failed afterwards is it worth reviewing: in that case keep the transaction hash and write to support with it.',
+      pt: 'Não. Se você cancela a assinatura na sua carteira, a transação nunca sai: nada se move e não há nada a reverter. Pode tentar de novo quando quiser. Só se você ASSINOU e depois algo falhou vale a pena revisar: nesse caso guarde o hash da transação e escreva ao suporte com ele.',
+      fr: 'Non. Si tu annules la signature dans ton portefeuille, la transaction ne part jamais : rien ne bouge et il n’y a rien à annuler. Tu peux réessayer quand tu veux. Ce n’est que si tu AS signé et qu’ensuite quelque chose a échoué qu’il faut vérifier : dans ce cas, garde le hachage de la transaction et écris au support avec.',
+      ru: 'Нет. Если ты отменяешь подпись в кошельке, транзакция вообще не уходит: ничего не двигается и отменять нечего. Можешь попробовать снова когда угодно. Проверять стоит только если ты ПОДПИСАЛ, а потом что-то не сработало: тогда сохрани хеш транзакции и напиши в поддержку с ним.',
+      sv: 'Nej. Om du avbryter signeringen i plånboken går transaktionen aldrig iväg: inget flyttas och det finns inget att återkalla. Du kan försöka igen när du vill. Bara om du VERKLIGEN signerade och något sedan gick fel är det värt att titta på: spara i så fall transaktionshashen och skriv till supporten med den.',
+      hr: 'Ne. Ako otkažeš potpis u svom novčaniku, transakcija nikad ne izađe: ništa se ne pomiče i nema što poništiti. Možeš pokušati ponovno kad želiš. Samo ako si POTPISAO pa je zatim nešto zakazalo vrijedi provjeriti: u tom slučaju sačuvaj hash transakcije i javi se podršci s njim.',
+      ar: 'لا. إذا ألغيت التوقيع في محفظتك، فالمعاملة لا تخرج أصلًا: لا يتحرك شيء ولا يوجد ما يُعكس. يمكنك المحاولة مجددًا متى شئت. فقط إذا كنت قد وقّعت ثم فشل شيء بعد ذلك يستحق الأمر المراجعة: عندها احتفظ بـ hash المعاملة وراسل الدعم به.',
+      de: 'Nein. Wenn du die Signatur in deiner Wallet abbrichst, geht die Transaktion gar nicht erst raus: Es bewegt sich nichts und es gibt nichts rückgängig zu machen. Du kannst es jederzeit erneut versuchen. Nur wenn du signiert hast und danach etwas fehlschlug, lohnt eine Prüfung: Bewahre in dem Fall den Transaktions-Hash auf und schreib damit an den Support.',
+      sr: 'Не. Ако откажеш потпис у свом новчанику, трансакција никад не изађе: ништа се не помера и нема шта да се поништи. Можеш покушати поново кад желиш. Само ако си ПОТПИСАО па је затим нешто пошло по злу вреди проверити: у том случају сачувај hash трансакције и јави се подршци с њим.',
+      ur: 'نہیں۔ اگر آپ اپنے والٹ میں دستخط منسوخ کرتے ہیں تو ٹرانزیکشن نکلتی ہی نہیں: کچھ نہیں ہلتا اور واپس کرنے کو کچھ نہیں۔ جب چاہیں دوبارہ کوشش کریں۔ صرف اُس صورت میں دیکھنا بنتا ہے جب آپ نے دستخط کیا ہو اور اس کے بعد کچھ ناکام ہوا ہو: تب ٹرانزیکشن کا hash محفوظ رکھیں اور اُسی کے ساتھ سپورٹ کو لکھیں۔',
+    },
+  '¿Qué es el rebooster?': {
+    en: 'What is the rebooster?', pt: 'O que é o rebooster?',
+    fr: 'Qu’est-ce que le rebooster ?', ru: 'Что такое rebooster?',
+    sv: 'Vad är rebooster?', hr: 'Što je rebooster?',
+    ar: 'ما هو الـ rebooster؟', de: 'Was ist der Rebooster?',
+    sr: 'Шта је rebooster?', ur: 'rebooster کیا ہے؟',
+  },
+  'Es la reinversión desde tu saldo de booster: en lugar de traer fondos nuevos desde la wallet, usas lo ya generado para reforzar el paquete. Tras confirmar, el registro sigue el mismo camino que una compra de booster — así que si algo no se refleja, aplica lo mismo: no repitas la operación y guarda el detalle de la confirmación para soporte.':
+    {
+      en: 'It is reinvestment from your booster balance: instead of bringing new funds from the wallet, you use what has already been generated to reinforce the pack. After confirming, the record follows the same path as a booster purchase — so if something does not show up, the same applies: do not repeat the operation and keep the confirmation details for support.',
+      pt: 'É o reinvestimento a partir do seu saldo de booster: em vez de trazer fundos novos da carteira, você usa o já gerado para reforçar o pacote. Após confirmar, o registro segue o mesmo caminho de uma compra de booster — então, se algo não se refletir, aplica-se o mesmo: não repita a operação e guarde o detalhe da confirmação para o suporte.',
+      fr: 'C’est le réinvestissement depuis ton solde de booster : au lieu d’apporter de nouveaux fonds depuis le portefeuille, tu utilises ce qui a déjà été généré pour renforcer le pack. Après confirmation, l’enregistrement suit le même chemin qu’un achat de booster — donc si quelque chose n’apparaît pas, c’est pareil : ne répète pas l’opération et garde le détail de la confirmation pour le support.',
+      ru: 'Это реинвестирование из твоего баланса booster: вместо того чтобы заводить новые средства из кошелька, ты используешь уже начисленное, чтобы усилить пакет. После подтверждения запись идёт тем же путём, что и покупка booster — так что если что-то не отражается, работает то же правило: не повторяй операцию и сохрани детали подтверждения для поддержки.',
+      sv: 'Det är återinvestering från ditt boostersaldo: i stället för att föra in nya medel från plånboken använder du det som redan genererats för att förstärka paketet. Efter bekräftelsen följer registreringen samma väg som ett boosterköp — så om något inte syns gäller samma sak: upprepa inte operationen och spara bekräftelsens detaljer till supporten.',
+      hr: 'To je reinvestiranje iz tvog stanja boostera: umjesto da dovodiš nova sredstva iz novčanika, koristiš već ostvareno za jačanje paketa. Nakon potvrde zapis ide istim putem kao kupnja boostera — pa ako se nešto ne vidi, vrijedi isto: nemoj ponavljati operaciju i sačuvaj detalje potvrde za podršku.',
+      ar: 'هو إعادة استثمار من رصيد الـ booster لديك: بدل جلب أموال جديدة من المحفظة، تستخدم ما تولّد بالفعل لتعزيز الباقة. بعد التأكيد يسلك التسجيل المسار نفسه لشراء booster — فإذا لم يظهر شيء، ينطبق الأمر ذاته: لا تُكرّر العملية واحتفظ بتفاصيل التأكيد للدعم.',
+      de: 'Das ist die Reinvestition aus deinem Booster-Guthaben: statt neue Mittel aus der Wallet zu holen, nutzt du das bereits Erzeugte, um das Paket zu verstärken. Nach dem Bestätigen geht die Erfassung denselben Weg wie ein Booster-Kauf — wenn also etwas nicht erscheint, gilt dasselbe: wiederhole den Vorgang nicht und bewahre die Bestätigungsdetails für den Support auf.',
+      sr: 'То је реинвестирање из твог стања boostera: уместо да доводиш нова средства из новчаника, користиш већ остварено да ојачаш пакет. Након потврде запис иде истим путем као куповина boostera — па ако се нешто не види, важи исто: немој понављати операцију и сачувај детаље потврде за подршку.',
+      ur: 'یہ آپ کے booster بیلنس سے دوبارہ سرمایہ کاری ہے: والٹ سے نئی رقم لانے کے بجائے آپ پہلے سے بنی رقم سے پیکج مضبوط کرتے ہیں۔ تصدیق کے بعد اندراج booster کی خریداری والا ہی راستہ لیتا ہے — تو اگر کچھ ظاہر نہ ہو تو وہی اصول: عمل نہ دہرائیں اور تصدیق کی تفصیل سپورٹ کے لیے محفوظ رکھیں۔',
+    },
+  '¿Cómo se calcula la compensación del binario y los equipos?': {
+    en: 'How is the binary and team compensation calculated?',
+    pt: 'Como se calcula a compensação do binário e das equipes?',
+    fr: 'Comment se calcule la rémunération du binaire et des équipes ?',
+    ru: 'Как рассчитывается вознаграждение по бинару и командам?',
+    sv: 'Hur beräknas ersättningen för binären och teamen?',
+    hr: 'Kako se računa naknada za binarni sustav i timove?',
+    ar: 'كيف تُحتسب مكافأة النظام الثنائي والفرق؟',
+    de: 'Wie wird die Binär- und Team-Vergütung berechnet?',
+    sr: 'Како се рачуна накнада за бинарни систем и тимове?',
+    ur: 'بائنری اور ٹیموں کا معاوضہ کیسے نکالا جاتا ہے؟',
+  },
+  'Los porcentajes y condiciones exactos del plan de compensación los confirma el equipo por los canales oficiales — preferimos no publicarte una cifra aquí sin esa confirmación, porque un número equivocado sobre tu compensación es peor que pedirte un paso más. Escríbenos por el canal oficial con tu usuario y te lo detallan sobre tu caso.':
+    {
+      en: 'The exact percentages and conditions of the compensation plan are confirmed by the team through the official channels — we would rather not publish a figure here without that confirmation, because a wrong number about your compensation is worse than asking you for one more step. Write to us through the official channel with your username and they will detail it for your case.',
+      pt: 'As porcentagens e condições exatas do plano de compensação são confirmadas pela equipe pelos canais oficiais — preferimos não publicar uma cifra aqui sem essa confirmação, porque um número errado sobre sua compensação é pior do que lhe pedir um passo a mais. Escreva-nos pelo canal oficial com seu usuário e detalham para o seu caso.',
+      fr: 'Les pourcentages et conditions exacts du plan de rémunération sont confirmés par l’équipe via les canaux officiels — nous préférons ne pas publier un chiffre ici sans cette confirmation, car un mauvais nombre sur ta rémunération est pire que de te demander une étape de plus. Écris-nous par le canal officiel avec ton identifiant et on te le détaillera pour ton cas.',
+      ru: 'Точные проценты и условия плана вознаграждения подтверждает команда по официальным каналам — мы предпочитаем не публиковать здесь цифру без такого подтверждения, потому что неверное число о твоём вознаграждении хуже, чем просьба сделать ещё один шаг. Напиши нам по официальному каналу с твоим логином, и тебе распишут по твоему случаю.',
+      sv: 'De exakta procentsatserna och villkoren i ersättningsplanen bekräftas av teamet via de officiella kanalerna — vi publicerar hellre ingen siffra här utan den bekräftelsen, eftersom ett felaktigt tal om din ersättning är värre än att be dig om ett steg till. Skriv till oss via den officiella kanalen med ditt användarnamn så går de igenom det för ditt fall.',
+      hr: 'Točne postotke i uvjete plana naknada potvrđuje tim putem službenih kanala — radije ne objavljujemo brojku ovdje bez te potvrde, jer je pogrešan broj o tvojoj naknadi gori nego da te zamolimo za jedan korak više. Javi nam se službenim kanalom sa svojim korisničkim imenom i razradit će ti to za tvoj slučaj.',
+      ar: 'النِّسب والشروط الدقيقة لخطة المكافآت يؤكّدها الفريق عبر القنوات الرسمية — نفضّل ألا ننشر لك رقمًا هنا دون ذلك التأكيد، لأن رقمًا خاطئًا عن مكافأتك أسوأ من أن نطلب منك خطوة إضافية. راسلنا عبر القناة الرسمية باسم المستخدم الخاص بك وسيوضّحونه لحالتك.',
+      de: 'Die genauen Prozentsätze und Bedingungen des Vergütungsplans bestätigt das Team über die offiziellen Kanäle — wir veröffentlichen hier lieber keine Zahl ohne diese Bestätigung, denn eine falsche Zahl zu deiner Vergütung ist schlimmer, als dich um einen Schritt mehr zu bitten. Schreib uns über den offiziellen Kanal mit deinem Benutzernamen, dann wird es für deinen Fall aufgeschlüsselt.',
+      sr: 'Тачне проценте и услове плана накнада потврђује тим путем званичних канала — радије не објављујемо бројку овде без те потврде, јер је погрешан број о твојој накнади гори него да те замолимо за један корак више. Јави нам се званичним каналом са својим корисничким именом и разрадиће ти то за твој случај.',
+      ur: 'معاوضے کے پلان کے درست فیصد اور شرائط ٹیم سرکاری چینلز پر تصدیق کرتی ہے — ہم اُس تصدیق کے بغیر یہاں کوئی عدد شائع نہیں کرنا چاہتے، کیونکہ آپ کے معاوضے کے بارے میں غلط عدد ایک اضافی قدم مانگنے سے بدتر ہے۔ سرکاری چینل پر اپنے صارف نام کے ساتھ لکھیں، وہ آپ کے کیس کے مطابق تفصیل دیں گے۔',
+    },
+
   /* ── el Aula: el material grabado dentro del asistente ─────────────
      OJO CON «Idioma del material»: es lo único que separa el idioma de la
      INTERFAZ del idioma del ARCHIVO. Traducido flojo —«Idioma», a secas— la

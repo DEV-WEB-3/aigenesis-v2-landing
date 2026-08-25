@@ -24,11 +24,36 @@ const ts = require_('typescript')
 rmSync(salida, { recursive: true, force: true })
 mkdirSync(salida, { recursive: true })
 const fuente = resolve(raiz, 'lib', 'soporte')
+
+/* El corpus depende de `official-links` desde que la direccion del contrato del
+   AiG se deriva de la fuente unica en vez de escribirse a mano. Sin compilar ese
+   modulo y reescribir su alias, el `require` no resuelve fuera de Next. */
+const reescribir = (js) =>
+  js
+    .split('"@/lib/official-links"')
+    .join('"./official-links"')
+    .split("'@/lib/official-links'")
+    .join("'./official-links'")
+    .split('"@/lib/rutaPublica"')
+    .join('"./rutaPublica"')
+    .split("'@/lib/rutaPublica'")
+    .join("'./rutaPublica'")
+
+for (const [rel, nombre] of [
+  ['lib/rutaPublica.ts', 'rutaPublica.js'],
+  ['lib/official-links.ts', 'official-links.js'],
+]) {
+  const { outputText } = ts.transpileModule(readFileSync(resolve(raiz, rel), 'utf8'), {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
+  })
+  writeFileSync(join(salida, nombre), reescribir(outputText), 'utf8')
+}
+
 for (const n of readdirSync(fuente).filter((x) => x.endsWith('.ts'))) {
   const { outputText } = ts.transpileModule(readFileSync(join(fuente, n), 'utf8'), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
   })
-  writeFileSync(join(salida, n.replace(/\.ts$/, '.js')), outputText, 'utf8')
+  writeFileSync(join(salida, n.replace(/\.ts$/, '.js')), reescribir(outputText), 'utf8')
 }
 
 const { TODAS_LAS_PREGUNTAS } = require_(join(salida, 'buscar.js'))

@@ -223,6 +223,49 @@ comprobar('ninguna traducción tiene caracteres de un alfabeto ajeno', () => {
   assert.doesNotMatch('от общей суммы', AJENO, 'control: el detector marca el ruso legítimo')
 })
 
+comprobar('ninguna palabra mezcla cirílico con latín', () => {
+  /*
+   * EL SEGUNDO FALLO DEL MISMO TIPO, y el anterior no lo veía.
+   *
+   * Escribí «закașало» en serbio: una `ș` rumana (latina, con coma abajo) dentro
+   * de una palabra cirílica. La comprobación de arriba no la vio porque sólo
+   * buscaba CJK — y esto es alfabeto latino, que en un diccionario de once
+   * idiomas es perfectamente legítimo... salvo DENTRO de una palabra cirílica.
+   *
+   * Ésta es la trampa de verdad: los teclados y los correctores meten letras
+   * latinas de aspecto idéntico —`а`/`a`, `е`/`e`, `о`/`o`, `с`/`c`— y la
+   * palabra queda visualmente perfecta y textualmente rota. Nadie la encuentra
+   * leyendo; sólo falla al buscar.
+   *
+   * Se comprueban sólo el ruso y el serbio, que son los dos idiomas cirílicos
+   * del diccionario. Se permiten palabras enteramente latinas —los nombres
+   * propios como `MetaMask` o `AiG` no se traducen— y se marca únicamente la
+   * MEZCLA dentro de una misma palabra.
+   */
+  const D = require_(join(salida, 'diccionario.js'))
+  const tabla = Object.assign({}, ...Object.values(D).filter((v) => v && typeof v === 'object'))
+  const mezcladas = []
+  for (const [clave, fila] of Object.entries(tabla)) {
+    if (!fila || typeof fila !== 'object') continue
+    for (const idioma of ['ru', 'sr']) {
+      const texto = fila[idioma]
+      if (typeof texto !== 'string') continue
+      for (const palabra of texto.split(/[\s.,;:!?()«»"'—–\-/]+/)) {
+        if (!palabra) continue
+        const cir = /[Ѐ-ӿ]/.test(palabra)
+        const lat = /[A-Za-zÀ-ÖØ-öø-ÿĀ-ſ]/.test(palabra)
+        if (cir && lat) mezcladas.push(`${idioma} «${palabra}» en: ${clave.slice(0, 36)}`)
+      }
+    }
+  }
+  assert.deepEqual(mezcladas, [], 'palabras que mezclan alfabetos:\n   ' + mezcladas.join('\n   '))
+  /* Control de instrumento sobre el caso real que lo motivó. */
+  const mezcla = (p) => /[Ѐ-ӿ]/.test(p) && /[A-Za-zÀ-ÖØ-öø-ÿĀ-ſ]/.test(p)
+  assert.ok(mezcla('закașало'), 'control: el detector de mezcla no muerde')
+  assert.ok(!mezcla('пошло'), 'control: marca cirílico limpio')
+  assert.ok(!mezcla('MetaMask'), 'control: marca un nombre propio latino')
+})
+
 console.log('')
 if (fallos.length) {
   console.error('idioma: ' + fallos.length + ' comprobación(es) fallaron')
