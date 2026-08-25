@@ -36,9 +36,28 @@ on:
       - '.github/workflows/desplegar-hostinger-g1.yml'
   workflow_dispatch: # también a mano, desde la pestaña Actions
 
+# LOS DESPLIEGUES HACEN COLA, NO SE PISAN.
+#
+# Aquí ponía `cancel-in-progress: true`, que es lo correcto cuando un job sólo
+# calcula: si llega un commit más nuevo, el viejo sobra. Éste no calcula, ESCRIBE
+# — y escribe archivo por archivo directamente en el directorio vivo, sin
+# carpeta temporal ni intercambio final (`scripts/desplegar-hosting.mjs`, un
+# `curl --upload-file` por archivo).
+#
+# Cancelar a media subida deja el sitio MEZCLADO: parte de los archivos del
+# build nuevo y parte del viejo. Y como los chunks de Next llevan el hash del
+# contenido en el nombre, el HTML nuevo pide chunks que aún no se han subido:
+# no es una página desactualizada, es una página en blanco.
+#
+# Lo descubrí a punto de empujar mientras un despliegue estaba exactamente en el
+# paso «Subir a Hostinger». Con la cola, el segundo push espera; se tarda más y
+# no hay ninguna ventana en la que producción esté a medio escribir.
+#
+# Si algún día la subida se vuelve atómica (subir a un directorio aparte y
+# renombrar al final), esto puede volver a `true`.
 concurrency:
   group: hostinger-g1
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   desplegar:
