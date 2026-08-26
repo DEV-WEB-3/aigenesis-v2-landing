@@ -33,11 +33,30 @@ import { G1 } from '@/lib/design/g1'
  */
 type Credential = { label: string; issuer: string; href?: string }
 
+/**
+ * FUERA «FSC Mauritius — Lic. GB21026474» (26-ago-2026). NO fue una decisión de
+ * estilo: el número está REFUTADO en la fuente primaria.
+ *
+ * El aviso público de la Financial Services Commission de Mauricio del 27 de
+ * marzo de 2024 dice que la licencia de Investment Dealer (Broker) nº GB21026474
+ * era de **Pure North Markets Ltd** y que «stands terminated with effect from 18
+ * March 2024». No es nuestra invención —TAG Markets lo publica como propio— pero
+ * lo repetíamos aquí sin haberlo buscado en el registro del emisor, y esta franja
+ * sale en el pie de TODAS las páginas de g1.
+ *
+ * Queda una hipótesis benigna sin cerrar: que Pure North se renombrara T.M.
+ * Financials conservando la licencia. El aviso habla de entrega y terminación,
+ * no de renombre. Se vuelve a poner el día que la alianza entregue el certificado
+ * vigente a nombre de la entidad correcta, y no antes.
+ *
+ * LA REGLA QUE DEJA: una credencial de tercero se muestra CON su número sólo si
+ * alguien la buscó en el registro del emisor. «Atribuido, no certificado» protege
+ * de avalar algo cierto; no protege de publicar un número falso.
+ */
 const ALIANZA: Credential[] = [
   { label: 'Aitech One', issuer: 'comunidad / ecosistema' },
   { label: 'TAG Markets', issuer: 'bróker' },
   { label: 'Lloyd’s of London', issuer: 'fondo de cobertura' },
-  { label: 'FSC Mauritius', issuer: 'Lic. GB21026474' },
   { label: 'DASP · El Salvador', issuer: 'exchange (Bit1)' },
   { label: 'MSB · Canadá', issuer: 'exchange (Bit1)' },
 ]
@@ -54,7 +73,13 @@ export function CredentialStrip({
 }) {
   const c = useCorpus()
   const titulo = c('Respaldo — según la documentación oficial de cada entidad')
-  const pie = c('Génesis muestra estas credenciales de terceros y enlaza a su fuente. No las certifica.')
+  /* EL PIE DECÍA «y enlaza a su fuente» Y NO HABÍA UN SOLO ENLACE. Los `href` se
+     aplazaron a «F3» y nunca se pusieron: los seis elementos salían sin `href`,
+     así que la frase afirmaba en producción algo que no ocurría. Se cambia por lo
+     que la franja hace de verdad —mostrar lo declarado— y se remata pidiendo la
+     verificación en el registro, que es lo único que resuelve de verdad y es lo
+     que ya hace el corpus del asistente. */
+  const pie = c('Génesis muestra estas credenciales de terceros tal como las declara cada entidad. No las certifica: verifícalas en el registro oficial correspondiente.')
   const rotulo = c('Credenciales de la alianza')
 
   const cuerpo = (

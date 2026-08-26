@@ -1961,17 +1961,20 @@ export const DICCIONARIO: Record<string, Fila> = {
     sr: 'Подршка — према званичној документацији сваког субјекта',
     ur: 'پشت پناہی — ہر ادارے کی سرکاری دستاویزات کے مطابق',
   },
-  'Génesis muestra estas credenciales de terceros y enlaza a su fuente. No las certifica.': {
-    en: 'Génesis displays these third-party credentials and links to their source. It does not certify them.',
-    pt: 'A Génesis exibe estas credenciais de terceiros e remete à sua fonte. Não as certifica.',
-    fr: 'Génesis présente ces accréditations de tiers et renvoie à leur source. Elle ne les certifie pas.',
-    ru: 'Génesis показывает эти сторонние документы и ссылается на их источник. Она их не заверяет.',
-    sv: 'Génesis visar dessa tredjepartsintyg och länkar till källan. Vi intygar dem inte.',
-    hr: 'Génesis prikazuje ove vjerodajnice trećih strana i povezuje na njihov izvor. Ne potvrđuje ih.',
-    ar: 'تعرض Génesis اعتمادات الأطراف الثالثة هذه وتحيل إلى مصدرها. وهي لا تصادق عليها.',
-    de: 'Génesis zeigt diese Nachweise Dritter und verlinkt auf deren Quelle. Sie zertifiziert sie nicht.',
-    sr: 'Génesis приказује ове акредитиве трећих страна и повезује на њихов извор. Не потврђује их.',
-    ur: 'Génesis یہ فریقِ ثالث کی اسناد دکھاتا ہے اور ان کے ماخذ سے منسلک کرتا ہے۔ ان کی تصدیق نہیں کرتا۔',
+  /* La versión anterior de este pie prometía «y enlaza a su fuente» mientras los
+     seis elementos salían sin un solo `href`. Se sustituye por lo que la franja
+     hace de verdad y se remata pidiendo la verificación en el registro. */
+  'Génesis muestra estas credenciales de terceros tal como las declara cada entidad. No las certifica: verifícalas en el registro oficial correspondiente.': {
+    en: 'Génesis displays these third-party credentials as each entity declares them. It does not certify them: verify them in the relevant official register.',
+    pt: 'A Génesis exibe estas credenciais de terceiros tal como cada entidade as declara. Não as certifica: verifique-as no registro oficial correspondente.',
+    fr: 'Génesis présente ces accréditations de tiers telles que chaque entité les déclare. Elle ne les certifie pas : vérifiez-les dans le registre officiel correspondant.',
+    ru: 'Génesis показывает эти сторонние документы так, как их заявляет каждая организация. Она их не заверяет: проверьте их в соответствующем официальном реестре.',
+    sv: 'Génesis visar dessa tredjepartsintyg så som varje enhet uppger dem. Vi intygar dem inte: kontrollera dem i respektive officiellt register.',
+    hr: 'Génesis prikazuje ove vjerodajnice trećih strana onako kako ih navodi svaki subjekt. Ne potvrđuje ih: provjeri ih u odgovarajućem službenom registru.',
+    ar: 'تعرض Génesis اعتمادات الأطراف الثالثة هذه كما تُصرّح بها كل جهة. وهي لا تصادق عليها: تحقّق منها في السجل الرسمي المعني.',
+    de: 'Génesis zeigt diese Nachweise Dritter so, wie sie die jeweilige Stelle angibt. Sie zertifiziert sie nicht: Prüfe sie im jeweiligen amtlichen Register.',
+    sr: 'Génesis приказује ове акредитиве трећих страна онако како их наводи сваки субјекат. Не потврђује их: провери их у одговарајућем званичном регистру.',
+    ur: 'Génesis یہ فریقِ ثالث کی اسناد ویسے ہی دکھاتا ہے جیسے ہر ادارہ اُنہیں بیان کرتا ہے۔ ان کی تصدیق نہیں کرتا: انہیں متعلقہ سرکاری رجسٹر میں جانچیں۔',
   },
   'Credenciales de la alianza': {
     en: 'Alliance credentials', pt: 'Credenciais da aliança', fr: 'Accréditations de l’alliance',

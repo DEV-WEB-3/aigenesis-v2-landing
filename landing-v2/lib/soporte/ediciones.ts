@@ -346,6 +346,31 @@ const PLAN: Edicion = {
  */
 const PDF_ALIANZA = 'https://aigenesis.io/media/aula/alianza'
 
+/**
+ * VERSIÓN DE LA URL DEL MAZO — y no es cosmética, igual que en `VIDEOTECA`.
+ *
+ * El 26-ago-2026 se sustituyeron los QR de las páginas 11 y 19 de los cinco
+ * idiomas: apuntaban a un acortador (`qrfy.io`) que había caducado y devolvía un
+ * 404, y ahora van directos al historial de myfxbook. Se subieron los cinco
+ * archivos con el mismo nombre, y ahí apareció el problema conocido: la CDN de
+ * Hostinger tenía copias en el borde y siguió sirviendo el PDF viejo en `en`,
+ * `pt` y `sr` mientras servía el nuevo en `es` y `de`. Medido pidiendo los cinco
+ * y comparando su md5 contra el del archivo subido.
+ *
+ * El resultado sin esto no es «tarda en actualizarse»: es que DOS USUARIOS VEN
+ * COSAS DISTINTAS según a qué borde caigan, y uno de los dos escanea un código
+ * muerto. Purgar el borde no se puede desde aquí.
+ *
+ * Con el parámetro, la URL es otra para la CDN, llega a Apache y sale el archivo
+ * nuevo. Comprobado: con `?v2` los cinco idiomas devuelven el md5 correcto.
+ *
+ * Se sube este número cada vez que se reemplace un PDF conservando su nombre.
+ */
+const VERSION_ALIANZA = 'v2'
+
+/** La URL de descarga de un mazo, con su versión para saltarse el borde. */
+const pdfAlianza = (codigo: string) => `${PDF_ALIANZA}/${codigo}.pdf?${VERSION_ALIANZA}`
+
 const ALIANZA: Edicion = {
   id: 'edicion-plan-alianza',
   titulo: 'El plan de negocio de la alianza',
@@ -363,11 +388,11 @@ const ALIANZA: Edicion = {
    * fotograma a fotograma que son ESTE deck —Aitech One— y no el de AiGenesis.
    */
   piezas: {
-    es: { ...VIDEO_ALIANZA.es, pdf: `${PDF_ALIANZA}/es.pdf`, mb: 4.1 },
-    en: { ...VIDEO_ALIANZA.en, pdf: `${PDF_ALIANZA}/en.pdf`, mb: 4.3 },
-    pt: { ...VIDEO_ALIANZA.pt, pdf: `${PDF_ALIANZA}/pt.pdf`, mb: 4.4 },
-    de: { video: null, segundos: null, pdf: `${PDF_ALIANZA}/de.pdf`, mb: 4.4 },
-    sr: { video: null, segundos: null, pdf: `${PDF_ALIANZA}/sr.pdf`, mb: 4.4 },
+    es: { ...VIDEO_ALIANZA.es, pdf: pdfAlianza('es'), mb: 4.1 },
+    en: { ...VIDEO_ALIANZA.en, pdf: pdfAlianza('en'), mb: 4.3 },
+    pt: { ...VIDEO_ALIANZA.pt, pdf: pdfAlianza('pt'), mb: 4.4 },
+    de: { video: null, segundos: null, pdf: pdfAlianza('de'), mb: 4.4 },
+    sr: { video: null, segundos: null, pdf: pdfAlianza('sr'), mb: 4.4 },
   },
 }
 
