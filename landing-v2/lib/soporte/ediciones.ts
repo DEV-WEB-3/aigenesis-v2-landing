@@ -246,7 +246,17 @@ const ACCESO: Edicion = {
  * CONGELADO por decisión del owner — no se vuelve a renderizar; sólo se comprime
  * para la web, que no toca el original.
  */
-const VIDEO_PLAN: Readonly<Record<string, { video: string; segundos: number }>> = {
+/*
+ * EL NOMBRE LO DECÍA Y NO LO LEÍ: `apps/aitech-one-pitch`. Este video es el
+ * pitch de AITECH ONE —la alianza—, no la presentación de AiGenesis, y aun así
+ * lo colgué de la edición de AiGenesis al crear la de la alianza. Lo confirmé
+ * extrayendo fotogramas: logos AITECH/GENESIS, BixCard, la estructura de la red,
+ * y `aitechone.io` al pie de cada lámina.
+ *
+ * Se renombra para que la próxima persona no tenga que abrir el video para saber
+ * de qué edición es.
+ */
+const VIDEO_ALIANZA: Readonly<Record<string, { video: string; segundos: number }>> = {
   es: { video: 'plan-de-negocio/720/es.mp4', segundos: 881 },
   en: { video: 'plan-de-negocio/720/en.mp4', segundos: 852 },
   pt: { video: 'plan-de-negocio/720/pt.mp4', segundos: 875 },
@@ -277,12 +287,26 @@ const PLAN: Edicion = {
        * que la ficha sabe enseñar: apagado, y visible.
        */
       const doc: ArchivoPrensa | undefined = PRESS_V5[codigo as keyof typeof PRESS_V5]
-      const v = VIDEO_PLAN[codigo]
+      /*
+       * ESTA EDICIÓN NO TIENE VIDEO, Y NUNCA LO TUVO.
+       *
+       * Aquí se leía `VIDEO_PLAN`, los tres archivos de `plan-de-negocio/`. Al
+       * mirarlos —extrayendo fotogramas, no fiándome del nombre de la carpeta—
+       * resultó que NO son la presentación de AiGenesis: son la de la ALIANZA.
+       * Logos AITECH/GENESIS, BixCard, la estructura de Aitech One, y el pie de
+       * cada lámina dice `aitechone.io`.
+       *
+       * O sea que durante días la edición de AiGenesis ofrecía un video que
+       * hablaba de otra cosa, y la de la alianza —que es donde encaja— no tenía
+       * ninguno. El nombre de la carpeta decía «plan-de-negocio» y yo asumí de
+       * cuál. Los archivos se movieron a `ALIANZA`; esta edición es lo que
+       * siempre fue: la presentación corporativa de AiGenesis, en PDF.
+       */
       return [
         codigo,
         {
-          video: v?.video ?? null,
-          segundos: v?.segundos ?? null,
+          video: null,
+          segundos: null,
           pdf: doc?.archivo,
           mb: doc?.mb,
           rtl: doc?.rtl,
@@ -330,11 +354,19 @@ const ALIANZA: Edicion = {
   /* Habla de apalancamiento, de resultados y de capital operativo. El aviso de
      riesgo no es opcional en una ficha así. */
   avisoRiesgo: true,
+  /*
+   * VIDEO EN TRES IDIOMAS Y DOCUMENTO EN CINCO, y no coinciden a propósito: el
+   * video existe grabado en es/en/pt y el deck está maquetado además en alemán y
+   * serbio. Los dos huecos se enseñan apagados en vez de ocultarse.
+   *
+   * Los archivos de video son los que estaban en `plan-de-negocio/`: comprobado
+   * fotograma a fotograma que son ESTE deck —Aitech One— y no el de AiGenesis.
+   */
   piezas: {
-    es: { video: null, segundos: null, pdf: `${PDF_ALIANZA}/es.pdf`, mb: 4.1 },
-    en: { video: null, segundos: null, pdf: `${PDF_ALIANZA}/en.pdf`, mb: 4.3 },
+    es: { ...VIDEO_ALIANZA.es, pdf: `${PDF_ALIANZA}/es.pdf`, mb: 4.1 },
+    en: { ...VIDEO_ALIANZA.en, pdf: `${PDF_ALIANZA}/en.pdf`, mb: 4.3 },
+    pt: { ...VIDEO_ALIANZA.pt, pdf: `${PDF_ALIANZA}/pt.pdf`, mb: 4.4 },
     de: { video: null, segundos: null, pdf: `${PDF_ALIANZA}/de.pdf`, mb: 4.4 },
-    pt: { video: null, segundos: null, pdf: `${PDF_ALIANZA}/pt.pdf`, mb: 4.4 },
     sr: { video: null, segundos: null, pdf: `${PDF_ALIANZA}/sr.pdf`, mb: 4.4 },
   },
 }

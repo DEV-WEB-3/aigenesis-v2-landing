@@ -242,7 +242,18 @@ comprobar('cada video declarado apunta a SU edición y SU idioma', () => {
    *
    * La ruta lleva la edición y el idioma dentro, así que se puede comprobar.
    */
-  const carpeta = { 'edicion-acceso-cuenta': 'acceso-cuenta', 'edicion-plan-de-negocio': 'plan-de-negocio' }
+  /*
+   * LA CARPETA NO SIEMPRE SE LLAMA COMO LA EDICIÓN, y aquí eso tiene historia:
+   * `plan-de-negocio/` guarda el pitch de la ALIANZA. Se subió con ese nombre
+   * cuando aún no existía la edición de la alianza, y renombrarla en el servidor
+   * costaría re-subir 180 MB para no cambiar nada que se vea. El mapa es
+   * explícito para que nadie tenga que adivinarlo.
+   */
+  const carpeta = {
+    'edicion-acceso-cuenta': 'acceso-cuenta',
+    'edicion-plan-de-negocio': 'plan-de-negocio',
+    'edicion-plan-alianza': 'plan-de-negocio',
+  }
   let declarados = 0
   for (const ed of E.EDICIONES) {
     for (const [l, pieza] of Object.entries(ed.piezas)) {
@@ -393,8 +404,17 @@ comprobar('un idioma sin material se enseña apagado, no se oculta', () => {
     )
   }
   /* El estado de hoy, dicho en voz alta para que se vea cambiar. */
-  assert.equal(E.idiomasConPdf(plan).length, 8, 'el plan debería tener 8 documentos')
-  assert.equal(E.idiomasConVideo(plan).length, 3, 'el plan debería tener 3 videos')
+  /*
+   * EL ESTADO DE HOY, dicho en voz alta para que se vea cambiar — y corregido
+   * cuando se descubrió que el video de `plan-de-negocio/` es el de la ALIANZA,
+   * no el de AiGenesis. La edición de AiGenesis es documento puro; la de la
+   * alianza tiene video en tres idiomas y documento en cinco.
+   */
+  const alianza = E.edicionPorId('edicion-plan-alianza')
+  assert.equal(E.idiomasConPdf(plan).length, 8, 'el plan de AiGenesis debería tener 8 documentos')
+  assert.equal(E.idiomasConVideo(plan).length, 0, 'el plan de AiGenesis no tiene video propio')
+  assert.equal(E.idiomasConVideo(alianza).length, 3, 'la alianza debería tener 3 videos')
+  assert.equal(E.idiomasConPdf(alianza).length, 5, 'la alianza debería tener 5 documentos')
   assert.equal(E.idiomasConVideo(acceso).length, 3, 'el tutorial debería tener 3 videos')
 })
 
@@ -408,22 +428,40 @@ comprobar('un idioma con documento pero SIN video sigue entregando algo', () => 
    * inaccesibles —o peor, abiertas y vacías—. Aquí tienen que abrirse, decir que
    * no hay video, y ofrecer la descarga igual.
    */
-  for (const l of ['ru', 'sv', 'hr', 'ar']) {
-    assert.equal(plan.piezas[l].video, null, `control: ${l} ya tiene video, rehacer esta prueba`)
+  /*
+   * SE MIRA LA EDICIÓN DE LA ALIANZA, no la de AiGenesis.
+   *
+   * Esto recorría `edicion-plan-de-negocio` en ru/sv/hr/ar, que entonces era la
+   * única edición con video Y documento a la vez. Ya no lo es: sus videos eran
+   * en realidad los de la alianza. Hoy la de AiGenesis es documento puro —donde
+   * este caso no se puede distinguir de nada— y la mezcla vive en la alianza,
+   * con video en es/en/pt y documento además en de/sr.
+   *
+   * Alemán y serbio son exactamente el caso: documento sí, video no.
+   */
+  const alianzaEd = E.edicionPorId('edicion-plan-alianza')
+  for (const l of ['de', 'sr']) {
+    assert.equal(alianzaEd.piezas[l].video, null, `control: ${l} ya tiene video, rehacer esta prueba`)
+    assert.ok(alianzaEd.piezas[l].pdf, `control: ${l} no tiene documento, esto no prueba nada`)
     /* En el mundo ENCENDIDO, que es donde esto se puede distinguir de verdad: con
-       la videoteca apagada estas cuatro se ven igual que las tres que sí tienen
+       la videoteca apagada estas fichas se ven igual que las que sí tienen
        video, y la prueba no probaría nada. */
-    const html = pintarOn('edicion-plan-de-negocio', l)
+    const html = pintarOn('edicion-plan-alianza', l)
     /* El texto cambió a propósito: una edición CON documento y sin video ya no
        dice «no hay edición en tu idioma» —que era falso teniendo el PDF ahí
        mismo— sino que es un documento. Se comprueba el mensaje que toca. */
     assert.match(html, /Esta edición es un documento/, `${l}: no explica que el material es un documento`)
     assert.doesNotMatch(html, /Todavía no hay edición en/, `${l}: dice que no hay material teniendo el PDF`)
-    assert.match(html, /_v5\.0_/, `${l}: perdió el enlace de descarga por no tener video`)
+    /* El enlace es el del deck de la ALIANZA, no el `_v5.0_` de AiGenesis: son
+       dos documentos distintos y confundirlos aquí sería no comprobar nada. */
+    assert.match(html, /media\/aula\/alianza\/de\.pdf|media\/aula\/alianza\/sr\.pdf/,
+      `${l}: perdió el enlace de descarga por no tener video`)
     assert.doesNotMatch(html, /<video/, `${l}: pintó un reproductor sin archivo`)
   }
-  /* Y el contraste: el español, en la MISMA edición, sí trae reproductor. */
-  assert.match(pintarOn('edicion-plan-de-negocio', 'es'), /<video/)
+  /* Y el contraste, que es lo que convierte esto en una prueba: el español, en
+     la MISMA edición, sí trae reproductor. Sin esta línea, un componente que
+     nunca pintara video pasaría las cuatro comprobaciones de arriba. */
+  assert.match(pintarOn('edicion-plan-alianza', 'es'), /<video/)
 })
 
 comprobar('el árabe se pinta de derecha a izquierda', () => {
