@@ -21,7 +21,7 @@ import { PRESS_V5 } from '@/lib/official-links'
  */
 
 export type CodigoIdioma =
-  | 'es' | 'en' | 'pt' | 'fr' | 'ru' | 'sv' | 'hr' | 'ar' | 'de' | 'sr' | 'ur'
+  | 'es' | 'en' | 'pt' | 'fr' | 'ru' | 'sv' | 'hr' | 'ar' | 'de' | 'sr' | 'ur' | 'ko'
 
 export interface Idioma {
   codigo: CodigoIdioma
@@ -31,8 +31,22 @@ export interface Idioma {
   enEspanol: string
   /** `rtl` cambia la dirección del documento entero, no solo la del texto. */
   rtl?: boolean
-  /** Versión de la presentación disponible en ese idioma. */
-  material: 'v5' | 'v1'
+  /**
+   * Versión de la presentación disponible en ese idioma.
+   * `pendiente` = la interfaz ya habla ese idioma pero el material todavía no
+   * existe, así que se entrega el de otro (ver `materialDe`).
+   */
+  material: 'v5' | 'v1' | 'pendiente'
+  /**
+   * De qué idioma sale el material mientras el propio no existe.
+   *
+   * SIN ESTO EL RESPALDO ES EL ESPAÑOL, y para un idioma nuevo eso casi nunca
+   * es lo correcto: quien lee la página en coreano tiene muchísimas más
+   * probabilidades de entender un PDF en inglés que uno en español. El respaldo
+   * no es «el idioma de la casa», es «el que más probablemente entienda quien
+   * está esperando el suyo», y eso se decide idioma por idioma.
+   */
+  materialDe?: CodigoIdioma
 }
 
 /** Los ocho con presentación al día. El orden es el de `PRESS_V5`. */
@@ -62,7 +76,27 @@ const CON_V1: readonly Idioma[] = [
   { codigo: 'ur', nativo: 'اردو', enEspanol: 'Urdu', rtl: true, material: 'v1' },
 ] as const
 
-export const IDIOMAS: readonly Idioma[] = [...CON_V5, ...CON_V1]
+/**
+ * Los que hablan la interfaz pero todavía no tienen material propio.
+ *
+ * COREANO ENTRA ASÍ POR DECISIÓN DEL OWNER (28-ago-2026). La regla de esta
+ * lista era que los idiomas se HEREDAN del material comercial, para no dejar a
+ * nadie leyendo en su lengua y descargando un PDF que no entiende. Coreano la
+ * rompe: no hay presentación en coreano.
+ *
+ * Se resuelve sirviéndole el material en INGLÉS y diciéndolo, en vez de
+ * esperar a que exista. Un portal que ya habla tu idioma vale aunque el PDF
+ * todavía no; lo que no vale es el PDF sorpresa en otro idioma sin avisar.
+ *
+ * Cuando llegue la presentación en coreano: se añade a `PRESS_V5` en
+ * `lib/official-links.ts` y se mueve esta entrada a `CON_V5`. Nada más — el
+ * resolutor la coge sola.
+ */
+const SIN_MATERIAL_PROPIO: readonly Idioma[] = [
+  { codigo: 'ko', nativo: '한국어', enEspanol: 'Coreano', material: 'pendiente', materialDe: 'en' },
+] as const
+
+export const IDIOMAS: readonly Idioma[] = [...CON_V5, ...CON_V1, ...SIN_MATERIAL_PROPIO]
 
 export const IDIOMA_POR_DEFECTO: CodigoIdioma = 'es'
 

@@ -1,4 +1,5 @@
 import type { CodigoIdioma } from '@/lib/i18n/idiomas'
+import { COREANO } from '@/lib/i18n/coreano'
 
 /**
  * EL DICCIONARIO — la clave es el texto en español.
@@ -52,6 +53,29 @@ type Fila = Partial<Record<Exclude<CodigoIdioma, 'es'>, string>>
  */
 export function registrarEntradas(extra: Record<string, Partial<Record<Exclude<CodigoIdioma, 'es'>, string>>>) {
   Object.assign(DICCIONARIO, extra)
+}
+
+/**
+ * FUNDE UN IDIOMA SUELTO dentro de filas que ya existen.
+ *
+ * `registrarEntradas` REEMPLAZA la fila entera —es `Object.assign` de primer
+ * nivel—, asi que registrar un mapa con solo coreano borraria las otras diez
+ * lenguas de esas frases sin fallar: la pantalla saldria en español y nadie lo
+ * notaria hasta que un sueco lo dijera. Esto entra dentro de la fila.
+ *
+ * SI LA CLAVE NO EXISTE, SE CREA. Ignorarla en silencio dejaria una traduccion
+ * escrita y muerta; crear la fila la deja coja a proposito, y `verify:i18n`
+ * grita «sin en, pt, fr…» señalando la frase exacta. Se prefiere una guarda
+ * ruidosa a una perdida callada.
+ */
+export function fundirIdioma(
+  destino: Record<string, Fila>,
+  codigo: Exclude<CodigoIdioma, 'es'>,
+  mapa: Record<string, string>
+) {
+  for (const [clave, texto] of Object.entries(mapa)) {
+    ;(destino[clave] ??= {})[codigo] = texto
+  }
 }
 
 export const DICCIONARIO: Record<string, Fila> = {
@@ -6321,3 +6345,11 @@ export const DICCIONARIO: Record<string, Fila> = {
   },
 
 }
+
+/*
+ * EL COREANO SE FUNDE AQUÍ, al evaluar el módulo — o sea antes de que ningún
+ * `t()` pregunte. Vive en `coreano.ts` y no dentro de cada fila: el porqué está
+ * en la cabecera de ese archivo. Va DENTRO de la fila (`fundirIdioma`), nunca
+ * encima (`registrarEntradas`), que habría borrado las otras diez lenguas.
+ */
+fundirIdioma(DICCIONARIO, 'ko', COREANO)

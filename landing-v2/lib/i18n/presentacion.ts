@@ -1,5 +1,5 @@
 import { PRESENTACIONES_G11, PRESENTACIONES_G11_V1 } from '@/lib/g11'
-import { IDIOMA_POR_DEFECTO, type CodigoIdioma } from '@/lib/i18n/idiomas'
+import { buscarIdioma, IDIOMA_POR_DEFECTO, type CodigoIdioma } from '@/lib/i18n/idiomas'
 
 /**
  * LA PRESENTACIÓN QUE LE TOCA A CADA IDIOMA.
@@ -26,8 +26,12 @@ export interface PresentacionResuelta {
   /** El idioma en su propia lengua. */
   nativo: string
   mb: number
-  /** `v5` es la presentación al día; `v1`, la anterior. */
-  material: 'v5' | 'v1'
+  /**
+   * `v5` es la presentación al día; `v1`, la anterior; `pendiente` significa
+   * que ese idioma todavía no tiene material propio y se está entregando el de
+   * otro — quien pinta el botón tiene que decirlo.
+   */
+  material: 'v5' | 'v1' | 'pendiente'
   /** El idioma que realmente se sirve — puede no ser el pedido. */
   codigo: string
 }
@@ -52,6 +56,23 @@ export function presentacionParaIdioma(codigo: CodigoIdioma | string): Presentac
   const anterior = PRESENTACIONES_G11_V1.find((p) => p.codigo === codigo)
   if (anterior) {
     return { ...anterior, material: 'v1' }
+  }
+  /*
+   * UN IDIOMA PUEDE DECLARAR DE DÓNDE SALE SU MATERIAL MIENTRAS NO TIENE EL
+   * SUYO. Coreano pide el inglés, no el español: quien lee la página en coreano
+   * es muchísimo más probable que entienda un PDF en inglés.
+   *
+   * Se devuelve con `material: 'pendiente'` y con `codigo` apuntando al idioma
+   * REAL del archivo, que es lo que permite al botón decir qué está entregando.
+   * Sin eso el visitante se descarga un PDF en otro idioma sin aviso, que es
+   * exactamente lo que este resolutor existe para impedir.
+   */
+  const declarado = buscarIdioma(String(codigo))?.materialDe
+  if (declarado) {
+    const prestado =
+      PRESENTACIONES_G11.find((p) => p.codigo === declarado) ??
+      PRESENTACIONES_G11_V1.find((p) => p.codigo === declarado)
+    if (prestado) return { ...prestado, material: 'pendiente' }
   }
   const respaldo = PRESENTACIONES_G11.find((p) => p.codigo === IDIOMA_POR_DEFECTO)!
   return { ...respaldo, material: 'v5' }

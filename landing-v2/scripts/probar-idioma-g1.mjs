@@ -50,7 +50,14 @@ function compilar(rutaRel, nombre, alias = {}) {
 /* El diccionario REAL — no un stub. Es lo único que demuestra que la traducción
    llega de verdad. El del whitepaper se registra sobre éste en ejecución y no
    aporta claves a la web G1, así que se deja fuera. */
-compilar('lib/i18n/diccionario.ts', 'diccionario.js')
+/* El coreano vive en su propio archivo y `diccionario.ts` lo funde al cargarse.
+   Hay que compilarlo ANTES y redirigir el import, o el diccionario real no
+   carga — y entonces estas comprobaciones no fallan por lo que miran, fallan
+   por no poder mirar, que es la forma más cara de estar en rojo. */
+compilar('lib/i18n/coreano.ts', 'coreano.js')
+compilar('lib/i18n/diccionario.ts', 'diccionario.js', {
+  '@/lib/i18n/coreano': './coreano.js',
+})
 
 /* La lista DECLARADA de lo que no se traduce (marcas, tecnologías, títulos de
    pieza). Se compila para poder distinguir «no lleva fila a propósito» de «se
@@ -257,28 +264,46 @@ comprobar('ninguna traducción tiene caracteres de un alfabeto ajeno', () => {
    * el diccionario estaba completo, las once casillas llenas, y ninguna
    * comprobación lo veía. Sólo lo habría notado alguien que lee ruso.
    *
-   * La forma de detectarlo sin saber los once idiomas es preguntar por el
+   * La forma de detectarlo sin saber los doce idiomas es preguntar por el
    * alfabeto: una frase en ruso no puede llevar un ideograma CJK, ni una en
-   * árabe puede llevar cirílico. Se comprueban los bloques que NO deberían
-   * aparecer nunca en ninguna de las once lenguas del diccionario.
+   * árabe puede llevar cirílico.
+   *
+   * AL ENTRAR EL COREANO ESTO DEJÓ DE SER UNA SOLA LISTA. El hangul estaba en
+   * el bloque prohibido —correcto mientras ninguna de las once lenguas lo
+   * usara— y quitarlo de ahí sin más habría apagado la guarda justo donde más
+   * hace falta: el coreano es el único idioma que todavía no ha pasado revisión
+   * nativa, o sea el único cuyos errores nadie ha leído. Así que la regla pasa
+   * a ser POR IDIOMA: el hangul es legítimo en `ko` y sigue prohibido en los
+   * otros once, y `ko` a su vez no puede llevar cirílico ni árabe.
    */
   const D = require_(join(salida, 'diccionario.js'))
   const tabla = Object.assign({}, ...Object.values(D).filter((v) => v && typeof v === 'object'))
-  /* CJK, hangul, hiragana y katakana: ninguno de los once idiomas los usa. */
-  const AJENO = /[぀-ヿ㐀-䶿一-鿿가-힯]/
+  /* CJK, hiragana y katakana: ninguno de los doce idiomas los usa, coreano
+     incluido — este corpus no escribe hanja. */
+  const AJENO_SIEMPRE = /[぀-ヿ㐀-䶿一-鿿]/
+  const HANGUL = /[가-힣ㄱ-ㆎ]/
+  const CIRILICO = /[Ѐ-ӿ]/
+  const ARABE = /[؀-ۿ]/
   const sucias = []
   for (const [clave, fila] of Object.entries(tabla)) {
     if (!fila || typeof fila !== 'object') continue
     for (const [idioma, texto] of Object.entries(fila)) {
       if (typeof texto !== 'string') continue
-      const m = texto.match(AJENO)
-      if (m) sucias.push(`${idioma} «${m[0]}» en: ${clave.slice(0, 40)}`)
+      const prohibidos =
+        idioma === 'ko' ? [AJENO_SIEMPRE, CIRILICO, ARABE] : [AJENO_SIEMPRE, HANGUL]
+      for (const re of prohibidos) {
+        const m = texto.match(re)
+        if (m) sucias.push(`${idioma} «${m[0]}» en: ${clave.slice(0, 40)}`)
+      }
     }
   }
   assert.deepEqual(sucias, [], 'caracteres de otro alfabeto:\n   ' + sucias.join('\n   '))
-  /* Control de instrumento: el detector tiene que morder de verdad. */
-  assert.match('от单 итога', AJENO, 'control: el detector de alfabetos ajenos no muerde')
-  assert.doesNotMatch('от общей суммы', AJENO, 'control: el detector marca el ruso legítimo')
+  /* Control de instrumento: el detector tiene que morder de verdad, y tiene que
+     morder LAS DOS reglas — la general y la que sólo aplica al coreano. */
+  assert.match('от单 итога', AJENO_SIEMPRE, 'control: el detector de alfabetos ajenos no muerde')
+  assert.doesNotMatch('от общей суммы', AJENO_SIEMPRE, 'control: el detector marca el ruso legítimo')
+  assert.match('Главная 내비게이션', HANGUL, 'control: el detector de hangul no muerde')
+  assert.doesNotMatch('주요 내비게이션', CIRILICO, 'control: el detector marca el coreano legítimo')
 })
 
 comprobar('ninguna palabra mezcla cirílico con latín', () => {

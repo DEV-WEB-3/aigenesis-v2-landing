@@ -1,5 +1,6 @@
 import type { CodigoIdioma } from '@/lib/i18n/idiomas'
-import { registrarEntradas } from '@/lib/i18n/diccionario'
+import { registrarEntradas, fundirIdioma } from '@/lib/i18n/diccionario'
+import { COREANO_WHITEPAPER } from '@/lib/i18n/coreano-whitepaper'
 
 /**
  * EL WHITEPAPER, EN LAS ONCE LENGUAS — bloque aparte del diccionario comun.
@@ -438,5 +439,9 @@ const WHITEPAPER: Record<string, Partial<Record<Exclude<CodigoIdioma, 'es'>, str
     sr: 'Други слој паметних уговора', ur: 'سمارٹ کنٹریکٹ کی دوسری پرت',
   },
 }
+
+/* El coreano vive en su propio archivo y entra DENTRO de cada fila, no encima:
+   el porqué de las dos cosas está en la cabecera de `coreano-whitepaper.ts`. */
+fundirIdioma(WHITEPAPER, 'ko', COREANO_WHITEPAPER)
 
 registrarEntradas(WHITEPAPER)

@@ -73,6 +73,20 @@ const SceneRoadmap = forwardRef<HTMLElement, Props>(
               {t('Versión anterior (v1)')} · {pres.mb} MB
             </span>
           ) : null}
+          {/*
+            Y SE AVISA CUANDO EL PDF NO ESTA EN EL IDIOMA DE LA PAGINA.
+
+            Coreano lee la landing en coreano y se descarga la presentacion en
+            ingles, porque todavia no existe en coreano. Eso es aceptable — un
+            texto que no entiendes del todo comunica mas que uno que no puedes
+            leer — pero solo si se dice ANTES de pulsar. El nombre del idioma va
+            en su propia lengua, que es como lo reconoce quien lo busca.
+          */}
+          {pres.material === 'pendiente' ? (
+            <span className="text-caption text-state-warning" dir="ltr">
+              {t('Todavía no disponible en tu idioma')} · {pres.nativo} · {pres.mb} MB
+            </span>
+          ) : null}
         </motion.div>
 
       </SceneWrapper>
