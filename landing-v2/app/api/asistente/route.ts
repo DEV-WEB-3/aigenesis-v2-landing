@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server'
 import { responder, type Respuesta } from '@/lib/soporte/buscar'
 import type { Proyecto } from '@/lib/soporte/tipos'
+import type { CodigoIdioma } from '@/lib/i18n/idiomas'
 import { contarPeticion, registrarConsulta } from './almacen'
+import { IDIOMAS_VALIDOS, respuestaEn } from './idioma'
 import { consultarHibrido, HIBRIDO_ACTIVO, type RespuestaHibrida } from './hibrido'
 
 /*
@@ -123,6 +125,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'consulta_corta' }, { status: 400, headers: cors })
   }
 
+  /* Un idioma desconocido no es un error: se responde en español, que es lo
+     que ya hacía. Rechazar la consulta por eso dejaría al portal sin asistente
+     por escribir mal un código de dos letras. */
+  const idiomaCrudo = (cuerpo as { idioma?: unknown })?.idioma
+  const idioma: CodigoIdioma =
+    typeof idiomaCrudo === 'string' && IDIOMAS_VALIDOS.has(idiomaCrudo)
+      ? (idiomaCrudo as CodigoIdioma)
+      : 'es'
+
   const proyectoCrudo = (cuerpo as { proyecto?: unknown })?.proyecto
   const proyecto =
     typeof proyectoCrudo === 'string' && PROYECTOS.has(proyectoCrudo)
@@ -170,5 +181,8 @@ export async function POST(req: Request) {
             : undefined,
   }).catch(() => {})
 
-  return NextResponse.json(final, { headers: cors })
+  /* El registro guarda el resultado ANTES de traducir —arriba— porque lo que
+     mide es el cerebro, no el idioma de quien preguntó. Lo que se traduce es
+     únicamente lo que sale por el cable. */
+  return NextResponse.json(respuestaEn(final, idioma), { headers: cors })
 }

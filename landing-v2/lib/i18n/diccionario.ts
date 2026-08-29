@@ -6323,6 +6323,70 @@ export const DICCIONARIO: Record<string, Fila> = {
     ur: 'لکھ رہا ہے…',
   },
 
+  /* La categoría que faltaba. Las otras dieciocho estaban porque el índice del
+     centro de ayuda las pinta; «Novedades» sólo viaja DENTRO de la ficha del
+     asistente, así que ninguna pantalla la pedía y nadie la echaba de menos.
+     La encontró la guarda nueva en cuanto se le añadió el campo `categoria`. */
+  Novedades: {
+    en: 'News', pt: 'Novidades', fr: 'Actualités', ru: 'Новости', sv: 'Nyheter',
+    hr: 'Novosti', ar: 'مستجدات', de: 'Neuigkeiten', sr: 'Новости', ur: 'تازہ ترین',
+  },
+
+  /* ── LA CORTESÍA DEL ASISTENTE ──────────────────────────────────────
+     Las cuatro respuestas de `lib/soporte/cortesia.ts`. Eran las ÚNICAS
+     cuatro cadenas del cerebro sin fila: las 99 preguntas del corpus ya
+     estaban, y estas se colaron porque no las pinta ningún componente —
+     las devuelve el endpoint. Sin ellas, saludar al asistente en coreano
+     contestaba en español. */
+  '¡Hola! Un gusto saludarte. Cuéntame en qué te ayudo — puedo responder sobre tu cuenta, el hold, los reclamos, el P2P o la tienda.': {
+    en: 'Hi! Good to meet you. Tell me what you need — I can answer about your account, the hold, claims, P2P or the store.',
+    pt: 'Olá! Prazer em falar com você. Conte-me em que posso ajudar — posso responder sobre sua conta, o hold, os resgates, o P2P ou a loja.',
+    fr: 'Bonjour ! Ravi de vous saluer. Dites-moi en quoi je peux vous aider — je peux répondre sur votre compte, le hold, les réclamations, le P2P ou la boutique.',
+    ru: 'Здравствуйте! Рад вас приветствовать. Расскажите, чем помочь — могу ответить про ваш аккаунт, hold, выплаты, P2P или магазин.',
+    sv: 'Hej! Trevligt att höra från dig. Berätta vad du behöver — jag kan svara om ditt konto, hold, uttag, P2P eller butiken.',
+    hr: 'Bok! Drago mi je. Recite mi kako mogu pomoći — mogu odgovoriti o vašem računu, holdu, isplatama, P2P-u ili trgovini.',
+    ar: 'مرحباً! سعيد بالتحدث إليك. أخبرني بما تحتاج — يمكنني الإجابة عن حسابك، والـ hold، والمطالبات، وP2P، أو المتجر.',
+    de: 'Hallo! Schön, von dir zu hören. Sag mir, womit ich helfen kann — ich kann zu deinem Konto, zum Hold, zu Auszahlungen, zu P2P oder zum Shop antworten.',
+    sr: 'Здраво! Драго ми је. Реците ми како могу да помогнем — могу да одговорим о вашем налогу, holdu, исплатама, P2P-у или продавници.',
+    ur: 'ہیلو! آپ سے بات کر کے خوشی ہوئی۔ بتائیے میں کس چیز میں مدد کر سکتا ہوں — میں آپ کے اکاؤنٹ، ہولڈ، کلیمز، P2P یا اسٹور کے بارے میں جواب دے سکتا ہوں۔',
+  },
+  '¡Todo en orden por aquí — gracias por preguntar! ¿En qué te puedo ayudar hoy?': {
+    en: 'All good here — thanks for asking! What can I help you with today?',
+    pt: 'Tudo bem por aqui — obrigado por perguntar! Em que posso ajudar hoje?',
+    fr: 'Tout va bien ici — merci de demander ! En quoi puis-je vous aider aujourd’hui ?',
+    ru: 'У нас всё в порядке — спасибо, что спросили! Чем могу помочь сегодня?',
+    sv: 'Allt är bra här — tack för att du frågar! Vad kan jag hjälpa dig med i dag?',
+    hr: 'Sve je u redu — hvala na pitanju! Kako vam mogu pomoći danas?',
+    ar: 'كل شيء على ما يرام هنا — شكراً لسؤالك! كيف يمكنني مساعدتك اليوم؟',
+    de: 'Hier ist alles in Ordnung — danke der Nachfrage! Womit kann ich dir heute helfen?',
+    sr: 'Све је у реду — хвала на питању! Како могу да вам помогнем данас?',
+    ur: 'یہاں سب ٹھیک ہے — پوچھنے کا شکریہ! آج میں آپ کی کیا مدد کر سکتا ہوں؟',
+  },
+  'Con gusto, para eso estoy. Si surge otra duda, aquí me tienes.': {
+    en: 'My pleasure, that is what I am here for. If another question comes up, I am right here.',
+    pt: 'Com prazer, é para isso que estou aqui. Se surgir outra dúvida, estou por aqui.',
+    fr: 'Avec plaisir, c’est pour cela que je suis là. Si une autre question surgit, je suis là.',
+    ru: 'С удовольствием, для этого я и здесь. Появится другой вопрос — я на месте.',
+    sv: 'Med nöje, det är därför jag finns här. Dyker det upp en fråga till är jag här.',
+    hr: 'Sa zadovoljstvom, zato sam tu. Ako se pojavi još koje pitanje, tu sam.',
+    ar: 'بكل سرور، لهذا أنا هنا. إن ظهر سؤال آخر فأنا في الخدمة.',
+    de: 'Sehr gern, dafür bin ich da. Wenn noch eine Frage aufkommt, bin ich hier.',
+    sr: 'Са задовољством, зато сам ту. Ако се појави још које питање, ту сам.',
+    ur: 'خوشی سے، میں اسی لیے ہوں۔ کوئی اور سوال ہو تو میں یہیں ہوں۔',
+  },
+  'Hasta pronto — que te vaya muy bien. Cuando necesites algo del ecosistema, aquí estaré.': {
+    en: 'See you soon — all the best. Whenever you need something from the ecosystem, I will be here.',
+    pt: 'Até breve — tudo de bom. Quando precisar de algo do ecossistema, estarei aqui.',
+    fr: 'À bientôt — portez-vous bien. Dès que vous aurez besoin de quelque chose de l’écosystème, je serai là.',
+    ru: 'До скорого — всего доброго. Когда понадобится что-то из экосистемы, я буду здесь.',
+    sv: 'Vi hörs snart — ha det så bra. När du behöver något ur ekosystemet är jag här.',
+    hr: 'Vidimo se uskoro — sve najbolje. Kad zatrebate nešto iz ekosustava, tu sam.',
+    ar: 'إلى اللقاء قريباً — كل التوفيق. عندما تحتاج شيئاً من المنظومة سأكون هنا.',
+    de: 'Bis bald — alles Gute. Wenn du etwas aus dem Ökosystem brauchst, bin ich da.',
+    sr: 'Видимо се ускоро — све најбоље. Кад вам затреба нешто из екосистема, ту сам.',
+    ur: 'پھر ملیں گے — آپ کے لیے نیک تمنائیں۔ جب ایکو سسٹم سے کچھ درکار ہو، میں یہیں ہوں گا۔',
+  },
+
   /* ── dictado y voz (Tren D) ── */
   'Escuchar': {
     en: 'Listen', pt: 'Ouvir', fr: 'Écouter', ru: 'Прослушать', sv: 'Lyssna',

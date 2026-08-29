@@ -988,4 +988,16 @@ export const COREANO: Record<string, string> = {
   'Leer en voz alta': '소리 내어 읽기',
   'Dictar la pregunta': '질문 받아쓰기',
   'Detener el dictado': '받아쓰기 중지',
+
+  Novedades: '새소식',
+
+  /* ── LA CORTESÍA DEL ASISTENTE ──────────────────────────────────────── */
+  '¡Hola! Un gusto saludarte. Cuéntame en qué te ayudo — puedo responder sobre tu cuenta, el hold, los reclamos, el P2P o la tienda.':
+    '안녕하세요! 반갑습니다. 무엇을 도와드릴지 말씀해 주세요 — 계정과 홀드, 청구, P2P, 상점에 대해 답해 드릴 수 있습니다.',
+  '¡Todo en orden por aquí — gracias por preguntar! ¿En qué te puedo ayudar hoy?':
+    '여기는 다 좋습니다 — 물어봐 주셔서 감사합니다! 오늘은 무엇을 도와드릴까요?',
+  'Con gusto, para eso estoy. Si surge otra duda, aquí me tienes.':
+    '기꺼이요, 그러라고 있는걸요. 또 궁금한 게 생기면 여기 있겠습니다.',
+  'Hasta pronto — que te vaya muy bien. Cuando necesites algo del ecosistema, aquí estaré.':
+    '곧 또 뵙겠습니다 — 안녕히 가세요. 생태계에서 무언가 필요하실 때 여기 있겠습니다.',
 }

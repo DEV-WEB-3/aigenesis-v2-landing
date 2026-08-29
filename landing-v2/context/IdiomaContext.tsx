@@ -8,7 +8,7 @@ import {
   idiomaDelNavegador,
   type CodigoIdioma,
 } from '@/lib/i18n/idiomas'
-import { DICCIONARIO } from '@/lib/i18n/diccionario'
+import { hayTraduccion, traducir } from '@/lib/i18n/traducir'
 import { INVARIABLES } from '@/lib/i18n/invariables'
 
 /**
@@ -99,28 +99,34 @@ export function IdiomaProvider({ children }: { children: React.ReactNode }) {
 
   const t = useCallback(
     (es: string) => {
-      if (idioma === 'es') return es
       /*
-       * SIN LETRAS NO HAY NADA QUE TRADUCIR.
+       * LA BÚSQUEDA VIVE EN `lib/i18n/traducir`, no aquí.
        *
-       * A `t()` le llegan tambien sufijos y cifras —«%», «+», «24/7», «6+»—
-       * porque se traduce el componente y no cada llamada, y el componente no
-       * sabe si su `value` es una palabra o un simbolo. Sin esta guarda cada uno
-       * de ellos pedia una entrada al diccionario y ensuciaba el aviso de
-       * desarrollo, que es justo la herramienta que sirve para encontrar lo que
-       * SI falta. Un aviso que grita por todo deja de leerse.
+       * La movimos cuando resultó que el endpoint del asistente —el mismo
+       * cerebro para la página y para el portal— devolvía español siempre:
+       * traducir era algo que sólo sabía hacer React. Lo que queda aquí es lo
+       * que SÍ es del contexto: el idioma vigente y el aviso de desarrollo.
        */
-      if (!/[A-Za-zÀ-ɏЀ-ӿ؀-ۿ]/.test(es)) return es
-      const fila = DICCIONARIO[es]
-      const trad = fila?.[idioma]
-      if (trad) return trad
+      const trad = traducir(es, idioma)
       /*
        * Sin traduccion se devuelve el ESPAÑOL, nunca la clave ni un hueco. En
        * desarrollo se avisa una sola vez por cadena: un aviso por render
        * convierte la consola en ruido y deja de leerse.
+       *
+       * Se pregunta por la FILA y no se compara `trad !== es`: las frases que
+       * se traducen a sí mismas —las marcas, «P2P», «Powered by»— darían un
+       * aviso falso, y un aviso que grita por lo correcto deja de leerse.
        */
-      if (process.env.NODE_ENV !== 'production' && !INVARIABLES.has(es)) avisarUnaVez(es, idioma)
-      return es
+      if (
+        process.env.NODE_ENV !== 'production' &&
+        idioma !== 'es' &&
+        !hayTraduccion(es, idioma) &&
+        !INVARIABLES.has(es) &&
+        /[A-Za-zÀ-ɏЀ-ӿ؀-ۿ]/.test(es)
+      ) {
+        avisarUnaVez(es, idioma)
+      }
+      return trad
     },
     [idioma]
   )

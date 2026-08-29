@@ -28,6 +28,7 @@
     "desplegar:probar": "node scripts/desplegar-hosting.mjs --probar",
     "verify:i18n:g1": "node scripts/extraer-i18n.mjs --guarda",
     "verify:idioma:g1": "node scripts/probar-idioma-g1.mjs",
+    "verify:asistente:idioma": "node scripts/probar-asistente-idioma.mjs",
     "corpus:progreso": "node scripts/progreso-corpus.mjs",
     "verify:vivo:g1": "node scripts/probar-vivo-g1.mjs"
   },
