@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import SelectorIdioma from '@/components/i18n/SelectorIdioma'
-import { useT } from '@/context/IdiomaContext'
+import { useIdioma } from '@/context/IdiomaContext'
+import { urlConIdioma } from '@/lib/i18n/idiomas'
 import { GooeyNav } from './GooeyNav'
 import { GlareHover, BorderGlow } from './fx'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
@@ -49,7 +50,10 @@ export function G1Header() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
-  const t = useT()
+  const { t, idioma } = useIdioma()
+  /* Los CTA cruzan de dominio: el idioma elegido viaja en la URL o no viaja. */
+  const iboUrl = urlConIdioma(IBO_URL, idioma)
+  const registerUrl = urlConIdioma(REGISTER_URL, idioma)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12)
@@ -98,7 +102,7 @@ export function G1Header() {
         <div className="flex items-center gap-2">
           {/* Regístrate — crear cuenta en el Portal IBO (secundario, ghost) */}
           <a
-            href={REGISTER_URL}
+            href={registerUrl}
             target="_blank"
             rel="noopener noreferrer"
             title={t('Regístrate en el Portal IBO de Génesis')}
@@ -113,7 +117,7 @@ export function G1Header() {
           <BorderGlow rounded="rounded-full" className="hidden sm:inline-flex">
             <GlareHover rounded="rounded-full">
               <a
-                href={IBO_URL}
+                href={iboUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 title={t('Ingresar al Portal IBO de Génesis')}
@@ -122,7 +126,7 @@ export function G1Header() {
                 style={{ background: G1_GRADIENT }}
               >
                 {IconIngresar}
-                Ingresar
+                {t('Ingresar')}
               </a>
             </GlareHover>
           </BorderGlow>
@@ -165,7 +169,7 @@ export function G1Header() {
             <div className="mt-3 flex flex-col gap-2 border-t pt-4" style={{ borderColor: `${G1.cyan}1f` }}>
               {/* Ingresar — CTA al Portal IBO de Génesis */}
               <a
-                href={IBO_URL}
+                href={iboUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t('Ingresar al Portal IBO de Génesis')}
@@ -173,10 +177,10 @@ export function G1Header() {
                 style={{ background: G1_GRADIENT }}
               >
                 {IconIngresar}
-                Ingresar · Portal IBO
+                {t('Ingresar')} · Portal IBO
               </a>
               <a
-                href={REGISTER_URL}
+                href={registerUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t('Regístrate en el Portal IBO de Génesis')}

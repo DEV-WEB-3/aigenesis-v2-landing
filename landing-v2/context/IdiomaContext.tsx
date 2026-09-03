@@ -5,6 +5,7 @@ import {
   IDIOMAS,
   IDIOMA_POR_DEFECTO,
   buscarIdioma,
+  idiomaDeBusqueda,
   idiomaDelNavegador,
   type CodigoIdioma,
 } from '@/lib/i18n/idiomas'
@@ -62,6 +63,22 @@ export function IdiomaProvider({ children }: { children: React.ReactNode }) {
   const [idioma, setIdioma] = useState<CodigoIdioma>(IDIOMA_POR_DEFECTO)
 
   useEffect(() => {
+    /*
+     * La URL manda sobre lo guardado: `?lang=` es el puente entre dominios
+     * (localStorage no cruza orígenes). Quien llega desde la oficina con
+     * `?lang=ko` pidió coreano AHORA; lo guardado es una preferencia vieja.
+     * Y se persiste, para que la elección sobreviva a la siguiente página.
+     */
+    const deUrl = idiomaDeBusqueda(window.location.search)
+    if (deUrl) {
+      setIdioma(deUrl)
+      try {
+        window.localStorage.setItem(CLAVE, deUrl)
+      } catch {
+        /* sin almacenamiento, el idioma dura lo que la pestaña */
+      }
+      return
+    }
     let inicial: CodigoIdioma | undefined
     try {
       const guardado = window.localStorage.getItem(CLAVE)

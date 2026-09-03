@@ -3,6 +3,8 @@
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { useCorpus } from '@/hooks/useCorpus'
+import { useIdioma } from '@/context/IdiomaContext'
+import { urlConIdioma } from '@/lib/i18n/idiomas'
 import { G1, G1_GRADIENT } from '@/lib/design/g1'
 import { DisclaimerBar } from '../DisclaimerBar'
 import { CredentialStrip } from '../CredentialStrip'
@@ -62,6 +64,7 @@ function Col({ title, children }: { title: string; children: ReactNode }) {
 
 export function G1Footer() {
   const c = useCorpus()
+  const { idioma } = useIdioma()
   /*
    * LOS NOMBRES PROPIOS NO ENTRAN AQUÍ. `ECOSISTEMA` son productos —Tag Markets,
    * Bit1, BixCard, G-Pulse, Gevy, AiG Token— y las redes son plataformas. Un
@@ -143,8 +146,8 @@ export function G1Footer() {
           </Col>
 
           <Col title="Acceso">
-            <li><a href="https://g-pulse.aigenesis.io" target="_blank" rel="noopener noreferrer" lang={c('Únete / Ingresar').lang} className="text-[14px] text-genesis-text hover:underline">{c('Únete / Ingresar').texto} ↗</a></li>
-            <li><a href="https://genesis.ibportal.io" target="_blank" rel="noopener noreferrer" className="text-[14px] text-genesis-text hover:underline">Portal IBO ↗</a></li>
+            <li><a href={urlConIdioma('https://g-pulse.aigenesis.io', idioma)} target="_blank" rel="noopener noreferrer" lang={c('Únete / Ingresar').lang} className="text-[14px] text-genesis-text hover:underline">{c('Únete / Ingresar').texto} ↗</a></li>
+            <li><a href={urlConIdioma('https://genesis.ibportal.io', idioma)} target="_blank" rel="noopener noreferrer" className="text-[14px] text-genesis-text hover:underline">Portal IBO ↗</a></li>
             <li><Link href="/g1/comunidad" lang={c('Próximos eventos').lang} className="text-[14px] text-genesis-text hover:underline">{c('Próximos eventos').texto}</Link></li>
           </Col>
 

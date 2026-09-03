@@ -30,7 +30,8 @@
     "verify:idioma:g1": "node scripts/probar-idioma-g1.mjs",
     "verify:asistente:idioma": "node scripts/probar-asistente-idioma.mjs",
     "corpus:progreso": "node scripts/progreso-corpus.mjs",
-    "verify:vivo:g1": "node scripts/probar-vivo-g1.mjs"
+    "verify:vivo:g1": "node scripts/probar-vivo-g1.mjs",
+    "verify:puente:lang": "node scripts/probar-puente-lang.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^9.122.0",

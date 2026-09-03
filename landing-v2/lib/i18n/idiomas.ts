@@ -100,6 +100,45 @@ export const IDIOMAS: readonly Idioma[] = [...CON_V5, ...CON_V1, ...SIN_MATERIAL
 
 export const IDIOMA_POR_DEFECTO: CodigoIdioma = 'es'
 
+/**
+ * Lee el idioma pedido en la URL (`?lang=`, `?idioma=` o `?hl=`).
+ *
+ * Es el puente entre dominios del ecosistema: localStorage no cruza orígenes,
+ * así que cuando la oficina manda a alguien acá con `?lang=ko`, este parámetro
+ * es lo ÚNICO que trae su idioma. Devuelve null si no viene o no es válido —
+ * el que llama decide el respaldo (guardado o navegador).
+ */
+export function idiomaDeBusqueda(search: string): CodigoIdioma | null {
+  let params: URLSearchParams
+  try {
+    params = new URLSearchParams(search)
+  } catch {
+    return null
+  }
+  for (const clave of ['lang', 'idioma', 'hl']) {
+    const valor = params.get(clave)
+    if (valor && buscarIdioma(valor)) return valor as CodigoIdioma
+  }
+  return null
+}
+
+/**
+ * Cuelga `?lang=` del idioma activo en un enlace saliente del ecosistema.
+ *
+ * El viaje inverso del puente: el idioma elegido acá debe llegar al portal de
+ * destino (ibportal, g-pulse…) por la URL, porque es lo único que cruza.
+ */
+export function urlConIdioma(href: string, idioma: CodigoIdioma): string {
+  try {
+    const u = new URL(href)
+    u.searchParams.set('lang', idioma)
+    return u.toString()
+  } catch {
+    const sep = href.includes('?') ? '&' : '?'
+    return `${href}${sep}lang=${encodeURIComponent(idioma)}`
+  }
+}
+
 export function buscarIdioma(codigo: string): Idioma | undefined {
   return IDIOMAS.find((i) => i.codigo === codigo)
 }
